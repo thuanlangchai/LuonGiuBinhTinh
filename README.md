@@ -1,51 +1,39 @@
-🦷 Hệ thống quản lý phòng khám nha khoa
+# Hệ thống quản lý phòng khám nha khoa
 
-## Giới thiệu
+## 1. Giới thiệu
 
-Hệ thống quản lý phòng khám nha khoa được xây dựng nhằm hỗ trợ phòng khám quản lý các hoạt động nghiệp vụ cơ bản như quản lý bệnh nhân, lịch hẹn, bác sĩ, khám chữa bệnh, dịch vụ nha khoa và thanh toán.
+Hệ thống quản lý phòng khám nha khoa là phần mềm hỗ trợ phòng khám quản lý các hoạt động nghiệp vụ, bao gồm quản lý nhân sự, khách hàng, lịch làm việc, lịch hẹn, khám chữa bệnh, dịch vụ, thanh toán và thống kê doanh thu.
 
-Hệ thống giúp số hóa quy trình làm việc, giảm việc quản lý thủ công và hỗ trợ tra cứu thông tin nhanh chóng.
+Hệ thống chỉ phục vụ cho nhân viên phòng khám.
 
-## Mục tiêu
+## 2. Đối tượng sử dụng
 
-- Quản lý thông tin bệnh nhân.
-- Quản lý bác sĩ và nhân viên.
-- Quản lý lịch hẹn và lịch khám.
-- Quản lý quá trình khám và điều trị.
+- Nhân viên quản lý: Quản lý nhân sự, dịch vụ, phân công lịch làm việc và xem thống kê tổng quan.
+- Lễ tân: Quản lý khách hàng, lịch hẹn, tiếp nhận, check-in và thanh toán.
+- Nha sĩ: Theo dõi lịch làm việc, quản lý danh sách bệnh nhân và hồ sơ bệnh án điện tử.
+- Y tá: Theo dõi lịch phân công và hỗ trợ nha sĩ trong quá trình làm việc.
+
+## 3. Chức năng chính
+
+- Quản lý nhân viên và phân công lịch làm việc.
+- Quản lý hồ sơ khách hàng.
+- Quản lý lịch hẹn và tiếp nhận khách hàng.
+- Quản lý khám chữa bệnh và hồ sơ bệnh án điện tử.
 - Quản lý các dịch vụ nha khoa.
 - Quản lý hóa đơn và thanh toán.
-- Hỗ trợ tra cứu và theo dõi lịch sử khám chữa bệnh.
+- Thống kê hoạt động và doanh thu.
 
-## Quy trình nghiệp vụ cơ bản
+## 4. Quy trình nghiệp vụ tổng quát
 
-1. Tiếp nhận bệnh nhân – Đăng ký và lưu thông tin bệnh nhân.
-2. Đặt lịch khám – Tạo và quản lý lịch hẹn với bác sĩ.
-3. Khám bệnh – Bác sĩ kiểm tra tình trạng răng miệng và ghi nhận kết quả.
-4. Lập kế hoạch điều trị – Xác định dịch vụ và phương pháp điều trị phù hợp.
-5. Thực hiện điều trị – Ghi nhận các dịch vụ đã thực hiện.
-6. Thanh toán – Lập hóa đơn và ghi nhận thanh toán.
-7. Theo dõi – Quản lý lịch sử khám và các lần tái khám.
+1. Tiếp nhận và tạo lịch hẹn cho khách hàng.
+2. Check-in khi khách hàng đến phòng khám.
+3. Nha sĩ thực hiện khám và chẩn đoán.
+4. Lập kế hoạch và thực hiện điều trị.
+5. Cập nhật hồ sơ bệnh án điện tử.
+6. Lập hóa đơn và thực hiện thanh toán.
+7. Hoàn tất lượt khám và đặt lịch tái khám nếu cần.
+8. Hệ thống tổng hợp dữ liệu phục vụ thống kê và báo cáo.
 
-## Đối tượng sử dụng
+## 5. Phạm vi hệ thống
 
-- Quản trị viên: Quản lý hệ thống, người dùng và dữ liệu.
-- Lễ tân: Quản lý bệnh nhân, lịch hẹn và tiếp nhận.
-- Bác sĩ: Quản lý khám, chẩn đoán và điều trị.
-- Nhân viên thu ngân: Quản lý hóa đơn và thanh toán.
-
-## Chức năng chính
-
-- Quản lý bệnh nhân
-- Quản lý bác sĩ
-- Quản lý lịch hẹn
-- Quản lý dịch vụ nha khoa
-- Quản lý hồ sơ khám bệnh
-- Quản lý điều trị
-- Quản lý hóa đơn
-- Quản lý thanh toán
-- Tra cứu lịch sử khám
-- Quản lý tài khoản người dùng
-
-## Mục đích dự án
-
-Dự án được thực hiện nhằm áp dụng kiến thức về phân tích nghiệp vụ, thiết kế hệ thống, cơ sở dữ liệu và phát triển ứng dụng vào xây dựng một hệ thống quản lý phòng khám nha khoa thực tế.
+Hệ thống tập trung vào việc quản lý các nghiệp vụ nội bộ của phòng khám và không cung cấp chức năng trực tiếp cho khách hàng như đăng ký tài khoản, đặt lịch online hoặc xem bệnh án.
