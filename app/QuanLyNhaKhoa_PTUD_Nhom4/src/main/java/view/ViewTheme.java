@@ -151,6 +151,10 @@ public final class ViewTheme {
         nutMau(b, XANH, TRANG);
     }
 
+    public static void nutPhu(JButton b) {
+        nutMau(b, DO, TRANG);
+    }
+
     public static void nutXanh(JButton b) {
         nutMau(b, XANH_LA, TRANG);
     }

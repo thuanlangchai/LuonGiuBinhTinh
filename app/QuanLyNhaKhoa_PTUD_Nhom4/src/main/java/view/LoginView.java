@@ -6,6 +6,7 @@ import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.GridLayout;
 import javax.swing.BorderFactory;
+import javax.swing.Box;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -20,6 +21,8 @@ public class LoginView extends JFrame {
     private final JTextField txtTen = new JTextField(22);
     private final JPasswordField txtMatKhau = new JPasswordField(22);
     private final JButton btnDangNhap = new JButton("Đăng nhập");
+    private final JButton btnThoat = new JButton("Thoát");
+    private final Box box;
 
     public LoginView() {
         setTitle("Đăng nhập - Quản lý nha khoa");
@@ -63,7 +66,16 @@ public class LoginView extends JFrame {
         btnDangNhap.addActionListener(e -> dangNhap());
         the.add(tieu, BorderLayout.NORTH);
         the.add(form, BorderLayout.CENTER);
-        the.add(btnDangNhap, BorderLayout.SOUTH);
+        the.add(box = Box.createVerticalBox(), BorderLayout.SOUTH);
+        //the.add(btnDangNhap, BorderLayout.SOUTH);
+
+        box.add(btnDangNhap);
+        box.add(Box.createVerticalStrut(10));
+        box.add(btnThoat);
+       
+        ViewTheme.nutPhu(btnThoat);
+        btnThoat.addActionListener(e -> thoat());
+        //the.add(btnThoat, BorderLayout.SOUTH);
 
         JPanel giua = new JPanel(new BorderLayout());
         giua.setOpaque(false);
@@ -85,5 +97,9 @@ public class LoginView extends JFrame {
         }
         dispose();
         new TrangChuView(ten).setVisible(true);
+    }
+
+    private void thoat() {
+        setVisible(false);
     }
 }

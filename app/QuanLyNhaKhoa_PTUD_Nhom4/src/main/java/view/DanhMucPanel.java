@@ -50,15 +50,9 @@ public class DanhMucPanel extends JPanel {
                 nhom("3. Doanh thu", new String[][]{
                     {"Phiếu chi", "phieuchi"},
                     {"Phiếu thu", "phieuthu"}
-                }),
-                nhom("4. Marketing", new String[][]{
-                    {"Chiến dịch Marketing", "chiendich"},
-                    {"Lead", "lead"},
-                    {"Lượt chăm sóc", "luotchamsoc"},
-                    {"Đánh giá", "danhgia"}
                 }));
         JPanel cot2 = cot(
-                nhom("5. Kho", new String[][]{
+                nhom("4. Kho", new String[][]{
                     {"Kiểm kho", "kiemkho"},
                     {"Loại sản phẩm", "loaisanpham"},
                     {"Nhập kho", "nhapkho"},
@@ -68,12 +62,7 @@ public class DanhMucPanel extends JPanel {
                     {"Đơn vị", "donvi"},
                     {"Định mức", "dinhmuc"}
                 }),
-                nhom("6. Labo", new String[][]{
-                    {"Phiếu implant", "implant"},
-                    {"Phiếu Labo", "phieulabo"},
-                    {"Phục hình", "phuchinh"}
-                }),
-                nhom("7. Toa thuốc", new String[][]{
+                nhom("5. Toa thuốc", new String[][]{
                     {"Cách dùng thuốc", "cachdung"},
                     {"Thuốc", "thuoc"},
                     {"Thuốc gốc", "thuocgoc"},
