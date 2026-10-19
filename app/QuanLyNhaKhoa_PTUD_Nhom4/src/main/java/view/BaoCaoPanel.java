@@ -507,7 +507,7 @@ public class BaoCaoPanel extends JPanel {
             return new Object[][]{{"1", "Lê Trần Quang Thanh", "Thăm khám - Tư vấn", "27/09/2026", "Lê Trần Quang Thanh", "200,000"}};
         }
         if ("congno".equals(maBaoCao)) {
-            return new Object[][]{{"1", "Nguyễn Minh Lý", "18,000,000", "0", "18,000,000"}};
+            return HoaDonDuLieu.dongCongNo();
         }
         if ("chiphi".equals(maBaoCao)) {
             return new Object[][]{{"", "", "", "Tổng tiền", "0"}};

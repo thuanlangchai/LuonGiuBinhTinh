@@ -118,6 +118,19 @@ public class PhieuTienPanel extends JPanel {
         add(the, BorderLayout.NORTH);
     }
 
+    public void themPhieu(String ngayThu, String maKh, String tenKh, String lyDo, String soTien,
+            String hinhThuc, String trangThai) {
+        if (!laPhieuThu) {
+            return;
+        }
+        Object[] dong = new Object[]{
+            String.format("%04d", dem++),
+            ngayThu, maKh, tenKh, lyDo, soTien, hinhThuc, trangThai,
+            "", "", "", ViewTheme.bayGio(), DuLieuMau.NGUOI
+        };
+        model.addRow(ViewTheme.dongBang(dong, true, true));
+    }
+
     private void loc() {
         String tu = tim.getText().trim();
         javax.swing.table.TableRowSorter<DefaultTableModel> sx = new javax.swing.table.TableRowSorter<DefaultTableModel>(model);

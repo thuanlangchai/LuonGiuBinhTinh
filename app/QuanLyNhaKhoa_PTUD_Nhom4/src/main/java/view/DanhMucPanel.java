@@ -86,12 +86,12 @@ public class DanhMucPanel extends JPanel {
                 }),
                 nhom("Master data", new String[][]{
                     {"Chẩn đoán", "chandoan"},
-                    {"CSKH", "cskh"},
-                    {"Công việc", "congviec"},
-                    {"Cấp bậc", "capbac"},
-                    {"Diagnose", "diagnose"},
-                    {"Dị ứng", "diung"},
-                    {"Dịch vụ quan tâm", "dichvuquantam"},
+                    //{"CSKH", "cskh"},
+                    //{"Công việc", "congviec"},
+                    //{"Cấp bậc", "capbac"},
+                    //{"Diagnose", "diagnose"},
+                    //{"Dị ứng", "diung"},
+                    //{"Dịch vụ quan tâm", "dichvuquantam"},
                     {"Gia đình", "giadinh"},
                     {"Loại chi tiêu", "loaichitieu"},
                     {"Loại hẹn", "loaihen"},
@@ -105,14 +105,11 @@ public class DanhMucPanel extends JPanel {
                     {"Răng", "rang"},
                     {"Loại răng", "loairang"},
                     {"Điều trị", "dieutri"},
-                    {"SMS", "sms"},
+                    //{"SMS", "sms"},
                     {"Theo dõi chỉnh sửa", "theodoi"},
                     {"Thời gian làm việc", "thoigian"},
                     {"Tiền sử bệnh", "tiensu"},
                     {"Treatment target", "muctieu"}
-                }),
-                nhom("Sysadmin", new String[][]{
-                    {"Zalo template", "zalotemplate"}
                 }));
         GridBagConstraints gbc = new GridBagConstraints();
         gbc.gridy = 0;
