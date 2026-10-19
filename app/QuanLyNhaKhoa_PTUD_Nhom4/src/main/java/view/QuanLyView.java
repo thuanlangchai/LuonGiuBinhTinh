@@ -26,6 +26,7 @@ public class QuanLyView extends JFrame implements DieuHuong {
     private final ToaThuocPanel toaThuoc = new ToaThuocPanel();
     private final PhieuTienPanel phieuThu = new PhieuTienPanel(true);
     private final PhieuTienPanel phieuChi = new PhieuTienPanel(false);
+    private final HoaDonPanel hoaDon;
     private final BaoCaoPanel baoCao = new BaoCaoPanel();
     private final DanhMucPanel danhMuc;
     private final NhapKhoPanel nhapKho = new NhapKhoPanel("Thêm Nhập kho", "Thêm Nhập kho");
@@ -37,6 +38,9 @@ public class QuanLyView extends JFrame implements DieuHuong {
     public QuanLyView(String tenDangNhap) {
         this.tenDangNhap = tenDangNhap == null || tenDangNhap.isEmpty() ? "thuan080" : tenDangNhap;
         this.khachHang = new KhachHangPanel(keHoach, () -> mo("kehoach"));
+        this.hoaDon = new HoaDonPanel(keHoach, phieuThu);
+        this.keHoach.ganHoaDon(hoaDon);
+        this.hoaDon.ganMoPhieuThu(() -> mo("phieuthu"));
         this.danhMuc = new DanhMucPanel(this);
         this.implant = new ImplantPanel(this);
         setTitle("Quản lý nha khoa - Nhóm 4");
@@ -82,64 +86,67 @@ public class QuanLyView extends JFrame implements DieuHuong {
 
         JPanel nav = new JPanel(new FlowLayout(FlowLayout.RIGHT, 2, 0));
         nav.setOpaque(false);
-        nav.add(nutTrucTiep("Lịch hẹn", "lichhen"));
-        nav.add(nutTrucTiep("Khách hàng", "khachhang"));
-        nav.add(nutMenu("Tiện ích", new String[][]{
-            {"Toa thuốc", "toathuoc"},
-            {"Kế hoạch điều trị", "kehoach"},
-            {"Phiếu implant", "implant"},
-            {"Nhập kho", "nhapkho"},
-            {"Kiểm kho", "kiemkho"}
+        nav.add(nutMenu("Hệ thống", new String[][]{
+            {"Tài khoản", "sys:taikhoan"},
+            {"Thông báo", "sys:thongbao"},
+            {"Đăng xuất", "sys:dangxuat"}
         }));
-        nav.add(nutMenu("CSKH", new String[][]{
-            {"Chăm sóc khách hàng", "cskh"},
-            {"Lịch chăm sóc", "lichchamsoc"},
-            {"Nhắc lịch", "nhaclich"}
+        nav.add(nutMenu("Danh mục", new String[][]{
+            {"Bảng danh mục", "danhmuc"},
+            {"Dịch vụ", "dichvu"},
+            {"Nhóm dịch vụ", "nhomdichvu"},
+            {"Khách hàng", "khachhang"},
+            {"Nhân viên", "nhanvien"},
+            {"Lịch hẹn", "lichhen"},
+            {"Thuốc", "thuoc"},
+            {"Răng", "rang"},
+            {"Sản phẩm", "sanpham"},
+            {"Nhà cung cấp", "nhacungcap"}
         }));
         nav.add(nutMenu("Thu chi", new String[][]{
+            {"Hóa đơn", "hoadon"},
             {"Phiếu thu", "phieuthu"},
-            {"Phiếu chi", "phieuchi"},
-            {"Báo cáo thu chi", "bc:thuchi"}
+            {"Phiếu chi", "phieuchi"},}));
+        nav.add(nutMenu("Tìm kiếm", new String[][]{
+            {"Khách hàng", "khachhang"},
+            {"Lịch hẹn", "lichhen"},
+            {"Hóa đơn", "hoadon"},
+            {"Phiếu thu", "phieuthu"},
+            {"Dịch vụ", "dichvu"},
+            {"Nhân viên", "nhanvien"}
+        }));
+        nav.add(nutMenu("Xử lý", new String[][]{
+            {"Kế hoạch điều trị", "kehoach"},
+            {"Toa thuốc", "toathuoc"},
+            {"Kiểm kho", "kiemkho"},
+            //{"Phiếu implant", "implant"},
+            {"Nhập kho", "nhapkho"},
+            {"Xuất kho", "xuatkho"}
         }));
         nav.add(nutMenu("Báo cáo", new String[][]{
-            {"Tổng quan", "bc:tongquan"},
-            {"Báo cáo lịch hẹn", "bc:lichhen"},
-            {"Báo cáo điều trị", "bc:dieutri"},
-            {"Báo cáo chưa khai thác", "bc:chuakhoi"},
-            {"Phiếu labo", "phieulabo"},
-            {"Báo cáo labo", "bc:baocaolabo"},
-            {"Phiếu implant", "implant"},
-            {"Báo cáo implant", "bc:implant"},
-            {"Kê đơn thuốc", "toathuoc"},
+            //{"Tổng quan", "bc:tongquan"},
+            //{"Báo cáo lịch hẹn", "bc:lichhen"},
+            //{"Báo cáo điều trị", "bc:dieutri"},
+            //{"Báo cáo chưa khai thác", "bc:chuakhoi"},
+            //{"Phiếu labo", "phieulabo"},
+            //{"Báo cáo labo", "bc:baocaolabo"},
+            //{"Báo cáo implant", "bc:implant"},
             {"Báo cáo đơn thuốc", "bc:donthuoc"},
-            {"Doanh số chốt sale", "bc:sale"},
-            {"Doanh thu cá nhân", "bc:dtcanhan"},
-            {"Doanh thu nhân viên", "bc:dtnhanvien"},
-            {"Doanh thu dịch vụ", "bc:dtdichvu"},
-            {"Doanh thu nguồn", "bc:nguon"},
+            //{"Doanh số chốt sale", "bc:sale"},
+            {"Thống kê cá nhân", "bc:dtcanhan"},
+            //{"Doanh thu nhân viên", "bc:dtnhanvien"},
+            //{"Doanh thu dịch vụ", "bc:dtdichvu"},
+            {"Thống kê doanh thu", "bc:nguon"},
             {"Báo cáo công nợ", "bc:congno"},
-            {"Nhật ký", "bc:nhatky"},
-            {"Báo cáo chi phí", "bc:chiphi"},
-            {"Báo cáo thực thu", "bc:thucthu"},
+            //{"Nhật ký", "bc:nhatky"},
+            //{"Báo cáo chi phí", "bc:chiphi"},
+            //{"Báo cáo thực thu", "bc:thucthu"},
             {"Báo cáo thu chi", "bc:thuchi"}
         }));
-        nav.add(nutTrucTiep("Danh mục", "danhmuc"));
-        JButton chuong = new JButton("●");
-        ViewTheme.nutTrong(chuong);
-        chuong.setForeground(new Color(255, 90, 90));
-        chuong.addActionListener(e -> JOptionPane.showMessageDialog(this, "Không có thông báo mới."));
-        nav.add(chuong);
-        JButton user = new JButton(tenDangNhap);
-        ViewTheme.nutTrong(user);
-        JPopupMenu pop = new JPopupMenu();
-        JMenuItem tk = new JMenuItem("Tài khoản");
-        JMenuItem thoat = new JMenuItem("Đăng xuất");
-        tk.addActionListener(e -> JOptionPane.showMessageDialog(this,
-                "Tài khoản: " + tenDangNhap + "\nVai trò: Bác sĩ\nChi nhánh: Quang Thanh"));
-        thoat.addActionListener(e -> dangXuat());
-        pop.add(tk);
-        pop.add(thoat);
-        user.addActionListener(e -> pop.show(user, 0, user.getHeight()));
+        JLabel user = new JLabel(tenDangNhap);
+        user.setForeground(Color.WHITE);
+        user.setFont(ViewTheme.FONT_DAM);
+        user.setBorder(new javax.swing.border.EmptyBorder(8, 10, 8, 4));
         nav.add(user);
 
         dau.add(trai, BorderLayout.WEST);
@@ -152,24 +159,34 @@ public class QuanLyView extends JFrame implements DieuHuong {
         mo("khachhang");
     }
 
-    private JButton nutTrucTiep(String chu, String ma) {
-        JButton b = new JButton(chu);
-        ViewTheme.nutTrong(b);
-        b.addActionListener(e -> mo(ma));
-        return b;
-    }
-
     private JButton nutMenu(String chu, String[][] muc) {
         JButton b = new JButton(chu);
         ViewTheme.nutTrong(b);
         JPopupMenu pop = new JPopupMenu();
         for (String[] m : muc) {
             JMenuItem item = new JMenuItem(m[0]);
-            item.addActionListener(e -> mo(m[1]));
+            item.addActionListener(e -> chonMuc(m[1]));
             pop.add(item);
         }
         b.addActionListener(e -> pop.show(b, 0, b.getHeight()));
         return b;
+    }
+
+    private void chonMuc(String ma) {
+        if ("sys:taikhoan".equals(ma)) {
+            JOptionPane.showMessageDialog(this,
+                    "Tài khoản: " + tenDangNhap + "\nVai trò: Bác sĩ\nChi nhánh: Quang Thanh");
+            return;
+        }
+        if ("sys:thongbao".equals(ma)) {
+            JOptionPane.showMessageDialog(this, "Không có thông báo mới.");
+            return;
+        }
+        if ("sys:dangxuat".equals(ma)) {
+            dangXuat();
+            return;
+        }
+        mo(ma);
     }
 
     @Override
@@ -182,6 +199,9 @@ public class QuanLyView extends JFrame implements DieuHuong {
             hien(keHoach);
         } else if ("toathuoc".equals(ma)) {
             hien(toaThuoc);
+        } else if ("hoadon".equals(ma)) {
+            hoaDon.lamMoi();
+            hien(hoaDon);
         } else if ("phieuthu".equals(ma)) {
             hien(phieuThu);
         } else if ("phieuchi".equals(ma)) {
