@@ -1,5 +1,7 @@
 package view;
 
+import entity.HangDT;
+import entity.HoSo;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
@@ -27,6 +29,8 @@ import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 import javax.swing.SwingUtilities;
 import javax.swing.border.EmptyBorder;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
 import javax.swing.table.DefaultTableModel;
 
 public class KeHoachDieuTriPanel extends JPanel {
@@ -62,6 +66,10 @@ public class KeHoachDieuTriPanel extends JPanel {
     private HoaDonPanel hoaDon;
     private HoSo hienTai;
     private String kyHieu = "LT";
+    private JTextField donGia;
+    private JComboBox<String> dichVu;
+    private HopThoai h;
+    private JTextField sl;
 
     public KeHoachDieuTriPanel() {
         setLayout(new BorderLayout());
@@ -222,14 +230,29 @@ public class KeHoachDieuTriPanel extends JPanel {
             return;
         }
         Window w = SwingUtilities.getWindowAncestor(this);
-        HopThoai h = new HopThoai(w, "Thêm kế hoạch điều trị", "+ Thêm",
+        h = new HopThoai(w, "Thêm kế hoạch điều trị", "+ Thêm",
                 "Tôi muốn tiếp tục thêm dịch vụ vào kế hoạch này");
         JComboBox<String> ngay = h.chon("Ngày kế hoạch", true, homNay(), "19/10/2026", "27/09/2026");
         ngay.setEditable(true);
         JComboBox<String> rang = h.chon("Răng", false, tenRang());
-        JComboBox<String> dichVu = h.chon("Dịch vụ", true, tenDichVu());
-        JComboBox<String> sl = h.chon("Số lượng", true, "1", "2", "3", "4", "5");
-        JTextField donGia = h.chu("Đơn giá", ViewTheme.tien(giaDichVu(String.valueOf(dichVu.getSelectedItem()))), true);
+        dichVu = h.chon("Dịch vụ", true, tenDichVu());        
+        sl = h.chu("Số lượng", "1", true);
+        donGia = h.chu("Đơn giá", ViewTheme.tien(giaDichVu(String.valueOf(dichVu.getSelectedItem()))), true);        
+        sl.getDocument().addDocumentListener(new DocumentListener() {
+            @Override
+            public void insertUpdate(DocumentEvent e) {           
+                setDonGia();
+            }
+
+            @Override
+            public void removeUpdate(DocumentEvent e) {                
+            }
+
+            @Override
+            public void changedUpdate(DocumentEvent e) {                
+            }
+        });
+        donGia.setEditable(false);
         JComboBox<String> trangThai = h.chon("Trạng thái", true, "Mới", "Đang điều trị", "Hoàn tất");
         dichVu.addActionListener(e -> donGia.setText(ViewTheme.tien(giaDichVu(String.valueOf(dichVu.getSelectedItem())))));
         h.hien(() -> {
@@ -242,7 +265,7 @@ public class KeHoachDieuTriPanel extends JPanel {
                     ngayKH,
                     String.valueOf(rang.getSelectedItem()),
                     String.valueOf(dichVu.getSelectedItem()),
-                    parseSo(String.valueOf(sl.getSelectedItem()), 1),
+                    parseSo(String.valueOf(sl.getText()), 1),
                     parseTien(donGia.getText()),
                     String.valueOf(trangThai.getSelectedItem()));
             hienTai.themHang(hang);
@@ -362,8 +385,9 @@ public class KeHoachDieuTriPanel extends JPanel {
         rang.setSelectedItem(dt.rang);
         JComboBox<String> dichVu = h.chon("Dịch vụ", true, tenDichVu());
         dichVu.setSelectedItem(dt.dichVu);
-        JComboBox<String> sl = h.chon("Số lượng", true, "1", "2", "3", "4", "5");
-        sl.setSelectedItem(String.valueOf(dt.soLuong));
+        //JComboBox<String> sl = h.chon("Số lượng", true, "1", "2", "3", "4", "5");
+        JTextField sl = h.chu("Số lượng", "1", true);
+        //sl.setSelectedItem(String.valueOf(dt.soLuong));
         JTextField donGia = h.chu("Đơn giá", ViewTheme.tien(dt.donGia), true);
         JComboBox<String> trangThai = h.chon("Trạng thái", true, "Mới", "Đang điều trị", "Hoàn tất");
         trangThai.setSelectedItem(dt.trangThai);
@@ -371,7 +395,7 @@ public class KeHoachDieuTriPanel extends JPanel {
             dt.ngay = ngay.getText().trim();
             dt.rang = String.valueOf(rang.getSelectedItem());
             dt.dichVu = String.valueOf(dichVu.getSelectedItem());
-            dt.soLuong = parseSo(String.valueOf(sl.getSelectedItem()), 1);
+            dt.soLuong = parseSo(String.valueOf(sl.getText()), 1);
             dt.donGia = parseTien(donGia.getText());
             dt.trangThai = String.valueOf(trangThai.getSelectedItem());
             veBang();
@@ -506,65 +530,10 @@ public class KeHoachDieuTriPanel extends JPanel {
         }
     }
 
-    public static final class HangDT {
-        public String ngay;
-        public String rang;
-        public String dichVu;
-        public int soLuong;
-        public long donGia;
-        public String trangThai;
-        public String maHoaDon;
-
-        HangDT(String ngay, String rang, String dichVu, int soLuong, long donGia, String trangThai) {
-            this.ngay = ngay;
-            this.rang = rang == null ? "" : rang;
-            this.dichVu = dichVu;
-            this.soLuong = soLuong;
-            this.donGia = donGia;
-            this.trangThai = trangThai;
-        }
-
-        public long thanhTien() {
-            return soLuong * donGia;
-        }
-
-        public String tenKeHoach() {
-            return "Kế hoạch điều trị ngày " + ngay;
-        }
+    private void setDonGia() {          
+        long giaTien = giaDichVu(String.valueOf(dichVu.getSelectedItem())) * Integer.parseInt(sl.getText());        
+        donGia.setText(ViewTheme.tien(giaTien));
     }
 
-    private static final class HoSo {
-        final String ma;
-        String ten;
-        String sdt;
-        String email;
-        String diaChi;
-        String lyDo;
-        final List<HangDT> hang = new ArrayList<HangDT>();
 
-        HoSo(String ma, String ten, String sdt, String email, String diaChi, String lyDo) {
-            this.ma = ma;
-            capNhatKhach(ten, sdt, email, diaChi, lyDo);
-        }
-
-        void capNhatKhach(String ten, String sdt, String email, String diaChi, String lyDo) {
-            this.ten = ten;
-            this.sdt = sdt;
-            this.email = email;
-            this.diaChi = diaChi;
-            this.lyDo = lyDo == null || lyDo.isEmpty() ? "Đau răng" : lyDo;
-        }
-
-        void themHang(HangDT dong) {
-            hang.add(dong);
-        }
-
-        long tong() {
-            long t = 0;
-            for (HangDT h : hang) {
-                t += h.thanhTien();
-            }
-            return t;
-        }
-    }
 }

@@ -28,20 +28,20 @@ public final class DuLieuMau {
 
     static {
         dat(new CauHinhTrang("dichvu", "Dịch vụ", "Tìm dịch vụ...", "Thêm dịch vụ",
-                new String[]{"Nhóm dịch vụ", "Tên dịch vụ", "Giá", "Tỷ lệ hoa hồng", "Thuế", "Cần đặt labo", "Trạng thái"},
+                new String[]{"Nhóm dịch vụ", "Tên dịch vụ", "Giá", "Tỷ lệ hoa hồng", "Thuế", "Trạng thái"},
                 new Object[][]{
-                    {"CHỈNH NHA", "Niềng răng mắc cài tự buộc", "27,500,000", "100", "8", "Không", "Hoạt động"},
-                    {"CHỈNH NHA", "Niềng răng mắc cài kim loại tự buộc", "21,500,000", "100", "8", "Không", "Hoạt động"},
-                    {"CHỈNH NHA", "Niềng răng mắc cài kim loại tiêu chuẩn", "18,000,000", "100", "8", "Không", "Hoạt động"},
-                    {"CHỈNH NHA", "Niềng răng mắc cài sứ tiêu chuẩn", "25,000,000", "100", "8", "Không", "Hoạt động"},
-                    {"CHỈNH NHA", "Niềng răng mắc cài Sapphire", "20,000,000", "100", "8", "Không", "Hoạt động"},
-                    {"CHỈNH NHA", "Niềng răng invisalign", "60,000,000", "100", "8", "Không", "Hoạt động"},
+                    {"CHỈNH NHA", "Niềng răng mắc cài tự buộc", "27,500,000", "100", "8", "Hoạt động"},
+                    {"CHỈNH NHA", "Niềng răng mắc cài kim loại tự buộc", "21,500,000", "100", "8", "Hoạt động"},
+                    {"CHỈNH NHA", "Niềng răng mắc cài kim loại tiêu chuẩn", "18,000,000", "100", "8", "Hoạt động"},
+                    {"CHỈNH NHA", "Niềng răng mắc cài sứ tiêu chuẩn", "25,000,000", "100", "8", "Hoạt động"},
+                    {"CHỈNH NHA", "Niềng răng mắc cài Sapphire", "20,000,000", "100", "8", "Hoạt động"},
+                    {"CHỈNH NHA", "Niềng răng invisalign", "60,000,000", "100", "8", "Hoạt động"},
                     {"CHỈNH NHA", "Niềng răng mắc cài mặt lưỡi (Mặt trong)", "60,000,000", "100", "8", "Không", "Hoạt động"},
-                    {"CHUẨN ĐOÁN HÌNH ẢNH", "Chụp CT", "200,000", "100", "8", "Không", "Hoạt động"},
-                    {"CHUẨN ĐOÁN HÌNH ẢNH", "Chụp X-quang", "200,000", "100", "8", "Không", "Hoạt động"},
-                    {"ĐIỀU TRỊ NHA CHU", "Điều trị viêm nha chu", "200,000", "100", "8", "Không", "Hoạt động"},
-                    {"PHỤC HÌNH RĂNG SỨ", "Răng sứ titan", "2,500,000", "100", "8", "Có", "Hoạt động"},
-                    {"IMPLANT", "Cấy ghép implant", "18,000,000", "100", "8", "Có", "Hoạt động"}
+                    {"CHUẨN ĐOÁN HÌNH ẢNH", "Chụp CT", "200,000", "100", "8", "Hoạt động"},
+                    {"CHUẨN ĐOÁN HÌNH ẢNH", "Chụp X-quang", "200,000", "100", "8", "Hoạt động"},
+                    {"ĐIỀU TRỊ NHA CHU", "Điều trị viêm nha chu", "200,000", "100", "8", "Hoạt động"},
+                    {"PHỤC HÌNH RĂNG SỨ", "Răng sứ titan", "2,500,000", "100", "8", "Hoạt động"},
+                    {"IMPLANT", "Cấy ghép implant", "18,000,000", "100", "8", "Hoạt động"}
                 }, null));
 
         dat(new CauHinhTrang("nhomdichvu", "Nhóm dịch vụ", "Tìm nhóm dịch vụ...", "Thêm nhóm dịch vụ",
@@ -65,15 +65,6 @@ public final class DuLieuMau {
                     {"Ts", "Nguyễn Khắc Duy", "", "0", "0", "0", "0", "duy@gmail.com", "0123456789", "Lễ tân", "Có"},
                     {"Bs", "Hồ Văn Khánh", "", "0", "0", "0", "0", "thuan08022006@gmail.com", "0933942776", "Bác sĩ", "Có"},
                     {"Bs", "Lê Trần Quang Thanh", "", "0", "0", "0", "0", "thanhqt@gmail.com", "0908030910", "Bác sĩ", "Có"}
-                }, null));
-
-        dat(new CauHinhTrang("congviec", "Công việc", "Tìm công việc...", "Thêm công việc",
-                new String[]{"Công việc", "Thời lượng theo phút", "Dịch vụ", "Ngày tạo"},
-                new Object[][]{
-                    {"Kiểm tra định kỳ", "30", "", "27 Sep 2026 10:11:39 PM"},
-                    {"Cạo vôi răng", "30", "Cạo vôi - Đánh bóng", "27 Sep 2026 10:11:39 PM"},
-                    {"Chỉnh nha", "60", "Niềng răng mắc cài tự buộc", "27 Sep 2026 10:11:39 PM"},
-                    {"Tái khám", "60", "Thăm khám - Tư vấn", "27 Sep 2026 10:11:39 PM"}
                 }, null));
 
         List<Object[]> rang = new ArrayList<Object[]>();
@@ -147,55 +138,21 @@ public final class DuLieuMau {
         dat(new CauHinhTrang("lichhen-ds", "Lịch hẹn", "Tìm lịch hẹn...", "Thêm lịch hẹn",
                 new String[]{"Công việc", "Bắt đầu", "Khách hàng", "Người làm chính"},
                 new Object[][]{{"Chỉnh nha", "28 Sep 2026 08:47:00 PM", "Lê Trần Quang Thanh", "Lê Trần Quang Thanh"}}, null));
-
-        dat(new CauHinhTrang("cskh", "Chăm sóc khách hàng", "Tìm chăm sóc...", "Thêm chăm sóc",
-                new String[]{"Khách hàng", "Nội dung", "Kênh", "Ngày", "Trạng thái"},
-                new Object[][]{{"Lê Trần Quang Thanh", "Nhắc tái khám", "Điện thoại", "28/09/2026", "Đã gọi"}}, null));
-
-        dat(new CauHinhTrang("lichchamsoc", "Lịch chăm sóc", "Tìm lịch chăm sóc...", "Thêm lịch chăm sóc",
-                new String[]{"Khách hàng", "Nội dung", "Ngày hẹn", "Người phụ trách", "Trạng thái"},
-                new Object[][]{{"Nguyễn Minh Lý", "Chăm sóc sau implant", "05/10/2026", "Lê Trần Quang Thanh", "Chờ gọi"}}, null));
-
-        dat(new CauHinhTrang("phieulabo", "Phiếu labo", "Tìm phiếu labo...", "Thêm phiếu labo",
-                new String[]{"Mã", "Nhà cung cấp", "Bác sĩ", "Khách hàng", "Chi tiết", "Tình trạng", "Ngày gửi"},
-                new Object[][]{{"0001", "STRAUMANN", "Lê Trần Quang Thanh", "Nguyễn Minh Lý", "Mão sứ răng 11", "Mới", "28/09/2026"}}, null));
-
         dat(don("cachdung", "Cách dùng thuốc", "Sáng 1 viên", "Trưa 1 viên", "Chiều 1 viên", "Sau ăn"));
         dat(don("thuocgoc", "Thuốc gốc", "Paracetamol", "Amoxicillin", "Ibuprofen"));
         dat(don("donthuocmau", "Đơn thuốc mẫu", "Đơn sau nhổ răng", "Đơn viêm nha chu"));
         dat(don("chandoan", "Chẩn đoán", "Sâu răng", "Viêm tủy", "Viêm nha chu", "Răng khôn lệch"));
         dat(don("diung", "Dị ứng", "Penicillin", "Hải sản", "Không"));
         dat(don("nguon", "Nguồn", "Cư dân", "Facebook", "Giới thiệu", "Website"));
-        dat(don("nhomkhach", "Nhóm khách hàng", "PTUD", "VIP", "Thân thiết"));
-        dat(don("nghe", "Nghề nghiệp", "Sinh viên", "Nhân viên văn phòng", "Kinh doanh"));
+        dat(don("nhomkhach", "Nhóm khách hàng", "PTUD", "VIP", "Thân thiết"));        
         dat(don("lydokham", "Lý do đến khám", "Đau răng", "Kiểm tra định kỳ", "Chỉnh nha", "Implant"));
         dat(don("donvi", "Đơn vị", "Viên", "Hộp", "Cái", "Tuýp"));
-        dat(don("nguoigioithieu", "Người giới thiệu", "Nguyễn Minh Thuận", "Hồ Văn Khánh"));
-        dat(don("phieutuvan", "Phiếu tư vấn", "Tư vấn niềng răng", "Tư vấn implant"));
-        dat(don("chiendich", "Chiến dịch Marketing", "Khuyến mãi tháng 9", "Tặng cạo vôi"));
-        dat(don("lead", "Lead", "Khách để lại số qua Facebook"));
-        dat(don("luotchamsoc", "Lượt chăm sóc", "Gọi nhắc lịch 28/09"));
+        dat(don("nguoigioithieu", "Người giới thiệu", "Nguyễn Minh Thuận", "Hồ Văn Khánh"));                       
         dat(don("danhgia", "Đánh giá", "5 sao - Lê Trần Quang Thanh"));
         dat(don("donhang", "Đơn hàng", "Đơn vật tư tháng 9"));
-        dat(don("dinhmuc", "Định mức", "Găng tay tối thiểu 50"));
-        dat(don("phuchinh", "Phục hình", "Mão sứ", "Cầu răng", "Hàm tháo lắp"));
-        dat(don("album", "Album ảnh", "Ảnh trước điều trị", "Ảnh sau điều trị"));
+        dat(don("dinhmuc", "Định mức", "Găng tay tối thiểu 50"));                
         dat(don("loaihinhanh", "Loại ảnh điều trị", "Trong miệng", "Ngoài mặt", "X-quang"));
-        dat(don("capbac", "Cấp bậc", "Bác sĩ", "Phụ tá", "Lễ tân", "Tư vấn"));
-        dat(don("diagnose", "Diagnose", "Caries", "Pulpitis"));
-        dat(don("dichvuquantam", "Dịch vụ quan tâm", "Chỉnh nha", "Implant", "Tẩy trắng"));
-        dat(don("giadinh", "Gia đình", "Gia đình Quang Thanh"));
-        dat(don("loaichitieu", "Loại chi tiêu", "Vật tư", "Lương", "Mặt bằng", "Labo"));
-        dat(don("loaihen", "Loại hẹn", "Khám mới", "Tái khám", "Điều trị"));
-        dat(don("lichsuin", "Lịch sử in", "Phiếu thu 0002"));
-        dat(don("nguyennhan", "Nguyên nhân", "Vệ sinh kém", "Chấn thương"));
-        dat(don("quatrinh", "Quá trình điều trị", "Đang điều trị", "Kết thúc", "Tái khám"));
-        dat(don("sms", "SMS", "Nhắc lịch hẹn", "Chúc mừng sinh nhật"));
-        dat(don("theodoi", "Theo dõi chỉnh sửa", "Cập nhật hồ sơ khách"));
-        dat(don("muctieu", "Treatment target", "Hết đau", "Thẩm mỹ", "Phục hồi nhai"));
-        dat(don("zalotemplate", "Zalo template", "Nhắc lịch", "Cảm ơn sau điều trị"));
-        dat(don("nhaclich", "Nhắc lịch", "Nhắc lịch 28/09 - Lê Trần Quang Thanh"));
-        dat(don("xuatxu", "Xuất xứ", "Thụy Sĩ", "Hàn Quốc", "Việt Nam"));
+        dat(don("capbac", "Cấp bậc", "Bác sĩ", "Phụ tá", "Lễ tân", "Tư vấn"));       
     }
 
     private DuLieuMau() {

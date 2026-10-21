@@ -5,6 +5,7 @@ import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.GridLayout;
 import java.awt.Window;
+import java.util.regex.Pattern;
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
@@ -14,9 +15,11 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
+import javax.swing.RowFilter;
 import javax.swing.SwingUtilities;
 import javax.swing.border.EmptyBorder;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableRowSorter;
 
 public class KhachHangPanel extends JPanel {
 
@@ -176,12 +179,12 @@ public class KhachHangPanel extends JPanel {
 
     private void loc() {
         String tu = tim.getText().trim().toLowerCase();
-        javax.swing.table.TableRowSorter<DefaultTableModel> sx = new javax.swing.table.TableRowSorter<DefaultTableModel>(model);
+        TableRowSorter<DefaultTableModel> sx = new TableRowSorter<>(model);
         bang.setRowSorter(sx);
         if (tu.isEmpty()) {
             sx.setRowFilter(null);
         } else {
-            sx.setRowFilter(javax.swing.RowFilter.regexFilter("(?i)" + java.util.regex.Pattern.quote(tu)));
+            sx.setRowFilter(RowFilter.regexFilter("(?i)" + Pattern.quote(tu)));
         }
     }
 

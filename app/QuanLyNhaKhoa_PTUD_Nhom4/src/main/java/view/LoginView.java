@@ -6,7 +6,6 @@ import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.GridLayout;
 import javax.swing.BorderFactory;
-import javax.swing.Box;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -22,7 +21,6 @@ public class LoginView extends JFrame {
     private final JPasswordField txtMatKhau = new JPasswordField(22);
     private final JButton btnDangNhap = new JButton("Đăng nhập");
     private final JButton btnThoat = new JButton("Thoát");
-    private final Box box;
 
     public LoginView() {
         setTitle("Đăng nhập - Quản lý nha khoa");
@@ -63,19 +61,24 @@ public class LoginView extends JFrame {
         form.add(lbMk);
         form.add(txtMatKhau);
         ViewTheme.nutChinh(btnDangNhap);
+        ViewTheme.nutMau(btnThoat, new Color(232, 109, 109), Color.WHITE);
+        Dimension kichThuocNut = new Dimension(160, 42);
+        btnDangNhap.setPreferredSize(kichThuocNut);
+        btnThoat.setPreferredSize(kichThuocNut);
+        btnDangNhap.setMinimumSize(kichThuocNut);
+        btnThoat.setMinimumSize(kichThuocNut);
         btnDangNhap.addActionListener(e -> dangNhap());
+        btnThoat.addActionListener(e -> thoat());
+
+        JPanel nut = new JPanel(new GridLayout(1, 2, 16, 0));
+        nut.setOpaque(false);
+        nut.setBorder(new EmptyBorder(18, 0, 0, 0));
+        nut.add(btnDangNhap);
+        nut.add(btnThoat);
+
         the.add(tieu, BorderLayout.NORTH);
         the.add(form, BorderLayout.CENTER);
-        the.add(box = Box.createVerticalBox(), BorderLayout.SOUTH);
-        //the.add(btnDangNhap, BorderLayout.SOUTH);
-
-        box.add(btnDangNhap);
-        box.add(Box.createVerticalStrut(10));
-        box.add(btnThoat);
-       
-        ViewTheme.nutPhu(btnThoat);
-        btnThoat.addActionListener(e -> thoat());
-        //the.add(btnThoat, BorderLayout.SOUTH);
+        the.add(nut, BorderLayout.SOUTH);
 
         JPanel giua = new JPanel(new BorderLayout());
         giua.setOpaque(false);
@@ -100,6 +103,7 @@ public class LoginView extends JFrame {
     }
 
     private void thoat() {
-        setVisible(false);
+        dispose();
+        System.exit(0);
     }
 }

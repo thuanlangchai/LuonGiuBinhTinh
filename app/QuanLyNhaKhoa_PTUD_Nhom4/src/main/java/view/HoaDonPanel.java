@@ -1,5 +1,6 @@
 package view;
 
+import entity.HangDT;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
@@ -132,7 +133,7 @@ public class HoaDonPanel extends JPanel {
                 HoaDonDuLieu.tatCa().size(), HoaDonDuLieu.tatCa().size()));
     }
 
-    public void moLapHoaDon(String maKh, List<KeHoachDieuTriPanel.HangDT> goiY) {
+    public void moLapHoaDon(String maKh, List<HangDT> goiY) {
         Window w = SwingUtilities.getWindowAncestor(this);
         JDialog d = new JDialog(w, "Lập hóa đơn", java.awt.Dialog.ModalityType.APPLICATION_MODAL);
         d.setLayout(new BorderLayout());
@@ -159,13 +160,13 @@ public class HoaDonPanel extends JPanel {
 
         Runnable napHang = () -> {
             String ma = maKhach(String.valueOf(khach.getSelectedItem()));
-            List<KeHoachDieuTriPanel.HangDT> ds = keHoach.hangChuaXuat(ma);
-            Set<KeHoachDieuTriPanel.HangDT> chonSan = new LinkedHashSet<KeHoachDieuTriPanel.HangDT>();
+            List<HangDT> ds = keHoach.hangChuaXuat(ma);
+            Set<HangDT> chonSan = new LinkedHashSet<HangDT>();
             if (goiY != null) {
                 chonSan.addAll(goiY);
             }
             ctModel.setRowCount(0);
-            for (KeHoachDieuTriPanel.HangDT hang : ds) {
+            for (HangDT hang : ds) {
                 Object[] dong = ViewTheme.dongBang(new Object[]{
                     hang.ngay, hang.rang, hang.dichVu, String.valueOf(hang.soLuong),
                     ViewTheme.tien(hang.donGia), ViewTheme.tien(hang.thanhTien()), hang.tenKeHoach()
@@ -210,12 +211,12 @@ public class HoaDonPanel extends JPanel {
         luu.addActionListener(e -> {
             String ma = maKhach(String.valueOf(khach.getSelectedItem()));
             String ten = tenKhach(String.valueOf(khach.getSelectedItem()));
-            List<KeHoachDieuTriPanel.HangDT> goc = keHoach.hangChuaXuat(ma);
-            List<KeHoachDieuTriPanel.HangDT> chon = new ArrayList<KeHoachDieuTriPanel.HangDT>();
+            List<HangDT> goc = keHoach.hangChuaXuat(ma);
+            List<HangDT> chon = new ArrayList<HangDT>();
             List<HoaDonDuLieu.ChiTiet> chiTiet = new ArrayList<HoaDonDuLieu.ChiTiet>();
             for (int i = 0; i < ctModel.getRowCount() && i < goc.size(); i++) {
                 if (Boolean.TRUE.equals(ctModel.getValueAt(i, 0))) {
-                    KeHoachDieuTriPanel.HangDT hang = goc.get(i);
+                    HangDT hang = goc.get(i);
                     chon.add(hang);
                     chiTiet.add(new HoaDonDuLieu.ChiTiet(hang.ngay, hang.rang, hang.dichVu,
                             hang.soLuong, hang.donGia, hang.tenKeHoach()));

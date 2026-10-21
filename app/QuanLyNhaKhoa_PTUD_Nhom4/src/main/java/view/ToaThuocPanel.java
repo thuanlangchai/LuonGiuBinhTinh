@@ -94,7 +94,6 @@ public class ToaThuocPanel extends JPanel {
         JComboBox<String> bs = new JComboBox<String>(DuLieuMau.BAC_SI);
         ViewTheme.vienHop(tt);
         ViewTheme.vienHop(bs);
-        NutCongTac nhanTaiPk = new NutCongTac(true);
         JButton luu = new JButton("Lưu toa thuốc");
         ViewTheme.nutChinh(luu);
         luu.addActionListener(e -> JOptionPane.showMessageDialog(this,
@@ -112,7 +111,6 @@ public class ToaThuocPanel extends JPanel {
         dong1.add(luu);
         JPanel dong2 = new JPanel(new FlowLayout(FlowLayout.LEFT, 8, 0));
         dong2.setOpaque(false);
-        dong2.add(nhanTaiPk);
         dong2.add(new JLabel("KH nhận thuốc tại PK"));
         chan.add(dong2);
         chan.add(dong1);
