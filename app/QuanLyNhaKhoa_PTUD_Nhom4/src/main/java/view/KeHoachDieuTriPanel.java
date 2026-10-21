@@ -1,5 +1,7 @@
 package view;
 
+import entity.HangDT;
+import entity.HoSo;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
@@ -27,6 +29,8 @@ import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 import javax.swing.SwingUtilities;
 import javax.swing.border.EmptyBorder;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
 import javax.swing.table.DefaultTableModel;
 
 public class KeHoachDieuTriPanel extends JPanel {
@@ -233,8 +237,21 @@ public class KeHoachDieuTriPanel extends JPanel {
         JComboBox<String> rang = h.chon("Răng", false, tenRang());
         dichVu = h.chon("Dịch vụ", true, tenDichVu());        
         sl = h.chu("Số lượng", "1", true);
-        donGia = h.chu("Đơn giá", ViewTheme.tien(giaDichVu(String.valueOf(dichVu.getSelectedItem()))), true);
-        sl.addActionListener(e -> setDonGia());
+        donGia = h.chu("Đơn giá", ViewTheme.tien(giaDichVu(String.valueOf(dichVu.getSelectedItem()))), true);        
+        sl.getDocument().addDocumentListener(new DocumentListener() {
+            @Override
+            public void insertUpdate(DocumentEvent e) {           
+                setDonGia();
+            }
+
+            @Override
+            public void removeUpdate(DocumentEvent e) {                
+            }
+
+            @Override
+            public void changedUpdate(DocumentEvent e) {                
+            }
+        });
         donGia.setEditable(false);
         JComboBox<String> trangThai = h.chon("Trạng thái", true, "Mới", "Đang điều trị", "Hoàn tất");
         dichVu.addActionListener(e -> donGia.setText(ViewTheme.tien(giaDichVu(String.valueOf(dichVu.getSelectedItem())))));
@@ -518,65 +535,5 @@ public class KeHoachDieuTriPanel extends JPanel {
         donGia.setText(ViewTheme.tien(giaTien));
     }
 
-    public static final class HangDT {
-        public String ngay;
-        public String rang;
-        public String dichVu;
-        public int soLuong;
-        public long donGia;
-        public String trangThai;
-        public String maHoaDon;
 
-        HangDT(String ngay, String rang, String dichVu, int soLuong, long donGia, String trangThai) {
-            this.ngay = ngay;
-            this.rang = rang == null ? "" : rang;
-            this.dichVu = dichVu;
-            this.soLuong = soLuong;
-            this.donGia = donGia;
-            this.trangThai = trangThai;
-        }
-
-        public long thanhTien() {
-            return soLuong * donGia;
-        }
-
-        public String tenKeHoach() {
-            return "Kế hoạch điều trị ngày " + ngay;
-        }
-    }
-
-    private static final class HoSo {
-        final String ma;
-        String ten;
-        String sdt;
-        String email;
-        String diaChi;
-        String lyDo;
-        final List<HangDT> hang = new ArrayList<HangDT>();
-
-        HoSo(String ma, String ten, String sdt, String email, String diaChi, String lyDo) {
-            this.ma = ma;
-            capNhatKhach(ten, sdt, email, diaChi, lyDo);
-        }
-
-        void capNhatKhach(String ten, String sdt, String email, String diaChi, String lyDo) {
-            this.ten = ten;
-            this.sdt = sdt;
-            this.email = email;
-            this.diaChi = diaChi;
-            this.lyDo = lyDo == null || lyDo.isEmpty() ? "Đau răng" : lyDo;
-        }
-
-        void themHang(HangDT dong) {
-            hang.add(dong);
-        }
-
-        long tong() {
-            long t = 0;
-            for (HangDT h : hang) {
-                t += h.thanhTien();
-            }
-            return t;
-        }
-    }
 }
