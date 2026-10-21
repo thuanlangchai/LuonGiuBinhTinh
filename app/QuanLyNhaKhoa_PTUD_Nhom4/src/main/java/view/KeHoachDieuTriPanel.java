@@ -62,6 +62,10 @@ public class KeHoachDieuTriPanel extends JPanel {
     private HoaDonPanel hoaDon;
     private HoSo hienTai;
     private String kyHieu = "LT";
+    private JTextField donGia;
+    private JComboBox<String> dichVu;
+    private HopThoai h;
+    private JTextField sl;
 
     public KeHoachDieuTriPanel() {
         setLayout(new BorderLayout());
@@ -222,14 +226,16 @@ public class KeHoachDieuTriPanel extends JPanel {
             return;
         }
         Window w = SwingUtilities.getWindowAncestor(this);
-        HopThoai h = new HopThoai(w, "Thêm kế hoạch điều trị", "+ Thêm",
+        h = new HopThoai(w, "Thêm kế hoạch điều trị", "+ Thêm",
                 "Tôi muốn tiếp tục thêm dịch vụ vào kế hoạch này");
         JComboBox<String> ngay = h.chon("Ngày kế hoạch", true, homNay(), "19/10/2026", "27/09/2026");
         ngay.setEditable(true);
         JComboBox<String> rang = h.chon("Răng", false, tenRang());
-        JComboBox<String> dichVu = h.chon("Dịch vụ", true, tenDichVu());
-        JComboBox<String> sl = h.chon("Số lượng", true, "1", "2", "3", "4", "5");
-        JTextField donGia = h.chu("Đơn giá", ViewTheme.tien(giaDichVu(String.valueOf(dichVu.getSelectedItem()))), true);
+        dichVu = h.chon("Dịch vụ", true, tenDichVu());        
+        sl = h.chu("Số lượng", "1", true);
+        donGia = h.chu("Đơn giá", ViewTheme.tien(giaDichVu(String.valueOf(dichVu.getSelectedItem()))), true);
+        sl.addActionListener(e -> setDonGia());
+        donGia.setEditable(false);
         JComboBox<String> trangThai = h.chon("Trạng thái", true, "Mới", "Đang điều trị", "Hoàn tất");
         dichVu.addActionListener(e -> donGia.setText(ViewTheme.tien(giaDichVu(String.valueOf(dichVu.getSelectedItem())))));
         h.hien(() -> {
@@ -242,7 +248,7 @@ public class KeHoachDieuTriPanel extends JPanel {
                     ngayKH,
                     String.valueOf(rang.getSelectedItem()),
                     String.valueOf(dichVu.getSelectedItem()),
-                    parseSo(String.valueOf(sl.getSelectedItem()), 1),
+                    parseSo(String.valueOf(sl.getText()), 1),
                     parseTien(donGia.getText()),
                     String.valueOf(trangThai.getSelectedItem()));
             hienTai.themHang(hang);
@@ -362,8 +368,9 @@ public class KeHoachDieuTriPanel extends JPanel {
         rang.setSelectedItem(dt.rang);
         JComboBox<String> dichVu = h.chon("Dịch vụ", true, tenDichVu());
         dichVu.setSelectedItem(dt.dichVu);
-        JComboBox<String> sl = h.chon("Số lượng", true, "1", "2", "3", "4", "5");
-        sl.setSelectedItem(String.valueOf(dt.soLuong));
+        //JComboBox<String> sl = h.chon("Số lượng", true, "1", "2", "3", "4", "5");
+        JTextField sl = h.chu("Số lượng", "1", true);
+        //sl.setSelectedItem(String.valueOf(dt.soLuong));
         JTextField donGia = h.chu("Đơn giá", ViewTheme.tien(dt.donGia), true);
         JComboBox<String> trangThai = h.chon("Trạng thái", true, "Mới", "Đang điều trị", "Hoàn tất");
         trangThai.setSelectedItem(dt.trangThai);
@@ -371,7 +378,7 @@ public class KeHoachDieuTriPanel extends JPanel {
             dt.ngay = ngay.getText().trim();
             dt.rang = String.valueOf(rang.getSelectedItem());
             dt.dichVu = String.valueOf(dichVu.getSelectedItem());
-            dt.soLuong = parseSo(String.valueOf(sl.getSelectedItem()), 1);
+            dt.soLuong = parseSo(String.valueOf(sl.getText()), 1);
             dt.donGia = parseTien(donGia.getText());
             dt.trangThai = String.valueOf(trangThai.getSelectedItem());
             veBang();
@@ -504,6 +511,11 @@ public class KeHoachDieuTriPanel extends JPanel {
         } catch (Exception ex) {
             return macDinh;
         }
+    }
+
+    private void setDonGia() {          
+        long giaTien = giaDichVu(String.valueOf(dichVu.getSelectedItem())) * Integer.parseInt(sl.getText());        
+        donGia.setText(ViewTheme.tien(giaTien));
     }
 
     public static final class HangDT {

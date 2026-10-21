@@ -436,7 +436,7 @@ public class BaoCaoPanel extends JPanel {
             return "Doanh thu nguồn";
         }
         if ("congno".equals(maBaoCao)) {
-            return "Báo cáo công nợ";
+            return "Thống kê doanh thu";
         }
         if ("nhatky".equals(maBaoCao)) {
             return "Nhật ký";
