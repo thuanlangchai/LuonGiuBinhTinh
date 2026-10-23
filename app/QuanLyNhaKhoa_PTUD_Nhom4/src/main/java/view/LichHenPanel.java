@@ -48,7 +48,6 @@ public class LichHenPanel extends JPanel {
     private final JComboBox<String> cboTrangThai = new JComboBox<String>(new String[]{
         "Tất cả", "Mới", "Xác nhận", "Đang đợi", "Đang điều trị", "Hoàn tất", "Khách ra về", "Hủy bỏ"
     });
-    private final NutCongTac hienHuy = new NutCongTac(false);
     private final JButton[] nutCheDo = new JButton[CHE_DO.length];
 
     public LichHenPanel() {
@@ -77,7 +76,6 @@ public class LichHenPanel extends JPanel {
             }
         });
         cboTrangThai.addActionListener(e -> ve());
-        hienHuy.addActionListener(e -> ve());
         ve();
     }
 
@@ -113,8 +111,6 @@ public class LichHenPanel extends JPanel {
         loc.add(trai, BorderLayout.CENTER);
         JPanel huy = new JPanel(new FlowLayout(FlowLayout.RIGHT, 6, 0));
         huy.setOpaque(false);
-        huy.add(new JLabel("Lịch huỷ"));
-        huy.add(hienHuy);
         loc.add(huy, BorderLayout.EAST);
 
         JPanel dieuHuong = new JPanel(new BorderLayout());
@@ -232,9 +228,6 @@ public class LichHenPanel extends JPanel {
         String tt = String.valueOf(cboTrangThai.getSelectedItem());
         for (CuocHen c : ds) {
             if (!trongKhoang(c.batDau.toLocalDate())) {
-                continue;
-            }
-            if ("Hủy bỏ".equals(c.trangThai) && !hienHuy.isSelected() && !"Hủy bỏ".equals(tt)) {
                 continue;
             }
             if (!"Tất cả".equals(tt) && !tt.equals(c.trangThai)) {

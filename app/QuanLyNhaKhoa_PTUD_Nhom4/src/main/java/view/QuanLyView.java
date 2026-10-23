@@ -31,7 +31,6 @@ public class QuanLyView extends JFrame implements DieuHuong {
     private final DanhMucPanel danhMuc;
     private final NhapKhoPanel nhapKho = new NhapKhoPanel("Thêm Nhập kho", "Thêm Nhập kho");
     private final NhapKhoPanel xuatKho = new NhapKhoPanel("Thêm Xuất kho", "Thêm Xuất kho");
-    private final ImplantPanel implant;
     private final TrangDanhSach danhSach = new TrangDanhSach();
     private final ONhap timKhach = new ONhap("Tìm khách hàng", 16);
 
@@ -42,7 +41,6 @@ public class QuanLyView extends JFrame implements DieuHuong {
         this.keHoach.ganHoaDon(hoaDon);
         this.hoaDon.ganMoPhieuThu(() -> mo("phieuthu"));
         this.danhMuc = new DanhMucPanel(this);
-        this.implant = new ImplantPanel(this);
         setTitle("Quản lý nha khoa - Nhóm 4");
         setSize(1360, 820);
         setMinimumSize(new Dimension(1100, 680));
@@ -88,7 +86,6 @@ public class QuanLyView extends JFrame implements DieuHuong {
         nav.setOpaque(false);
         nav.add(nutMenu("Hệ thống", new String[][]{
             {"Tài khoản", "sys:taikhoan"},
-            {"Thông báo", "sys:thongbao"},
             {"Đăng xuất", "sys:dangxuat"}
         }));
         nav.add(nutMenu("Danh mục", new String[][]{
@@ -103,10 +100,9 @@ public class QuanLyView extends JFrame implements DieuHuong {
             {"Sản phẩm", "sanpham"},
             {"Nhà cung cấp", "nhacungcap"}
         }));
-        nav.add(nutMenu("Thu chi", new String[][]{
-            {"Hóa đơn", "hoadon"},
-            {"Phiếu thu", "phieuthu"},
-            {"Phiếu chi", "phieuchi"},}));
+        nav.add(nutMenu("Thống kê", new String[][]{
+            {"Thống kê cá nhân", "bc:dtcanhan"},
+            {"Thống kê doanh thu", "bc:congno"},}));
         nav.add(nutMenu("Tìm kiếm", new String[][]{
             {"Khách hàng", "khachhang"},
             {"Lịch hẹn", "lichhen"},
@@ -119,25 +115,14 @@ public class QuanLyView extends JFrame implements DieuHuong {
             {"Kế hoạch điều trị", "kehoach"},
             {"Toa thuốc", "toathuoc"},
             {"Kiểm kho", "kiemkho"},
-            //{"Phiếu implant", "implant"},
             {"Nhập kho", "nhapkho"},
-            {"Xuất kho", "xuatkho"}
-        }));
+            {"Xuất kho", "xuatkho"},
+            {"Hóa đơn", "hoadon"},
+            {"Phiếu thu", "phieuthu"},
+            {"Phiếu chi", "phieuchi"}}));
         nav.add(nutMenu("Báo cáo", new String[][]{
-            //{"Tổng quan", "bc:tongquan"},
-            //{"Báo cáo lịch hẹn", "bc:lichhen"},
-            //{"Báo cáo điều trị", "bc:dieutri"},
-            //{"Báo cáo chưa khai thác", "bc:chuakhoi"},
-            //{"Phiếu labo", "phieulabo"},
-            //{"Báo cáo labo", "bc:baocaolabo"},
-            //{"Báo cáo implant", "bc:implant"},
             {"Báo cáo đơn thuốc", "bc:donthuoc"},
-            //{"Doanh số chốt sale", "bc:sale"},
-            {"Thống kê cá nhân", "bc:dtcanhan"},
-            //{"Doanh thu nhân viên", "bc:dtnhanvien"},
-            //{"Doanh thu dịch vụ", "bc:dtdichvu"},
-            {"Thống kê doanh thu", "bc:nguon"},
-            {"Báo cáo công nợ", "bc:congno"},
+            //{"Thống kê doanh thu", "bc:nguon"},
             //{"Nhật ký", "bc:nhatky"},
             //{"Báo cáo chi phí", "bc:chiphi"},
             //{"Báo cáo thực thu", "bc:thucthu"},
@@ -178,10 +163,6 @@ public class QuanLyView extends JFrame implements DieuHuong {
                     "Tài khoản: " + tenDangNhap + "\nVai trò: Bác sĩ\nChi nhánh: Quang Thanh");
             return;
         }
-        if ("sys:thongbao".equals(ma)) {
-            JOptionPane.showMessageDialog(this, "Không có thông báo mới.");
-            return;
-        }
         if ("sys:dangxuat".equals(ma)) {
             dangXuat();
             return;
@@ -212,8 +193,6 @@ public class QuanLyView extends JFrame implements DieuHuong {
             hien(nhapKho);
         } else if ("xuatkho".equals(ma)) {
             hien(xuatKho);
-        } else if ("implant".equals(ma)) {
-            hien(implant);
         } else if (ma.startsWith("bc:")) {
             baoCao.chon(ma.substring(3));
             hien(baoCao);

@@ -27,7 +27,6 @@ public class HopThoai extends JDialog {
 
     private final JPanel luoi = new JPanel(new GridBagLayout());
     private final List<JComponent> batBuoc = new ArrayList<JComponent>();
-    private final NutCongTac tiepTuc = new NutCongTac(false);
     private int dong;
     private Runnable khiLuu;
 
@@ -50,7 +49,6 @@ public class HopThoai extends JDialog {
         JPanel trai = new JPanel(new FlowLayout(FlowLayout.LEFT, 8, 0));
         trai.setOpaque(false);
         if (nhanTiepTuc != null) {
-            trai.add(tiepTuc);
             JLabel lb = new JLabel("<html>" + nhanTiepTuc + "</html>");
             lb.setFont(ViewTheme.FONT);
             trai.add(lb);
@@ -163,11 +161,6 @@ public class HopThoai extends JDialog {
         return c;
     }
 
-    public NutCongTac congTac(String nhan, boolean bat) {
-        NutCongTac n = new NutCongTac(bat);
-        them(nhan, n, null, false);
-        return n;
-    }
 
     public void themHang(JComponent c) {
         GridBagConstraints fc = new GridBagConstraints();
@@ -203,10 +196,7 @@ public class HopThoai extends JDialog {
             }
         }
         if (khiLuu != null) {
-            khiLuu.run();
-        }
-        if (tiepTuc.isSelected()) {
-            xoaO();
+            khiLuu.run();        
         } else {
             dispose();
         }

@@ -42,7 +42,6 @@ public class TrangDanhSach extends JPanel {
     private boolean dangNap;
     private JComboBox<String> cboNhom;
     private JComboBox<String> cboVaiTro;
-    private NutCongTac locKichHoat;
 
     public TrangDanhSach() {
         super(new BorderLayout());
@@ -184,7 +183,6 @@ public class TrangDanhSach extends JPanel {
         boLocThem.removeAll();
         cboNhom = null;
         cboVaiTro = null;
-        locKichHoat = null;
         if (cauHinh == null) {
             return;
         }
@@ -207,15 +205,9 @@ public class TrangDanhSach extends JPanel {
         } else if ("nhanvien".equals(cauHinh.ma)) {
             cboVaiTro = new JComboBox<String>(new String[]{"Tất cả vai trò", "Bác sĩ", "Phụ tá", "Lễ tân", "Tư vấn", "Sale"});
             ViewTheme.vienHop(cboVaiTro);
-            locKichHoat = new NutCongTac(true);
             boLocThem.add(cboVaiTro);
             boLocThem.add(new JLabel("Kích hoạt"));
-            boLocThem.add(locKichHoat);
             cboVaiTro.addActionListener(e -> {
-                trang = 1;
-                loc();
-            });
-            locKichHoat.addActionListener(e -> {
                 trang = 1;
                 loc();
             });
@@ -296,15 +288,6 @@ public class TrangDanhSach extends JPanel {
             if (cot >= 0) {
                 Object v = model.getValueAt(hang, cot);
                 if (v == null || !cboVaiTro.getSelectedItem().equals(v.toString())) {
-                    return false;
-                }
-            }
-        }
-        if (locKichHoat != null && locKichHoat.isSelected()) {
-            int cot = timCot("Kích hoạt");
-            if (cot >= 0) {
-                Object v = model.getValueAt(hang, cot);
-                if (v == null || !"Có".equals(v.toString())) {
                     return false;
                 }
             }

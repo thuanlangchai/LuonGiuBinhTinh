@@ -91,8 +91,7 @@ public final class BieuMau {
         if (!gia(cu, 0).isEmpty()) {
             nhom.setSelectedItem(gia(cu, 0));
         }
-        NutCongTac trangThai = h.congTac("Trạng thái", !"Ngưng".equals(gia(cu, 6)));
-        NutCongTac labo = h.congTac("Cần đặt labo", "Có".equals(gia(cu, 5)));
+       
         JTextField hoaHong = h.chu("Tỷ lệ hoa hồng", gia(cu, 3).isEmpty() ? "100" : gia(cu, 3), true);
         JTextField thue = h.chu("Thuế", gia(cu, 4).isEmpty() ? "8" : gia(cu, 4), false);
         h.hien(() -> luu.nhan(new Object[]{
@@ -100,9 +99,7 @@ public final class BieuMau {
             ten.getText().trim(),
             gia.getText().trim(),
             hoaHong.getText().trim(),
-            thue.getText().trim(),
-            labo.isSelected() ? "Có" : "Không",
-            trangThai.isSelected() ? "Hoạt động" : "Ngưng"
+            thue.getText().trim()
         }));
     }
 
@@ -132,14 +129,11 @@ public final class BieuMau {
         JTextField email = h.chu("Địa chỉ email", gia(cu, 7), false);
         JTextField sdt = h.chu("Số điện thoại", gia(cu, 8), false);
         h.chu("Địa chỉ", "", false);
-        h.congTac("Xác nhận email", false);
-        h.congTac("Đồng bộ lịch", false);
         JComboBox<String> vaiTro = h.chon("Vai trò", true, "Bác sĩ", "Phụ tá", "Lễ tân", "Tư vấn", "Sale");
         if (!gia(cu, 9).isEmpty()) {
             vaiTro.setSelectedItem(gia(cu, 9));
         }
-        h.chon("Quét QR", false, "Đang đợi", "Đang điều trị", "Hoàn tất");
-        NutCongTac kichHoat = h.congTac("Kích hoạt", !"Không".equals(gia(cu, 10)));
+        h.chon("Quét QR", false, "Đang đợi", "Đang điều trị", "Hoàn tất");        
         h.hien(() -> luu.nhan(new Object[]{
             chuc.getText().trim(),
             ten.getText().trim(),
@@ -150,8 +144,7 @@ public final class BieuMau {
             gia(cu, 6).isEmpty() ? "0" : gia(cu, 6),
             email.getText().trim(),
             sdt.getText().trim(),
-            String.valueOf(vaiTro.getSelectedItem()),
-            kichHoat.isSelected() ? "Có" : "Không"
+            String.valueOf(vaiTro.getSelectedItem())            
         }));
     }
 
@@ -196,14 +189,12 @@ public final class BieuMau {
         JTextField phanTram = h.chu("Phần trăm", gia(cu, 1).isEmpty() ? "5" : gia(cu, 1), false);
         h.chu("Tiền tố voucher", "", false);
         h.chu("Số lượng voucher", "1", false);
-        h.chu("Số lượt dùng của mỗi voucher", "1", false);
-        NutCongTac tt = h.congTac("Trạng thái", !"Ngưng".equals(gia(cu, 4)));
+        h.chu("Số lượt dùng của mỗi voucher", "1", false);        
         h.hien(() -> luu.nhan(new Object[]{
             ten.getText().trim(),
             phanTram.getText().trim(),
             tu.getText().trim(),
             den.getText().trim(),
-            tt.isSelected() ? "Hoạt động" : "Ngưng",
             gia(cu, 5).isEmpty() ? ViewTheme.bayGio() : gia(cu, 5)
         }));
     }
