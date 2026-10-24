@@ -33,6 +33,7 @@ public class KhachHang {
     private int soLanKham;
     private LocalDate lanKhamGanNhat;
     private LocalDateTime ngayTao;
+    
 
     public KhachHang() {
     }
