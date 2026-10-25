@@ -1,7 +1,6 @@
 INSERT INTO ChiNhanh VALUES (N'CN1', N'Quang Thanh', N'28 Lê Lai, TP.HCM', N'0908.030.910');
 
 INSERT INTO NhomKhachHang VALUES (N'NK01', N'PTUD'), (N'NK02', N'VIP'), (N'NK03', N'Thân thiết');
-INSERT INTO NguonKhach VALUES (N'NG01', N'Cư dân'), (N'NG02', N'Facebook'), (N'NG03', N'Giới thiệu'), (N'NG04', N'Website');
 INSERT INTO NgheNghiep VALUES (N'NN01', N'Sinh viên'), (N'NN02', N'Nhân viên văn phòng'), (N'NN03', N'Kinh doanh');
 INSERT INTO LyDoKham VALUES (N'LD01', N'Đau răng'), (N'LD02', N'Kiểm tra định kỳ'), (N'LD03', N'Chỉnh nha'), (N'LD04', N'Implant');
 INSERT INTO TienSuBenh VALUES (N'TS01', N'Béo phì'), (N'TS02', N'Tiểu đường'), (N'TS03', N'Cao huyết áp');
