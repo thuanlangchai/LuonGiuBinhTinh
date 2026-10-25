@@ -36,7 +36,7 @@ public final class DuLieuMau {
                     {"CHỈNH NHA", "Niềng răng mắc cài sứ tiêu chuẩn", "25,000,000", "100", "8", "Hoạt động"},
                     {"CHỈNH NHA", "Niềng răng mắc cài Sapphire", "20,000,000", "100", "8", "Hoạt động"},
                     {"CHỈNH NHA", "Niềng răng invisalign", "60,000,000", "100", "8", "Hoạt động"},
-                    {"CHỈNH NHA", "Niềng răng mắc cài mặt lưỡi (Mặt trong)", "60,000,000", "100", "8", "Không", "Hoạt động"},
+                    {"CHỈNH NHA", "Niềng răng mắc cài mặt lưỡi (Mặt trong)", "60,000,000", "100", "8", "Hoạt động"},
                     {"CHUẨN ĐOÁN HÌNH ẢNH", "Chụp CT", "200,000", "100", "8", "Hoạt động"},
                     {"CHUẨN ĐOÁN HÌNH ẢNH", "Chụp X-quang", "200,000", "100", "8", "Hoạt động"},
                     {"ĐIỀU TRỊ NHA CHU", "Điều trị viêm nha chu", "200,000", "100", "8", "Hoạt động"},
