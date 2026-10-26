@@ -9,6 +9,7 @@ import java.util.regex.Pattern;
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
+import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
@@ -25,7 +26,7 @@ public class KhachHangPanel extends JPanel {
 
     private static final String[] COT = {
         "Mã KH", "Họ và tên", "Giới tính", "Ngày sinh", "Năm sinh", "Số điện thoại", "Địa chỉ email", "Địa chỉ",
-        "Ghi chú", "Đánh giá", "Nhóm", "Nhãn", "Mã gia đình", "Nguồn", "Chi nhánh", "Lý do đến khám", "Điều trị",
+        "Ghi chú", "Đánh giá", "Nhóm khách hàng", "Nhãn", "Mã gia đình", "Nguồn", "Chi nhánh", "Lý do đến khám", "Điều trị",
         "Số lần", "Lần khám gần nhất", "Khai thác", "CSKH(Lần)", "Lịch hẹn", "Ngày tạo"
     };
 
@@ -91,7 +92,7 @@ public class KhachHangPanel extends JPanel {
         locThem.add(o("Ngày điều trị"));
         locThem.add(o("Ngày hẹn"));
         locThem.add(o("Ngày tạo"));
-        locThem.add(hop("Nhóm", "Tất cả", "PTUD", "VIP"));
+        locThem.add(hop("Nhóm khách hàng", "Tất cả", "PTUD", "VIP"));
         locThem.add(o("Chọn độ tuổi hoặc tháng sinh"));
         locThem.add(o("Số tiền đã thanh toán"));
         locThem.add(o("Số tiền dịch vụ"));
@@ -235,45 +236,36 @@ public class KhachHangPanel extends JPanel {
             gioi.setSelectedItem(model.getValueAt(hang, 3));
         }
         JTextField ngaySinh = oForm(sua ? String.valueOf(model.getValueAt(hang, 4)) : "");
-        JTextField diaChi = oForm(sua ? String.valueOf(model.getValueAt(hang, 8)) : "");
-        JTextField nghe = oForm("");
+        JTextField diaChi = oForm(sua ? String.valueOf(model.getValueAt(hang, 8)) : "");        
         JTextField ghi = oForm(sua ? String.valueOf(model.getValueAt(hang, 9)) : "");
         JComboBox<String> chiNhanh = new JComboBox<String>(new String[]{"CN1", "Quang Thanh"});
         ViewTheme.vienHop(chiNhanh);
 
         JPanel trai = cotForm("Thông tin khách hàng",
-                new String[]{"Mã KH", "Họ và tên", "Số điện thoại", "Địa chỉ email", "CCCD", "Giới tính", "Ngày sinh", "Địa chỉ", "Nghề nghiệp", "Ghi chú", "Chi nhánh"},
-                new javax.swing.JComponent[]{ma, ten, sdt, email, cccd, gioi, ngaySinh, diaChi, nghe, ghi, chiNhanh},
-                new boolean[]{false, true, false, false, false, false, false, false, false, false, false});
+                new String[]{"Mã KH", "Họ và tên", "Số điện thoại", "Địa chỉ email", "CCCD", "Giới tính", "Ngày sinh", "Địa chỉ", "Ghi chú", "Chi nhánh"},
+                new JComponent[]{ma, ten, sdt, email, cccd, gioi, ngaySinh, diaChi, ghi, chiNhanh},
+                new boolean[]{false, true, false, false, false, false, false, false, false, false});
 
         JTextField lyDo = oForm(sua ? String.valueOf(model.getValueAt(hang, 16)) : "");
         JTextField tienSu = oForm("");
-        JTextField diUng = oForm("");
-        JComboBox<String> nguon = new JComboBox<String>(new String[]{"Cư dân", "Facebook", "Giới thiệu", "Website"});
-        JTextField nhom = oForm(sua ? String.valueOf(model.getValueAt(hang, 11)) : "PTUD");
-        JTextField nhan = oForm(sua ? String.valueOf(model.getValueAt(hang, 12)) : "");
-        ViewTheme.vienHop(nguon);
+        JTextField diUng = oForm("");        
+        //JTextField nhom = oForm(sua ? String.valueOf(model.getValueAt(hang, 11)) : "PTUD");
+        JComboBox<String> nhom = new JComboBox<>(new String[]{"Vip", "Vãng lai"});                
         JComboBox<String> bacSi = new JComboBox<String>(DuLieuMau.BAC_SI);
         JComboBox<String> tuVan = new JComboBox<String>(DuLieuMau.BAC_SI);
-        JComboBox<String> sale = new JComboBox<String>(new String[]{"", "Nguyễn Khắc Duy"});
-        JComboBox<String> cskh = new JComboBox<String>(new String[]{"", "Nguyễn Khắc Duy"});
-        JComboBox<String> gioiThieu = new JComboBox<String>(new String[]{"", "Nguyễn Minh Thuận"});
         ViewTheme.vienHop(bacSi);
         ViewTheme.vienHop(tuVan);
-        ViewTheme.vienHop(sale);
-        ViewTheme.vienHop(cskh);
-        ViewTheme.vienHop(gioiThieu);
 
         JPanel phai = new JPanel(new BorderLayout(0, 12));
         phai.setOpaque(false);
         phai.add(cotForm("Bệnh lý",
-                new String[]{"Lý do đến khám", "Tiền sử bệnh", "Dị ứng", "Nguồn", "Nhóm", "Nhãn"},
-                new javax.swing.JComponent[]{lyDo, tienSu, diUng, nguon, nhom, nhan},
-                new boolean[]{false, false, false, false, false, false}), BorderLayout.NORTH);
+                new String[]{"Lý do đến khám", "Tiền sử bệnh", "Dị ứng", "Nhóm khách hàng"},
+                new javax.swing.JComponent[]{lyDo, tienSu, diUng, nhom},
+                new boolean[]{false, false, false, false, false}), BorderLayout.NORTH);
         phai.add(cotForm("Người phụ trách",
-                new String[]{"Bác sĩ", "Tư vấn", "Sale/Telesale", "CSKH", "Người giới thiệu"},
-                new javax.swing.JComponent[]{bacSi, tuVan, sale, cskh, gioiThieu},
-                new boolean[]{false, false, false, false, false}), BorderLayout.CENTER);
+                new String[]{"Bác sĩ", "Tư vấn"},
+                new javax.swing.JComponent[]{bacSi, tuVan},
+                new boolean[]{false, false}), BorderLayout.CENTER);
 
         noi.add(trai);
         noi.add(phai);
@@ -304,9 +296,7 @@ public class KhachHangPanel extends JPanel {
                 diaChi.getText().trim(),
                 ghi.getText().trim(),
                 "",
-                nhom.getText().trim(),
-                nhan.getText().trim(),
-                String.valueOf(nguon.getSelectedItem()),
+                nhom.getSelectedItem().toString().trim(),               
                 "",
                 String.valueOf(chiNhanh.getSelectedItem()),
                 lyDo.getText().trim(),
