@@ -14,22 +14,15 @@ public class KhachHang {
     private String email;
     private String diaChi;
     private String cccd;
-    private String ngheNghiep;
     private String ghiChu;
     private String danhGia;
     private String maNhom;
-    private String nhan;
-    private String maGiaDinh;
-    private String maNguon;
     private String maChiNhanh;
     private String lyDoKham;
     private String tienSuBenh;
     private String diUng;
     private String maBacSi;
     private String maTuVan;
-    private String maSale;
-    private String maCSKH;
-    private String nguoiGioiThieu;
     private int soLanKham;
     private LocalDate lanKhamGanNhat;
     private LocalDateTime ngayTao;
@@ -38,7 +31,7 @@ public class KhachHang {
     public KhachHang() {
     }
 
-    public KhachHang(String maKH, String hoTen, String gioiTinh, LocalDate ngaySinh, Integer namSinh, String soDienThoai, String email, String diaChi, String cccd, String ngheNghiep, String ghiChu, String danhGia, String maNhom, String nhan, String maGiaDinh, String maNguon, String maChiNhanh, String lyDoKham, String tienSuBenh, String diUng, String maBacSi, String maTuVan, String maSale, String maCSKH, String nguoiGioiThieu, int soLanKham, LocalDate lanKhamGanNhat, LocalDateTime ngayTao) {
+    public KhachHang(String maKH, String hoTen, String gioiTinh, LocalDate ngaySinh, Integer namSinh, String soDienThoai, String email, String diaChi, String cccd, String ghiChu, String danhGia, String maNhom, String maChiNhanh, String lyDoKham, String tienSuBenh, String diUng, String maBacSi, String maTuVan, int soLanKham, LocalDate lanKhamGanNhat, LocalDateTime ngayTao) {
         this.maKH = maKH;
         this.hoTen = hoTen;
         this.gioiTinh = gioiTinh;
@@ -48,22 +41,15 @@ public class KhachHang {
         this.email = email;
         this.diaChi = diaChi;
         this.cccd = cccd;
-        this.ngheNghiep = ngheNghiep;
         this.ghiChu = ghiChu;
         this.danhGia = danhGia;
         this.maNhom = maNhom;
-        this.nhan = nhan;
-        this.maGiaDinh = maGiaDinh;
-        this.maNguon = maNguon;
         this.maChiNhanh = maChiNhanh;
         this.lyDoKham = lyDoKham;
         this.tienSuBenh = tienSuBenh;
         this.diUng = diUng;
         this.maBacSi = maBacSi;
         this.maTuVan = maTuVan;
-        this.maSale = maSale;
-        this.maCSKH = maCSKH;
-        this.nguoiGioiThieu = nguoiGioiThieu;
         this.soLanKham = soLanKham;
         this.lanKhamGanNhat = lanKhamGanNhat;
         this.ngayTao = ngayTao;
@@ -141,14 +127,6 @@ public class KhachHang {
         this.cccd = cccd;
     }
 
-    public String getNgheNghiep() {
-        return ngheNghiep;
-    }
-
-    public void setNgheNghiep(String ngheNghiep) {
-        this.ngheNghiep = ngheNghiep;
-    }
-
     public String getGhiChu() {
         return ghiChu;
     }
@@ -171,30 +149,6 @@ public class KhachHang {
 
     public void setMaNhom(String maNhom) {
         this.maNhom = maNhom;
-    }
-
-    public String getNhan() {
-        return nhan;
-    }
-
-    public void setNhan(String nhan) {
-        this.nhan = nhan;
-    }
-
-    public String getMaGiaDinh() {
-        return maGiaDinh;
-    }
-
-    public void setMaGiaDinh(String maGiaDinh) {
-        this.maGiaDinh = maGiaDinh;
-    }
-
-    public String getMaNguon() {
-        return maNguon;
-    }
-
-    public void setMaNguon(String maNguon) {
-        this.maNguon = maNguon;
     }
 
     public String getMaChiNhanh() {
@@ -245,30 +199,6 @@ public class KhachHang {
         this.maTuVan = maTuVan;
     }
 
-    public String getMaSale() {
-        return maSale;
-    }
-
-    public void setMaSale(String maSale) {
-        this.maSale = maSale;
-    }
-
-    public String getMaCSKH() {
-        return maCSKH;
-    }
-
-    public void setMaCSKH(String maCSKH) {
-        this.maCSKH = maCSKH;
-    }
-
-    public String getNguoiGioiThieu() {
-        return nguoiGioiThieu;
-    }
-
-    public void setNguoiGioiThieu(String nguoiGioiThieu) {
-        this.nguoiGioiThieu = nguoiGioiThieu;
-    }
-
     public int getSoLanKham() {
         return soLanKham;
     }
@@ -293,3 +223,6 @@ public class KhachHang {
         this.ngayTao = ngayTao;
     }
 }
+    
+
+
