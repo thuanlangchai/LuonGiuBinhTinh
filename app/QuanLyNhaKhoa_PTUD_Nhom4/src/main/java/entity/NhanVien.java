@@ -5,11 +5,11 @@ public class NhanVien {
     private String maNhanVien;
     private String chucDanh;
     private String hoTen;
-    private String vietTat;
-    private double hoaHongChinh;
-    private double hoaHongPhu;
-    private double hoaHongTuVan;
-    private double hoaHongSale;
+    private String vietTat; //Tham khảo nên bỏ bảng cột này
+    private double hoaHongChinh; //????
+    private double hoaHongPhu;	//?????
+    private double hoaHongTuVan; //????
+    private double hoaHongSale; // ?????
     private String email;
     private String soDienThoai;
     private String vaiTro;

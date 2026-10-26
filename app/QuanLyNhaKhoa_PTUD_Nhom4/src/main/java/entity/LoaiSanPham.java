@@ -4,7 +4,7 @@ public class LoaiSanPham {
 
     private String maLoai;
     private String tenLoaiSanPham;
-    private String loaiKho;
+    private String loaiKho; // chưa có table kho 
 
     public LoaiSanPham() {
     }
