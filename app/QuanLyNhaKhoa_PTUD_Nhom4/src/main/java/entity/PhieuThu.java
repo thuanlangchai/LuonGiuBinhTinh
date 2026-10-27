@@ -5,7 +5,7 @@ import java.time.LocalDateTime;
 
 public class PhieuThu {
 
-    private String maPhieuThu;
+    private String maPhieuThu; 
     private LocalDate ngayThu;
     private String maKH;
     private String maHoaDon;

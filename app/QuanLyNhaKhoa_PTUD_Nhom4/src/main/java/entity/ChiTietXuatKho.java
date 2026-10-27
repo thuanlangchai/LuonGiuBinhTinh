@@ -1,7 +1,7 @@
 package entity;
 
 public class ChiTietXuatKho {
-
+	
     private String maChiTiet;
     private String maPhieuXuat;
     private String maSanPham;

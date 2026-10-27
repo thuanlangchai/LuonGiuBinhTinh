@@ -3,7 +3,7 @@ package entity;
 import java.time.LocalDateTime;
 
 public class CongViec {
-
+	// bỏ table này 
     private String maCongViec;
     private String tenCongViec;
     private int thoiLuongPhut;

@@ -5,7 +5,7 @@ import java.util.List;
 import view.KeHoachDieuTriPanel;
 
 public class HoSo {
-
+	//Bo table này 
     public final String ma;
     public String ten;
     public String sdt;

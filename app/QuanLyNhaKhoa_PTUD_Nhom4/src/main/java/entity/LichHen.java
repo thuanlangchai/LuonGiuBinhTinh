@@ -5,7 +5,7 @@ import java.time.LocalDateTime;
 public class LichHen {
 
     private String maLichHen; //thiếu mã lịch hẹn trong view
-//    private String maCongViec; //????? 
+//    private String maCongViec;  
     private String maKH;
     private LocalDateTime batDau;
     private int thoiLuongPhut; 
