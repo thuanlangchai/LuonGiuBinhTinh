@@ -39,12 +39,12 @@ public class DanhMucPanel extends JPanel {
                     {"Người giới thiệu", "nguoigioithieu"},
                     {"Nhà cung cấp", "nhacungcap"},
                     {"Nhân viên", "nhanvien"},
-                    {"Phiếu tư vấn", "phieutuvan"},
+                    //{"Phiếu tư vấn", "phieutuvan"},
                     {"Voucher - Khuyến mãi", "voucher"}
                 }),
                 nhom("2. Dịch vụ", new String[][]{
                     {"Dịch vụ", "dichvu"},
-                    {"Lịch chăm sóc", "lichchamsoc"},
+                    //{"Lịch chăm sóc", "lichchamsoc"},
                     {"Nhóm dịch vụ", "nhomdichvu"}
                 }),
                 nhom("3. Doanh thu", new String[][]{
@@ -81,24 +81,30 @@ public class DanhMucPanel extends JPanel {
                     //{"Diagnose", "diagnose"},
                     //{"Dị ứng", "diung"},
                     //{"Dịch vụ quan tâm", "dichvuquantam"},
-                    {"Gia đình", "giadinh"},
-                    {"Loại chi tiêu", "loaichitieu"},
+                    //{"Gia đình", "giadinh"},
+                    //{"Loại chi tiêu", "loaichitieu"},
                     {"Loại hẹn", "loaihen"},
                     {"Lý do đến khám", "lydokham"},
                     {"Lịch sử in", "lichsuin"},
-                    {"Nghề nghiệp", "nghe"},
+                    //{"Nghề nghiệp", "nghe"},
                     {"Nguyên nhân", "nguyennhan"},
                     {"Nhóm khách hàng", "nhomkhach"},
                     {"Nguồn", "nguon"},
                     {"Quá trình điều trị", "quatrinh"},
+                    // có 3 giai đoạn là trước điều trị, trong điều trị và sau điều trị
+                    // trước: ghi lại, xem qua tình trạng khách hàng như x-quang, ảnh trong miệng.
+                    // trong: ghi lại các cột mốc thay đổi của răng như bọc răng sứ, lấy hoặc cấy implant
+                    // sau: để đánh giá mức độ thành công của ca điều trị, có thể dùng làm nghiên cứu, hoặc dữ liệu truyền thông
                     {"Răng", "rang"},
                     {"Loại răng", "loairang"},
                     {"Điều trị", "dieutri"},
                     //{"SMS", "sms"},
                     {"Theo dõi chỉnh sửa", "theodoi"},
+                    // khi niềng răng định kỳ 3 -6 tháng bác sĩ phải cập nhật tình trạng răng của khách hàng
                     {"Thời gian làm việc", "thoigian"},
                     {"Tiền sử bệnh", "tiensu"},
-                    {"Treatment target", "muctieu"}
+                    {"Mục Tiêu", "muctieu"} 
+                    // mục tiêu là khi niềng răng hoặc sau khi nhổ răng, bác sĩ sẽ đưa ra góc nhìn của mình từ việc điều trị, rằng trong tương lai hàm của khách sẽ như thế nào. 
                 }));
         GridBagConstraints gbc = new GridBagConstraints();
         gbc.gridy = 0;
