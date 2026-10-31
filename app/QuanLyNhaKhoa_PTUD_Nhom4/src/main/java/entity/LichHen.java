@@ -4,30 +4,46 @@ import java.time.LocalDateTime;
 
 public class LichHen {
 
-    private String maLichHen;
-    private String maCongViec;
+    private String maLichHen; //thiếu mã lịch hẹn trong view
+//    private String maCongViec;  
     private String maKH;
     private LocalDateTime batDau;
-    private int thoiLuongPhut;
-    private String maBacSi;
-    private String maPhuTa;
+    private int thoiLuongPhut; 
+    private String maBacSi; // xem xét với view
+    private String maPhuTa;	//xem xét với view 
     private String ghiChu;
     private String trangThai;
 
     public LichHen() {
     }
+    
+    
+    
+	public LichHen(String maLichHen, String maKH, LocalDateTime batDau, int thoiLuongPhut, String maBacSi,
+			String maPhuTa, String ghiChu, String trangThai) {
+		super();
+		this.maLichHen = maLichHen;
+		this.maKH = maKH;
+		this.batDau = batDau;
+		this.thoiLuongPhut = thoiLuongPhut;
+		this.maBacSi = maBacSi;
+		this.maPhuTa = maPhuTa;
+		this.ghiChu = ghiChu;
+		this.trangThai = trangThai;
+	}
 
-    public LichHen(String maLichHen, String maCongViec, String maKH, LocalDateTime batDau, int thoiLuongPhut, String maBacSi, String maPhuTa, String ghiChu, String trangThai) {
-        this.maLichHen = maLichHen;
-        this.maCongViec = maCongViec;
-        this.maKH = maKH;
-        this.batDau = batDau;
-        this.thoiLuongPhut = thoiLuongPhut;
-        this.maBacSi = maBacSi;
-        this.maPhuTa = maPhuTa;
-        this.ghiChu = ghiChu;
-        this.trangThai = trangThai;
-    }
+
+//    public LichHen(String maLichHen, String maCongViec, String maKH, LocalDateTime batDau, int thoiLuongPhut, String maBacSi, String maPhuTa, String ghiChu, String trangThai) {
+//        this.maLichHen = maLichHen;
+//        this.maCongViec = maCongViec;
+//        this.maKH = maKH;
+//        this.batDau = batDau;
+//        this.thoiLuongPhut = thoiLuongPhut;
+//        this.maBacSi = maBacSi;
+//        this.maPhuTa = maPhuTa;
+//        this.ghiChu = ghiChu;
+//        this.trangThai = trangThai;
+//    }
 
     public String getMaLichHen() {
         return maLichHen;
@@ -37,13 +53,13 @@ public class LichHen {
         this.maLichHen = maLichHen;
     }
 
-    public String getMaCongViec() {
-        return maCongViec;
-    }
-
-    public void setMaCongViec(String maCongViec) {
-        this.maCongViec = maCongViec;
-    }
+//    public String getMaCongViec() {
+//        return maCongViec;
+//    }
+//
+//    public void setMaCongViec(String maCongViec) {
+//        this.maCongViec = maCongViec;
+//    }
 
     public String getMaKH() {
         return maKH;

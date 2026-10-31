@@ -2,9 +2,9 @@ package entity;
 
 public class LoaiSanPham {
 
-    private String maLoai;
+    private String maLoai; //view themloaisp chưa có mã loại sản phẩm
     private String tenLoaiSanPham;
-    private String loaiKho;
+    private String loaiKho; // chưa có table kho 
 
     public LoaiSanPham() {
     }

@@ -3,7 +3,7 @@ package entity;
 import java.time.LocalDate;
 
 public class ChamSocKhachHang {
-
+	//bỏ table này 
     private String maCSKH;
     private String maKH;
     private String noiDung;

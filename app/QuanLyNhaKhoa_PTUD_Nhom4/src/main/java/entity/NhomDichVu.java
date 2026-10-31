@@ -4,7 +4,7 @@ public class NhomDichVu {
 
     private String maNhom;
     private String tenNhomDichVu;
-    private String iconDichVu;
+    private String iconDichVu; //cần sửa chỗ này
     private String lichChamSoc;
     private String moTa;
 

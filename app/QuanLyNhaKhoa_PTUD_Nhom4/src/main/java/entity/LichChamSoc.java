@@ -3,7 +3,7 @@ package entity;
 import java.time.LocalDate;
 
 public class LichChamSoc {
-
+	// Bo table nay
     private String maLichChamSoc;
     private String maKH;
     private String noiDung;
