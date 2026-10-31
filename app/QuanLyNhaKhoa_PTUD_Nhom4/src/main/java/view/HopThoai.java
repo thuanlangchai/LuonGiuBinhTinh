@@ -30,7 +30,7 @@ public class HopThoai extends JDialog {
     private int dong;
     private Runnable khiLuu;
 
-    public HopThoai(Window owner, String tieuDe, String nhanLuu, String nhanTiepTuc) {
+    public HopThoai(Window owner, String tieuDe, String nhanLuu) {
         super(owner, tieuDe, ModalityType.APPLICATION_MODAL);
         setDefaultCloseOperation(DISPOSE_ON_CLOSE);
         luoi.setBackground(ViewTheme.TRANG);
@@ -45,15 +45,6 @@ public class HopThoai extends JDialog {
         chan.setBorder(BorderFactory.createCompoundBorder(
                 BorderFactory.createMatteBorder(1, 0, 0, 0, ViewTheme.VIEN),
                 new EmptyBorder(12, 20, 12, 20)));
-
-        JPanel trai = new JPanel(new FlowLayout(FlowLayout.LEFT, 8, 0));
-        trai.setOpaque(false);
-        if (nhanTiepTuc != null) {
-            JLabel lb = new JLabel("<html>" + nhanTiepTuc + "</html>");
-            lb.setFont(ViewTheme.FONT);
-            trai.add(lb);
-        }
-        chan.add(trai, BorderLayout.WEST);
 
         JButton boQua = new JButton("Bỏ qua");
         JButton luu = new JButton(nhanLuu);

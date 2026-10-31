@@ -8,7 +8,6 @@ public class DichVu {
     private long gia;
     private double tyLeHoaHong;
     private double thue;
-//    private boolean canDatLabo; //chưa rõ
     private String trangThai;
 
     public DichVu() {
@@ -28,16 +27,6 @@ public class DichVu {
 		this.trangThai = trangThai;
 	}
 
-//    public DichVu(String maDichVu, String maNhomDichVu, String tenDichVu, long gia, double tyLeHoaHong, double thue, boolean canDatLabo, String trangThai) {
-//        this.maDichVu = maDichVu;
-//        this.maNhomDichVu = maNhomDichVu;
-//        this.tenDichVu = tenDichVu;
-//        this.gia = gia;
-//        this.tyLeHoaHong = tyLeHoaHong;
-//        this.thue = thue;
-//        this.canDatLabo = canDatLabo;
-//        this.trangThai = trangThai;
-//    }
 
     public String getMaDichVu() {
         return maDichVu;
@@ -87,13 +76,6 @@ public class DichVu {
         this.thue = thue;
     }
 
-//    public boolean isCanDatLabo() {
-//        return canDatLabo;
-//    }
-//
-//    public void setCanDatLabo(boolean canDatLabo) {
-//        this.canDatLabo = canDatLabo;
-//    }
 
     public String getTrangThai() {
         return trangThai;

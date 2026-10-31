@@ -1,6 +1,6 @@
 package view;
 
-import entity.HangDT;
+import view.model.HangDT;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
@@ -23,6 +23,8 @@ import javax.swing.JTextField;
 import javax.swing.SwingUtilities;
 import javax.swing.border.EmptyBorder;
 import javax.swing.table.DefaultTableModel;
+import view.model.ChiTietHoaDonView;
+import view.model.HoaDonView;
 
 public class HoaDonPanel extends JPanel {
 
@@ -126,7 +128,7 @@ public class HoaDonPanel extends JPanel {
 
     public void lamMoi() {
         model.setRowCount(0);
-        for (HoaDonDuLieu.HoaDon hd : HoaDonDuLieu.tatCa()) {
+        for (HoaDonView hd : HoaDonDuLieu.tatCa()) {
             model.addRow(ViewTheme.dongBang(dongHoaDon(hd), true, true));
         }
         dem.setText(ViewTheme.demDong(HoaDonDuLieu.tatCa().isEmpty() ? 0 : 1,
@@ -213,12 +215,12 @@ public class HoaDonPanel extends JPanel {
             String ten = tenKhach(String.valueOf(khach.getSelectedItem()));
             List<HangDT> goc = keHoach.hangChuaXuat(ma);
             List<HangDT> chon = new ArrayList<HangDT>();
-            List<HoaDonDuLieu.ChiTiet> chiTiet = new ArrayList<HoaDonDuLieu.ChiTiet>();
+            List<ChiTietHoaDonView> chiTiet = new ArrayList<ChiTietHoaDonView>();
             for (int i = 0; i < ctModel.getRowCount() && i < goc.size(); i++) {
                 if (Boolean.TRUE.equals(ctModel.getValueAt(i, 0))) {
                     HangDT hang = goc.get(i);
                     chon.add(hang);
-                    chiTiet.add(new HoaDonDuLieu.ChiTiet(hang.ngay, hang.rang, hang.dichVu,
+                    chiTiet.add(new ChiTietHoaDonView(hang.ngay, hang.rang, hang.dichVu,
                             hang.soLuong, hang.donGia, hang.tenKeHoach()));
                 }
             }
@@ -227,7 +229,7 @@ public class HoaDonPanel extends JPanel {
                 return;
             }
             String keHoachTen = chiTiet.get(0).keHoach;
-            HoaDonDuLieu.HoaDon hd = HoaDonDuLieu.them(
+            HoaDonView hd = HoaDonDuLieu.them(
                     ngay.getText().trim(), ma, ten, keHoachTen,
                     String.valueOf(bacSi.getSelectedItem()),
                     parseTien(chietKhau.getText()),
@@ -255,7 +257,7 @@ public class HoaDonPanel extends JPanel {
         d.setVisible(true);
     }
 
-    public void thuTien(HoaDonDuLieu.HoaDon hd) {
+    public void thuTien(HoaDonView hd) {
         if (hd == null) {
             return;
         }
@@ -264,7 +266,7 @@ public class HoaDonPanel extends JPanel {
             return;
         }
         Window w = SwingUtilities.getWindowAncestor(this);
-        HopThoai h = new HopThoai(w, "Tạo phiếu thu", "+ Thêm", null);
+        HopThoai h = new HopThoai(w, "Tạo phiếu thu", "+ Thêm");
         JTextField ngayThu = h.chu("Ngày thu", HoaDonDuLieu.homNay(), true);
         h.chu("Khách hàng", hd.maKh + " - " + hd.tenKh, true).setEditable(false);
         h.chu("Hóa đơn", hd.ma + " - " + hd.keHoach, true).setEditable(false);
@@ -303,7 +305,7 @@ public class HoaDonPanel extends JPanel {
     }
 
     private void xuLy(String lenh, int hang) {
-        HoaDonDuLieu.HoaDon hd = hoaDonTai(hang);
+        HoaDonView hd = hoaDonTai(hang);
         if (hd == null) {
             return;
         }
@@ -327,7 +329,7 @@ public class HoaDonPanel extends JPanel {
         moChiTiet(hd);
     }
 
-    private void moChiTiet(HoaDonDuLieu.HoaDon hd) {
+    private void moChiTiet(HoaDonView hd) {
         if (hd == null) {
             return;
         }
@@ -359,7 +361,7 @@ public class HoaDonPanel extends JPanel {
                 new String[]{"#", "Ngày", "Răng", "Dịch vụ", "Số lượng", "Đơn giá", "Thành tiền", "Kế hoạch"},
                 false, false);
         int stt = 1;
-        for (HoaDonDuLieu.ChiTiet c : hd.chiTiet) {
+        for (ChiTietHoaDonView c : hd.chiTiet) {
             ct.addRow(new Object[]{
                 String.valueOf(stt++), c.ngay, c.rang, c.dichVu,
                 String.valueOf(c.soLuong), ViewTheme.tien(c.donGia),
@@ -429,14 +431,14 @@ public class HoaDonPanel extends JPanel {
         }
     }
 
-    private HoaDonDuLieu.HoaDon hoaDonTai(int hangModel) {
+    private HoaDonView hoaDonTai(int hangModel) {
         if (hangModel < 0 || hangModel >= model.getRowCount()) {
             return null;
         }
         return HoaDonDuLieu.theoMa(String.valueOf(model.getValueAt(hangModel, 1)));
     }
 
-    private static Object[] dongHoaDon(HoaDonDuLieu.HoaDon hd) {
+    private static Object[] dongHoaDon(HoaDonView hd) {
         return new Object[]{
             hd.ma, hd.ngayLap, hd.maKh, hd.tenKh, hd.keHoach,
             ViewTheme.tien(hd.tong), ViewTheme.tien(hd.chietKhau), ViewTheme.tien(hd.thanhTien),

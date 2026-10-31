@@ -1,11 +1,10 @@
-package entity;
+package view.model;
 
 import java.util.ArrayList;
 import java.util.List;
-import view.KeHoachDieuTriPanel;
 
 public class HoSo {
-	//Bo table này 
+
     public final String ma;
     public String ten;
     public String sdt;
@@ -16,15 +15,11 @@ public class HoSo {
 
     public HoSo(String ma, String ten, String sdt, String email, String diaChi, String lyDo) {
         this.ma = ma;
-        capNhatKhach(ten, sdt, email, diaChi, lyDo);
-    }
-
-    public void capNhatKhach(String ten, String sdt, String email, String diaChi, String lyDo) {
         this.ten = ten;
         this.sdt = sdt;
         this.email = email;
         this.diaChi = diaChi;
-        this.lyDo = lyDo == null || lyDo.isEmpty() ? "Đau răng" : lyDo;
+        this.lyDo = lyDo;
     }
 
     public void themHang(HangDT dong) {
@@ -38,5 +33,13 @@ public class HoSo {
         }
         return t;
     }
-}
 
+    public void capNhatKhach(String ten, String sdt, String email, String diaChi, String lyDo) {
+        this.ten = ten;
+        this.sdt = sdt;
+        this.email = email;
+        this.diaChi = diaChi;
+        this.lyDo = lyDo == null || lyDo.isEmpty() ? "Đau răng" : lyDo;
+    }
+
+}

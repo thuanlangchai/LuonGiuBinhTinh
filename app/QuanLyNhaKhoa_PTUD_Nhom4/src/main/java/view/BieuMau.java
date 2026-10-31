@@ -1,9 +1,11 @@
 package view;
 
+import view.model.CauHinhTrang;
 import java.awt.BorderLayout;
 import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
+import java.awt.GridLayout;
 import java.awt.Window;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
@@ -30,12 +32,8 @@ public final class BieuMau {
             dichVu(w, cu, luu);
         } else if ("nhanvien".equals(c.ma)) {
             nhanVien(w, cu, luu);
-        } else if ("congviec".equals(c.ma)) {
-            congViec(w, cu, luu);
         } else if ("loairang".equals(c.ma)) {
             loaiRang(w, cu, luu);
-        } else if ("voucher".equals(c.ma)) {
-            voucher(w, cu, luu);
         } else if ("thoigian".equals(c.ma)) {
             thoiGian(w, cu, luu);
         } else if ("kiemkho".equals(c.ma)) {
@@ -62,7 +60,7 @@ public final class BieuMau {
 
     private static void macDinh(Window w, CauHinhTrang c, Object[] cu, Luu luu) {
         String tieu = (sua(cu) ? "Cập nhật " : "Thêm ") + c.tieuDe.toLowerCase();
-        HopThoai h = new HopThoai(w, tieu, sua(cu) ? "Lưu" : c.nutThem, "Tôi muốn tiếp tục thêm " + c.tieuDe.toLowerCase());
+        HopThoai h = new HopThoai(w, tieu, sua(cu) ? "Lưu" : c.nutThem);
         JTextField[] o = new JTextField[c.cot.length];
         for (int i = 0; i < c.cot.length; i++) {
             o[i] = h.chu(c.cot[i], gia(cu, i), i == 0);
@@ -78,7 +76,7 @@ public final class BieuMau {
 
     private static void dichVu(Window w, Object[] cu, Luu luu) {
         HopThoai h = new HopThoai(w, sua(cu) ? "Cập nhật dịch vụ" : "Thêm dịch vụ",
-                sua(cu) ? "Lưu" : "Thêm dịch vụ", "Tôi muốn tiếp tục thêm dịch vụ");
+                sua(cu) ? "Lưu" : "Thêm dịch vụ");
         JTextField ten = h.chu("Tên dịch vụ", gia(cu, 1), true);
         h.chu("Viết tắt", "", false);
         h.chonVoiNut("Đơn vị dịch vụ", false, "Lần", "Răng", "Hàm");
@@ -105,24 +103,12 @@ public final class BieuMau {
 
     private static void nhanVien(Window w, Object[] cu, Luu luu) {
         HopThoai h = new HopThoai(w, sua(cu) ? "Cập nhật nhân viên" : "Thêm nhân viên",
-                sua(cu) ? "Lưu" : "Thêm nhân viên", "Tôi muốn tiếp tục thêm nhân viên");
+                sua(cu) ? "Lưu" : "Thêm nhân viên");
         JTextField chuc = h.chuGoiY("Chức danh", "Bs, Ths, Ts ...", false);
         chuc.setText(gia(cu, 0));
-        JTextField ten = h.chu("Họ và tên", gia(cu, 1), true);
-        JTextField vietTat = h.chu("Viết tắt", gia(cu, 2), false);
-        JLabel anh = new JLabel(gia(cu, 1).isEmpty() ? "Chưa chọn ảnh" : "Đã có ảnh");
-        JButton chonAnh = new JButton("Chọn ảnh");
-        ViewTheme.nutXam(chonAnh);
-        chonAnh.addActionListener(e -> {
-            javax.swing.JFileChooser fc = new javax.swing.JFileChooser();
-            if (fc.showOpenDialog(h) == javax.swing.JFileChooser.APPROVE_OPTION) {
-                anh.setText(fc.getSelectedFile().getName());
-            }
-        });
+        JTextField ten = h.chu("Họ và tên", gia(cu, 1), true);        
         JPanel hangAnh = new JPanel(new BorderLayout(8, 0));
         hangAnh.setOpaque(false);
-        hangAnh.add(anh, BorderLayout.CENTER);
-        hangAnh.add(chonAnh, BorderLayout.EAST);
         h.them("Hình đại diện", hangAnh, null, false);
         h.chon("Giới tính", false, "Nam", "Nữ", "Khác");
         h.chuGoiY("Ngày sinh", "dd/mm/yyyy", false);
@@ -137,7 +123,6 @@ public final class BieuMau {
         h.hien(() -> luu.nhan(new Object[]{
             chuc.getText().trim(),
             ten.getText().trim(),
-            vietTat.getText().trim(),
             gia(cu, 3).isEmpty() ? "0" : gia(cu, 3),
             gia(cu, 4).isEmpty() ? "0" : gia(cu, 4),
             gia(cu, 5).isEmpty() ? "0" : gia(cu, 5),
@@ -148,29 +133,10 @@ public final class BieuMau {
         }));
     }
 
-    private static void congViec(Window w, Object[] cu, Luu luu) {
-        HopThoai h = new HopThoai(w, sua(cu) ? "Cập nhật công việc" : "Thêm công việc",
-                sua(cu) ? "Lưu" : "Thêm công việc", "Tôi muốn tiếp tục thêm công việc");
-        JTextField ten = h.chu("Công việc", gia(cu, 0), true);
-        JComboBox<String> phut = h.chon("Thời lượng theo phút", false, "15", "30", "45", "60", "90", "120");
-        if (!gia(cu, 1).isEmpty()) {
-            phut.setSelectedItem(gia(cu, 1));
-        }
-        JComboBox<String> dv = h.chon("Dịch vụ", false, ghep(new String[]{""}, DuLieuMau.TEN_DV));
-        if (!gia(cu, 2).isEmpty()) {
-            dv.setSelectedItem(gia(cu, 2));
-        }
-        h.hien(() -> luu.nhan(new Object[]{
-            ten.getText().trim(),
-            String.valueOf(phut.getSelectedItem()),
-            String.valueOf(dv.getSelectedItem()),
-            gia(cu, 3).isEmpty() ? ViewTheme.bayGio() : gia(cu, 3)
-        }));
-    }
 
     private static void loaiRang(Window w, Object[] cu, Luu luu) {
         HopThoai h = new HopThoai(w, sua(cu) ? "Cập nhật loại răng" : "Thêm loại răng",
-                sua(cu) ? "Lưu" : "Thêm loại răng", "Tôi muốn tiếp tục thêm loại răng");
+                sua(cu) ? "Lưu" : "Thêm loại răng");
         JTextField ten = h.chu("Loại răng", gia(cu, 0), true);
         JComboBox<String> bh = h.chon("Bảo hành", false, "6 tháng", "12 tháng", "24 tháng", "Không");
         if (!gia(cu, 1).isEmpty()) {
@@ -179,29 +145,10 @@ public final class BieuMau {
         h.hien(() -> luu.nhan(new Object[]{ten.getText().trim(), String.valueOf(bh.getSelectedItem())}));
     }
 
-    private static void voucher(Window w, Object[] cu, Luu luu) {
-        HopThoai h = new HopThoai(w, sua(cu) ? "Cập nhật Voucher - Khuyến mãi" : "Thêm Voucher - Khuyến mãi",
-                sua(cu) ? "Lưu" : "Thêm Voucher - Khuyến mãi", "Tôi muốn tiếp tục thêm Voucher - Khuyến mãi");
-        JTextField ten = h.chu("Tên Voucher - Khuyến mãi", gia(cu, 0), false);
-        JTextField tu = h.chu("Từ ngày", gia(cu, 2).isEmpty() ? "2026-09-29" : gia(cu, 2), false);
-        JTextField den = h.chu("Đến ngày", gia(cu, 3).isEmpty() ? "2026-10-28" : gia(cu, 3), false);
-        h.chon("Loại Voucher - Khuyến mãi", false, "Giảm giá theo phần trăm (%)", "Giảm số tiền", "Tặng dịch vụ");
-        JTextField phanTram = h.chu("Phần trăm", gia(cu, 1).isEmpty() ? "5" : gia(cu, 1), false);
-        h.chu("Tiền tố voucher", "", false);
-        h.chu("Số lượng voucher", "1", false);
-        h.chu("Số lượt dùng của mỗi voucher", "1", false);        
-        h.hien(() -> luu.nhan(new Object[]{
-            ten.getText().trim(),
-            phanTram.getText().trim(),
-            tu.getText().trim(),
-            den.getText().trim(),
-            gia(cu, 5).isEmpty() ? ViewTheme.bayGio() : gia(cu, 5)
-        }));
-    }
 
     private static void thoiGian(Window w, Object[] cu, Luu luu) {
         HopThoai h = new HopThoai(w, sua(cu) ? "Cập nhật thời gian làm việc" : "Thêm thời gian làm việc",
-                sua(cu) ? "Lưu" : "Thêm thời gian làm việc", "Tôi muốn tiếp tục thêm thời gian làm việc");
+                sua(cu) ? "Lưu" : "Thêm thời gian làm việc");
         JPanel ngay = new JPanel(new FlowLayout(FlowLayout.LEFT, 8, 0));
         ngay.setOpaque(false);
         String[] nhan = {"Mo", "Tu", "We", "Th", "Fr", "Sa", "Su"};
@@ -242,7 +189,7 @@ public final class BieuMau {
 
     private static void kiemKho(Window w, Object[] cu, Luu luu) {
         HopThoai h = new HopThoai(w, sua(cu) ? "Cập nhật Kiểm kho" : "Thêm Kiểm kho",
-                sua(cu) ? "Lưu" : "Thêm Kiểm kho", "Tôi muốn tiếp tục thêm Kiểm kho");
+                sua(cu) ? "Lưu" : "Thêm Kiểm kho");
         JTextField ly = new JTextField(gia(cu, 1));
         ViewTheme.vienNhap(ly);
         h.them("Lý do", ly, ly, true);
@@ -260,7 +207,7 @@ public final class BieuMau {
         JPanel giua = new JPanel(new FlowLayout(FlowLayout.CENTER));
         giua.setOpaque(false);
         giua.add(cong);
-        h.themHang(tieuCotKiem());
+        h.themHang(kiemKho());
         h.themHang(ds);
         h.themHang(giua);
         h.hien(() -> {
@@ -270,13 +217,14 @@ public final class BieuMau {
         });
     }
 
-    private static JPanel tieuCotKiem() {
-        JPanel p = new JPanel(new java.awt.GridLayout(1, 4, 8, 0));
+    private static JPanel kiemKho() {
+        JPanel p = new JPanel(new GridLayout(1, 4, 0, 0));
         p.setOpaque(false);
         p.add(ViewTheme.chuPhu("Sản phẩm"));
+        p.add(ViewTheme.chuPhu("Số lượng hệ thống"));
         p.add(ViewTheme.chuPhu("Số lượng thực tế"));
         p.add(ViewTheme.chuPhu("Chênh lệch"));
-        p.add(ViewTheme.chuPhu("Giá trị chênh lệch"));
+        p.add(ViewTheme.chuPhu(""));
         return p;
     }
 
@@ -284,7 +232,7 @@ public final class BieuMau {
         JPanel p = new JPanel(new java.awt.GridLayout(1, 5, 8, 0));
         p.setOpaque(false);
         p.setBorder(new javax.swing.border.EmptyBorder(4, 0, 4, 0));
-        JComboBox<String> sp = new JComboBox<String>(new String[]{"Găng tay", "Khẩu trang", "Mũi khoan", "aptx 4869"});
+        JComboBox<String> sp = new JComboBox<>(new String[]{"Găng tay", "Khẩu trang", "Mũi khoan", "aptx 4869"});
         ViewTheme.vienHop(sp);
         JTextField sl = new JTextField("0");
         JTextField lech = new JTextField("0");
@@ -313,18 +261,14 @@ public final class BieuMau {
 
     private static void loaiSanPham(Window w, Object[] cu, Luu luu) {
         HopThoai h = new HopThoai(w, sua(cu) ? "Cập nhật loại sản phẩm" : "Thêm loại sản phẩm",
-                sua(cu) ? "Lưu" : "Thêm loại sản phẩm", "Tôi muốn tiếp tục thêm loại sản phẩm");
+                sua(cu) ? "Lưu" : "Thêm loại sản phẩm");
         JTextField ten = h.chu("Loại sản phẩm", gia(cu, 0), true);
-        JComboBox<String> kho = h.chon("Loại kho", true, "Thuốc", "Vật liệu tiêu hao", "Công cụ tiêu hao", "Hàng hoá", "Tài sản cố định", "Thiết bị nha khoa", "Công cụ, dụng cụ");
-        if (!gia(cu, 1).isEmpty()) {
-            kho.setSelectedItem(gia(cu, 1));
-        }
-        h.hien(() -> luu.nhan(new Object[]{ten.getText().trim(), String.valueOf(kho.getSelectedItem())}));
+        h.hien(() -> luu.nhan(new Object[]{ten.getText().trim()}));
     }
 
     private static void lichHen(Window w, Object[] cu, Luu luu) {
         HopThoai h = new HopThoai(w, sua(cu) ? "Cập nhật lịch hẹn" : "Thêm lịch hẹn",
-                sua(cu) ? "Lưu" : "Thêm lịch hẹn", "Tôi muốn tiếp tục thêm lịch hẹn");
+                sua(cu) ? "Lưu" : "Thêm lịch hẹn");
         JComboBox<String> viec = h.chon("Công việc", true, "Chỉnh nha", "Cạo vôi răng", "Tái khám", "Thăm khám", "Nhổ răng");
         if (!gia(cu, 0).isEmpty()) {
             viec.setSelectedItem(gia(cu, 0));
@@ -348,10 +292,4 @@ public final class BieuMau {
         }));
     }
 
-    private static String[] ghep(String[] a, String[] b) {
-        String[] r = new String[a.length + b.length];
-        System.arraycopy(a, 0, r, 0, a.length);
-        System.arraycopy(b, 0, r, a.length, b.length);
-        return r;
-    }
 }
