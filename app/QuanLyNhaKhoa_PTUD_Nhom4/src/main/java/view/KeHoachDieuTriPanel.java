@@ -49,7 +49,7 @@ public class KeHoachDieuTriPanel extends JPanel {
     private final JLabel lbDaChiTra = new JLabel();
     private final JLabel lbConNo = new JLabel();
     private final DefaultTableModel model = ViewTheme.taoModel(
-            new String[]{"Ngày", "Răng", "Dịch vụ", "Số lượng", "Đơn giá", "Thành tiền", "Trạng thái", "Kế hoạch", "Hóa đơn"},
+            new String[]{"Ngày", "Răng", "Dịch vụ", "Số lượng", "Đơn giá", "Thành tiền", "Trạng thái", "Mã hóa đơn"},
             true, true);
     private final JTable bang = new JTable(model);
     private final Map<String, HoSo> hoSoTheoMa = new LinkedHashMap<String, HoSo>();
@@ -415,8 +415,7 @@ public class KeHoachDieuTriPanel extends JPanel {
                     ViewTheme.tien(hang.donGia),
                     ViewTheme.tien(hang.thanhTien()),
                     hang.trangThai,
-                    hang.tenKeHoach(),
-                    hang.maHoaDon == null || hang.maHoaDon.isEmpty() ? "Chưa xuất" : hang.maHoaDon
+                    hang.maHoaDon == null || hang.maHoaDon.isEmpty() ? "" : hang.maHoaDon
                 }, true, true));
             }
         }

@@ -1,0 +1,1 @@
+package i_repository;import entity.ThoiGianLamViec;import java.util.List;public interface ThoiGianLamViec_IDAO {    List<ThoiGianLamViec> findAllThoiGianLamViec();    ThoiGianLamViec findById(String maLich);    Integer add(ThoiGianLamViec entity);    void update(ThoiGianLamViec entity);    void delete(String maLich);}

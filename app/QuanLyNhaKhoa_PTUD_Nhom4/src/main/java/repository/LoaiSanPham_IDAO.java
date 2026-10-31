@@ -1,0 +1,1 @@
+package i_repository;import entity.LoaiSanPham;import java.util.List;public interface LoaiSanPham_IDAO {    List<LoaiSanPham> findAllLoaiSanPham();    LoaiSanPham findById(String maLoai);    Integer add(LoaiSanPham entity);    void update(LoaiSanPham entity);    void delete(String maLoai);}

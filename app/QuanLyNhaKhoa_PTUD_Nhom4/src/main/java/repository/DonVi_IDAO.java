@@ -1,0 +1,1 @@
+package i_repository;import entity.DonVi;import java.util.List;public interface DonVi_IDAO {    List<DonVi> findAllDonVi();    DonVi findById(String maDonVi);    Integer add(DonVi entity);    void update(DonVi entity);    void delete(String maDonVi);}

@@ -48,33 +48,23 @@ public class DanhMucPanel extends JPanel {
                 }));
         JPanel cot2 = cot(
                 nhom("4. Kho", new String[][]{
-                    {"Kiểm kho", "kiemkho"},
                     {"Loại sản phẩm", "loaisanpham"},
                     {"Nhập kho", "nhapkho"},
                     {"Sản phẩm", "sanpham"},
                     {"Xuất kho", "xuatkho"},
-                    {"Đơn hàng", "donhang"},
                     {"Đơn vị", "donvi"}
                 }),
                 nhom("5. Toa thuốc", new String[][]{
-                    {"Cách dùng thuốc", "cachdung"},
-                    {"Thuốc", "thuoc"},
-                    {"Thuốc gốc", "thuocgoc"},
-                    {"Đơn thuốc mẫu", "donthuocmau"}
+                    {"Thuốc", "thuoc"}
                 }));
         JPanel cot3 = cot(
                 nhom("Master data", new String[][]{
-                    {"Chẩn đoán", "chandoan"},
-                    {"Loại hẹn", "loaihen"},
-                    {"Lý do đến khám", "lydokham"},
-                    {"Lịch sử in", "lichsuin"},
-                    {"Nguyên nhân", "nguyennhan"},
-                    {"Nhóm khách hàng", "nhomkhach"},                
+                    {"Nhóm khách hàng", "nhomkhach"},
                     {"Răng", "rang"},
                     {"Loại răng", "loairang"},
-                    {"Điều trị", "dieutri"},                   
+                    {"Điều trị", "dieutri"},
                     {"Thời gian làm việc", "thoigian"},
-                    {"Tiền sử bệnh", "tiensu"},                    
+                    {"Nhà cung cấp", "nhacungcap"}
                 }));
         GridBagConstraints gbc = new GridBagConstraints();
         gbc.gridy = 0;

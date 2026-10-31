@@ -1,0 +1,1 @@
+package i_repository;import entity.SanPham;import java.util.List;public interface SanPham_IDAO {    List<SanPham> findAllSanPham();    SanPham findById(String maSanPham);    Integer add(SanPham entity);    void update(SanPham entity);    void delete(String maSanPham);}

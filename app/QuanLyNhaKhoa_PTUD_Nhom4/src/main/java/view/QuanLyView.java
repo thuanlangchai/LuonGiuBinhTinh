@@ -115,7 +115,6 @@ public class QuanLyView extends JFrame implements DieuHuong {
         nav.add(nutMenu("Xử lý", new String[][]{
             {"Kế hoạch điều trị", "kehoach"},
             {"Toa thuốc", "toathuoc"},
-            {"Kiểm kho", "kiemkho"},
             {"Nhập kho", "nhapkho"},
             {"Xuất kho", "xuatkho"},
             {"Hóa đơn", "hoadon"},
@@ -123,10 +122,6 @@ public class QuanLyView extends JFrame implements DieuHuong {
             {"Phiếu chi", "phieuchi"}}));
         nav.add(nutMenu("Báo cáo", new String[][]{
             {"Báo cáo đơn thuốc", "bc:donthuoc"},
-            //{"Thống kê doanh thu", "bc:nguon"},
-            //{"Nhật ký", "bc:nhatky"},
-            //{"Báo cáo chi phí", "bc:chiphi"},
-            //{"Báo cáo thực thu", "bc:thucthu"},
             {"Báo cáo thu chi", "bc:thuchi"}
         }));
         JLabel user = new JLabel(tenDangNhap);

@@ -1,0 +1,1 @@
+package i_repository;import entity.Rang;import java.util.List;public interface Rang_IDAO {    List<Rang> findAllRang();    Rang findById(String maRang);    Integer add(Rang entity);    void update(Rang entity);    void delete(String maRang);}

@@ -1,0 +1,1 @@
+package i_repository;import entity.TaiKhoan;import java.util.List;public interface TaiKhoan_IDAO {    List<TaiKhoan> findAllTaiKhoan();    TaiKhoan findById(String tenDangNhap);    Integer add(TaiKhoan entity);    void update(TaiKhoan entity);    void delete(String tenDangNhap);    TaiKhoan findByTenDangNhap(String tenDangNhap);}

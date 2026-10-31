@@ -1,0 +1,1 @@
+package i_repository;import entity.LichHen;import java.util.List;public interface LichHen_IDAO {    List<LichHen> findAllLichHen();    LichHen findById(String maLichHen);    Integer add(LichHen entity);    void update(LichHen entity);    void delete(String maLichHen);    List<LichHen> findByMaKH(String maKH);}

@@ -25,9 +25,9 @@ import javax.swing.table.TableRowSorter;
 public class KhachHangPanel extends JPanel {
 
     private static final String[] COT = {
-        "Mã KH", "Họ và tên", "Giới tính", "Ngày sinh", "Năm sinh", "Số điện thoại", "Địa chỉ email", "Địa chỉ",
-        "Nhóm khách hàng", "Chi nhánh", "Lý do đến khám", "Điều trị",
-        "Lịch hẹn", "Ngày tạo"
+        "Mã KH", "Họ và tên", "Giới tính", "Ngày sinh", "Số điện thoại", "Email", "Địa chỉ", "CCCD",
+        "Ghi chú", "Nhóm KH", "Chi nhánh", "Lý do khám", "Tiền sử bệnh", "Dị ứng",
+        "Bác sĩ", "Tư vấn", "Số lần khám", "Lần khám gần nhất", "Ngày tạo"
     };
 
     private final KeHoachDieuTriPanel keHoach;
@@ -121,12 +121,12 @@ public class KhachHangPanel extends JPanel {
 
         model = ViewTheme.taoModel(COT, true, true);
         model.addRow(ViewTheme.dongBang(new Object[]{
-            "0001", "Lê Trần Quang Thanh", "Nam", "2006", "2006", "03xxxx2808", "thanhqt@gmail.com", "28 Lê Lai",
-            "VIP", "CN1", "Đau Răng", "1 x Thăm khám - Tư vấn", "Có", "27/09/2026"
+            "0001", "Lê Trần Quang Thanh", "Nam", "27/08/2006", "03xxxx2808", "thanhqt@gmail.com", "28 Lê Lai", "",
+            "", "NK01", "CN1", "Đau răng", "Béo phì", "", "NV03", "", "1", "27/09/2026", "27/09/2026"
         }, true, true));
         model.addRow(ViewTheme.dongBang(new Object[]{
-            "0002", "Hồ Trợ - Support", "Nam", "", "", "09xxxx8352", "minh@maysoft.vn", "29 Nội Khu Mỹ Toàn - Q7 - TP.HCM",
-            "PTUD","CN1", "Buồn", "2x Cài Hoa", "Có", "27/09/2026"
+            "0002", "Nguyễn Minh Lý", "Nam", "", "09xxxx8352", "minh@maysoft.vn", "29 Nội Khu Mỹ Toàn - Q7 - TP.HCM", "",
+            "", "NK01", "CN1", "", "", "", "", "", "0", "", "27/09/2026"
         }, true, true));
         bang = new JTable(model);
         ViewTheme.trangTriBang(bang);
@@ -206,11 +206,11 @@ public class KhachHangPanel extends JPanel {
         keHoach.nap(
                 String.valueOf(model.getValueAt(hang, 1)),
                 String.valueOf(model.getValueAt(hang, 2)),
+                String.valueOf(model.getValueAt(hang, 5)),
                 String.valueOf(model.getValueAt(hang, 6)),
                 String.valueOf(model.getValueAt(hang, 7)),
-                String.valueOf(model.getValueAt(hang, 8)),
-                String.valueOf(model.getValueAt(hang, 16)),
-                String.valueOf(model.getValueAt(hang, 17)));
+                String.valueOf(model.getValueAt(hang, 12)),
+                "");
         moKeHoach.run();
     }
 
@@ -226,16 +226,16 @@ public class KhachHangPanel extends JPanel {
         JTextField ma = oForm(sua ? String.valueOf(model.getValueAt(hang, 1)) : String.format("%04d", demMa));
         ma.setEditable(false);
         JTextField ten = oForm(sua ? String.valueOf(model.getValueAt(hang, 2)) : "");
-        JTextField sdt = oForm(sua ? String.valueOf(model.getValueAt(hang, 6)) : "");
-        JTextField email = oForm(sua ? String.valueOf(model.getValueAt(hang, 7)) : "");
-        JTextField cccd = oForm("");
+        JTextField sdt = oForm(sua ? String.valueOf(model.getValueAt(hang, 5)) : "");
+        JTextField email = oForm(sua ? String.valueOf(model.getValueAt(hang, 6)) : "");
+        JTextField cccd = oForm(sua ? String.valueOf(model.getValueAt(hang, 8)) : "");
         JComboBox<String> gioi = new JComboBox<String>(new String[]{"Nam", "Nữ", "Khác"});
         ViewTheme.vienHop(gioi);
         if (sua) {
             gioi.setSelectedItem(model.getValueAt(hang, 3));
         }
         JTextField ngaySinh = oForm(sua ? String.valueOf(model.getValueAt(hang, 4)) : "");
-        JTextField diaChi = oForm(sua ? String.valueOf(model.getValueAt(hang, 8)) : "");        
+        JTextField diaChi = oForm(sua ? String.valueOf(model.getValueAt(hang, 7)) : "");
         JTextField ghi = oForm(sua ? String.valueOf(model.getValueAt(hang, 9)) : "");
         JComboBox<String> chiNhanh = new JComboBox<String>(new String[]{"CN1", "Quang Thanh"});
         ViewTheme.vienHop(chiNhanh);
@@ -245,11 +245,10 @@ public class KhachHangPanel extends JPanel {
                 new JComponent[]{ma, ten, sdt, email, cccd, gioi, ngaySinh, diaChi, ghi, chiNhanh},
                 new boolean[]{false, true, false, false, false, false, false, false, false, false});
 
-        JTextField lyDo = oForm(sua ? String.valueOf(model.getValueAt(hang, 16)) : "");
-        JTextField tienSu = oForm("");
-        JTextField diUng = oForm("");        
-        //JTextField nhom = oForm(sua ? String.valueOf(model.getValueAt(hang, 11)) : "PTUD");
-        JComboBox<String> nhom = new JComboBox<>(new String[]{"Vip", "Vãng lai"});                
+        JTextField lyDo = oForm(sua ? String.valueOf(model.getValueAt(hang, 12)) : "");
+        JTextField tienSu = oForm(sua ? String.valueOf(model.getValueAt(hang, 13)) : "");
+        JTextField diUng = oForm(sua ? String.valueOf(model.getValueAt(hang, 14)) : "");
+        JComboBox<String> nhom = new JComboBox<>(new String[]{"NK01", "NK02", "NK03"});                
         JComboBox<String> bacSi = new JComboBox<String>(DuLieuMau.BAC_SI);
         JComboBox<String> tuVan = new JComboBox<String>(DuLieuMau.BAC_SI);
         ViewTheme.vienHop(bacSi);
@@ -280,32 +279,26 @@ public class KhachHangPanel extends JPanel {
                 JOptionPane.showMessageDialog(d, "Vui lòng nhập họ và tên.");
                 return;
             }
-            String nam = ngaySinh.getText().trim();
-            if (nam.length() >= 4) {
-                nam = nam.substring(nam.length() - 4);
-            }
             Object[] dong = new Object[]{
                 sua ? model.getValueAt(hang, 1) : String.format("%04d", demMa++),
                 ten.getText().trim(),
                 String.valueOf(gioi.getSelectedItem()),
                 ngaySinh.getText().trim(),
-                nam,
                 sdt.getText().trim(),
                 email.getText().trim(),
                 diaChi.getText().trim(),
+                cccd.getText().trim(),
                 ghi.getText().trim(),
-                "",
-                nhom.getSelectedItem().toString().trim(),               
-                "",
+                String.valueOf(nhom.getSelectedItem()),
                 String.valueOf(chiNhanh.getSelectedItem()),
                 lyDo.getText().trim(),
-                sua ? model.getValueAt(hang, 17) : "",
-                "0",
-                "0%",
-                "0",
-                "0",
-                "Không",
-                "12/10/2026"
+                tienSu.getText().trim(),
+                diUng.getText().trim(),
+                String.valueOf(bacSi.getSelectedItem()),
+                String.valueOf(tuVan.getSelectedItem()),
+                sua ? model.getValueAt(hang, 17) : "0",
+                sua ? model.getValueAt(hang, 18) : "",
+                sua ? model.getValueAt(hang, 19) : "12/10/2026"
             };
             if (sua) {
                 for (int i = 0; i < dong.length; i++) {

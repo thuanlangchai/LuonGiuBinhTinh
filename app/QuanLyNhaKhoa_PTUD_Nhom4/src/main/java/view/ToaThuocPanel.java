@@ -19,7 +19,7 @@ import javax.swing.table.DefaultTableModel;
 public class ToaThuocPanel extends JPanel {
 
     private final DefaultTableModel model = ViewTheme.taoModel(
-            new String[]{"#", "Thuốc", "Số ngày", "Cách sử dụng", "Tổng", "Đơn vị"}, false, true);
+            new String[]{"#", "Thuốc", "Số ngày", "Cách sử dụng", "Tổng số", "Đơn giá", "Thành tiền"}, false, true);
     private final JLabel thanhTien = new JLabel("0");
     private final JPanel dsThuoc = new JPanel();
     private final JTextField tim = new ONhap("Tìm thuốc ...", 16);
@@ -76,7 +76,7 @@ public class ToaThuocPanel extends JPanel {
 
         JTable bang = new JTable(model);
         ViewTheme.trangTriBang(bang);
-        model.addRow(new Object[]{"1", "0001 - aptx 4869 (36000)", "1", "Sáng 1 (36000) - Trưa 1 (36000) - Chiều 1 (36000)", "3", "36000", "Xóa"});
+        model.addRow(new Object[]{"1", "0001 - aptx 4869", "1", "Sáng 1 - Trưa 1 - Chiều 1", "3", "36000", "108000", "Xóa"});
         ViewTheme.ganThaoTac(bang, (lenh, hang) -> {
             if ("Xóa".equals(lenh) || "Sửa".equals(lenh)) {
                 model.removeRow(hang);
@@ -159,7 +159,9 @@ public class ToaThuocPanel extends JPanel {
         the.addMouseListener(new java.awt.event.MouseAdapter() {
             @Override
             public void mousePressed(java.awt.event.MouseEvent e) {
-                model.addRow(new Object[]{String.valueOf(model.getRowCount() + 1), ten, "1", "Sáng 1 - Trưa 1 - Chiều 1", "3", giaSo, "Xóa"});
+                long donGia = Long.parseLong(giaSo.replace(",", ""));
+                model.addRow(new Object[]{String.valueOf(model.getRowCount() + 1), ten, "1",
+                    "Sáng 1 - Trưa 1 - Chiều 1", "3", giaSo, String.valueOf(3 * donGia), "Xóa"});
                 danhLai();
                 tinhTien();
             }
@@ -189,7 +191,7 @@ public class ToaThuocPanel extends JPanel {
         long tong = 0;
         for (int i = 0; i < model.getRowCount(); i++) {
             try {
-                tong += Long.parseLong(String.valueOf(model.getValueAt(i, 5)).replace(",", ""));
+                tong += Long.parseLong(String.valueOf(model.getValueAt(i, 6)).replace(",", ""));
             } catch (NumberFormatException ex) {
             }
         }

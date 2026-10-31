@@ -1,0 +1,1 @@
+package i_repository;import entity.Thuoc;import java.util.List;public interface Thuoc_IDAO {    List<Thuoc> findAllThuoc();    Thuoc findById(String maThuoc);    Integer add(Thuoc entity);    void update(Thuoc entity);    void delete(String maThuoc);}

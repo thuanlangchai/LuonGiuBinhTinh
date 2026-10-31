@@ -279,7 +279,8 @@ public class TrangDanhSach extends JPanel {
             return false;
         }
         if (cboNhom != null && cboNhom.getSelectedIndex() > 0) {
-            Object v = model.getValueAt(hang, 1);
+            int cotNhom = timCot("Nhóm dịch vụ");
+            Object v = model.getValueAt(hang, cotNhom >= 0 ? cotNhom : 1);
             if (v == null || !cboNhom.getSelectedItem().equals(v.toString())) {
                 return false;
             }

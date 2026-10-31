@@ -1,0 +1,1 @@
+package i_repository;import entity.PhieuThu;import java.util.List;public interface PhieuThu_IDAO {    List<PhieuThu> findAllPhieuThu();    PhieuThu findById(String maPhieuThu);    Integer add(PhieuThu entity);    void update(PhieuThu entity);    void delete(String maPhieuThu);}

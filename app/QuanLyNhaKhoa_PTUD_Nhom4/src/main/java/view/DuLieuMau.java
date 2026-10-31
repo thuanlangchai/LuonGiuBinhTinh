@@ -29,131 +29,112 @@ public final class DuLieuMau {
 
     static {
         dat(new CauHinhTrang("dichvu", "Dịch vụ", "Tìm dịch vụ...", "Thêm dịch vụ",
-                new String[]{"Nhóm dịch vụ", "Tên dịch vụ", "Giá", "Tỷ lệ hoa hồng", "Thuế", "Trạng thái"},
+                new String[]{"Mã DV", "Nhóm dịch vụ", "Tên dịch vụ", "Giá", "Trạng thái"},
                 new Object[][]{
-                    {"CHỈNH NHA", "Niềng răng mắc cài tự buộc", "27,500,000", "100", "8", "Hoạt động"},
-                    {"CHỈNH NHA", "Niềng răng mắc cài kim loại tự buộc", "21,500,000", "100", "8", "Hoạt động"},
-                    {"CHỈNH NHA", "Niềng răng mắc cài kim loại tiêu chuẩn", "18,000,000", "100", "8", "Hoạt động"},
-                    {"CHỈNH NHA", "Niềng răng mắc cài sứ tiêu chuẩn", "25,000,000", "100", "8", "Hoạt động"},
-                    {"CHỈNH NHA", "Niềng răng mắc cài Sapphire", "20,000,000", "100", "8", "Hoạt động"},
-                    {"CHỈNH NHA", "Niềng răng invisalign", "60,000,000", "100", "8", "Hoạt động"},
-                    {"CHỈNH NHA", "Niềng răng mắc cài mặt lưỡi (Mặt trong)", "60,000,000", "100", "8", "Hoạt động"},
-                    {"CHUẨN ĐOÁN HÌNH ẢNH", "Chụp CT", "200,000", "100", "8", "Hoạt động"},
-                    {"CHUẨN ĐOÁN HÌNH ẢNH", "Chụp X-quang", "200,000", "100", "8", "Hoạt động"},
-                    {"ĐIỀU TRỊ NHA CHU", "Điều trị viêm nha chu", "200,000", "100", "8", "Hoạt động"},
-                    {"PHỤC HÌNH RĂNG SỨ", "Răng sứ titan", "2,500,000", "100", "8", "Hoạt động"},
-                    {"IMPLANT", "Cấy ghép implant", "18,000,000", "100", "8", "Hoạt động"}
+                    {"DV01", "CHỈNH NHA", "Niềng răng mắc cài tự buộc", "27,500,000", "Hoạt động"},
+                    {"DV02", "CHỈNH NHA", "Niềng răng mắc cài kim loại tự buộc", "21,500,000", "Hoạt động"},
+                    {"DV03", "CHỈNH NHA", "Niềng răng mắc cài kim loại tiêu chuẩn", "18,000,000", "Hoạt động"},
+                    {"DV04", "CHỈNH NHA", "Niềng răng mắc cài sứ tiêu chuẩn", "25,000,000", "Hoạt động"},
+                    {"DV05", "CHỈNH NHA", "Niềng răng mắc cài Sapphire", "20,000,000", "Hoạt động"},
+                    {"DV06", "CHỈNH NHA", "Niềng răng invisalign", "60,000,000", "Hoạt động"},
+                    {"DV07", "CHỈNH NHA", "Niềng răng mắc cài mặt lưỡi (Mặt trong)", "60,000,000", "Hoạt động"},
+                    {"DV08", "CHUẨN ĐOÁN HÌNH ẢNH", "Chụp CT", "200,000", "Hoạt động"},
+                    {"DV09", "CHUẨN ĐOÁN HÌNH ẢNH", "Chụp X-quang", "200,000", "Hoạt động"},
+                    {"DV10", "ĐIỀU TRỊ NHA CHU", "Điều trị viêm nha chu", "200,000", "Hoạt động"},
+                    {"DV11", "PHỤC HÌNH RĂNG SỨ", "Răng sứ titan", "2,500,000", "Hoạt động"},
+                    {"DV12", "IMPLANT", "Cấy ghép implant", "18,000,000", "Hoạt động"}
                 }, null));
 
         dat(new CauHinhTrang("nhomdichvu", "Nhóm dịch vụ", "Tìm nhóm dịch vụ...", "Thêm nhóm dịch vụ",
-                new String[]{"Tên nhóm dịch vụ", "Mô tả thêm"},
+                new String[]{"Mã nhóm", "Tên nhóm dịch vụ", "Mô tả"},
                 new Object[][]{
-                    {"ĐIỀU TRỊ NHA CHU", ""},
-                    {"PHỤC HÌNH RĂNG SỨ", ""},
-                    {"NHA KHOA TRẺ EM", ""},
-                    {"PHỤC HÌNH THÁO LẮP", ""},
-                    {"CHUẨN ĐOÁN HÌNH ẢNH", ""},
-                    {"NHA KHOA THẨM MỸ", ""},
-                    {"CHỈNH NHA", ""},
-                    {"PHỤC HÌNH CỐ ĐỊNH", ""},
-                    {"PHẪU THUẬT", ""},
-                    {"IMPLANT", ""}
+                    {"ND01", "ĐIỀU TRỊ NHA CHU", ""},
+                    {"ND02", "PHỤC HÌNH RĂNG SỨ", ""},
+                    {"ND03", "NHA KHOA TRẺ EM", ""},
+                    {"ND04", "PHỤC HÌNH THÁO LẮP", ""},
+                    {"ND05", "CHUẨN ĐOÁN HÌNH ẢNH", ""},
+                    {"ND06", "NHA KHOA THẨM MỸ", ""},
+                    {"ND07", "CHỈNH NHA", ""},
+                    {"ND08", "PHỤC HÌNH CỐ ĐỊNH", ""},
+                    {"ND09", "PHẪU THUẬT", ""},
+                    {"ND10", "IMPLANT", ""}
                 }, null));
 
         dat(new CauHinhTrang("nhanvien", "Nhân viên", "Tìm nhân viên...", "Thêm nhân viên",
-                new String[]{"Chức danh", "Họ và tên", "Viết tắt", "Hoa hồng làm chính", "Hoa hồng làm phụ", "Hoa hồng tư vấn", "Hoa hồng sale", "Địa chỉ email", "Số điện thoại", "Vai trò", "Kích hoạt"},
+                new String[]{"Mã NV", "Chức danh", "Họ và tên", "Email", "Số điện thoại", "Vai trò", "Kích hoạt", "Chi nhánh"},
                 new Object[][]{
-                    {"Ts", "Nguyễn Khắc Duy", "", "0", "0", "0", "0", "duy@gmail.com", "0123456789", "Lễ tân", "Có"},
-                    {"Bs", "Hồ Văn Khánh", "", "0", "0", "0", "0", "thuan08022006@gmail.com", "0933942776", "Bác sĩ", "Có"},
-                    {"Bs", "Lê Trần Quang Thanh", "", "0", "0", "0", "0", "thanhqt@gmail.com", "0908030910", "Bác sĩ", "Có"}
+                    {"NV01", "Ts", "Nguyễn Khắc Duy", "duy@gmail.com", "0123456789", "Lễ tân", "Có", "CN1"},
+                    {"NV02", "Bs", "Hồ Văn Khánh", "thuan08022006@gmail.com", "0933942776", "Bác sĩ", "Có", "CN1"},
+                    {"NV03", "Bs", "Lê Trần Quang Thanh", "thanhqt@gmail.com", "0908030910", "Bác sĩ", "Có", "CN1"}
                 }, null));
 
         List<Object[]> rang = new ArrayList<Object[]>();
-        rang.add(new Object[]{"Hàm dưới"});
-        rang.add(new Object[]{"Hàm trên"});
+        rang.add(new Object[]{"RHD", "Hàm dưới", "LR02"});
+        rang.add(new Object[]{"RHT", "Hàm trên", "LR01"});
         String[] ham = {"1", "2", "3", "4"};
         for (String h : ham) {
             for (int i = 1; i <= 8; i++) {
-                rang.add(new Object[]{"R" + h + i});
+                rang.add(new Object[]{"R" + h + i, "R" + h + i, h.equals("1") || h.equals("2") ? "LR01" : "LR02"});
             }
         }
         dat(new CauHinhTrang("rang", "Răng", "Tìm răng...", "Thêm răng",
-                new String[]{"Tên răng"}, rang.toArray(new Object[0][]), null));
+                new String[]{"Mã răng", "Tên răng", "Loại răng"}, rang.toArray(new Object[0][]), null));
 
         dat(new CauHinhTrang("dieutri", "Điều trị", "Tìm điều trị...", "Thêm điều trị",
-                new String[]{"Điều trị"},
-                new Object[][]{{"Răng"}, {"Nướu"}, {"Khớp thái dương hàm"}}, null));
+                new String[]{"Mã điều trị", "Tên điều trị"},
+                new Object[][]{{"DT01", "Răng"}, {"DT02", "Nướu"}, {"DT03", "Khớp thái dương hàm"}}, null));
 
         dat(new CauHinhTrang("loairang", "Loại răng", "Tìm loại răng...", "Thêm loại răng",
-                new String[]{"Loại răng", "Bảo hành"},
-                new Object[][]{{"Hàm trên", "6 tháng"}, {"Hàm dưới", "12 tháng"}, {"Răng sữa", "Không"}}, null));
-
-        dat(new CauHinhTrang("tiensu", "Tiền sử bệnh", "Tìm tiền sử bệnh...", "Thêm tiền sử bệnh",
-                new String[]{"Tiền sử bệnh"},
-                new Object[][]{{"Béo phì"}, {"Tiểu đường"}, {"Cao huyết áp"}}, null));
-
-        dat(new CauHinhTrang("voucher", "Voucher - Khuyến mãi", "Tìm Voucher - Khuyến mãi...", "Thêm Voucher - Khuyến mãi",
-                new String[]{"Tên Voucher - Khuyến mãi", "Phần trăm", "Từ ngày", "Đến ngày", "Trạng thái", "Ngày tạo"},
-                new Object[][]{}, null));
+                new String[]{"Mã loại răng", "Tên loại răng"},
+                new Object[][]{{"LR01", "Hàm trên"}, {"LR02", "Hàm dưới"}, {"LR03", "Răng sữa"}}, null));
 
         dat(new CauHinhTrang("thoigian", "Thời gian làm việc", "Tìm thời gian làm việc...", "Thêm thời gian làm việc",
-                new String[]{"Ngày", "Giờ bắt đầu", "Giờ kết thúc", "Bác sĩ", "Chi nhánh"},
+                new String[]{"Mã lịch", "Ngày", "Giờ bắt đầu", "Giờ kết thúc", "Bác sĩ", "Chi nhánh"},
                 new Object[][]{}, null));
 
-        dat(new CauHinhTrang("kiemkho", "Kiểm kho", "Tìm Kiểm kho...", "Thêm Kiểm kho",
-                new String[]{"Mã kiểm kho", "Lý do", "Duyệt", "Người duyệt", "Ngày tạo"},
-                new Object[][]{{"000001", "Kiểm Kho", "Đã duyệt", NGUOI, "28 Sep 2026 08:45:49 PM"}}, null));
-
         dat(new CauHinhTrang("loaisanpham", "Loại sản phẩm", "Tìm loại sản phẩm...", "Thêm loại sản phẩm",
-                new String[]{"Loại sản phẩm"},
+                new String[]{"Mã loại", "Tên loại sản phẩm"},
                 new Object[][]{
-                    {"Thuốc"},
-                    {"Vật liệu tiêu hao"},
-                    {"Thiết bị nha khoa"}
+                    {"LSP01", "Thuốc"},
+                    {"LSP02", "Vật liệu tiêu hao"},
+                    {"LSP03", "Thiết bị nha khoa"}
                 }, null));
 
         dat(new CauHinhTrang("thuoc", "Thuốc", "Tìm thuốc...", "Thêm thuốc",
                 new String[]{"Mã thuốc", "Tên thuốc", "Đơn vị", "Giá", "Cách dùng"},
                 new Object[][]{
-                    {"0001", "aptx 4869", "Viên", "36,000", "Sáng 1 - Trưa 1 - Chiều 1"},
-                    {"0002", "Paracetamol 500mg", "Viên", "2,000", "Sau ăn"},
-                    {"0003", "Amoxicillin 500mg", "Viên", "5,000", "Sáng tối"}
+                    {"0001", "aptx 4869", "DV01", "36,000", "Sáng 1 - Trưa 1 - Chiều 1"},
+                    {"0002", "Paracetamol 500mg", "DV01", "2,000", "Sau ăn"},
+                    {"0003", "Amoxicillin 500mg", "DV01", "5,000", "Sáng tối"}
                 }, null));
 
         dat(new CauHinhTrang("sanpham", "Sản phẩm", "Tìm sản phẩm...", "Thêm sản phẩm",
-                new String[]{"Mã", "Tên sản phẩm", "Loại", "Số lượng", "Đơn giá"},
+                new String[]{"Mã SP", "Tên sản phẩm", "Loại", "Số lượng", "Đơn giá"},
                 new Object[][]{
-                    {"SP01", "Găng tay", "Vật liệu tiêu hao", "100", "1,500"},
-                    {"SP02", "Khẩu trang", "Vật liệu tiêu hao", "200", "800"},
-                    {"SP03", "Mũi khoan", "Thiết bị nha khoa", "10", "250,000"}
+                    {"SP01", "Găng tay", "LSP02", "100", "1,500"},
+                    {"SP02", "Khẩu trang", "LSP02", "200", "800"},
+                    {"SP03", "Mũi khoan", "LSP03", "10", "250,000"}
                 }, null));
 
         dat(new CauHinhTrang("chinhanh", "Chi nhánh", "Tìm chi nhánh...", "Thêm chi nhánh",
-                new String[]{"Mã", "Tên chi nhánh", "Địa chỉ", "Điện thoại"},
+                new String[]{"Mã chi nhánh", "Tên chi nhánh", "Địa chỉ", "Điện thoại"},
                 new Object[][]{{"CN1", "Quang Thanh", "28 Lê Lai, TP.HCM", "0908.030.910"}}, null));
 
         dat(new CauHinhTrang("nhacungcap", "Nhà cung cấp", "Tìm nhà cung cấp...", "Thêm nhà cung cấp",
-                new String[]{"Mã", "Nhà cung cấp", "Điện thoại", "Địa chỉ"},
+                new String[]{"Mã NCC", "Tên nhà cung cấp", "Điện thoại", "Địa chỉ"},
                 new Object[][]{{"NCC01", "STRAUMANN", "0281234567", "TP.HCM"}}, null));
 
         dat(new CauHinhTrang("lichhen-ds", "Lịch hẹn", "Tìm lịch hẹn...", "Thêm lịch hẹn",
-                new String[]{"Công việc", "Bắt đầu", "Khách hàng", "Người làm chính"},
-                new Object[][]{{"Chỉnh nha", "28 Sep 2026 08:47:00 PM", "Lê Trần Quang Thanh", "Lê Trần Quang Thanh"}}, null));
-        dat(don("cachdung", "Cách dùng thuốc", "Sáng 1 viên", "Trưa 1 viên", "Chiều 1 viên", "Sau ăn"));
-        dat(don("thuocgoc", "Thuốc gốc", "Paracetamol", "Amoxicillin", "Ibuprofen"));
-        dat(don("donthuocmau", "Đơn thuốc mẫu", "Đơn sau nhổ răng", "Đơn viêm nha chu"));
-        dat(don("chandoan", "Chẩn đoán", "Sâu răng", "Viêm tủy", "Viêm nha chu", "Răng khôn lệch"));
-        dat(don("diung", "Dị ứng", "Penicillin", "Hải sản", "Không"));
-        dat(don("nguon", "Nguồn", "Cư dân", "Facebook", "Giới thiệu", "Website"));
-        dat(don("nhomkhach", "Nhóm khách hàng", "PTUD", "VIP", "Thân thiết"));        
-        dat(don("lydokham", "Lý do đến khám", "Đau răng", "Kiểm tra định kỳ", "Chỉnh nha", "Implant"));
-        dat(don("donvi", "Đơn vị", "Viên", "Hộp", "Cái", "Tuýp"));
-        dat(don("nguoigioithieu", "Người giới thiệu", "Nguyễn Minh Thuận", "Hồ Văn Khánh"));                       
-        dat(don("danhgia", "Đánh giá", "5 sao - Lê Trần Quang Thanh"));
-        dat(don("donhang", "Đơn hàng", "Đơn vật tư tháng 9"));
-        dat(don("dinhmuc", "Định mức", "Găng tay tối thiểu 50"));                
-        dat(don("loaihinhanh", "Loại ảnh điều trị", "Trong miệng", "Ngoài mặt", "X-quang"));
-        dat(don("capbac", "Cấp bậc", "Bác sĩ", "Phụ tá", "Lễ tân", "Tư vấn"));       
+                new String[]{"Mã lịch hẹn", "Mã KH", "Bắt đầu", "Thời lượng (phút)", "Bác sĩ", "Phụ tá", "Ghi chú", "Trạng thái"},
+                new Object[][]{{"LH01", "0001", "2026-09-28 08:00", "60", "NV03", "", "", "Đang điều trị"}}, null));
+
+        dat(new CauHinhTrang("nhomkhach", "Nhóm khách hàng", "Tìm nhóm khách hàng...", "Thêm nhóm khách hàng",
+                new String[]{"Mã nhóm", "Tên nhóm"},
+                new Object[][]{{"NK01", "PTUD"}, {"NK02", "VIP"}, {"NK03", "Thân thiết"}}, null));
+
+        dat(new CauHinhTrang("donvi", "Đơn vị", "Tìm đơn vị...", "Thêm đơn vị",
+                new String[]{"Mã đơn vị", "Tên đơn vị"},
+                new Object[][]{{"DV01", "Viên"}, {"DV02", "Hộp"}, {"DV03", "Cái"}, {"DV04", "Tuýp"}}, null));
     }
 
     private DuLieuMau() {
@@ -165,15 +146,5 @@ public final class DuLieuMau {
 
     private static void dat(CauHinhTrang c) {
         DS.put(c.ma, c);
-    }
-
-    private static CauHinhTrang don(String ma, String tieuDe, String... dong) {
-        Object[][] data = new Object[dong.length][1];
-        for (int i = 0; i < dong.length; i++) {
-            data[i][0] = dong[i];
-        }
-        String thuong = tieuDe.toLowerCase();
-        return new CauHinhTrang(ma, tieuDe, "Tìm " + thuong + "...", "Thêm " + thuong,
-                new String[]{tieuDe}, data, null);
     }
 }

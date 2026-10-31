@@ -81,10 +81,10 @@ public class LichHenPanel extends JPanel {
     }
 
     private void napMau() {
-        ds.add(new CuocHen("Chỉnh nha", "Lê Trần Quang Thanh", LocalDateTime.of(2026, 9, 28, 8, 0), 60, "Lê Trần Quang Thanh", "", "Đang điều trị"));
-        ds.add(new CuocHen("Cạo vôi răng", "Nguyễn Minh Lý", LocalDateTime.of(2026, 9, 28, 9, 30), 30, "Lê Trần Quang Thanh", "Nguyễn Khắc Duy", "Đang đợi"));
-        ds.add(new CuocHen("Tái khám", "Nguyễn Minh Thuận", LocalDateTime.of(2026, 9, 28, 14, 0), 30, "Hồ Văn Khánh", "", "Hoàn tất"));
-        ds.add(new CuocHen("Thăm khám", "Lê Trần Quang Thanh", LocalDateTime.of(2026, 9, 27, 10, 0), 45, "Lê Trần Quang Thanh", "", "Khách ra về"));
+        ds.add(new CuocHen("LH01", "0001", "Lê Trần Quang Thanh", LocalDateTime.of(2026, 9, 28, 8, 0), 60, "Lê Trần Quang Thanh", "", "", "Đang điều trị"));
+        ds.add(new CuocHen("LH02", "0002", "Nguyễn Minh Lý", LocalDateTime.of(2026, 9, 28, 9, 30), 30, "Lê Trần Quang Thanh", "Nguyễn Khắc Duy", "", "Đang đợi"));
+        ds.add(new CuocHen("LH03", "0003", "Nguyễn Minh Thuận", LocalDateTime.of(2026, 9, 28, 14, 0), 30, "Hồ Văn Khánh", "", "", "Hoàn tất"));
+        ds.add(new CuocHen("LH04", "0001", "Lê Trần Quang Thanh", LocalDateTime.of(2026, 9, 27, 10, 0), 45, "Lê Trần Quang Thanh", "", "", "Khách ra về"));
     }
 
     private JPanel taoThanh() {
@@ -385,7 +385,7 @@ public class LichHenPanel extends JPanel {
             JPanel the = new JPanel(new BorderLayout());
             the.setBackground(nenTrangThai(c.trangThai));
             the.setBorder(BorderFactory.createLineBorder(vienTrangThai(c.trangThai)));
-            JLabel lb = new JLabel("<html><b>" + c.batDau.format(F_GIO) + "</b> " + c.congViec + "<br>" + c.khach + "</html>");
+            JLabel lb = new JLabel("<html><b>" + c.batDau.format(F_GIO) + "</b> " + c.maLichHen + "<br>" + c.khach + "</html>");
             lb.setFont(ViewTheme.FONT_NHO);
             lb.setBorder(new EmptyBorder(2, 6, 2, 6));
             the.add(lb, BorderLayout.CENTER);
@@ -453,7 +453,7 @@ public class LichHenPanel extends JPanel {
                         BorderFactory.createLineBorder(ViewTheme.VIEN),
                         new EmptyBorder(8, 8, 8, 8)));
                 card.setMaximumSize(new Dimension(Integer.MAX_VALUE, 72));
-                JLabel lb = new JLabel("<html><b>" + c.khach + "</b><br>" + c.batDau.format(F_GIO) + " · " + c.congViec + "</html>");
+                JLabel lb = new JLabel("<html><b>" + c.khach + "</b><br>" + c.batDau.format(F_GIO) + " · " + c.maLichHen + "</html>");
                 card.add(lb);
                 card.addMouseListener(new java.awt.event.MouseAdapter() {
                     @Override
@@ -473,15 +473,18 @@ public class LichHenPanel extends JPanel {
     }
 
     private JScrollPane veBang() {
-        String[] cot = {"Công việc", "Bắt đầu", "Khách hàng", "Người làm chính", "Thời lượng", "Trạng thái"};
+        String[] cot = {"Mã lịch hẹn", "Mã KH", "Khách hàng", "Bắt đầu", "Thời lượng (phút)", "Bác sĩ", "Phụ tá", "Ghi chú", "Trạng thái"};
         DefaultTableModel model = ViewTheme.taoModel(cot, false, false);
         for (CuocHen c : dangXem()) {
             model.addRow(new Object[]{
-                c.congViec,
-                c.batDau.format(F_NGAY_GIO),
+                c.maLichHen,
+                c.maKH,
                 c.khach,
+                c.batDau.format(F_NGAY_GIO),
+                c.phut,
                 c.bacSi,
-                c.phut + " phút",
+                c.phuTa,
+                c.ghiChu,
                 c.trangThai
             });
         }
@@ -556,19 +559,20 @@ public class LichHenPanel extends JPanel {
         HopThoai h = new HopThoai(SwingUtilities(), cu == null ? "Thêm lịch hẹn" : "Cập nhật lịch hẹn",
                 cu == null ? "Thêm" : "Lưu");
         JComboBox<String> kh = h.chon("Khách hàng", false, DuLieuMau.KHACH);
-        JComboBox<String> dv = h.chonVoiNut("Dịch vụ", false, DuLieuMau.TEN_DV);
         JTextField ghi = h.chu("Ghi chú", cu == null ? "" : cu.ghiChu, false);
         JTextField batDau = h.chu("Bắt đầu", (cu == null ? luc : cu.batDau).format(F_NGAY_GIO), true);
-        JComboBox<String> duKien = h.chon("Dự kiến (phút)", true, "15", "30", "45", "60", "90", "120");
+        JComboBox<String> duKien = h.chon("Thời lượng (phút)", true, "15", "30", "45", "60", "90", "120");
         if (cu != null) {
             duKien.setSelectedItem(String.valueOf(cu.phut));
-            dv.setSelectedItem(cu.congViec);
         }
-        JComboBox<String> bs = h.chon("Người làm chính", true, DuLieuMau.BAC_SI);
+        JComboBox<String> bs = h.chon("Bác sĩ", true, DuLieuMau.BAC_SI);
         if (cu != null) {
             bs.setSelectedItem(cu.bacSi);
         }
-        h.chon("Phụ tá", false, "", "Nguyễn Khắc Duy", "Hồ Văn Khánh");
+        JComboBox<String> phuTa = h.chon("Phụ tá", false, "", "Nguyễn Khắc Duy", "Hồ Văn Khánh");
+        if (cu != null && cu.phuTa != null && !cu.phuTa.isEmpty()) {
+            phuTa.setSelectedItem(cu.phuTa);
+        }
         JComboBox<String> tt = h.chon("Trạng thái", false, "Mới", "Xác nhận", "Đang đợi", "Đang điều trị", "Hoàn tất", "Khách ra về", "Hủy bỏ");
         tt.setSelectedItem(trangThaiMacDinh);
         h.hien(() -> {
@@ -581,21 +585,25 @@ public class LichHenPanel extends JPanel {
             }
             int phut = Integer.parseInt(String.valueOf(duKien.getSelectedItem()));
             String tenKhach = String.valueOf(kh.getSelectedItem());
+            String maKH = "0001";
             if (tenKhach.contains(" - ")) {
                 String[] tach = tenKhach.split(" - ");
+                maKH = tach[0].trim();
                 if (tach.length >= 2) {
                     tenKhach = tach[1].trim();
                 }
             }
             if (cu == null) {
-                ds.add(new CuocHen(String.valueOf(dv.getSelectedItem()), tenKhach, gio, phut,
-                        String.valueOf(bs.getSelectedItem()), ghi.getText().trim(), String.valueOf(tt.getSelectedItem())));
+                ds.add(new CuocHen("LH" + String.format("%02d", ds.size() + 1), maKH, tenKhach, gio, phut,
+                        String.valueOf(bs.getSelectedItem()), String.valueOf(phuTa.getSelectedItem()),
+                        ghi.getText().trim(), String.valueOf(tt.getSelectedItem())));
             } else {
-                cu.congViec = String.valueOf(dv.getSelectedItem());
+                cu.maKH = maKH;
                 cu.khach = tenKhach;
                 cu.batDau = gio;
                 cu.phut = phut;
                 cu.bacSi = String.valueOf(bs.getSelectedItem());
+                cu.phuTa = String.valueOf(phuTa.getSelectedItem());
                 cu.ghiChu = ghi.getText().trim();
                 cu.trangThai = String.valueOf(tt.getSelectedItem());
                 ngay = gio.toLocalDate();

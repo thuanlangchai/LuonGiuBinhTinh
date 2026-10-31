@@ -1,0 +1,1 @@
+package i_repository;import entity.HoaDon;import java.util.List;public interface HoaDon_IDAO {    List<HoaDon> findAllHoaDon();    HoaDon findById(String maHoaDon);    Integer add(HoaDon entity);    void update(HoaDon entity);    void delete(String maHoaDon);    List<HoaDon> findByMaKH(String maKH);}

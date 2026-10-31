@@ -30,7 +30,7 @@ public class PhieuTienPanel extends JPanel {
         setBorder(new EmptyBorder(6, 6, 16, 6));
         String[] cot = laPhieuThu
                 ? new String[]{"Mã", "Ngày thu", "Mã KH", "Khách hàng", "Lý do", "Số tiền", "Hình thức thanh toán", "Trạng thái", "Bác sĩ", "Phụ tá", "Người giới thiệu", "Ngày tạo", "Người tạo"}
-                : new String[]{"Mã phiếu chi", "Nhà cung cấp", "Loại chi tiêu", "Lý do chi", "Số tiền", "Ngày chi", "Trạng thái", "Ngày tạo", "Người tạo"};
+                : new String[]{"Mã phiếu chi", "Nhà cung cấp", "Loại chi tiêu", "Lý do chi", "Số tiền", "Ngày chi", "Hình thức thanh toán", "Trạng thái", "Ngày tạo", "Người tạo"};
         model = ViewTheme.taoModel(cot, true, true);
         if (laPhieuThu) {
             model.addRow(ViewTheme.dongBang(new Object[]{
@@ -196,7 +196,7 @@ public class PhieuTienPanel extends JPanel {
                 Object[] dong = new Object[]{
                     sua ? model.getValueAt(hang, 1) : String.format("%04d", dem++),
                     ncc.getSelectedItem(), loai.getSelectedItem(), lyDo.getText().trim(), tien.getText().trim(),
-                    "12/10/2026", "Đã chi", ViewTheme.bayGio(), DuLieuMau.NGUOI
+                    "12/10/2026", ht.getSelectedItem(), "Đã chi", ViewTheme.bayGio(), DuLieuMau.NGUOI
                 };
                 gan(hang, dong);
             });

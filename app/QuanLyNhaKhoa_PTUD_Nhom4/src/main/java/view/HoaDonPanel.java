@@ -29,8 +29,8 @@ import view.model.HoaDonView;
 public class HoaDonPanel extends JPanel {
 
     private static final String[] COT = {
-        "Mã HĐ", "Ngày lập", "Mã KH", "Khách hàng", "Kế hoạch", "Tổng tiền", "Chiết khấu",
-        "Thành tiền", "Đã thu", "Còn nợ", "Trạng thái", "Bác sĩ", "Ngày tạo"
+        "Mã HĐ", "Ngày lập", "Mã KH", "Mã kế hoạch", "Bác sĩ", "Tổng tiền", "Chiết khấu",
+        "Thành tiền", "Đã thu", "Còn nợ", "Trạng thái", "Ghi chú", "Ngày tạo", "Người tạo"
     };
 
     private final KeHoachDieuTriPanel keHoach;
@@ -440,9 +440,9 @@ public class HoaDonPanel extends JPanel {
 
     private static Object[] dongHoaDon(HoaDonView hd) {
         return new Object[]{
-            hd.ma, hd.ngayLap, hd.maKh, hd.tenKh, hd.keHoach,
+            hd.ma, hd.ngayLap, hd.maKh, hd.keHoach, hd.bacSi,
             ViewTheme.tien(hd.tong), ViewTheme.tien(hd.chietKhau), ViewTheme.tien(hd.thanhTien),
-            ViewTheme.tien(hd.daThu), ViewTheme.tien(hd.conNo()), hd.trangThai, hd.bacSi, hd.ngayTao
+            ViewTheme.tien(hd.daThu), ViewTheme.tien(hd.conNo()), hd.trangThai, hd.ghiChu, hd.ngayTao, DuLieuMau.NGUOI
         };
     }
 

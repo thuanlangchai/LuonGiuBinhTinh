@@ -1,0 +1,1 @@
+package i_repository;import entity.NhaCungCap;import java.util.List;public interface NhaCungCap_IDAO {    List<NhaCungCap> findAllNhaCungCap();    NhaCungCap findById(String maNhaCungCap);    Integer add(NhaCungCap entity);    void update(NhaCungCap entity);    void delete(String maNhaCungCap);}

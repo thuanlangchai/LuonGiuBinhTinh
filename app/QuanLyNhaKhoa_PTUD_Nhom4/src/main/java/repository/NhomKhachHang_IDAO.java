@@ -1,0 +1,1 @@
+package i_repository;import entity.NhomKhachHang;import java.util.List;public interface NhomKhachHang_IDAO {    List<NhomKhachHang> findAllNhomKhachHang();    NhomKhachHang findById(String maNhom);    Integer add(NhomKhachHang entity);    void update(NhomKhachHang entity);    void delete(String maNhom);}

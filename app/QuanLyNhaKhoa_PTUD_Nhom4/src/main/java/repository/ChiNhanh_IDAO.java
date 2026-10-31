@@ -1,0 +1,1 @@
+package i_repository;import entity.ChiNhanh;import java.util.List;public interface ChiNhanh_IDAO {    List<ChiNhanh> findAllChiNhanh();    ChiNhanh findById(String maChiNhanh);    Integer add(ChiNhanh entity);    void update(ChiNhanh entity);    void delete(String maChiNhanh);}
