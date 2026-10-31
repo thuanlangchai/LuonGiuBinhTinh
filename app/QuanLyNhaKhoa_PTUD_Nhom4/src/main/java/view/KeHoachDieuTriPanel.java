@@ -1,7 +1,8 @@
 package view;
 
-import entity.HangDT;
-import entity.HoSo;
+import view.model.CauHinhTrang;
+import view.model.HangDT;
+import view.model.HoSo;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
@@ -32,6 +33,7 @@ import javax.swing.border.EmptyBorder;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 import javax.swing.table.DefaultTableModel;
+import view.model.HoaDonView;
 
 public class KeHoachDieuTriPanel extends JPanel {
 
@@ -230,26 +232,25 @@ public class KeHoachDieuTriPanel extends JPanel {
             return;
         }
         Window w = SwingUtilities.getWindowAncestor(this);
-        h = new HopThoai(w, "Thêm kế hoạch điều trị", "+ Thêm",
-                "Tôi muốn tiếp tục thêm dịch vụ vào kế hoạch này");
+        h = new HopThoai(w, "Thêm kế hoạch điều trị", "+ Thêm");
         JComboBox<String> ngay = h.chon("Ngày kế hoạch", true, homNay(), "19/10/2026", "27/09/2026");
         ngay.setEditable(true);
         JComboBox<String> rang = h.chon("Răng", false, tenRang());
-        dichVu = h.chon("Dịch vụ", true, tenDichVu());        
+        dichVu = h.chon("Dịch vụ", true, tenDichVu());
         sl = h.chu("Số lượng", "1", true);
-        donGia = h.chu("Đơn giá", ViewTheme.tien(giaDichVu(String.valueOf(dichVu.getSelectedItem()))), true);        
+        donGia = h.chu("Đơn giá", ViewTheme.tien(giaDichVu(String.valueOf(dichVu.getSelectedItem()))), true);
         sl.getDocument().addDocumentListener(new DocumentListener() {
             @Override
-            public void insertUpdate(DocumentEvent e) {           
+            public void insertUpdate(DocumentEvent e) {
                 setDonGia();
             }
 
             @Override
-            public void removeUpdate(DocumentEvent e) {                
+            public void removeUpdate(DocumentEvent e) {
             }
 
             @Override
-            public void changedUpdate(DocumentEvent e) {                
+            public void changedUpdate(DocumentEvent e) {
             }
         });
         donGia.setEditable(false);
@@ -299,7 +300,7 @@ public class KeHoachDieuTriPanel extends JPanel {
         if (hienTai == null) {
             return;
         }
-        List<HoaDonDuLieu.HoaDon> no = HoaDonDuLieu.conNoTheoKhach(hienTai.ma);
+        List<HoaDonView> no = HoaDonDuLieu.conNoTheoKhach(hienTai.ma);
         if (no.isEmpty()) {
             if (!hangChuaXuat(hienTai.ma).isEmpty()) {
                 int lap = JOptionPane.showConfirmDialog(this,
@@ -313,7 +314,7 @@ public class KeHoachDieuTriPanel extends JPanel {
             }
             return;
         }
-        HoaDonDuLieu.HoaDon hd = no.get(0);
+        HoaDonView hd = no.get(0);
         if (no.size() > 1) {
             String[] nhan = new String[no.size()];
             for (int i = 0; i < no.size(); i++) {
@@ -324,7 +325,7 @@ public class KeHoachDieuTriPanel extends JPanel {
             if (chon == null) {
                 return;
             }
-            for (HoaDonDuLieu.HoaDon item : no) {
+            for (HoaDonView item : no) {
                 if (item.nhan().equals(chon)) {
                     hd = item;
                     break;
@@ -379,7 +380,7 @@ public class KeHoachDieuTriPanel extends JPanel {
             return;
         }
         Window w = SwingUtilities.getWindowAncestor(this);
-        HopThoai h = new HopThoai(w, "Cập nhật điều trị", "Lưu", null);
+        HopThoai h = new HopThoai(w, "Cập nhật điều trị", "Lưu");
         JTextField ngay = h.chu("Ngày", dt.ngay, true);
         JComboBox<String> rang = h.chon("Răng", false, tenRang());
         rang.setSelectedItem(dt.rang);
@@ -530,10 +531,9 @@ public class KeHoachDieuTriPanel extends JPanel {
         }
     }
 
-    private void setDonGia() {          
-        long giaTien = giaDichVu(String.valueOf(dichVu.getSelectedItem())) * Integer.parseInt(sl.getText());        
+    private void setDonGia() {
+        long giaTien = giaDichVu(String.valueOf(dichVu.getSelectedItem())) * Integer.parseInt(sl.getText());
         donGia.setText(ViewTheme.tien(giaTien));
     }
-
 
 }

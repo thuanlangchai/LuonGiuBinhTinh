@@ -1,5 +1,6 @@
 package view;
 
+import view.model.CauHinhTrang;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -45,18 +46,18 @@ public final class DuLieuMau {
                 }, null));
 
         dat(new CauHinhTrang("nhomdichvu", "Nhóm dịch vụ", "Tìm nhóm dịch vụ...", "Thêm nhóm dịch vụ",
-                new String[]{"Tên nhóm dịch vụ", "Icon dịch vụ", "Lịch chăm sóc khách hàng", "Mô tả thêm"},
+                new String[]{"Tên nhóm dịch vụ", "Mô tả thêm"},
                 new Object[][]{
-                    {"ĐIỀU TRỊ NHA CHU", "", "", ""},
-                    {"PHỤC HÌNH RĂNG SỨ", "", "", ""},
-                    {"NHA KHOA TRẺ EM", "", "", ""},
-                    {"PHỤC HÌNH THÁO LẮP", "", "", ""},
-                    {"CHUẨN ĐOÁN HÌNH ẢNH", "", "", ""},
-                    {"NHA KHOA THẨM MỸ", "", "", ""},
-                    {"CHỈNH NHA", "", "", ""},
-                    {"PHỤC HÌNH CỐ ĐỊNH", "", "", ""},
-                    {"PHẪU THUẬT", "", "", ""},
-                    {"IMPLANT", "", "", ""}
+                    {"ĐIỀU TRỊ NHA CHU", ""},
+                    {"PHỤC HÌNH RĂNG SỨ", ""},
+                    {"NHA KHOA TRẺ EM", ""},
+                    {"PHỤC HÌNH THÁO LẮP", ""},
+                    {"CHUẨN ĐOÁN HÌNH ẢNH", ""},
+                    {"NHA KHOA THẨM MỸ", ""},
+                    {"CHỈNH NHA", ""},
+                    {"PHỤC HÌNH CỐ ĐỊNH", ""},
+                    {"PHẪU THUẬT", ""},
+                    {"IMPLANT", ""}
                 }, null));
 
         dat(new CauHinhTrang("nhanvien", "Nhân viên", "Tìm nhân viên...", "Thêm nhân viên",
@@ -104,11 +105,11 @@ public final class DuLieuMau {
                 new Object[][]{{"000001", "Kiểm Kho", "Đã duyệt", NGUOI, "28 Sep 2026 08:45:49 PM"}}, null));
 
         dat(new CauHinhTrang("loaisanpham", "Loại sản phẩm", "Tìm loại sản phẩm...", "Thêm loại sản phẩm",
-                new String[]{"Loại sản phẩm", "Loại kho"},
+                new String[]{"Loại sản phẩm"},
                 new Object[][]{
-                    {"Thuốc", "Thuốc"},
-                    {"Vật liệu tiêu hao", "Vật liệu tiêu hao"},
-                    {"Thiết bị nha khoa", "Thiết bị nha khoa"}
+                    {"Thuốc"},
+                    {"Vật liệu tiêu hao"},
+                    {"Thiết bị nha khoa"}
                 }, null));
 
         dat(new CauHinhTrang("thuoc", "Thuốc", "Tìm thuốc...", "Thêm thuốc",

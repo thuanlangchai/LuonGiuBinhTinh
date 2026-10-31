@@ -12,6 +12,7 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
+import javax.swing.SwingUtilities;
 import javax.swing.border.EmptyBorder;
 import javax.swing.table.DefaultTableModel;
 
@@ -162,9 +163,9 @@ public class PhieuTienPanel extends JPanel {
 
     private void moForm(int hang) {
         boolean sua = hang >= 0;
-        HopThoai h = new HopThoai(javax.swing.SwingUtilities.getWindowAncestor(this),
+        HopThoai h = new HopThoai(SwingUtilities.getWindowAncestor(this),
                 sua ? "Cập nhật phiếu" : (laPhieuThu ? "Thêm phiếu thu" : "Thêm phiếu chi"),
-                sua ? "Lưu" : "Thêm", null);
+                sua ? "Lưu" : "Thêm");
         if (laPhieuThu) {
             JComboBox<String> khach = h.chon("Khách hàng", true, DuLieuMau.KHACH);
             JTextField lyDo = h.chu("Lý do", sua ? String.valueOf(model.getValueAt(hang, 5)) : "", false);

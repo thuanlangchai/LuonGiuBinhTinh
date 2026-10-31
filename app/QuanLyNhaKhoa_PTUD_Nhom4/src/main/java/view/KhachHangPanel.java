@@ -26,8 +26,8 @@ public class KhachHangPanel extends JPanel {
 
     private static final String[] COT = {
         "Mã KH", "Họ và tên", "Giới tính", "Ngày sinh", "Năm sinh", "Số điện thoại", "Địa chỉ email", "Địa chỉ",
-        "Ghi chú", "Đánh giá", "Nhóm khách hàng", "Nhãn", "Mã gia đình", "Nguồn", "Chi nhánh", "Lý do đến khám", "Điều trị",
-        "Số lần", "Lần khám gần nhất", "Khai thác", "CSKH(Lần)", "Lịch hẹn", "Ngày tạo"
+        "Nhóm khách hàng", "Chi nhánh", "Lý do đến khám", "Điều trị",
+        "Lịch hẹn", "Ngày tạo"
     };
 
     private final KeHoachDieuTriPanel keHoach;
@@ -122,12 +122,11 @@ public class KhachHangPanel extends JPanel {
         model = ViewTheme.taoModel(COT, true, true);
         model.addRow(ViewTheme.dongBang(new Object[]{
             "0001", "Lê Trần Quang Thanh", "Nam", "2006", "2006", "03xxxx2808", "thanhqt@gmail.com", "28 Lê Lai",
-            "", "", "PTUD", "Nhổ răng khôn", "Cư dân", "CN1", "CN1", "Đau Răng", "1 x Thăm khám - Tư vấn",
-            "0", "100%", "0", "0", "Có", "27/09/2026"
+            "VIP", "CN1", "Đau Răng", "1 x Thăm khám - Tư vấn", "Có", "27/09/2026"
         }, true, true));
         model.addRow(ViewTheme.dongBang(new Object[]{
             "0002", "Hồ Trợ - Support", "Nam", "", "", "09xxxx8352", "minh@maysoft.vn", "29 Nội Khu Mỹ Toàn - Q7 - TP.HCM",
-            "", "", "PTUD", "", "", "", "", "", "", "0", "0%", "0", "0", "Có", "27/09/2026"
+            "PTUD","CN1", "Buồn", "2x Cài Hoa", "Có", "27/09/2026"
         }, true, true));
         bang = new JTable(model);
         ViewTheme.trangTriBang(bang);

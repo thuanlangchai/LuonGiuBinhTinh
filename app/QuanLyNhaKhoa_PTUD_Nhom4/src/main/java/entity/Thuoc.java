@@ -7,30 +7,18 @@ public class Thuoc {
     private String maDonVi;
     private long gia;
     private String cachDung;
-//    private String maThuocGoc; xóa bảng thuốc gốc
 
     public Thuoc() {
     }
 
-    
-    
-	public Thuoc(String maThuoc, String tenThuoc, String maDonVi, long gia, String cachDung) {
-		super();
-		this.maThuoc = maThuoc;
-		this.tenThuoc = tenThuoc;
-		this.maDonVi = maDonVi;
-		this.gia = gia;
-		this.cachDung = cachDung;
-	}
-
-//    public Thuoc(String maThuoc, String tenThuoc, String maDonVi, long gia, String cachDung, String maThuocGoc) {
-//        this.maThuoc = maThuoc;
-//        this.tenThuoc = tenThuoc;
-//        this.maDonVi = maDonVi;
-//        this.gia = gia;
-//        this.cachDung = cachDung;
-//        this.maThuocGoc = maThuocGoc;
-//    }
+    public Thuoc(String maThuoc, String tenThuoc, String maDonVi, long gia, String cachDung) {
+        super();
+        this.maThuoc = maThuoc;
+        this.tenThuoc = tenThuoc;
+        this.maDonVi = maDonVi;
+        this.gia = gia;
+        this.cachDung = cachDung;
+    }
 
     public String getMaThuoc() {
         return maThuoc;
@@ -72,11 +60,4 @@ public class Thuoc {
         this.cachDung = cachDung;
     }
 
-//    public String getMaThuocGoc() {
-//        return maThuocGoc;
-//    }
-//
-//    public void setMaThuocGoc(String maThuocGoc) {
-//        this.maThuocGoc = maThuocGoc;
-//    }
 }

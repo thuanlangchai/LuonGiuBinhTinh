@@ -9,13 +9,11 @@ public class KhachHang {
     private String hoTen;
     private String gioiTinh;
     private LocalDate ngaySinh;
-//    private Integer namSinh;
     private String soDienThoai;
     private String email;
     private String diaChi;
     private String cccd;
     private String ghiChu;
-//    private String danhGia;
     private String maNhom;
     private String maChiNhanh;
     private String lyDoKham;

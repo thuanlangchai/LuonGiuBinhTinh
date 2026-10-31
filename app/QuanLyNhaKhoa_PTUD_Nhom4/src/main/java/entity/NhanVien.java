@@ -5,11 +5,6 @@ public class NhanVien {
     private String maNhanVien;
     private String chucDanh;
     private String hoTen;
-    private String vietTat; //Tham khảo nên bỏ bảng cột này
-    private double hoaHongChinh; //????
-    private double hoaHongPhu;	//?????
-    private double hoaHongTuVan; //????
-    private double hoaHongSale; // ?????
     private String email;
     private String soDienThoai;
     private String vaiTro;
@@ -19,15 +14,10 @@ public class NhanVien {
     public NhanVien() {
     }
 
-    public NhanVien(String maNhanVien, String chucDanh, String hoTen, String vietTat, double hoaHongChinh, double hoaHongPhu, double hoaHongTuVan, double hoaHongSale, String email, String soDienThoai, String vaiTro, boolean kichHoat, String maChiNhanh) {
+    public NhanVien(String maNhanVien, String chucDanh, String hoTen, String email, String soDienThoai, String vaiTro, boolean kichHoat, String maChiNhanh) {
         this.maNhanVien = maNhanVien;
         this.chucDanh = chucDanh;
         this.hoTen = hoTen;
-        this.vietTat = vietTat;
-        this.hoaHongChinh = hoaHongChinh;
-        this.hoaHongPhu = hoaHongPhu;
-        this.hoaHongTuVan = hoaHongTuVan;
-        this.hoaHongSale = hoaHongSale;
         this.email = email;
         this.soDienThoai = soDienThoai;
         this.vaiTro = vaiTro;
@@ -57,46 +47,6 @@ public class NhanVien {
 
     public void setHoTen(String hoTen) {
         this.hoTen = hoTen;
-    }
-
-    public String getVietTat() {
-        return vietTat;
-    }
-
-    public void setVietTat(String vietTat) {
-        this.vietTat = vietTat;
-    }
-
-    public double getHoaHongChinh() {
-        return hoaHongChinh;
-    }
-
-    public void setHoaHongChinh(double hoaHongChinh) {
-        this.hoaHongChinh = hoaHongChinh;
-    }
-
-    public double getHoaHongPhu() {
-        return hoaHongPhu;
-    }
-
-    public void setHoaHongPhu(double hoaHongPhu) {
-        this.hoaHongPhu = hoaHongPhu;
-    }
-
-    public double getHoaHongTuVan() {
-        return hoaHongTuVan;
-    }
-
-    public void setHoaHongTuVan(double hoaHongTuVan) {
-        this.hoaHongTuVan = hoaHongTuVan;
-    }
-
-    public double getHoaHongSale() {
-        return hoaHongSale;
-    }
-
-    public void setHoaHongSale(double hoaHongSale) {
-        this.hoaHongSale = hoaHongSale;
     }
 
     public String getEmail() {
@@ -138,4 +88,6 @@ public class NhanVien {
     public void setMaChiNhanh(String maChiNhanh) {
         this.maChiNhanh = maChiNhanh;
     }
+
+    
 }

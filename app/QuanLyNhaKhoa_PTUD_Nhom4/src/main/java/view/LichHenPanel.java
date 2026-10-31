@@ -26,6 +26,7 @@ import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 import javax.swing.border.EmptyBorder;
 import javax.swing.table.DefaultTableModel;
+import view.model.CuocHen;
 
 public class LichHenPanel extends JPanel {
 
@@ -553,7 +554,7 @@ public class LichHenPanel extends JPanel {
 
     private void moForm(CuocHen cu, LocalDateTime luc, String trangThaiMacDinh) {
         HopThoai h = new HopThoai(SwingUtilities(), cu == null ? "Thêm lịch hẹn" : "Cập nhật lịch hẹn",
-                cu == null ? "Thêm" : "Lưu", null);
+                cu == null ? "Thêm" : "Lưu");
         JComboBox<String> kh = h.chon("Khách hàng", false, DuLieuMau.KHACH);
         JComboBox<String> dv = h.chonVoiNut("Dịch vụ", false, DuLieuMau.TEN_DV);
         JTextField ghi = h.chu("Ghi chú", cu == null ? "" : cu.ghiChu, false);
@@ -677,23 +678,4 @@ public class LichHenPanel extends JPanel {
         return ViewTheme.XANH;
     }
 
-    private static class CuocHen {
-        private String congViec;
-        private String khach;
-        private LocalDateTime batDau;
-        private int phut;
-        private String bacSi;
-        private String ghiChu;
-        private String trangThai;
-
-        private CuocHen(String congViec, String khach, LocalDateTime batDau, int phut, String bacSi, String ghiChu, String trangThai) {
-            this.congViec = congViec;
-            this.khach = khach;
-            this.batDau = batDau;
-            this.phut = phut;
-            this.bacSi = bacSi;
-            this.ghiChu = ghiChu;
-            this.trangThai = trangThai;
-        }
-    }
 }

@@ -5,7 +5,7 @@ import java.time.LocalDateTime;
 
 public class HoaDon {
 	
-    private String maHoaDon; //Thiếu maHoaDon trong view 
+    private String maHoaDon;
     private LocalDate ngayLap;
     private String maKH;
     private String maKeHoach;

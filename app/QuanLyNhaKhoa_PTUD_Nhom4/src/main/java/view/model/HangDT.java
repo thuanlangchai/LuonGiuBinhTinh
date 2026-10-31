@@ -1,7 +1,6 @@
-package entity;
+package view.model;
 
 public class HangDT {
-	//chưa rõ tác dụng 
     public String ngay;
     public String rang;
     public String dichVu;
