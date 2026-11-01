@@ -64,7 +64,7 @@ public class DsToaThuocPanel extends JPanel {
         tim.setPreferredSize(new Dimension(360, 32));
         tim.addActionListener(e -> loc());
         cboKhach.addItem("Khách hàng");
-        for (String k : DuLieuMau.KHACH) {
+        for (String k : DuLieuMau.dsKhach()) {
             cboKhach.addItem(k);
         }
         ViewTheme.vienHop(cboKhach);

@@ -144,6 +144,98 @@ public final class DuLieuMau {
         return DS.get(ma);
     }
 
+    /** Khách hàng từ DB, fallback mock. */
+    public static String[] dsKhach() {
+        try {
+            List<String> kq = new ArrayList<>();
+            for (entity.KhachHang kh : new service.impl.KhachHang_Service().findAllKhachHang()) {
+                String sdt = kh.getSoDienThoai() == null || kh.getSoDienThoai().isBlank()
+                        ? "" : " - " + kh.getSoDienThoai();
+                kq.add(kh.getMaKH() + " - " + kh.getHoTen() + sdt);
+            }
+            if (!kq.isEmpty()) {
+                return kq.toArray(new String[0]);
+            }
+        } catch (Exception ignored) {
+        }
+        return KHACH;
+    }
+
+    /** Tên bác sĩ / nhân viên từ DB, fallback mock. */
+    public static String[] dsBacSi() {
+        try {
+            List<String> kq = new ArrayList<>();
+            for (entity.NhanVien nv : new service.impl.DanhMuc_Service().findAllNhanVien()) {
+                if (nv.getHoTen() != null && !nv.getHoTen().isBlank()) {
+                    kq.add(nv.getHoTen());
+                }
+            }
+            if (!kq.isEmpty()) {
+                return kq.toArray(new String[0]);
+            }
+        } catch (Exception ignored) {
+        }
+        return BAC_SI;
+    }
+
+    /** Nhóm dịch vụ từ DB, fallback mock. */
+    public static String[] dsNhomDv() {
+        try {
+            List<String> kq = new ArrayList<>();
+            for (entity.NhomDichVu n : new service.impl.DanhMuc_Service().findAllNhomDichVu()) {
+                if (n.getTenNhomDichVu() != null && !n.getTenNhomDichVu().isBlank()) {
+                    kq.add(n.getTenNhomDichVu());
+                }
+            }
+            if (!kq.isEmpty()) {
+                return kq.toArray(new String[0]);
+            }
+        } catch (Exception ignored) {
+        }
+        return NHOM_DV;
+    }
+
+    /** Tên sản phẩm từ DB, fallback mock. */
+    public static String[] dsSanPham() {
+        try {
+            List<String> kq = new ArrayList<>();
+            for (entity.SanPham sp : new service.impl.DanhMuc_Service().findAllSanPham()) {
+                if (sp.getTenSanPham() != null && !sp.getTenSanPham().isBlank()) {
+                    kq.add(sp.getTenSanPham());
+                }
+            }
+            if (!kq.isEmpty()) {
+                return kq.toArray(new String[0]);
+            }
+        } catch (Exception ignored) {
+        }
+        return new String[]{"Găng tay", "Khẩu trang", "Mũi khoan", "aptx 4869"};
+    }
+
+    public static String maBacSiTheoTen(String ten) {
+        if (ten == null || ten.isBlank()) {
+            return "";
+        }
+        try {
+            for (entity.NhanVien nv : new service.impl.DanhMuc_Service().findAllNhanVien()) {
+                if (ten.equals(nv.getHoTen())) {
+                    return nv.getMaNhanVien();
+                }
+            }
+        } catch (Exception ignored) {
+        }
+        if ("Lê Trần Quang Thanh".equals(ten)) {
+            return "NV03";
+        }
+        if ("Hồ Văn Khánh".equals(ten)) {
+            return "NV02";
+        }
+        if ("Nguyễn Khắc Duy".equals(ten)) {
+            return "NV01";
+        }
+        return "";
+    }
+
     private static void dat(CauHinhTrang c) {
         DS.put(c.ma, c);
     }

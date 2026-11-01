@@ -26,11 +26,11 @@ public class ToaThuocPanel extends JPanel {
     private final JLabel thanhTien = new JLabel("0");
     private final JPanel dsThuoc = new JPanel();
     private final JTextField tim = new ONhap("Tìm thuốc ...", 16);
-    private final JComboBox<String> khach = new JComboBox<String>(DuLieuMau.KHACH);
+    private final JComboBox<String> khach = new JComboBox<String>(DuLieuMau.dsKhach());
     private final JTextField chanDoan = new JTextField();
     private final JTextField ghi = new JTextField();
     private final JComboBox<String> hinhThuc = new JComboBox<String>(new String[]{"Tiền mặt", "Thẻ", "Chuyển khoản"});
-    private final JComboBox<String> bacSi = new JComboBox<String>(DuLieuMau.BAC_SI);
+    private final JComboBox<String> bacSi = new JComboBox<String>(DuLieuMau.dsBacSi());
     private final JCheckBox nhanPK = new JCheckBox("KH nhận thuốc tại PK", true);
     private final Runnable sauLuu;
 
@@ -64,9 +64,7 @@ public class ToaThuocPanel extends JPanel {
         dauTrai.add(all, BorderLayout.SOUTH);
         dsThuoc.setLayout(new javax.swing.BoxLayout(dsThuoc, javax.swing.BoxLayout.Y_AXIS));
         dsThuoc.setBackground(ViewTheme.TRANG);
-        themTheThuoc("0001 - aptx 4869", "36,000", "36000");
-        themTheThuoc("0002 - Paracetamol 500mg", "2,000", "2000");
-        themTheThuoc("0003 - Amoxicillin 500mg", "5,000", "5000");
+        napThuocTuDb();
         tim.getDocument().addDocumentListener(new javax.swing.event.DocumentListener() {
             @Override
             public void insertUpdate(javax.swing.event.DocumentEvent e) {
@@ -192,11 +190,9 @@ public class ToaThuocPanel extends JPanel {
         tt.tenKh = tenKh;
         tt.maChanDoan = chanDoan.getText().trim();
         tt.tenBacSi = String.valueOf(bacSi.getSelectedItem());
-        tt.maBacSi = "NV03";
-        if ("Hồ Văn Khánh".equals(tt.tenBacSi)) {
-            tt.maBacSi = "NV02";
-        } else if ("Nguyễn Khắc Duy".equals(tt.tenBacSi)) {
-            tt.maBacSi = "NV01";
+        tt.maBacSi = DuLieuMau.maBacSiTheoTen(tt.tenBacSi);
+        if (tt.maBacSi.isEmpty()) {
+            tt.maBacSi = "NV03";
         }
         tt.hinhThucThanhToan = String.valueOf(hinhThuc.getSelectedItem());
         tt.nhanTaiPhongKham = nhanPK.isSelected();
@@ -236,6 +232,18 @@ public class ToaThuocPanel extends JPanel {
             return Long.parseLong(String.valueOf(v).replace(",", "").trim());
         } catch (NumberFormatException e) {
             return 0;
+        }
+    }
+
+    private void napThuocTuDb() {
+        java.util.List<entity.Thuoc> ds = new service.impl.DanhMuc_Service().findAllThuoc();
+        if (ds.isEmpty()) {
+            themTheThuoc("0001 - aptx 4869", "36,000", "36000");
+            return;
+        }
+        for (entity.Thuoc t : ds) {
+            String ten = t.getMaThuoc() + " - " + t.getTenThuoc();
+            themTheThuoc(ten, ViewTheme.tien(t.getGia()), String.valueOf(t.getGia()));
         }
     }
 

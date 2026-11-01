@@ -34,7 +34,13 @@ public class NhapKhoPanel extends JPanel {
         JLabel tieu = ViewTheme.tieuDeTrang(tieuDe);
         JTextField ngay = o("2026-09-28");
         JComboBox<String> loai = new JComboBox<String>(new String[]{"Thuốc", "Vật liệu tiêu hao", "Thiết bị nha khoa", "Công cụ, dụng cụ"});
-        JComboBox<String> ncc = new JComboBox<String>(new String[]{"STRAUMANN", "Nhà thuốc Trung tâm", "Dental Supply"});
+        JComboBox<String> ncc = new JComboBox<>();
+        for (entity.NhaCungCap n : new service.impl.Kho_Service().findAllNhaCungCap()) {
+            ncc.addItem(n.getTenNhaCungCap());
+        }
+        if (ncc.getItemCount() == 0) {
+            ncc.addItem("STRAUMANN");
+        }
         JTextField lyDo = o("");
         ViewTheme.vienHop(loai);
         ViewTheme.vienHop(ncc);
@@ -152,7 +158,7 @@ public class NhapKhoPanel extends JPanel {
         p.setOpaque(false);
         p.setBorder(new EmptyBorder(4, 0, 4, 0));
         p.setMaximumSize(new Dimension(Integer.MAX_VALUE, 42));
-        JComboBox<String> sp = new JComboBox<String>(new String[]{"Găng tay", "Khẩu trang", "Mũi khoan", "aptx 4869"});
+        JComboBox<String> sp = new JComboBox<String>(DuLieuMau.dsSanPham());
         JTextField sl = o("0");
         JTextField gia = o("0");
         JTextField tien = o("0");

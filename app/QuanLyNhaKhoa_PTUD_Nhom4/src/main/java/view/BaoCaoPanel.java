@@ -102,11 +102,37 @@ public class BaoCaoPanel extends JPanel {
         JPanel p = new JPanel(new BorderLayout(0, 8));
         p.setOpaque(false);
         p.add(dau(tieu, false), BorderLayout.NORTH);
+        service.impl.BaoCao_Service bc = new service.impl.BaoCao_Service();
+        long tongThu = 0;
+        long tongChi = 0;
+        java.util.List<Object[]> rows = new java.util.ArrayList<>();
+        int stt = 1;
+        for (entity.PhieuThu pt : bc.danhSachPhieuThu()) {
+            tongThu += pt.getSoTien();
+            rows.add(new Object[]{
+                String.valueOf(stt++), pt.getMaPhieuThu(), NgayUtil.fmt(pt.getNgayThu()),
+                pt.getMaKH(), "", pt.getLyDo(),
+                ViewTheme.tien(pt.getSoTien()), "0", "0", "0", ViewTheme.tien(pt.getSoTien()),
+                "0", "0", "0", "0", "0"
+            });
+        }
+        for (entity.PhieuChi pc : bc.danhSachPhieuChi()) {
+            tongChi += pc.getSoTien();
+            rows.add(new Object[]{
+                String.valueOf(stt++), pc.getMaPhieuChi(), NgayUtil.fmt(pc.getNgayChi()),
+                "", pc.getMaNhaCungCap(), pc.getLyDoChi(),
+                "0", "0", "0", "0", "0",
+                ViewTheme.tien(pc.getSoTien()), "0", "0", "0", ViewTheme.tien(pc.getSoTien())
+            });
+        }
+        rows.add(new Object[]{"", "", "", "", "", "Tổng tiền",
+            ViewTheme.tien(tongThu), "0", "0", "0", ViewTheme.tien(tongThu),
+            ViewTheme.tien(tongChi), "0", "0", "0", ViewTheme.tien(tongChi)});
         JPanel so = new JPanel(new GridLayout(1, 3, 8, 0));
         so.setOpaque(false);
-        so.add(oSo("Tổng thu", "36,000"));
-        so.add(oSo("Tổng chi", "0"));
-        so.add(oSo("Tổng (Thu - chi)", "36,000"));
+        so.add(oSo("Tổng thu", ViewTheme.tien(tongThu)));
+        so.add(oSo("Tổng chi", ViewTheme.tien(tongChi)));
+        so.add(oSo("Tổng (Thu - chi)", ViewTheme.tien(tongThu - tongChi)));
         JPanel tren = new JPanel(new BorderLayout(12, 0));
         tren.setOpaque(false);
         tren.add(oNgay(), BorderLayout.WEST);
@@ -114,10 +140,7 @@ public class BaoCaoPanel extends JPanel {
         String[] cot = {"#", "Mã phiếu", "Ngày", "Khách hàng", "Nhà cung cấp", "Lý do",
             "Thu - Tiền mặt", "Thu - Thẻ", "Thu - Chuyển khoản", "Thu - Trả góp", "Thu - Tổng",
             "Chi - Tiền mặt", "Chi - Thẻ", "Chi - Chuyển khoản", "Chi - Trả góp", "Chi - Tổng"};
-        Object[][] dong = {
-            {"1", "0002", "28/09/2026", "Lê Trần Quang Thanh", "", "3 x aptx 4869 (36000)", "36,000", "0", "0", "0", "36,000", "0", "0", "0", "0", "0"},
-            {"", "", "", "", "", "Tổng tiền", "36,000", "0", "0", "0", "36,000", "0", "0", "0", "0", "0"}
-        };
+        Object[][] dong = rows.toArray(new Object[0][]);
         JPanel than = new JPanel(new BorderLayout(0, 8));
         than.setOpaque(false);
         than.add(tren, BorderLayout.NORTH);
@@ -307,35 +330,61 @@ public class BaoCaoPanel extends JPanel {
     }
 
     private Object[][] dongCua(String maBaoCao) {
+        service.impl.BaoCao_Service bc = new service.impl.BaoCao_Service();
         if ("lichhen".equals(maBaoCao)) {
-            return new Object[][]{{"1", "Lê Trần Quang Thanh", "Chỉnh nha", "Lê Trần Quang Thanh", "28/09/2026 08:00", "Đang điều trị"}};
+            java.util.List<Object[]> rows = new java.util.ArrayList<>();
+            int i = 1;
+            for (entity.LichHen lh : bc.danhSachLichHen()) {
+                rows.add(new Object[]{
+                    String.valueOf(i++), lh.getMaKH(), "", lh.getMaBacSi(),
+                    NgayUtil.fmtFull(lh.getBatDau()), lh.getTrangThai()
+                });
+            }
+            return rows.isEmpty() ? new Object[][]{{"", "", "", "", "", ""}} : rows.toArray(new Object[0][]);
         }
         if ("dieutri".equals(maBaoCao)) {
-            return new Object[][]{{"1", "Lê Trần Quang Thanh", "Thăm khám - Tư vấn", "27/09/2026", "Lê Trần Quang Thanh", "200,000"}};
+            java.util.List<Object[]> rows = new java.util.ArrayList<>();
+            int i = 1;
+            for (entity.KeHoachDieuTri kh : bc.danhSachKeHoach()) {
+                for (entity.ChiTietKeHoachDieuTri ct : bc.chiTietTheoKeHoach(kh.getMaKeHoach())) {
+                    rows.add(new Object[]{
+                        String.valueOf(i++), kh.getMaKH(), ct.getMaDichVu(),
+                        NgayUtil.fmt(ct.getNgay()), kh.getMaBacSi(), ViewTheme.tien(ct.getThanhTien())
+                    });
+                }
+            }
+            return rows.isEmpty() ? new Object[][]{{"", "", "", "", "", "0"}} : rows.toArray(new Object[0][]);
         }
         if ("congno".equals(maBaoCao)) {
             return HoaDonDuLieu.dongCongNo();
         }
         if ("chiphi".equals(maBaoCao)) {
-            return new Object[][]{{"", "", "", "Tổng tiền", "0"}};
+            long tong = 0;
+            for (entity.PhieuChi pc : bc.danhSachPhieuChi()) {
+                tong += pc.getSoTien();
+            }
+            return new Object[][]{{"", "", "", "Tổng tiền", ViewTheme.tien(tong)}};
         }
         if ("nhatky".equals(maBaoCao)) {
-            return new Object[][]{{"1", "28/09/2026 09:34", DuLieuMau.NGUOI, "Tạo phiếu thu", "0002"}};
+            java.util.List<entity.PhieuThu> pts = bc.danhSachPhieuThu();
+            if (pts.isEmpty()) {
+                return new Object[][]{{"", "", "", "", ""}};
+            }
+            entity.PhieuThu p = pts.get(0);
+            return new Object[][]{{"1", NgayUtil.fmtFull(p.getNgayTao()), p.getNguoiTao(), "Tạo phiếu thu", p.getMaPhieuThu()}};
         }
-        if ("sale".equals(maBaoCao)) {
-            return new Object[][]{{"1", "Nguyễn Khắc Duy", "1", "36,000"}};
-        }
-        if ("nguon".equals(maBaoCao)) {
-            return new Object[][]{{"1", "Cư dân", "1", "36,000"}};
-        }
-        if ("baocaolabo".equals(maBaoCao)) {
-            return new Object[][]{{"1", "0001", "STRAUMANN", "Nguyễn Minh Lý", "Mão sứ răng 11", "Mới", "28/09/2026"}};
+        if ("sale".equals(maBaoCao) || "nguon".equals(maBaoCao) || "baocaolabo".equals(maBaoCao)) {
+            return new Object[][]{{"", "", "", "0"}};
         }
         if ("tongquan".equals(maBaoCao)) {
+            long doanhThu = 0;
+            for (entity.HoaDon hd : bc.danhSachHoaDon()) {
+                doanhThu += hd.getThanhTien();
+            }
             return new Object[][]{
-                {"1", "Lịch hẹn trong ngày", "3", ""},
-                {"2", "Khách hàng", "2", ""},
-                {"3", "Doanh thu", "", "36,000"}
+                {"1", "Lịch hẹn", String.valueOf(bc.danhSachLichHen().size()), ""},
+                {"2", "Khách hàng", String.valueOf(new service.impl.KhachHang_Service().findAllKhachHang().size()), ""},
+                {"3", "Doanh thu", "", ViewTheme.tien(doanhThu)}
             };
         }
         return new Object[][]{{"", "", "Tổng", "0"}};

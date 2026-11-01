@@ -26,6 +26,12 @@ import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 import javax.swing.border.EmptyBorder;
 import javax.swing.table.DefaultTableModel;
+import entity.KhachHang;
+import entity.LichHen;
+import entity.NhanVien;
+import service.impl.DanhMuc_Service;
+import service.impl.KhachHang_Service;
+import service.impl.LichHen_Service;
 import view.model.CuocHen;
 
 public class LichHenPanel extends JPanel {
@@ -50,9 +56,11 @@ public class LichHenPanel extends JPanel {
         "Tất cả", "Mới", "Xác nhận", "Đang đợi", "Đang điều trị", "Hoàn tất", "Khách ra về", "Hủy bỏ"
     });
     private final JButton[] nutCheDo = new JButton[CHE_DO.length];
+    private final LichHen_Service lichHenService = new LichHen_Service();
+    private final KhachHang_Service khachHangService = new KhachHang_Service();
+    private final DanhMuc_Service danhMucService = new DanhMuc_Service();
 
     public LichHenPanel() {
-        napMau();
         setLayout(new BorderLayout(0, 8));
         setBackground(ViewTheme.TRANG);
         setBorder(new EmptyBorder(8, 10, 8, 10));
@@ -77,14 +85,76 @@ public class LichHenPanel extends JPanel {
             }
         });
         cboTrangThai.addActionListener(e -> ve());
+        taiLai();
+    }
+
+    private void taiLai() {
+        ds.clear();
+        try {
+            for (LichHen lh : lichHenService.findAllLichHen()) {
+                ds.add(mapCuocHen(lh));
+            }
+            if (!ds.isEmpty()) {
+                ngay = ds.get(0).batDau.toLocalDate();
+            }
+        } catch (Exception ex) {
+            JOptionPane.showMessageDialog(this, "Không tải được lịch hẹn.\n" + ex.getMessage());
+        }
         ve();
     }
 
-    private void napMau() {
-        ds.add(new CuocHen("LH01", "0001", "Lê Trần Quang Thanh", LocalDateTime.of(2026, 9, 28, 8, 0), 60, "Lê Trần Quang Thanh", "", "", "Đang điều trị"));
-        ds.add(new CuocHen("LH02", "0002", "Nguyễn Minh Lý", LocalDateTime.of(2026, 9, 28, 9, 30), 30, "Lê Trần Quang Thanh", "Nguyễn Khắc Duy", "", "Đang đợi"));
-        ds.add(new CuocHen("LH03", "0003", "Nguyễn Minh Thuận", LocalDateTime.of(2026, 9, 28, 14, 0), 30, "Hồ Văn Khánh", "", "", "Hoàn tất"));
-        ds.add(new CuocHen("LH04", "0001", "Lê Trần Quang Thanh", LocalDateTime.of(2026, 9, 27, 10, 0), 45, "Lê Trần Quang Thanh", "", "", "Khách ra về"));
+    private CuocHen mapCuocHen(LichHen lh) {
+        KhachHang kh = khachHangService.findById(lh.getMaKH());
+        NhanVien bs = lh.getMaBacSi() == null ? null : danhMucService.findNhanVienById(lh.getMaBacSi());
+        NhanVien pt = lh.getMaPhuTa() == null ? null : danhMucService.findNhanVienById(lh.getMaPhuTa());
+        return new CuocHen(
+                lh.getMaLichHen(),
+                lh.getMaKH(),
+                kh != null ? kh.getHoTen() : lh.getMaKH(),
+                lh.getBatDau(),
+                lh.getThoiLuongPhut(),
+                bs != null ? bs.getHoTen() : (lh.getMaBacSi() == null ? "" : lh.getMaBacSi()),
+                pt != null ? pt.getHoTen() : (lh.getMaPhuTa() == null ? "" : lh.getMaPhuTa()),
+                lh.getGhiChu() == null ? "" : lh.getGhiChu(),
+                lh.getTrangThai());
+    }
+
+    private String[] dsKhachCombo() {
+        List<String> kq = new ArrayList<>();
+        for (KhachHang kh : khachHangService.findAllKhachHang()) {
+            kq.add(kh.getMaKH() + " - " + kh.getHoTen());
+        }
+        return kq.isEmpty() ? new String[]{"0001 - "} : kq.toArray(new String[0]);
+    }
+
+    private String[] dsBacSiCombo() {
+        List<String> kq = new ArrayList<>();
+        for (NhanVien nv : danhMucService.findAllNhanVien()) {
+            kq.add(nv.getHoTen());
+        }
+        return kq.isEmpty() ? DuLieuMau.BAC_SI : kq.toArray(new String[0]);
+    }
+
+    private String maBacSiTheoTen(String ten) {
+        for (NhanVien nv : danhMucService.findAllNhanVien()) {
+            if (ten != null && ten.equals(nv.getHoTen())) {
+                return nv.getMaNhanVien();
+            }
+        }
+        return null;
+    }
+
+    private String maLichMoi() {
+        int max = 0;
+        for (CuocHen c : ds) {
+            if (c.maLichHen != null && c.maLichHen.startsWith("LH")) {
+                try {
+                    max = Math.max(max, Integer.parseInt(c.maLichHen.substring(2)));
+                } catch (NumberFormatException ignored) {
+                }
+            }
+        }
+        return String.format("LH%02d", max + 1);
     }
 
     private JPanel taoThanh() {
@@ -558,14 +628,14 @@ public class LichHenPanel extends JPanel {
     private void moForm(CuocHen cu, LocalDateTime luc, String trangThaiMacDinh) {
         HopThoai h = new HopThoai(SwingUtilities(), cu == null ? "Thêm lịch hẹn" : "Cập nhật lịch hẹn",
                 cu == null ? "Thêm" : "Lưu");
-        JComboBox<String> kh = h.chon("Khách hàng", false, DuLieuMau.KHACH);
+        JComboBox<String> kh = h.chon("Khách hàng", false, dsKhachCombo());
         JTextField ghi = h.chu("Ghi chú", cu == null ? "" : cu.ghiChu, false);
         JTextField batDau = h.chu("Bắt đầu", (cu == null ? luc : cu.batDau).format(F_NGAY_GIO), true);
         JComboBox<String> duKien = h.chon("Thời lượng (phút)", true, "15", "30", "45", "60", "90", "120");
         if (cu != null) {
             duKien.setSelectedItem(String.valueOf(cu.phut));
         }
-        JComboBox<String> bs = h.chon("Bác sĩ", true, DuLieuMau.BAC_SI);
+        JComboBox<String> bs = h.chon("Bác sĩ", true, dsBacSiCombo());
         if (cu != null) {
             bs.setSelectedItem(cu.bacSi);
         }
@@ -587,28 +657,42 @@ public class LichHenPanel extends JPanel {
             String tenKhach = String.valueOf(kh.getSelectedItem());
             String maKH = "0001";
             if (tenKhach.contains(" - ")) {
-                String[] tach = tenKhach.split(" - ");
+                String[] tach = tenKhach.split(" - ", 2);
                 maKH = tach[0].trim();
                 if (tach.length >= 2) {
                     tenKhach = tach[1].trim();
                 }
             }
-            if (cu == null) {
-                ds.add(new CuocHen("LH" + String.format("%02d", ds.size() + 1), maKH, tenKhach, gio, phut,
-                        String.valueOf(bs.getSelectedItem()), String.valueOf(phuTa.getSelectedItem()),
-                        ghi.getText().trim(), String.valueOf(tt.getSelectedItem())));
-            } else {
-                cu.maKH = maKH;
-                cu.khach = tenKhach;
-                cu.batDau = gio;
-                cu.phut = phut;
-                cu.bacSi = String.valueOf(bs.getSelectedItem());
-                cu.phuTa = String.valueOf(phuTa.getSelectedItem());
-                cu.ghiChu = ghi.getText().trim();
-                cu.trangThai = String.valueOf(tt.getSelectedItem());
-                ngay = gio.toLocalDate();
+            LichHen entity = cu == null ? new LichHen() : lichHenService.findById(cu.maLichHen);
+            if (entity == null) {
+                entity = new LichHen();
             }
-            ve();
+            if (cu == null) {
+                entity.setMaLichHen(maLichMoi());
+            } else {
+                entity.setMaLichHen(cu.maLichHen);
+            }
+            entity.setMaKH(maKH);
+            entity.setBatDau(gio);
+            entity.setThoiLuongPhut(phut);
+            entity.setMaBacSi(maBacSiTheoTen(String.valueOf(bs.getSelectedItem())));
+            entity.setMaPhuTa(maBacSiTheoTen(String.valueOf(phuTa.getSelectedItem())));
+            entity.setGhiChu(ghi.getText().trim());
+            entity.setTrangThai(String.valueOf(tt.getSelectedItem()));
+            try {
+                if (cu == null) {
+                    if (lichHenService.add(entity) == null) {
+                        JOptionPane.showMessageDialog(this, "Không thêm được lịch hẹn.");
+                        return;
+                    }
+                } else {
+                    lichHenService.update(entity);
+                }
+                ngay = gio.toLocalDate();
+                taiLai();
+            } catch (Exception ex) {
+                JOptionPane.showMessageDialog(this, "Lỗi lưu lịch hẹn.\n" + ex.getMessage());
+            }
         });
     }
 

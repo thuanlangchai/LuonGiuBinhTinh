@@ -63,7 +63,7 @@ public class DsKeHoachPanel extends JPanel {
         thongTinKh.setForeground(ViewTheme.CHU);
 
         cboKhach.addItem("Tất cả khách hàng");
-        for (String k : DuLieuMau.KHACH) {
+        for (String k : DuLieuMau.dsKhach()) {
             cboKhach.addItem(k);
         }
         ViewTheme.vienHop(cboKhach);
@@ -291,7 +291,7 @@ public class DsKeHoachPanel extends JPanel {
     }
 
     private static String tenKhachTuMa(String ma) {
-        for (String k : DuLieuMau.KHACH) {
+        for (String k : DuLieuMau.dsKhach()) {
             if (k.startsWith(ma)) {
                 String[] p = k.split(" - ", 3);
                 return p.length > 1 ? p[1].trim() : k;
@@ -301,36 +301,11 @@ public class DsKeHoachPanel extends JPanel {
     }
 
     private static String[] bacSiNhan() {
-        List<String> ds = new ArrayList<>();
-        for (String ten : DuLieuMau.BAC_SI) {
-            ds.add(ten);
-        }
-        return ds.toArray(new String[0]);
+        return DuLieuMau.dsBacSi();
     }
 
     private static String maBacSiTuTen(String ten) {
-        Object[][] nv = null;
-        view.model.CauHinhTrang c = DuLieuMau.lay("nhanvien");
-        if (c != null) {
-            nv = c.duLieu;
-        }
-        if (nv != null) {
-            for (Object[] d : nv) {
-                if (String.valueOf(d[2]).equals(ten)) {
-                    return String.valueOf(d[0]);
-                }
-            }
-        }
-        if ("Lê Trần Quang Thanh".equals(ten)) {
-            return "NV03";
-        }
-        if ("Hồ Văn Khánh".equals(ten)) {
-            return "NV02";
-        }
-        if ("Nguyễn Khắc Duy".equals(ten)) {
-            return "NV01";
-        }
-        return "";
+        return DuLieuMau.maBacSiTheoTen(ten);
     }
 
     private static String nullSafe(String s) {
