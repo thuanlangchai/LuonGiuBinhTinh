@@ -1,7 +1,7 @@
 package repository.impl;
 
 import entity.DieuTri;
-import i_repository.DieuTri_IDAO;
+import repository.DieuTri_IDAO;
 import java.util.List;
 import mapper.DieuTriMapper;
 

@@ -1,7 +1,7 @@
 package repository.impl;
 
 import entity.NhaCungCap;
-import i_repository.NhaCungCap_IDAO;
+import repository.NhaCungCap_IDAO;
 import java.util.List;
 import mapper.NhaCungCapMapper;
 

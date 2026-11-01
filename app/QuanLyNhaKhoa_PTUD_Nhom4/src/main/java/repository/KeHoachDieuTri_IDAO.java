@@ -1,4 +1,4 @@
-package i_repository;
+package repository;
 
 import entity.KeHoachDieuTri;
 import java.util.List;

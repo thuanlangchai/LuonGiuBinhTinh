@@ -1,7 +1,7 @@
 package repository.impl;
 
 import entity.LichHen;
-import i_repository.LichHen_IDAO;
+import repository.LichHen_IDAO;
 import java.util.List;
 import mapper.LichHenMapper;
 

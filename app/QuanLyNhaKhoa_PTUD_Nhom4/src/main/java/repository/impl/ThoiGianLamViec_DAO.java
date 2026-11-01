@@ -1,7 +1,7 @@
 package repository.impl;
 
 import entity.ThoiGianLamViec;
-import i_repository.ThoiGianLamViec_IDAO;
+import repository.ThoiGianLamViec_IDAO;
 import java.util.List;
 import mapper.ThoiGianLamViecMapper;
 

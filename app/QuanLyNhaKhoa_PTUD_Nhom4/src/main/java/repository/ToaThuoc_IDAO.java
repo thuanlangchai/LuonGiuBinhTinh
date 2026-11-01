@@ -1,4 +1,4 @@
-package i_repository;
+package repository;
 
 import entity.ToaThuoc;
 import java.util.List;

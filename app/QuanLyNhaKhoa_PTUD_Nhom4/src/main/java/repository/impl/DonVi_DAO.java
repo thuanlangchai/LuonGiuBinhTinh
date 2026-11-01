@@ -1,7 +1,7 @@
 package repository.impl;
 
 import entity.DonVi;
-import i_repository.DonVi_IDAO;
+import repository.DonVi_IDAO;
 import java.util.List;
 import mapper.DonViMapper;
 

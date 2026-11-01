@@ -1,7 +1,7 @@
 package repository.impl;
 
 import entity.KeHoachDieuTri;
-import i_repository.KeHoachDieuTri_IDAO;
+import repository.KeHoachDieuTri_IDAO;
 import java.util.List;
 import mapper.KeHoachDieuTriMapper;
 
