@@ -26,7 +26,7 @@ public class DichVu_DAO extends AbstractDAO<DichVu> implements DichVu_IDAO {
 
     @Override
     public Integer add(DichVu entity) {
-        String sql = "INSERT INTO DichVu(maDichVu,maNhomDichVu,tenDichVu,trangThai) VALUES(?,?,?,?)";
+        String sql = "INSERT INTO DichVu(maDichVu,maNhomDichVu,tenDichVu,gia,trangThai) VALUES(?,?,?,?,?)";
         return add(sql, entity.getMaDichVu(), entity.getMaNhomDichVu(), entity.getTenDichVu(), entity.getGia(), entity.getTrangThai());
     }
 

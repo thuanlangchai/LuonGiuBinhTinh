@@ -53,17 +53,40 @@ public class BaoCaoPanel extends JPanel {
         JPanel p = new JPanel(new BorderLayout(0, 8));
         p.setOpaque(false);
         p.add(dau("Báo cáo toa thuốc", true), BorderLayout.NORTH);
+        long tongTien = 0;
+        java.util.List<view.model.ToaThuocView> ds = ToaThuocDuLieu.tatCa();
+        Object[][] dong = new Object[Math.max(1, ds.size())][];
+        int i = 0;
+        for (view.model.ToaThuocView tt : ds) {
+            StringBuilder ct = new StringBuilder();
+            for (view.model.ChiTietToaThuocView c : tt.chiTiet) {
+                if (ct.length() > 0) {
+                    ct.append("; ");
+                }
+                ct.append(c.tongSo).append(" x ").append(c.tenThuoc)
+                        .append(" (").append(ViewTheme.tien(c.donGia)).append(")");
+            }
+            tongTien += tt.thanhTien;
+            dong[i] = new Object[]{
+                String.valueOf(i + 1), tt.maToaThuoc, tt.ngayTao, tt.tenKh, ct.toString(),
+                tt.hinhThucThanhToan, ViewTheme.tien(tt.thanhTien), "0",
+                ViewTheme.tien(tt.thanhTien), tt.tenBacSi
+            };
+            i++;
+        }
+        if (ds.isEmpty()) {
+            dong[0] = new Object[]{"", "", "", "", "", "", "0", "0", "0", ""};
+        }
         JPanel tomTat = new JPanel(new GridLayout(1, 3, 12, 0));
         tomTat.setOpaque(false);
-        tomTat.add(oSo("Tổng tiền thuốc", "36,000"));
+        tomTat.add(oSo("Tổng tiền thuốc", ViewTheme.tien(tongTien)));
         tomTat.add(oSo("Tổng chiết khấu", "0"));
-        tomTat.add(oSo("Thành tiền", "36,000"));
+        tomTat.add(oSo("Thành tiền", ViewTheme.tien(tongTien)));
         JPanel tren = new JPanel(new BorderLayout(12, 0));
         tren.setOpaque(false);
         tren.add(oNgay(), BorderLayout.WEST);
         tren.add(tomTat, BorderLayout.CENTER);
         String[] cot = {"#", "Mã toa thuốc", "Ngày tạo", "Khách hàng", "Toa thuốc chi tiết", "Hình thức TT", "Tiền thuốc", "Chiết khấu", "Thành tiền", "Bác sĩ"};
-        Object[][] dong = {{"1", "0002", "28/09/2026", "Lê Trần Quang Thanh", "3 x aptx 4869 (36000)", "Tiền mặt", "36,000", "0", "36,000", "Lê Trần Quang Thanh"}};
         JPanel than = new JPanel(new BorderLayout(0, 8));
         than.setOpaque(false);
         than.add(tren, BorderLayout.NORTH);

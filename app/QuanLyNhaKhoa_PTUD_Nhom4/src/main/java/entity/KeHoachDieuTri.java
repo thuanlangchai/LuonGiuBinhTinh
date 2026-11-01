@@ -8,6 +8,8 @@ public class KeHoachDieuTri {
     private String maKeHoach;
     private String maKH;
     private LocalDate ngayKeHoach;
+    private String maBacSi;
+    private String lyDoDieuTri;
     private String ghiChu;
     private String trangThai;
     private LocalDateTime ngayTao;
@@ -16,10 +18,13 @@ public class KeHoachDieuTri {
     public KeHoachDieuTri() {
     }
 
-    public KeHoachDieuTri(String maKeHoach, String maKH, LocalDate ngayKeHoach, String ghiChu, String trangThai, LocalDateTime ngayTao, String nguoiTao) {
+    public KeHoachDieuTri(String maKeHoach, String maKH, LocalDate ngayKeHoach, String maBacSi,
+            String lyDoDieuTri, String ghiChu, String trangThai, LocalDateTime ngayTao, String nguoiTao) {
         this.maKeHoach = maKeHoach;
         this.maKH = maKH;
         this.ngayKeHoach = ngayKeHoach;
+        this.maBacSi = maBacSi;
+        this.lyDoDieuTri = lyDoDieuTri;
         this.ghiChu = ghiChu;
         this.trangThai = trangThai;
         this.ngayTao = ngayTao;
@@ -48,6 +53,22 @@ public class KeHoachDieuTri {
 
     public void setNgayKeHoach(LocalDate ngayKeHoach) {
         this.ngayKeHoach = ngayKeHoach;
+    }
+
+    public String getMaBacSi() {
+        return maBacSi;
+    }
+
+    public void setMaBacSi(String maBacSi) {
+        this.maBacSi = maBacSi;
+    }
+
+    public String getLyDoDieuTri() {
+        return lyDoDieuTri;
+    }
+
+    public void setLyDoDieuTri(String lyDoDieuTri) {
+        this.lyDoDieuTri = lyDoDieuTri;
     }
 
     public String getGhiChu() {

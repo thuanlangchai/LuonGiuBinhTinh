@@ -23,8 +23,10 @@ public class QuanLyView extends JFrame implements DieuHuong {
     private final JScrollPane cuon;
     private final LichHenPanel lichHen = new LichHenPanel();
     private final KeHoachDieuTriPanel keHoach = new KeHoachDieuTriPanel();
+    private final DsKeHoachPanel dsKeHoach;
     private final KhachHangPanel khachHang;
-    private final ToaThuocPanel toaThuoc = new ToaThuocPanel();
+    private final ToaThuocPanel lapToaThuoc;
+    private final DsToaThuocPanel toaThuoc;
     private final PhieuTienPanel phieuThu = new PhieuTienPanel(true);
     private final PhieuTienPanel phieuChi = new PhieuTienPanel(false);
     private final HoaDonPanel hoaDon;
@@ -37,10 +39,23 @@ public class QuanLyView extends JFrame implements DieuHuong {
 
     public QuanLyView(String tenDangNhap) {
         this.tenDangNhap = tenDangNhap == null || tenDangNhap.isEmpty() ? "thuan080" : tenDangNhap;
-        this.khachHang = new KhachHangPanel(keHoach, () -> mo("kehoach"));
         this.hoaDon = new HoaDonPanel(keHoach, phieuThu);
         this.keHoach.ganHoaDon(hoaDon);
         this.hoaDon.ganMoPhieuThu(() -> mo("phieuthu"));
+        this.lapToaThuoc = new ToaThuocPanel(() -> mo("toathuoc"));
+        this.toaThuoc = new DsToaThuocPanel(() -> mo("toathuoc-lap"));
+        this.dsKeHoach = new DsKeHoachPanel(maKeHoach -> {
+            keHoach.napMaKeHoach(maKeHoach);
+            mo("kehoach-ct");
+        });
+        this.khachHang = new KhachHangPanel((ma, ten, sdt, email, diaChi, lyDo) -> {
+            dsKeHoach.locTheoKhach(ma, ten, sdt, email, diaChi, lyDo);
+            mo("kehoach");
+        }, maKH -> {
+            toaThuoc.locTheoKhach(maKH);
+            lapToaThuoc.chonKhach(maKH);
+            mo("toathuoc");
+        });
         this.danhMuc = new DanhMucPanel(this);
         setTitle("Quản lý nha khoa - Nhóm 4");
         setSize(1360, 820);
@@ -96,6 +111,7 @@ public class QuanLyView extends JFrame implements DieuHuong {
             {"Khách hàng", "khachhang"},
             {"Nhân viên", "nhanvien"},
             {"Lịch hẹn", "lichhen"},
+            {"Toa thuốc", "toathuoc"},
             {"Thuốc", "thuoc"},
             {"Răng", "rang"},
             {"Sản phẩm", "sanpham"},
@@ -108,6 +124,7 @@ public class QuanLyView extends JFrame implements DieuHuong {
             {"Khách hàng", "khachhang"},
             {"Lịch hẹn", "lichhen"},
             {"Hóa đơn", "hoadon"},
+            {"Toa thuốc", "toathuoc"},
             {"Phiếu thu", "phieuthu"},
             {"Dịch vụ", "dichvu"},
             {"Nhân viên", "nhanvien"}
@@ -173,9 +190,18 @@ public class QuanLyView extends JFrame implements DieuHuong {
         } else if ("khachhang".equals(ma)) {
             hien(khachHang);
         } else if ("kehoach".equals(ma)) {
+            hien(dsKeHoach);
+        } else if ("kehoach-ct".equals(ma)) {
             hien(keHoach);
         } else if ("toathuoc".equals(ma)) {
+            toaThuoc.lamMoi();
             hien(toaThuoc);
+        } else if ("toathuoc-lap".equals(ma)) {
+            String maKH = toaThuoc.maKhachDangLoc();
+            if (maKH != null) {
+                lapToaThuoc.chonKhach(maKH);
+            }
+            hien(lapToaThuoc);
         } else if ("hoadon".equals(ma)) {
             hoaDon.lamMoi();
             hien(hoaDon);

@@ -55,6 +55,7 @@ public class DanhMucPanel extends JPanel {
                     {"Đơn vị", "donvi"}
                 }),
                 nhom("5. Toa thuốc", new String[][]{
+                    {"Toa thuốc", "toathuoc"},
                     {"Thuốc", "thuoc"}
                 }));
         JPanel cot3 = cot(
