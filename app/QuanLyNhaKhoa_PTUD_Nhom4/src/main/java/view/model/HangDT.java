@@ -1,7 +1,9 @@
 package view.model;
 
 public class HangDT {
+    public String maChiTiet;
     public String maKeHoach;
+    public String maDichVu;
     public String ngay;
     public String rang;
     public String dichVu;

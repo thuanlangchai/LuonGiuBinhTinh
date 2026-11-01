@@ -54,32 +54,6 @@ public class KhachHang {
         this.ngayTao = ngayTao;
     }
 
-
-    /*
-    public KhachHang(String maKH, String hoTen, String gioiTinh, LocalDate ngaySinh, Integer namSinh, String soDienThoai, String email, String diaChi, String cccd, String ghiChu, String danhGia, String maNhom, String maChiNhanh, String lyDoKham, String tienSuBenh, String diUng, String maBacSi, String maTuVan, int soLanKham, LocalDate lanKhamGanNhat, LocalDateTime ngayTao) {
-        this.maKH = maKH;
-        this.hoTen = hoTen;
-        this.gioiTinh = gioiTinh;
-        this.ngaySinh = ngaySinh;
-        this.namSinh = namSinh;
-        this.soDienThoai = soDienThoai;
-        this.email = email;
-        this.diaChi = diaChi;
-        this.cccd = cccd;
-        this.ghiChu = ghiChu;
-        this.danhGia = danhGia;
-        this.maNhom = maNhom;
-        this.maChiNhanh = maChiNhanh;
-        this.lyDoKham = lyDoKham;
-        this.tienSuBenh = tienSuBenh;
-        this.diUng = diUng;
-        this.maBacSi = maBacSi;
-        this.maTuVan = maTuVan;
-        this.soLanKham = soLanKham;
-        this.lanKhamGanNhat = lanKhamGanNhat;
-        this.ngayTao = ngayTao;
-    }
-     */
     public String getMaKH() {
         return maKH;
     }
@@ -112,13 +86,6 @@ public class KhachHang {
         this.ngaySinh = ngaySinh;
     }
 
-//    public Integer getNamSinh() {
-//        return namSinh;
-//    }
-//
-//    public void setNamSinh(Integer namSinh) {
-//        this.namSinh = namSinh;
-//    }
     public String getSoDienThoai() {
         return soDienThoai;
     }
@@ -159,13 +126,6 @@ public class KhachHang {
         this.ghiChu = ghiChu;
     }
 
-//    public String getDanhGia() {
-//        return danhGia;
-//    }
-//
-//    public void setDanhGia(String danhGia) {
-//        this.danhGia = danhGia;
-//    }
     public String getMaNhom() {
         return maNhom;
     }

@@ -78,7 +78,7 @@ public final class BieuMau {
         HopThoai h = new HopThoai(w, sua(cu) ? "Cập nhật dịch vụ" : "Thêm dịch vụ",
                 sua(cu) ? "Lưu" : "Thêm dịch vụ");
         JTextField ma = h.chu("Mã dịch vụ", gia(cu, 0), true);
-        JComboBox<String> nhom = h.chonVoiNut("Nhóm dịch vụ", true, DuLieuMau.NHOM_DV);
+        JComboBox<String> nhom = h.chonVoiNut("Nhóm dịch vụ", true, DuLieuMau.dsNhomDv());
         if (!gia(cu, 1).isEmpty()) {
             nhom.setSelectedItem(gia(cu, 1));
         }
@@ -159,7 +159,7 @@ public final class BieuMau {
         JTextField ma = h.chu("Mã lịch", gia(cu, 0), true);
         JTextField bd = h.chu("Giờ bắt đầu", gia(cu, 2).isEmpty() ? "08:00" : gia(cu, 2), true);
         JTextField kt = h.chu("Giờ kết thúc", gia(cu, 3).isEmpty() ? "17:00" : gia(cu, 3), true);
-        JComboBox<String> bs = h.chonVoiNut("Bác sĩ", true, DuLieuMau.BAC_SI);
+        JComboBox<String> bs = h.chonVoiNut("Bác sĩ", true, DuLieuMau.dsBacSi());
         if (!gia(cu, 4).isEmpty()) {
             bs.setSelectedItem(gia(cu, 4));
         }
@@ -230,7 +230,7 @@ public final class BieuMau {
         JPanel p = new JPanel(new java.awt.GridLayout(1, 5, 8, 0));
         p.setOpaque(false);
         p.setBorder(new javax.swing.border.EmptyBorder(4, 0, 4, 0));
-        JComboBox<String> sp = new JComboBox<>(new String[]{"Găng tay", "Khẩu trang", "Mũi khoan", "aptx 4869"});
+        JComboBox<String> sp = new JComboBox<>(DuLieuMau.dsSanPham());
         ViewTheme.vienHop(sp);
         JTextField sl = new JTextField("0");
         JTextField lech = new JTextField("0");

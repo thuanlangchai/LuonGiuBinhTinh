@@ -68,7 +68,7 @@ public class HoaDonPanel extends JPanel {
         tim.addActionListener(e -> loc());
         JComboBox<String> khach = new JComboBox<String>();
         khach.addItem("Khách hàng");
-        for (String k : DuLieuMau.KHACH) {
+        for (String k : DuLieuMau.dsKhach()) {
             khach.addItem(k);
         }
         JComboBox<String> tt = new JComboBox<String>(new String[]{
@@ -141,13 +141,13 @@ public class HoaDonPanel extends JPanel {
         d.setLayout(new BorderLayout());
 
         JTextField ngay = o(HoaDonDuLieu.homNay());
-        JComboBox<String> khach = new JComboBox<String>(DuLieuMau.KHACH);
+        JComboBox<String> khach = new JComboBox<String>(DuLieuMau.dsKhach());
         ViewTheme.vienHop(khach);
         khach.setPreferredSize(new Dimension(360, 34));
         if (maKh != null) {
             chonKhach(khach, maKh);
         }
-        JComboBox<String> bacSi = new JComboBox<String>(DuLieuMau.BAC_SI);
+        JComboBox<String> bacSi = new JComboBox<String>(DuLieuMau.dsBacSi());
         ViewTheme.vienHop(bacSi);
         JTextField chietKhau = o("0");
         JTextField ghiChu = o("Xuất từ kế hoạch điều trị");

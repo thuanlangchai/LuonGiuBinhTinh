@@ -219,7 +219,7 @@ public class QuanLyView extends JFrame implements DieuHuong {
             baoCao.chon(ma.substring(3));
             hien(baoCao);
         } else {
-            CauHinhTrang c = DuLieuMau.lay(ma);
+            CauHinhTrang c = DanhMucDb.lay(ma);
             if (c != null) {
                 danhSach.nap(c);
                 hien(danhSach);

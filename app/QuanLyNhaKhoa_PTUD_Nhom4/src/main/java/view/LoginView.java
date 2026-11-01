@@ -1,5 +1,6 @@
 package view;
 
+import entity.TaiKhoan;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
@@ -13,7 +14,9 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JPasswordField;
 import javax.swing.JTextField;
+import javax.swing.SwingWorker;
 import javax.swing.border.EmptyBorder;
+import service.impl.TaiKhoan_Service;
 
 public class LoginView extends JFrame {
 
@@ -21,6 +24,7 @@ public class LoginView extends JFrame {
     private final JPasswordField txtMatKhau = new JPasswordField(22);
     private final JButton btnDangNhap = new JButton("Đăng nhập");
     private final JButton btnThoat = new JButton("Thoát");
+    private final TaiKhoan_Service taiKhoanService = new TaiKhoan_Service();
 
     public LoginView() {
         setTitle("Đăng nhập - Quản lý nha khoa");
@@ -98,8 +102,33 @@ public class LoginView extends JFrame {
             JOptionPane.showMessageDialog(this, "Vui lòng nhập đủ tên đăng nhập và mật khẩu.", "Chú ý", JOptionPane.WARNING_MESSAGE);
             return;
         }
-        dispose();
-        new TrangChuView(ten).setVisible(true);
+        btnDangNhap.setEnabled(false);
+        new SwingWorker<TaiKhoan, Void>() {
+            @Override
+            protected TaiKhoan doInBackground() {
+                return taiKhoanService.dangNhap(ten, mk);
+            }
+
+            @Override
+            protected void done() {
+                btnDangNhap.setEnabled(true);
+                try {
+                    TaiKhoan tk = get();
+                    if (tk == null) {
+                        JOptionPane.showMessageDialog(LoginView.this,
+                                "Sai tên đăng nhập hoặc mật khẩu, hoặc tài khoản bị khóa.",
+                                "Đăng nhập thất bại", JOptionPane.ERROR_MESSAGE);
+                        return;
+                    }
+                    dispose();
+                    new TrangChuView(tk.getTenDangNhap()).setVisible(true);
+                } catch (Exception ex) {
+                    JOptionPane.showMessageDialog(LoginView.this,
+                            "Không kết nối được cơ sở dữ liệu.\n" + ex.getMessage(),
+                            "Lỗi", JOptionPane.ERROR_MESSAGE);
+                }
+            }
+        }.execute();
     }
 
     private void thoat() {

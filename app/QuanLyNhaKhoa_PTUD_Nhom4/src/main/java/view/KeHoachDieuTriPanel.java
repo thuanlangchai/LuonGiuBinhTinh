@@ -253,7 +253,9 @@ public class KeHoachDieuTriPanel extends JPanel {
             napMaKeHoach(ds.get(0).maKeHoach);
             return;
         }
-        KeHoachView moi = KeHoachDuLieu.them(ma, hoTen, homNay(), "NV03", DuLieuMau.BAC_SI[0],
+        String[] bacSi = DuLieuMau.dsBacSi();
+        String tenBs = bacSi.length > 0 ? bacSi[0] : "";
+        KeHoachView moi = KeHoachDuLieu.them(ma, hoTen, homNay(), DuLieuMau.maBacSiTheoTen(tenBs), tenBs,
                 lyDo == null || lyDo.isEmpty() ? "Đau răng" : lyDo, "");
         if (dieuTri != null && !dieuTri.isEmpty() && !dieuTri.contains("Thăm khám")) {
             KeHoachDuLieu.themDichVu(moi.maKeHoach,
@@ -542,13 +544,13 @@ public class KeHoachDieuTriPanel extends JPanel {
     }
 
     private static String[] tenDichVu() {
-        CauHinhTrang c = DuLieuMau.lay("dichvu");
+        CauHinhTrang c = DanhMucDb.lay("dichvu");
         if (c == null || c.duLieu.length == 0) {
             return DuLieuMau.TEN_DV;
         }
         String[] ten = new String[c.duLieu.length];
         for (int i = 0; i < c.duLieu.length; i++) {
-            ten[i] = String.valueOf(c.duLieu[i][1]);
+            ten[i] = String.valueOf(c.duLieu[i][2]);
         }
         return ten;
     }
@@ -556,7 +558,7 @@ public class KeHoachDieuTriPanel extends JPanel {
     private static String[] tenRang() {
         List<String> ds = new ArrayList<String>();
         ds.add("");
-        CauHinhTrang c = DuLieuMau.lay("rang");
+        CauHinhTrang c = DanhMucDb.lay("rang");
         if (c != null) {
             for (Object[] d : c.duLieu) {
                 ds.add(String.valueOf(d[0]));
@@ -566,11 +568,11 @@ public class KeHoachDieuTriPanel extends JPanel {
     }
 
     private static long giaDichVu(String ten) {
-        CauHinhTrang c = DuLieuMau.lay("dichvu");
+        CauHinhTrang c = DanhMucDb.lay("dichvu");
         if (c != null) {
             for (Object[] d : c.duLieu) {
-                if (String.valueOf(d[1]).equals(ten)) {
-                    return parseTien(String.valueOf(d[2]));
+                if (String.valueOf(d[2]).equals(ten)) {
+                    return parseTien(String.valueOf(d[3]));
                 }
             }
         }

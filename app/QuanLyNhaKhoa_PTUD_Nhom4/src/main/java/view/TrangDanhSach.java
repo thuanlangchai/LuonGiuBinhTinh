@@ -190,7 +190,7 @@ public class TrangDanhSach extends JPanel {
         if ("dichvu".equals(cauHinh.ma)) {
             cboNhom = new JComboBox<String>();
             cboNhom.addItem("Tất cả nhóm");
-            for (String n : DuLieuMau.NHOM_DV) {
+            for (String n : DuLieuMau.dsNhomDv()) {
                 cboNhom.addItem(n);
             }
             ViewTheme.vienHop(cboNhom);
@@ -340,8 +340,12 @@ public class TrangDanhSach extends JPanel {
         if ("Xóa".equals(lenh)) {
             int chon = JOptionPane.showConfirmDialog(this, "Xóa dòng này?", "Xác nhận", JOptionPane.YES_NO_OPTION);
             if (chon == JOptionPane.YES_OPTION) {
-                model.removeRow(hang);
-                loc();
+                Object[] dong = docDong(hang);
+                if (!DanhMucDb.xoa(cauHinh.ma, dong)) {
+                    JOptionPane.showMessageDialog(this, "Không xóa được trên database.");
+                    return;
+                }
+                nap(DanhMucDb.lay(cauHinh.ma));
             }
             return;
         }
@@ -374,14 +378,12 @@ public class TrangDanhSach extends JPanel {
             return;
         }
         BieuMau.mo(this, cauHinh, cu, dong -> {
-            if (hang < 0) {
-                model.addRow(ViewTheme.dongBang(dong, true, true));
-            } else if (hang < model.getRowCount()) {
-                for (int i = 0; i < dong.length && i + 1 < model.getColumnCount() - 1; i++) {
-                    model.setValueAt(dong[i], hang, i + 1);
-                }
+            boolean them = hang < 0;
+            if (!DanhMucDb.luu(cauHinh.ma, dong, them)) {
+                JOptionPane.showMessageDialog(this, "Không lưu được lên database.");
+                return;
             }
-            loc();
+            nap(DanhMucDb.lay(cauHinh.ma));
         });
     }
 }

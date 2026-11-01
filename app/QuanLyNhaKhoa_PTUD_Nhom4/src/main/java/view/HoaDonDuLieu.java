@@ -1,37 +1,33 @@
 package view;
 
+import entity.ChiTietHoaDon;
+import entity.DichVu;
+import entity.HoaDon;
+import entity.KhachHang;
+import entity.NhanVien;
+import entity.PhieuThu;
+import entity.Rang;
 import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import service.impl.DanhMuc_Service;
+import service.impl.HoaDon_Service;
+import service.impl.KhachHang_Service;
+import service.impl.PhieuThu_Service;
 import view.model.ChiTietHoaDonView;
 import view.model.HoaDonView;
 
 public final class HoaDonDuLieu {
 
-    private static final DateTimeFormatter NGAY = DateTimeFormatter.ofPattern("dd/MM/yyyy");
-    private static final List<HoaDonView> DS = new ArrayList<>();
     private static final List<Runnable> LANG_NGHE = new ArrayList<>();
-    private static int dem = 2;
-
-    static {
-        HoaDonView hd = new HoaDonView();
-        hd.ma = "0001";
-        hd.ngayLap = "27/09/2026";
-        hd.maKh = "0001";
-        hd.tenKh = "Lê Trần Quang Thanh";
-        hd.keHoach = "Kế hoạch điều trị ngày 27/09/2026";
-        hd.bacSi = "Lê Trần Quang Thanh";
-        hd.ghiChu = "Xuất từ kế hoạch điều trị";
-        hd.chietKhau = 0;
-        hd.chiTiet.add(new ChiTietHoaDonView("27/09/2026", "", "Thăm khám - Tư vấn", 1, 200_000, "Kế hoạch điều trị ngày 27/09/2026"));
-        hd.chiTiet.add(new ChiTietHoaDonView("27/09/2026", "", "Cạo vôi - Đánh bóng", 1, 700_000, "Kế hoạch điều trị ngày 27/09/2026"));
-        hd.tinhTien();
-        hd.ngayTao = "27 Sep 2026 10:22:19 PM";
-        DS.add(hd);
-    }
+    private static final HoaDon_Service svc = new HoaDon_Service();
+    private static final KhachHang_Service khSvc = new KhachHang_Service();
+    private static final DanhMuc_Service dmSvc = new DanhMuc_Service();
+    private static final PhieuThu_Service thuSvc = new PhieuThu_Service();
 
     private HoaDonDuLieu() {
     }
@@ -42,25 +38,29 @@ public final class HoaDonDuLieu {
         }
     }
 
+    private static void bao() {
+        for (Runnable r : LANG_NGHE) {
+            r.run();
+        }
+    }
+
     public static List<HoaDonView> tatCa() {
-        return DS;
+        List<HoaDonView> kq = new ArrayList<>();
+        for (HoaDon e : svc.findAllHoaDon()) {
+            kq.add(mapView(e));
+        }
+        return kq;
     }
 
     public static HoaDonView theoMa(String ma) {
-        for (HoaDonView hd : DS) {
-            if (hd.ma.equals(ma)) {
-                return hd;
-            }
-        }
-        return null;
+        HoaDon e = svc.findById(ma);
+        return e == null ? null : mapView(e);
     }
 
     public static List<HoaDonView> theoKhach(String maKh) {
         List<HoaDonView> kq = new ArrayList<>();
-        for (HoaDonView hd : DS) {
-            if (hd.maKh.equals(maKh)) {
-                kq.add(hd);
-            }
+        for (HoaDon e : svc.findByMaKH(maKh)) {
+            kq.add(mapView(e));
         }
         return kq;
     }
@@ -77,37 +77,93 @@ public final class HoaDonDuLieu {
 
     public static HoaDonView them(String ngayLap, String maKh, String tenKh, String keHoach, String bacSi,
             long chietKhau, String ghiChu, List<ChiTietHoaDonView> chiTiet) {
-        HoaDonView hd = new HoaDonView();
-        hd.ma = String.format("%04d", dem++);
-        hd.ngayLap = ngayLap;
-        hd.maKh = maKh;
-        hd.tenKh = tenKh;
-        hd.keHoach = keHoach;
-        hd.bacSi = bacSi;
-        hd.ghiChu = ghiChu;
-        hd.chietKhau = Math.max(0, chietKhau);
-        hd.chiTiet.addAll(chiTiet);
-        hd.tinhTien();
-        hd.ngayTao = ViewTheme.bayGio();
-        DS.add(hd);
+        HoaDon e = new HoaDon();
+        e.setMaHoaDon(maMoi());
+        e.setNgayLap(NgayUtil.parseDate(ngayLap) != null ? NgayUtil.parseDate(ngayLap) : LocalDate.now());
+        e.setMaKH(maKh);
+        e.setMaKeHoach(trichMaKeHoach(keHoach));
+        e.setMaBacSi(maBacSiTheoTen(bacSi));
+        e.setChietKhau(Math.max(0, chietKhau));
+        e.setGhiChu(ghiChu);
+        e.setNgayTao(LocalDateTime.now());
+        e.setNguoiTao(DuLieuMau.NGUOI);
+        long tong = 0;
+        List<ChiTietHoaDon> cts = new ArrayList<>();
+        int i = 1;
+        if (chiTiet != null) {
+            for (ChiTietHoaDonView cv : chiTiet) {
+                ChiTietHoaDon ct = new ChiTietHoaDon();
+                ct.setMaChiTiet(e.getMaHoaDon() + "C" + i++);
+                ct.setMaHoaDon(e.getMaHoaDon());
+                ct.setNgay(NgayUtil.parseDate(cv.ngay) != null ? NgayUtil.parseDate(cv.ngay) : e.getNgayLap());
+                ct.setMaRang(maRangTheoTen(cv.rang));
+                ct.setMaDichVu(maDichVuTheoTen(cv.dichVu));
+                ct.setSoLuong(cv.soLuong);
+                ct.setDonGia(cv.donGia);
+                ct.setThanhTien(cv.thanhTien());
+                ct.setKeHoach(cv.keHoach);
+                tong += ct.getThanhTien();
+                cts.add(ct);
+            }
+        }
+        e.setTongTien(tong);
+        e.setThanhTien(Math.max(0, tong - e.getChietKhau()));
+        e.setDaThu(0);
+        e.setConNo(e.getThanhTien());
+        e.setTrangThai("Chưa thanh toán");
+        if (svc.themHoaDonVoiChiTiet(e, cts) == null) {
+            return null;
+        }
         bao();
-        return hd;
+        return mapView(e);
     }
 
     public static void thuTien(HoaDonView hd, long soTien) {
         if (hd == null || soTien <= 0) {
             return;
         }
-        hd.daThu += soTien;
-        if (hd.daThu > hd.thanhTien) {
-            hd.daThu = hd.thanhTien;
+        HoaDon e = svc.findById(hd.ma);
+        if (e == null) {
+            return;
         }
+        long daThu = e.getDaThu() + soTien;
+        if (daThu > e.getThanhTien()) {
+            daThu = e.getThanhTien();
+        }
+        e.setDaThu(daThu);
+        e.setConNo(Math.max(0, e.getThanhTien() - daThu));
+        if (daThu <= 0) {
+            e.setTrangThai("Chưa thanh toán");
+        } else if (daThu < e.getThanhTien()) {
+            e.setTrangThai("Thanh toán một phần");
+        } else {
+            e.setTrangThai("Đã thanh toán");
+        }
+        svc.update(e);
+
+        PhieuThu pt = new PhieuThu();
+        pt.setMaPhieuThu(maPhieuThuMoi());
+        pt.setNgayThu(LocalDate.now());
+        pt.setMaKH(e.getMaKH());
+        pt.setMaHoaDon(e.getMaHoaDon());
+        pt.setLyDo("Thu tiền hóa đơn " + e.getMaHoaDon());
+        pt.setSoTien(soTien);
+        pt.setHinhThucThanhToan("Tiền mặt");
+        pt.setTrangThai("Đã chi trả");
+        pt.setNgayTao(LocalDateTime.now());
+        pt.setNguoiTao(DuLieuMau.NGUOI);
+        thuSvc.add(pt);
+
+        hd.daThu = e.getDaThu();
         hd.capNhatTrangThai();
         bao();
     }
 
     public static void xoa(HoaDonView hd) {
-        DS.remove(hd);
+        if (hd == null) {
+            return;
+        }
+        svc.delete(hd.ma);
         bao();
     }
 
@@ -128,14 +184,10 @@ public final class HoaDonDuLieu {
     }
 
     public static Object[][] dongCongNo() {
-        Map<String, long[]> gop = new LinkedHashMap<String, long[]>();
-        Map<String, String> ten = new LinkedHashMap<String, String>();
-        for (HoaDonView hd : DS) {
-            long[] so = gop.get(hd.maKh);
-            if (so == null) {
-                so = new long[2];
-                gop.put(hd.maKh, so);
-            }
+        Map<String, long[]> gop = new LinkedHashMap<>();
+        Map<String, String> ten = new LinkedHashMap<>();
+        for (HoaDonView hd : tatCa()) {
+            long[] so = gop.computeIfAbsent(hd.maKh, k -> new long[2]);
             so[0] += hd.thanhTien;
             so[1] += hd.daThu;
             ten.put(hd.maKh, hd.tenKh);
@@ -167,14 +219,125 @@ public final class HoaDonDuLieu {
     }
 
     public static String homNay() {
-        return LocalDate.now().format(NGAY);
+        return NgayUtil.fmt(LocalDate.now());
     }
 
-    private static void bao() {
-        for (Runnable r : LANG_NGHE) {
-            r.run();
+    private static HoaDonView mapView(HoaDon e) {
+        HoaDonView v = new HoaDonView();
+        v.ma = e.getMaHoaDon();
+        v.ngayLap = NgayUtil.fmt(e.getNgayLap());
+        v.maKh = e.getMaKH();
+        KhachHang kh = khSvc.findById(e.getMaKH());
+        v.tenKh = kh != null ? kh.getHoTen() : e.getMaKH();
+        v.keHoach = e.getMaKeHoach() == null ? "" : "Kế hoạch " + e.getMaKeHoach();
+        NhanVien nv = e.getMaBacSi() == null ? null : dmSvc.findNhanVienById(e.getMaBacSi());
+        v.bacSi = nv != null ? nv.getHoTen() : (e.getMaBacSi() == null ? "" : e.getMaBacSi());
+        v.ghiChu = e.getGhiChu();
+        v.trangThai = e.getTrangThai();
+        v.ngayTao = NgayUtil.fmtFull(e.getNgayTao());
+        v.tong = e.getTongTien();
+        v.chietKhau = e.getChietKhau();
+        v.thanhTien = e.getThanhTien();
+        v.daThu = e.getDaThu();
+        Map<String, String> tenDv = tenDichVu();
+        Map<String, String> tenRang = tenRang();
+        for (ChiTietHoaDon ct : svc.findChiTietByMaHoaDon(e.getMaHoaDon())) {
+            v.chiTiet.add(new ChiTietHoaDonView(
+                    NgayUtil.fmt(ct.getNgay()),
+                    ct.getMaRang() == null ? "" : tenRang.getOrDefault(ct.getMaRang(), ct.getMaRang()),
+                    tenDv.getOrDefault(ct.getMaDichVu(), ct.getMaDichVu()),
+                    ct.getSoLuong(),
+                    ct.getDonGia(),
+                    ct.getKeHoach()));
         }
+        return v;
     }
 
+    private static String maMoi() {
+        int max = 0;
+        for (HoaDon e : svc.findAllHoaDon()) {
+            try {
+                max = Math.max(max, Integer.parseInt(e.getMaHoaDon()));
+            } catch (Exception ignored) {
+            }
+        }
+        return String.format("%04d", max + 1);
+    }
 
+    private static String maPhieuThuMoi() {
+        int max = 0;
+        for (PhieuThu p : thuSvc.findAllPhieuThu()) {
+            try {
+                max = Math.max(max, Integer.parseInt(p.getMaPhieuThu()));
+            } catch (Exception ignored) {
+            }
+        }
+        return String.format("%04d", max + 1);
+    }
+
+    private static String trichMaKeHoach(String keHoach) {
+        if (keHoach == null) {
+            return null;
+        }
+        if (keHoach.startsWith("KH")) {
+            int sp = keHoach.indexOf(' ');
+            return sp > 0 ? keHoach.substring(0, sp) : keHoach;
+        }
+        int i = keHoach.indexOf("KH");
+        if (i >= 0) {
+            String sub = keHoach.substring(i);
+            int sp = sub.indexOf(' ');
+            return sp > 0 ? sub.substring(0, sp) : sub;
+        }
+        return null;
+    }
+
+    private static String maBacSiTheoTen(String ten) {
+        if (ten == null || ten.isBlank()) {
+            return null;
+        }
+        for (NhanVien nv : dmSvc.findAllNhanVien()) {
+            if (ten.equals(nv.getHoTen()) || ten.equals(nv.getMaNhanVien())) {
+                return nv.getMaNhanVien();
+            }
+        }
+        return null;
+    }
+
+    private static String maDichVuTheoTen(String ten) {
+        for (DichVu dv : dmSvc.findAllDichVu()) {
+            if (ten != null && ten.equals(dv.getTenDichVu())) {
+                return dv.getMaDichVu();
+            }
+        }
+        return null;
+    }
+
+    private static String maRangTheoTen(String ten) {
+        if (ten == null || ten.isBlank()) {
+            return null;
+        }
+        for (Rang r : dmSvc.findAllRang()) {
+            if (ten.equals(r.getMaRang()) || ten.equals(r.getTenRang())) {
+                return r.getMaRang();
+            }
+        }
+        return null;
+    }
+
+    private static Map<String, String> tenDichVu() {
+        Map<String, String> m = new HashMap<>();
+        for (DichVu dv : dmSvc.findAllDichVu()) {
+            m.put(dv.getMaDichVu(), dv.getTenDichVu());
+        }
+        return m;
+    }
+
+    private static Map<String, String> tenRang() {
+        Map<String, String> m = new HashMap<>();
+        for (Rang r : dmSvc.findAllRang()) {
+            m.put(r.getMaRang(), r.getTenRang());
+        }
+        return m;
+    }
 }
