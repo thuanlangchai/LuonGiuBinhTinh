@@ -9,7 +9,7 @@ import entity.PhieuThu;
 import entity.ToaThuoc;
 import java.util.List;
 
-/** Dữ liệu thô phục vụ BaoCaoPanel — View tự định dạng. */
+
 public interface BaoCao_IService {
 
     List<ToaThuoc> baoCaoToaThuoc();

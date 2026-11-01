@@ -18,7 +18,6 @@ public interface KeHoachDieuTri_IService {
 
     void delete(String maKeHoach);
 
-    /** Đặt trạng thái Đã hủy nếu chưa có chi tiết gắn hóa đơn. */
     boolean huy(String maKeHoach);
 
     List<ChiTietKeHoachDieuTri> findChiTietByMaKeHoach(String maKeHoach);
