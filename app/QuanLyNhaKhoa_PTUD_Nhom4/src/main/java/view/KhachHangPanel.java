@@ -30,17 +30,26 @@ public class KhachHangPanel extends JPanel {
         "Bác sĩ", "Tư vấn", "Số lần khám", "Lần khám gần nhất", "Ngày tạo"
     };
 
-    private final KeHoachDieuTriPanel keHoach;
-    private final Runnable moKeHoach;
+    @FunctionalInterface
+    public interface MoHoSoKeHoach {
+        void mo(String ma, String ten, String sdt, String email, String diaChi, String lyDo);
+    }
+
+    private final MoHoSoKeHoach moKeHoach;
+    private final java.util.function.Consumer<String> moToaThuoc;
     private final DefaultTableModel model;
     private final JTable bang;
     private final JTextField tim = new JTextField();
     private final JPanel locThem = new JPanel(new GridLayout(2, 6, 8, 8));
     private int demMa = 3;
 
-    public KhachHangPanel(KeHoachDieuTriPanel keHoach, Runnable moKeHoach) {
-        this.keHoach = keHoach;
+    public KhachHangPanel(MoHoSoKeHoach moKeHoach) {
+        this(moKeHoach, null);
+    }
+
+    public KhachHangPanel(MoHoSoKeHoach moKeHoach, java.util.function.Consumer<String> moToaThuoc) {
         this.moKeHoach = moKeHoach;
+        this.moToaThuoc = moToaThuoc;
         setOpaque(false);
         setBorder(new EmptyBorder(6, 6, 16, 6));
         JPanel the = new JPanel(new BorderLayout(0, 8));
@@ -49,14 +58,17 @@ public class KhachHangPanel extends JPanel {
 
         JLabel tieu = ViewTheme.tieuDeTrang("Khách hàng");
         JButton xuat = new JButton("Xuất Excel");
+        JButton toa = new JButton("Toa thuốc");
         JButton them = new JButton("Thêm khách hàng");
         JComboBox<String> hienThi = new JComboBox<String>(new String[]{"Hiển thị", "Tất cả cột", "Cột chính"});
         JComboBox<String> dang = new JComboBox<String>(new String[]{"Dạng", "Bảng", "Thẻ"});
         ViewTheme.nutXam(xuat);
+        ViewTheme.nutXanh(toa);
         ViewTheme.nutCam(them);
         ViewTheme.vienHop(hienThi);
         ViewTheme.vienHop(dang);
         them.addActionListener(e -> moForm(-1));
+        toa.addActionListener(e -> moToaChoKhach());
         xuat.addActionListener(e -> JOptionPane.showMessageDialog(this, "Đã chuẩn bị dữ liệu khách hàng để xuất Excel."));
 
         JPanel dau = new JPanel(new BorderLayout());
@@ -65,6 +77,7 @@ public class KhachHangPanel extends JPanel {
         JPanel phai = new JPanel(new FlowLayout(FlowLayout.RIGHT, 8, 0));
         phai.setOpaque(false);
         phai.add(xuat);
+        phai.add(toa);
         phai.add(them);
         phai.add(hienThi);
         phai.add(dang);
@@ -188,6 +201,22 @@ public class KhachHangPanel extends JPanel {
         }
     }
 
+    private void moToaChoKhach() {
+        int hang = bang.getSelectedRow();
+        if (hang < 0 && bang.getRowCount() > 0) {
+            hang = 0;
+        }
+        if (hang < 0) {
+            JOptionPane.showMessageDialog(this, "Chọn khách hàng trước.");
+            return;
+        }
+        int modelHang = bang.convertRowIndexToModel(hang);
+        String maKH = String.valueOf(model.getValueAt(modelHang, 1));
+        if (moToaThuoc != null) {
+            moToaThuoc.accept(maKH);
+        }
+    }
+
     private void xuLy(String lenh, int hang) {
         if ("Xóa".equals(lenh)) {
             if (JOptionPane.showConfirmDialog(this, "Xóa khách hàng này?", "Xác nhận", JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) {
@@ -203,15 +232,15 @@ public class KhachHangPanel extends JPanel {
     }
 
     private void moHoSo(int hang) {
-        keHoach.nap(
-                String.valueOf(model.getValueAt(hang, 1)),
-                String.valueOf(model.getValueAt(hang, 2)),
-                String.valueOf(model.getValueAt(hang, 5)),
-                String.valueOf(model.getValueAt(hang, 6)),
-                String.valueOf(model.getValueAt(hang, 7)),
-                String.valueOf(model.getValueAt(hang, 12)),
-                "");
-        moKeHoach.run();
+        if (moKeHoach != null) {
+            moKeHoach.mo(
+                    String.valueOf(model.getValueAt(hang, 1)),
+                    String.valueOf(model.getValueAt(hang, 2)),
+                    String.valueOf(model.getValueAt(hang, 5)),
+                    String.valueOf(model.getValueAt(hang, 6)),
+                    String.valueOf(model.getValueAt(hang, 7)),
+                    String.valueOf(model.getValueAt(hang, 12)));
+        }
     }
 
     private void moForm(int hang) {

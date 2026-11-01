@@ -41,4 +41,10 @@ public class ToaThuoc_DAO extends AbstractDAO<ToaThuoc> implements ToaThuoc_IDAO
         String sql = "DELETE FROM ToaThuoc WHERE maToaThuoc = ?";
         delete(sql, maToaThuoc);
     }
+
+    @Override
+    public List<ToaThuoc> findByMaKH(String maKH) {
+        String sql = "SELECT * FROM ToaThuoc WHERE maKH = ?";
+        return findAll(sql, new ToaThuocMapper(), maKH);
+    }
 }

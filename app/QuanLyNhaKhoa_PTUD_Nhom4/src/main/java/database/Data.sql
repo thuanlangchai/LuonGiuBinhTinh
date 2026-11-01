@@ -82,8 +82,8 @@ INSERT INTO LichHen (maLichHen, maKH, batDau, thoiLuongPhut, maBacSi, maPhuTa, g
 (N'LH03', N'0003', '2026-09-28T14:00:00', 30, N'NV02', NULL, NULL, N'Hoàn tất'),
 (N'LH04', N'0001', '2026-09-27T10:00:00', 45, N'NV03', NULL, NULL, N'Khách ra về');
 
-INSERT INTO KeHoachDieuTri (maKeHoach, maKH, ngayKeHoach, ghiChu, trangThai, ngayTao, nguoiTao) VALUES
-(N'KH01', N'0001', '2026-09-27', N'Kế hoạch điều trị ngày 27/09/2026', N'Hoàn tất', '2026-09-27T22:11:39', N'thuan08022006@gmail.com');
+INSERT INTO KeHoachDieuTri (maKeHoach, maKH, ngayKeHoach, maBacSi, lyDoDieuTri, ghiChu, trangThai, ngayTao, nguoiTao) VALUES
+(N'KH01', N'0001', '2026-09-27', N'NV03', N'Đau răng', N'Kế hoạch điều trị ngày 27/09/2026', N'Hoàn tất', '2026-09-27T22:11:39', N'thuan08022006@gmail.com');
 
 INSERT INTO HoaDon (maHoaDon, ngayLap, maKH, maKeHoach, maBacSi, tongTien, chietKhau, thanhTien, daThu, conNo, trangThai, ghiChu, ngayTao, nguoiTao) VALUES
 (N'0001', '2026-09-27', N'0001', N'KH01', N'NV03', 900000, 0, 900000, 0, 900000, N'Chưa thanh toán', N'Xuất từ kế hoạch điều trị', '2026-09-27T22:22:19', N'thuan08022006@gmail.com');
