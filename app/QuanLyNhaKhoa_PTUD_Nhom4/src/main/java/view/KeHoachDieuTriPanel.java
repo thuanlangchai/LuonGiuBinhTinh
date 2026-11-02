@@ -53,9 +53,9 @@ public class KeHoachDieuTriPanel extends JPanel {
     private final DefaultTableModel model = ViewTheme.taoModel(
             new String[]{"Ngày", "Răng", "Dịch vụ", "Số lượng", "Đơn giá", "Thành tiền", "Trạng thái", "Mã hóa đơn"},
             true, true);
-    private final JTable bang = new JTable(model);
+    private final JTable tblBang = new JTable(model);
     private final Map<String, HoSo> hoSoTheoMa = new LinkedHashMap<String, HoSo>();
-    private final JPanel avatar = new JPanel() {
+    private final JPanel pnlavatar = new JPanel() {
         @Override
         protected void paintComponent(Graphics g) {
             super.paintComponent(g);
@@ -73,7 +73,7 @@ public class KeHoachDieuTriPanel extends JPanel {
     private String maKeHoach;
     private String kyHieu = "KH";
     private JTextField txtDonGia;
-    private JComboBox<String> cboDichVu;
+    private JComboBox<String> cmbDichVu;
     private HopThoai hopThoai;
     private JTextField txtSoLuong;
 
@@ -87,78 +87,78 @@ public class KeHoachDieuTriPanel extends JPanel {
         setBorder(new EmptyBorder(12, 12, 12, 12));
         setPreferredSize(new Dimension(1180, 680));
 
-        avatar.setPreferredSize(new Dimension(140, 110));
-        avatar.setOpaque(false);
+        pnlavatar.setPreferredSize(new Dimension(140, 110));
+        pnlavatar.setOpaque(false);
         lblTen.setFont(ViewTheme.FONT_TRANG);
         lblLienHe.setFont(ViewTheme.FONT);
         lblBenh.setFont(ViewTheme.FONT);
         lblKeHoach.setFont(ViewTheme.FONT);
         lblKeHoach.setForeground(ViewTheme.CHU_NHAT);
 
-        JPanel trai = new JPanel(new BorderLayout(0, 8));
-        trai.setBackground(ViewTheme.TRANG);
-        trai.setBorder(new EmptyBorder(8, 8, 8, 8));
-        JPanel thongTin = new JPanel(new BorderLayout(0, 8));
-        thongTin.setOpaque(false);
-        thongTin.add(lblTen, BorderLayout.NORTH);
-        thongTin.add(lblLienHe, BorderLayout.CENTER);
-        thongTin.add(lblBenh, BorderLayout.SOUTH);
-        trai.add(avatar, BorderLayout.NORTH);
-        trai.add(thongTin, BorderLayout.CENTER);
-        trai.add(ViewTheme.tieuDeMuc("Tóm tắt bệnh lý"), BorderLayout.SOUTH);
+        JPanel pnlTrai = new JPanel(new BorderLayout(0, 8));
+        pnlTrai.setBackground(ViewTheme.TRANG);
+        pnlTrai.setBorder(new EmptyBorder(8, 8, 8, 8));
+        JPanel pnlThongTin = new JPanel(new BorderLayout(0, 8));
+        pnlThongTin.setOpaque(false);
+        pnlThongTin.add(lblTen, BorderLayout.NORTH);
+        pnlThongTin.add(lblLienHe, BorderLayout.CENTER);
+        pnlThongTin.add(lblBenh, BorderLayout.SOUTH);
+        pnlTrai.add(pnlavatar, BorderLayout.NORTH);
+        pnlTrai.add(pnlThongTin, BorderLayout.CENTER);
+        pnlTrai.add(ViewTheme.tieuDeMuc("Tóm tắt bệnh lý"), BorderLayout.SOUTH);
 
-        ViewTheme.trangTriBang(bang);
-        ViewTheme.ganThaoTac(bang, this::xuLyHang);
-        JScrollPane cuon = new JScrollPane(bang);
-        cuon.setBorder(BorderFactory.createLineBorder(ViewTheme.VIEN));
+        ViewTheme.trangTriBang(tblBang);
+        ViewTheme.ganThaoTac(tblBang, this::xuLyHang);
+        JScrollPane scrCuon = new JScrollPane(tblBang);
+        scrCuon.setBorder(BorderFactory.createLineBorder(ViewTheme.VIEN));
 
-        JButton nutThemDv = new JButton("+ Thêm dịch vụ");
-        JButton nutHoaDon = new JButton("Lập hóa đơn");
-        JButton nutThanhToan = new JButton("Thu tiền");
-        ViewTheme.nutXanh(nutThemDv);
-        ViewTheme.nutCam(nutHoaDon);
-        ViewTheme.nutChinh(nutThanhToan);
-        nutThemDv.addActionListener(e -> moThemDichVu());
-        nutHoaDon.addActionListener(e -> moLapHoaDon());
-        nutThanhToan.addActionListener(e -> moThanhToan());
+        JButton btnNutThemDv = new JButton("+ Thêm dịch vụ");
+        JButton btnNutHoaDon = new JButton("Lập hóa đơn");
+        JButton btnNutThanhToan = new JButton("Thu tiền");
+        ViewTheme.nutXanh(btnNutThemDv);
+        ViewTheme.nutCam(btnNutHoaDon);
+        ViewTheme.nutChinh(btnNutThanhToan);
+        btnNutThemDv.addActionListener(e -> moThemDichVu());
+        btnNutHoaDon.addActionListener(e -> moLapHoaDon());
+        btnNutThanhToan.addActionListener(e -> moThanhToan());
 
-        JPanel nutTrai = new JPanel(new FlowLayout(FlowLayout.LEFT, 8, 0));
-        nutTrai.setOpaque(false);
-        nutTrai.add(nutThemDv);
-        nutTrai.add(nutHoaDon);
-        nutTrai.add(nutThanhToan);
+        JPanel pnlnutTrai = new JPanel(new FlowLayout(FlowLayout.LEFT, 8, 0));
+        pnlnutTrai.setOpaque(false);
+        pnlnutTrai.add(btnNutThemDv);
+        pnlnutTrai.add(btnNutHoaDon);
+        pnlnutTrai.add(btnNutThanhToan);
 
-        JPanel thongKe = new JPanel(new FlowLayout(FlowLayout.RIGHT, 18, 0));
-        thongKe.setOpaque(false);
-        thongKe.add(oSo(lblTongCong, "Tổng cộng", ViewTheme.CHU));
-        thongKe.add(oSo(lblChietKhau, "Chiết khấu", ViewTheme.CHU_NHAT));
-        thongKe.add(oSo(lblThanhTien, "Thành tiền", ViewTheme.CHU));
-        thongKe.add(oSo(lblDaChiTra, "Đã chi trả", new Color(40, 150, 70)));
-        thongKe.add(oSo(lblConNo, "Chưa thanh toán", ViewTheme.DO));
+        JPanel pnlThongKe = new JPanel(new FlowLayout(FlowLayout.RIGHT, 18, 0));
+        pnlThongKe.setOpaque(false);
+        pnlThongKe.add(oSo(lblTongCong, "Tổng cộng", ViewTheme.CHU));
+        pnlThongKe.add(oSo(lblChietKhau, "Chiết khấu", ViewTheme.CHU_NHAT));
+        pnlThongKe.add(oSo(lblThanhTien, "Thành tiền", ViewTheme.CHU));
+        pnlThongKe.add(oSo(lblDaChiTra, "Đã chi trả", new Color(40, 150, 70)));
+        pnlThongKe.add(oSo(lblConNo, "Chưa thanh toán", ViewTheme.DO));
 
-        JPanel thanhCongCu = new JPanel(new BorderLayout());
-        thanhCongCu.setOpaque(false);
-        thanhCongCu.add(nutTrai, BorderLayout.WEST);
-        thanhCongCu.add(thongKe, BorderLayout.EAST);
+        JPanel pnlThanhCongCu = new JPanel(new BorderLayout());
+        pnlThanhCongCu.setOpaque(false);
+        pnlThanhCongCu.add(pnlnutTrai, BorderLayout.WEST);
+        pnlThanhCongCu.add(pnlThongKe, BorderLayout.EAST);
 
-        JPanel dauPhai = new JPanel(new BorderLayout(0, 8));
-        dauPhai.setOpaque(false);
-        dauPhai.add(ViewTheme.tieuDeTrang("Chi tiết kế hoạch điều trị"), BorderLayout.NORTH);
-        dauPhai.add(lblKeHoach, BorderLayout.CENTER);
-        dauPhai.add(thanhCongCu, BorderLayout.SOUTH);
+        JPanel pnlDauPhai = new JPanel(new BorderLayout(0, 8));
+        pnlDauPhai.setOpaque(false);
+        pnlDauPhai.add(ViewTheme.tieuDeTrang("Chi tiết kế hoạch điều trị"), BorderLayout.NORTH);
+        pnlDauPhai.add(lblKeHoach, BorderLayout.CENTER);
+        pnlDauPhai.add(pnlThanhCongCu, BorderLayout.SOUTH);
 
         lblTong.setFont(ViewTheme.FONT_SO);
         lblTong.setForeground(ViewTheme.XANH_DAM);
         lblTong.setHorizontalAlignment(SwingConstants.RIGHT);
 
-        JPanel phai = new JPanel(new BorderLayout(0, 8));
-        phai.setBackground(ViewTheme.TRANG);
-        phai.setBorder(new EmptyBorder(8, 8, 8, 8));
-        phai.add(dauPhai, BorderLayout.NORTH);
-        phai.add(cuon, BorderLayout.CENTER);
-        phai.add(lblTong, BorderLayout.SOUTH);
+        JPanel pnlPhai = new JPanel(new BorderLayout(0, 8));
+        pnlPhai.setBackground(ViewTheme.TRANG);
+        pnlPhai.setBorder(new EmptyBorder(8, 8, 8, 8));
+        pnlPhai.add(pnlDauPhai, BorderLayout.NORTH);
+        pnlPhai.add(scrCuon, BorderLayout.CENTER);
+        pnlPhai.add(lblTong, BorderLayout.SOUTH);
 
-        JSplitPane tach = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, trai, phai);
+        JSplitPane tach = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, pnlTrai, pnlPhai);
         tach.setDividerLocation(280);
         tach.setResizeWeight(0);
         add(tach, BorderLayout.CENTER);
@@ -234,7 +234,7 @@ public class KeHoachDieuTriPanel extends JPanel {
         lblKeHoach.setText("Mã KHĐT: " + keHoachHienTai.maKeHoach
                 + "  |  Ngày lập: " + keHoachHienTai.ngayLap
                 + "  |  Trạng thái: " + keHoachHienTai.trangThai);
-        avatar.repaint();
+        pnlavatar.repaint();
         veBang();
     }
 
@@ -274,12 +274,12 @@ public class KeHoachDieuTriPanel extends JPanel {
         }
         Window w = SwingUtilities.getWindowAncestor(this);
         hopThoai = new HopThoai(w, "Thêm dịch vụ vào kế hoạch", "+ Thêm");
-        JComboBox<String> ngay = hopThoai.chon("Ngày", true, homNay(), "19/10/2026", "27/09/2026");
-        ngay.setEditable(true);
-        JComboBox<String> rang = hopThoai.chon("Răng", false, tenRang());
-        cboDichVu = hopThoai.chon("Dịch vụ", true, tenDichVu());
+        JComboBox<String> cmbNgay = hopThoai.chon("Ngày", true, homNay(), "19/10/2026", "27/09/2026");
+        cmbNgay.setEditable(true);
+        JComboBox<String> cmbRang = hopThoai.chon("Răng", false, tenRang());
+        cmbDichVu = hopThoai.chon("Dịch vụ", true, tenDichVu());
         txtSoLuong = hopThoai.chu("Số lượng", "1", true);
-        txtDonGia = hopThoai.chu("Đơn giá", ViewTheme.tien(giaDichVu(String.valueOf(cboDichVu.getSelectedItem()))), true);
+        txtDonGia = hopThoai.chu("Đơn giá", ViewTheme.tien(giaDichVu(String.valueOf(cmbDichVu.getSelectedItem()))), true);
         txtSoLuong.getDocument().addDocumentListener(new DocumentListener() {
             @Override
             public void insertUpdate(DocumentEvent e) {
@@ -297,25 +297,25 @@ public class KeHoachDieuTriPanel extends JPanel {
         });
         txtDonGia.setEditable(false);
         JComboBox<String> trangThai = hopThoai.chon("Trạng thái", true, "Mới", "Đang điều trị", "Hoàn tất");
-        JTextField ghiChu = hopThoai.chu("Ghi chú", "", false);
-        cboDichVu.addActionListener(e -> txtDonGia.setText(ViewTheme.tien(giaDichVu(String.valueOf(cboDichVu.getSelectedItem())))));
+        JTextField txtGhiChu = hopThoai.chu("Ghi chú", "", false);
+        cmbDichVu.addActionListener(e -> txtDonGia.setText(ViewTheme.tien(giaDichVu(String.valueOf(cmbDichVu.getSelectedItem())))));
         hopThoai.hien(() -> {
-            String ngayKH = String.valueOf(ngay.getEditor().getItem()).trim();
+            String ngayKH = String.valueOf(cmbNgay.getEditor().getItem()).trim();
             if (ngayKH.isEmpty()) {
                 JOptionPane.showMessageDialog(hopThoai, "Vui lòng nhập ngày.");
                 return;
             }
             int soLuong = parseSo(String.valueOf(txtSoLuong.getText()), 1);
-            long donGiaDv = giaDichVu(String.valueOf(cboDichVu.getSelectedItem()));
+            long donGiaDv = giaDichVu(String.valueOf(cmbDichVu.getSelectedItem()));
             HangDT hang = new HangDT(
                     maKeHoach,
                     ngayKH,
-                    String.valueOf(rang.getSelectedItem()),
-                    String.valueOf(cboDichVu.getSelectedItem()),
+                    String.valueOf(cmbRang.getSelectedItem()),
+                    String.valueOf(cmbDichVu.getSelectedItem()),
                     soLuong,
                     donGiaDv,
                     String.valueOf(trangThai.getSelectedItem()));
-            hang.ghiChu = ghiChu.getText().trim();
+            hang.ghiChu = txtGhiChu.getText().trim();
             if (!KeHoachDuLieu.themDichVu(maKeHoach, hang)) {
                 JOptionPane.showMessageDialog(hopThoai, "Không thêm được dịch vụ vào kế hoạch.");
                 return;
@@ -465,22 +465,22 @@ public class KeHoachDieuTriPanel extends JPanel {
         }
         Window w = SwingUtilities.getWindowAncestor(this);
         HopThoai dlg = new HopThoai(w, "Cập nhật điều trị", "Lưu");
-        JTextField ngay = dlg.chu("Ngày", dt.ngay, true);
-        JComboBox<String> rang = dlg.chon("Răng", false, tenRang());
-        rang.setSelectedItem(dt.rang);
-        JComboBox<String> dichVuCb = dlg.chon("Dịch vụ", true, tenDichVu());
-        dichVuCb.setSelectedItem(dt.dichVu);
-        JTextField slTf = dlg.chu("Số lượng", String.valueOf(dt.soLuong), true);
-        JTextField donGiaTf = dlg.chu("Đơn giá", ViewTheme.tien(dt.donGia), true);
-        JComboBox<String> trangThai = dlg.chon("Trạng thái", true, "Mới", "Đang điều trị", "Hoàn tất");
-        trangThai.setSelectedItem(dt.trangThai);
+        JTextField txtNgay = dlg.chu("Ngày", dt.ngay, true);
+        JComboBox<String> cmbRang = dlg.chon("Răng", false, tenRang());
+        cmbRang.setSelectedItem(dt.rang);
+        JComboBox<String> cmbDichVuCb = dlg.chon("Dịch vụ", true, tenDichVu());
+        cmbDichVuCb.setSelectedItem(dt.dichVu);
+        JTextField txtSlTf = dlg.chu("Số lượng", String.valueOf(dt.soLuong), true);
+        JTextField txtDonGiaTf = dlg.chu("Đơn giá", ViewTheme.tien(dt.donGia), true);
+        JComboBox<String> cmbTrangThai = dlg.chon("Trạng thái", true, "Mới", "Đang điều trị", "Hoàn tất");
+        cmbTrangThai.setSelectedItem(dt.trangThai);
         dlg.hien(() -> {
-            dt.ngay = ngay.getText().trim();
-            dt.rang = String.valueOf(rang.getSelectedItem());
-            dt.dichVu = String.valueOf(dichVuCb.getSelectedItem());
-            dt.soLuong = parseSo(String.valueOf(slTf.getText()), 1);
-            dt.donGia = parseTien(donGiaTf.getText());
-            dt.trangThai = String.valueOf(trangThai.getSelectedItem());
+            dt.ngay = txtNgay.getText().trim();
+            dt.rang = String.valueOf(cmbRang.getSelectedItem());
+            dt.dichVu = String.valueOf(cmbDichVuCb.getSelectedItem());
+            dt.soLuong = parseSo(String.valueOf(txtSlTf.getText()), 1);
+            dt.donGia = parseTien(txtDonGiaTf.getText());
+            dt.trangThai = String.valueOf(cmbTrangThai.getSelectedItem());
             KeHoachDuLieu.capNhat(keHoachHienTai);
             veBang();
         });
@@ -617,7 +617,7 @@ public class KeHoachDieuTriPanel extends JPanel {
     }
 
     private void setDonGia() {
-        txtDonGia.setText(ViewTheme.tien(giaDichVu(String.valueOf(cboDichVu.getSelectedItem()))));
+        txtDonGia.setText(ViewTheme.tien(giaDichVu(String.valueOf(cmbDichVu.getSelectedItem()))));
     }
 
     private static String nullSafe(String s) {
