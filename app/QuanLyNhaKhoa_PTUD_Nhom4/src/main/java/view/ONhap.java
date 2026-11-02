@@ -10,8 +10,10 @@ import javax.swing.JTextField;
 
 public class ONhap extends JTextField {
 
+	
     private String goiY;
 
+    
     public ONhap(String goiY, int cot) {
         super(cot);
         this.goiY = goiY == null ? "" : goiY;
@@ -29,11 +31,13 @@ public class ONhap extends JTextField {
         });
     }
 
+    
     public void datGoiY(String goiY) {
         this.goiY = goiY == null ? "" : goiY;
         repaint();
     }
 
+    
     @Override
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
