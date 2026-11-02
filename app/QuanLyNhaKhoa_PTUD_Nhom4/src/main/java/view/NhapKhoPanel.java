@@ -40,28 +40,28 @@ public class NhapKhoPanel extends JPanel {
 
         JLabel lblTieuDe = ViewTheme.tieuDeTrang(tieuDe);
         JTextField txtNgayNhap = taoTextField("2026-09-28");
-        JComboBox<String> cboLoaiVatTu = new JComboBox<>(new String[]{
+        JComboBox<String> cmbLoaiVatTu = new JComboBox<>(new String[]{
             "Thuốc", "Vật liệu tiêu hao", "Thiết bị nha khoa", "Công cụ, dụng cụ"
         });
-        JComboBox<String> cboNhaCungCap = new JComboBox<>();
+        JComboBox<String> cmbNhaCungCap = new JComboBox<>();
         for (NhaCungCap nhaCungCap : new Kho_Service().findAllNhaCungCap()) {
-            cboNhaCungCap.addItem(nhaCungCap.getTenNhaCungCap());
+        	cmbNhaCungCap.addItem(nhaCungCap.getTenNhaCungCap());
         }
-        if (cboNhaCungCap.getItemCount() == 0) {
-            cboNhaCungCap.addItem("STRAUMANN");
+        if (cmbNhaCungCap.getItemCount() == 0) {
+        	cmbNhaCungCap.addItem("STRAUMANN");
         }
         JTextField txtLyDo = taoTextField("");
-        ViewTheme.vienHop(cboLoaiVatTu);
-        ViewTheme.vienHop(cboNhaCungCap);
+        ViewTheme.vienHop(cmbLoaiVatTu);
+        ViewTheme.vienHop(cmbNhaCungCap);
 
         JPanel pnlForm = new JPanel(new GridLayout(0, 2, 12, 10));
         pnlForm.setOpaque(false);
         pnlForm.add(taoLabel("Ngày nhập kho"));
         pnlForm.add(txtNgayNhap);
         pnlForm.add(taoLabel("Loại vật tư"));
-        pnlForm.add(cboLoaiVatTu);
+        pnlForm.add(cmbLoaiVatTu);
         pnlForm.add(taoLabel("Nhà cung cấp"));
-        pnlForm.add(cboNhaCungCap);
+        pnlForm.add(cmbNhaCungCap);
         pnlForm.add(taoLabel("<html>Lý do <font color='#e74c3c'>*</font></html>"));
         pnlForm.add(txtLyDo);
 
@@ -83,9 +83,9 @@ public class NhapKhoPanel extends JPanel {
         JButton btnChonFile = new JButton("Choose File");
         ViewTheme.nutXam(btnChonFile);
         btnChonFile.addActionListener(e -> {
-            JFileChooser ofd = new JFileChooser();
-            if (ofd.showOpenDialog(this) == JFileChooser.APPROVE_OPTION) {
-                lblTenFile.setText(ofd.getSelectedFile().getName());
+            JFileChooser fch = new JFileChooser();
+            if (fch.showOpenDialog(this) == JFileChooser.APPROVE_OPTION) {
+                lblTenFile.setText(fch.getSelectedFile().getName());
             }
         });
         JButton btnTaiMau = new JButton("Tải file excel mẫu");
