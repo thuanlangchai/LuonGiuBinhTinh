@@ -74,7 +74,7 @@ public class TrangChuView extends JFrame {
 				ViewTheme.FONT, ViewTheme.CHU);
 
 		JButton btnVaoTrang = new JButton("Vào trang đầu");
-		ViewTheme.nutChinh(btnVaoTrang);
+		ViewTheme.btnNutChinh(btnVaoTrang);
 		btnVaoTrang.setFont(new Font("Segoe UI", Font.BOLD, 15));
 		btnVaoTrang.setAlignmentX(LEFT_ALIGNMENT);
 		btnVaoTrang.setMaximumSize(new Dimension(Integer.MAX_VALUE, 46));

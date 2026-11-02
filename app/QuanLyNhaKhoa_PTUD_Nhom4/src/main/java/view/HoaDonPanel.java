@@ -57,9 +57,9 @@ public class HoaDonPanel extends JPanel {
         the.setBackground(ViewTheme.TRANG);
         the.setBorder(new EmptyBorder(12, 14, 12, 14));
 
-        JLabel lblTieuDe = ViewTheme.tieuDeTrang("Hóa đơn");
+        JLabel lblTieuDe = ViewTheme.lblTieuDeTrang("Hóa đơn");
         JButton btnThem = new JButton("Thêm hóa đơn");
-        ViewTheme.nutXanh(btnThem);
+        ViewTheme.btnNutXanh(btnThem);
         btnThem.addActionListener(e -> moLapHoaDon(null, null));
         JPanel panelDau = new JPanel(new BorderLayout());
         panelDau.setOpaque(false);
@@ -80,15 +80,15 @@ public class HoaDonPanel extends JPanel {
         JComboBox<String> cboTrangThai = new JComboBox<String>(new String[]{
             "Trạng thái", "Chưa thanh toán", "Thanh toán một phần", "Đã thanh toán"
         });
-        ViewTheme.vienHop(cboKhach);
-        ViewTheme.vienHop(cboTrangThai);
+        ViewTheme.cmbVienHop(cboKhach);
+        ViewTheme.cmbVienHop(cboTrangThai);
         cboKhach.addActionListener(e -> loc());
         cboTrangThai.addActionListener(e -> loc());
 
         JPanel panelLoc = new JPanel(new BorderLayout(0, 8));
         panelLoc.setBackground(ViewTheme.NEN_TIM);
         panelLoc.setBorder(new EmptyBorder(10, 12, 10, 12));
-        panelLoc.add(ViewTheme.chuPhu("Tìm kiếm"), BorderLayout.NORTH);
+        panelLoc.add(ViewTheme.lblChuPhu("Tìm kiếm"), BorderLayout.NORTH);
         panelLoc.add(txtTim, BorderLayout.CENTER);
         JPanel panelDongLoc = new JPanel(new FlowLayout(FlowLayout.LEFT, 8, 0));
         panelDongLoc.setOpaque(false);
@@ -148,13 +148,13 @@ public class HoaDonPanel extends JPanel {
 
         JTextField ngay = o(HoaDonDuLieu.homNay());
         JComboBox<String> khach = new JComboBox<String>(DuLieuMau.dsKhach());
-        ViewTheme.vienHop(khach);
+        ViewTheme.cmbVienHop(khach);
         khach.setPreferredSize(new Dimension(360, 34));
         if (maKh != null) {
             chonKhach(khach, maKh);
         }
         JComboBox<String> bacSi = new JComboBox<String>(DuLieuMau.dsBacSi());
-        ViewTheme.vienHop(bacSi);
+        ViewTheme.cmbVienHop(bacSi);
         JTextField chietKhau = o("0");
         JTextField ghiChu = o("Xuất từ kế hoạch điều trị");
 
@@ -213,8 +213,8 @@ public class HoaDonPanel extends JPanel {
 
         JButton boQua = new JButton("Bỏ qua");
         JButton luu = new JButton("+ Thêm");
-        ViewTheme.nutXam(boQua);
-        ViewTheme.nutChinh(luu);
+        ViewTheme.btnNutXam(boQua);
+        ViewTheme.btnNutChinh(luu);
         boQua.addActionListener(e -> d.dispose());
         luu.addActionListener(e -> {
             String ma = maKhach(String.valueOf(khach.getSelectedItem()));
@@ -392,9 +392,9 @@ public class HoaDonPanel extends JPanel {
         JButton thu = new JButton("Thu tiền");
         JButton in = new JButton("In hóa đơn");
         JButton dong = new JButton("Đóng");
-        ViewTheme.nutChinh(thu);
-        ViewTheme.nutXanh(in);
-        ViewTheme.nutXam(dong);
+        ViewTheme.btnNutChinh(thu);
+        ViewTheme.btnNutXanh(in);
+        ViewTheme.btnNutXam(dong);
         thu.setEnabled(hd.conNo() > 0);
         thu.addActionListener(e -> {
             d.dispose();

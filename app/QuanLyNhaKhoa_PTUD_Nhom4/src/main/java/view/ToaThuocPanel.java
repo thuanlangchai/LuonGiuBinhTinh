@@ -63,7 +63,7 @@ public class ToaThuocPanel extends JPanel {
 		pnlTrai.setBorder(BorderFactory.createLineBorder(ViewTheme.VIEN));
 		txtTim.setPreferredSize(new Dimension(200, 32));
 		JButton btnAll = new JButton("ALL");
-		ViewTheme.nutChinh(btnAll);
+		ViewTheme.btnNutChinh(btnAll);
 		btnAll.setPreferredSize(new Dimension(220, 32));
 		btnAll.addActionListener(e -> {
 			txtTim.setText("");
@@ -97,7 +97,7 @@ public class ToaThuocPanel extends JPanel {
 		pnlTrai.add(new JScrollPane(pnlDsThuoc), BorderLayout.CENTER);
 
 		ViewTheme.vienNhap(txtChanDoan);
-		ViewTheme.vienHop(cmbKhach);
+		ViewTheme.cmbVienHop(cmbKhach);
 		JLabel lblThongTin = new JLabel("Giới tính: Nam     Ngày: 28/09/2026");
 		lblThongTin.setFont(ViewTheme.FONT);
 
@@ -115,12 +115,12 @@ public class ToaThuocPanel extends JPanel {
 		scrBang.setBorder(BorderFactory.createLineBorder(ViewTheme.VIEN));
 
 		ViewTheme.vienNhap(txtGhiChu);
-		ViewTheme.vienHop(cboHinhThuc);
-		ViewTheme.vienHop(cboBacSi);
+		ViewTheme.cmbVienHop(cboHinhThuc);
+		ViewTheme.cmbVienHop(cboBacSi);
 		chkNhanPK.setOpaque(false);
 		chkNhanPK.setFont(ViewTheme.FONT);
 		JButton btnLuu = new JButton("Lưu toa thuốc");
-		ViewTheme.nutChinh(btnLuu);
+		ViewTheme.btnNutChinh(btnLuu);
 		btnLuu.addActionListener(e -> luuToa());
 
 		JPanel pnlChan = new JPanel(new GridLayout(2, 1, 0, 8));
@@ -157,7 +157,7 @@ public class ToaThuocPanel extends JPanel {
 		panelDuoi.add(pnlChan, BorderLayout.SOUTH);
 		pnlPhai.add(panelDuoi, BorderLayout.SOUTH);
 
-		JLabel lblTieuDe = ViewTheme.tieuDeTrang("Lập toa thuốc");
+		JLabel lblTieuDe = ViewTheme.lblTieuDeTrang("Lập toa thuốc");
 		JPanel pnlNoiDung = new JPanel(new BorderLayout(0, 8));
 		pnlNoiDung.setOpaque(false);
 		pnlNoiDung.add(lblTieuDe, BorderLayout.NORTH);

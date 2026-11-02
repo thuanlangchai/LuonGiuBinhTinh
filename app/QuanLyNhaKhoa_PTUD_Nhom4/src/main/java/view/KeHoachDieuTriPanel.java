@@ -105,7 +105,7 @@ public class KeHoachDieuTriPanel extends JPanel {
         thongTin.add(lblBenh, BorderLayout.SOUTH);
         trai.add(avatar, BorderLayout.NORTH);
         trai.add(thongTin, BorderLayout.CENTER);
-        trai.add(ViewTheme.tieuDeMuc("Tóm tắt bệnh lý"), BorderLayout.SOUTH);
+        trai.add(ViewTheme.lblTieuDeMuc("Tóm tắt bệnh lý"), BorderLayout.SOUTH);
 
         ViewTheme.trangTriBang(bang);
         ViewTheme.ganThaoTac(bang, this::xuLyHang);
@@ -115,9 +115,9 @@ public class KeHoachDieuTriPanel extends JPanel {
         JButton nutThemDv = new JButton("+ Thêm dịch vụ");
         JButton nutHoaDon = new JButton("Lập hóa đơn");
         JButton nutThanhToan = new JButton("Thu tiền");
-        ViewTheme.nutXanh(nutThemDv);
-        ViewTheme.nutCam(nutHoaDon);
-        ViewTheme.nutChinh(nutThanhToan);
+        ViewTheme.btnNutXanh(nutThemDv);
+        ViewTheme.btnNutCam(nutHoaDon);
+        ViewTheme.btnNutChinh(nutThanhToan);
         nutThemDv.addActionListener(e -> moThemDichVu());
         nutHoaDon.addActionListener(e -> moLapHoaDon());
         nutThanhToan.addActionListener(e -> moThanhToan());
@@ -143,7 +143,7 @@ public class KeHoachDieuTriPanel extends JPanel {
 
         JPanel dauPhai = new JPanel(new BorderLayout(0, 8));
         dauPhai.setOpaque(false);
-        dauPhai.add(ViewTheme.tieuDeTrang("Chi tiết kế hoạch điều trị"), BorderLayout.NORTH);
+        dauPhai.add(ViewTheme.lblTieuDeTrang("Chi tiết kế hoạch điều trị"), BorderLayout.NORTH);
         dauPhai.add(lblKeHoach, BorderLayout.CENTER);
         dauPhai.add(thanhCongCu, BorderLayout.SOUTH);
 

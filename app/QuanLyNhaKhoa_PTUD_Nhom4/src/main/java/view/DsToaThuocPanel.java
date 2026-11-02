@@ -49,9 +49,9 @@ public class DsToaThuocPanel extends JPanel {
         panelThe.setBackground(ViewTheme.TRANG);
         panelThe.setBorder(new EmptyBorder(12, 14, 12, 14));
 
-        JLabel nhanTieuDe = ViewTheme.tieuDeTrang("Toa thuốc");
+        JLabel nhanTieuDe = ViewTheme.lblTieuDeTrang("Toa thuốc");
         JButton btnThem = new JButton("Thêm toa thuốc");
-        ViewTheme.nutXanh(btnThem);
+        ViewTheme.btnNutXanh(btnThem);
         btnThem.addActionListener(e -> {
             if (moLapToa != null) {
                 moLapToa.run();
@@ -72,13 +72,13 @@ public class DsToaThuocPanel extends JPanel {
         for (String khach : DuLieuMau.dsKhach()) {
             cboKhach.addItem(khach);
         }
-        ViewTheme.vienHop(cboKhach);
+        ViewTheme.cmbVienHop(cboKhach);
         cboKhach.addActionListener(e -> loc());
 
         JPanel panelLoc = new JPanel(new BorderLayout(0, 8));
         panelLoc.setBackground(ViewTheme.NEN_TIM);
         panelLoc.setBorder(new EmptyBorder(10, 12, 10, 12));
-        panelLoc.add(ViewTheme.chuPhu("Tìm kiếm"), BorderLayout.NORTH);
+        panelLoc.add(ViewTheme.lblChuPhu("Tìm kiếm"), BorderLayout.NORTH);
         panelLoc.add(txtTim, BorderLayout.CENTER);
         JPanel panelDong = new JPanel(new FlowLayout(FlowLayout.LEFT, 8, 0));
         panelDong.setOpaque(false);
@@ -258,8 +258,8 @@ public class DsToaThuocPanel extends JPanel {
 
         JButton btnIn = new JButton("In toa thuốc");
         JButton btnDong = new JButton("Đóng");
-        ViewTheme.nutXanh(btnIn);
-        ViewTheme.nutXam(btnDong);
+        ViewTheme.btnNutXanh(btnIn);
+        ViewTheme.btnNutXam(btnDong);
         btnIn.addActionListener(e -> JOptionPane.showMessageDialog(dialog,
                 "Toa " + toaThuoc.maToaThuoc + "\nKhách: " + toaThuoc.tenKh
                 + "\nThành tiền: " + ViewTheme.tien(toaThuoc.thanhTien)));

@@ -38,7 +38,7 @@ public class NhapKhoPanel extends JPanel {
         pnlNoiDung.setBackground(ViewTheme.TRANG);
         pnlNoiDung.setBorder(new EmptyBorder(16, 18, 16, 18));
 
-        JLabel lblTieuDe = ViewTheme.tieuDeTrang(tieuDe);
+        JLabel lblTieuDe = ViewTheme.lblTieuDeTrang(tieuDe);
         JTextField txtNgayNhap = taoTextField("2026-09-28");
         JComboBox<String> cboLoaiVatTu = new JComboBox<>(new String[]{
             "Thuốc", "Vật liệu tiêu hao", "Thiết bị nha khoa", "Công cụ, dụng cụ"
@@ -51,8 +51,8 @@ public class NhapKhoPanel extends JPanel {
             cboNhaCungCap.addItem("STRAUMANN");
         }
         JTextField txtLyDo = taoTextField("");
-        ViewTheme.vienHop(cboLoaiVatTu);
-        ViewTheme.vienHop(cboNhaCungCap);
+        ViewTheme.cmbVienHop(cboLoaiVatTu);
+        ViewTheme.cmbVienHop(cboNhaCungCap);
 
         JPanel pnlForm = new JPanel(new GridLayout(0, 2, 12, 10));
         pnlForm.setOpaque(false);
@@ -70,7 +70,7 @@ public class NhapKhoPanel extends JPanel {
         pnlDanhSachDong.add(taoDongHang());
 
         JButton btnThemDong = new JButton("+");
-        ViewTheme.nutChinh(btnThemDong);
+        ViewTheme.btnNutChinh(btnThemDong);
         btnThemDong.addActionListener(e -> {
             pnlDanhSachDong.add(taoDongHang());
             pnlDanhSachDong.revalidate();
@@ -81,7 +81,7 @@ public class NhapKhoPanel extends JPanel {
 
         JLabel lblTenFile = new JLabel("No file chosen");
         JButton btnChonFile = new JButton("Choose File");
-        ViewTheme.nutXam(btnChonFile);
+        ViewTheme.btnNutXam(btnChonFile);
         btnChonFile.addActionListener(e -> {
             JFileChooser ofd = new JFileChooser();
             if (ofd.showOpenDialog(this) == JFileChooser.APPROVE_OPTION) {
@@ -89,7 +89,7 @@ public class NhapKhoPanel extends JPanel {
             }
         });
         JButton btnTaiMau = new JButton("Tải file excel mẫu");
-        ViewTheme.nutLink(btnTaiMau);
+        ViewTheme.btnNutLink(btnTaiMau);
         btnTaiMau.setForeground(ViewTheme.XANH_DAM);
         btnTaiMau.addActionListener(e -> JOptionPane.showMessageDialog(this,
                 "File mẫu gồm cột: Sản phẩm, Số lượng, Đơn giá."));
@@ -108,8 +108,8 @@ public class NhapKhoPanel extends JPanel {
 
         JButton btnBoQua = new JButton("Bỏ qua");
         JButton btnLuu = new JButton(nhanNutLuu);
-        ViewTheme.nutXam(btnBoQua);
-        ViewTheme.nutChinh(btnLuu);
+        ViewTheme.btnNutXam(btnBoQua);
+        ViewTheme.btnNutChinh(btnLuu);
         btnBoQua.addActionListener(e -> txtLyDo.setText(""));
         btnLuu.addActionListener(e -> {
             if (txtLyDo.getText().trim().isEmpty()) {
@@ -128,10 +128,10 @@ public class NhapKhoPanel extends JPanel {
 
         JPanel pnlTieuCot = new JPanel(new GridLayout(1, 4, 8, 0));
         pnlTieuCot.setOpaque(false);
-        pnlTieuCot.add(ViewTheme.chuPhu("Sản phẩm"));
-        pnlTieuCot.add(ViewTheme.chuPhu("Số lượng"));
-        pnlTieuCot.add(ViewTheme.chuPhu("Đơn giá"));
-        pnlTieuCot.add(ViewTheme.chuPhu("Thành tiền"));
+        pnlTieuCot.add(ViewTheme.lblChuPhu("Sản phẩm"));
+        pnlTieuCot.add(ViewTheme.lblChuPhu("Số lượng"));
+        pnlTieuCot.add(ViewTheme.lblChuPhu("Đơn giá"));
+        pnlTieuCot.add(ViewTheme.lblChuPhu("Thành tiền"));
 
         JPanel pnlTongHang = new JPanel(new FlowLayout(FlowLayout.RIGHT, 8, 0));
         pnlTongHang.setOpaque(false);
@@ -177,7 +177,7 @@ public class NhapKhoPanel extends JPanel {
         JTextField txtDonGia = taoTextField("0");
         JTextField txtThanhTien = taoTextField("0");
         txtThanhTien.setEditable(false);
-        ViewTheme.vienHop(cboSanPham);
+        ViewTheme.cmbVienHop(cboSanPham);
 
         Runnable tinhThanhTien = () -> {
             try {
@@ -210,7 +210,7 @@ public class NhapKhoPanel extends JPanel {
         txtDonGia.getDocument().addDocumentListener(listenerTinh);
 
         JButton btnXoa = new JButton("Xóa");
-        ViewTheme.nutDo(btnXoa);
+        ViewTheme.btnNutDo(btnXoa);
         btnXoa.addActionListener(e -> {
             if (pnlDanhSachDong.getComponentCount() > 1) {
                 pnlDanhSachDong.remove(pnlDong);

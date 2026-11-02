@@ -92,7 +92,7 @@ public class QuanLyView extends JFrame implements DieuHuong {
         logo.setFont(new Font("Segoe UI", Font.BOLD, 18));
         txtTimKhach.setPreferredSize(new Dimension(200, 32));
         JButton nutTim = new JButton("Tìm");
-        ViewTheme.nutXam(nutTim);
+        ViewTheme.btnNutXam(nutTim);
         nutTim.addActionListener(e -> timVaMo());
         txtTimKhach.addActionListener(e -> timVaMo());
         JPanel trai = new JPanel(new FlowLayout(FlowLayout.LEFT, 8, 0));
@@ -162,7 +162,7 @@ public class QuanLyView extends JFrame implements DieuHuong {
 
     private JButton nutMenu(String chu, String[][] muc) {
         JButton b = new JButton(chu);
-        ViewTheme.nutTrong(b);
+        ViewTheme.btnNutTrong(b);
         JPopupMenu pop = new JPopupMenu();
         for (String[] m : muc) {
             JMenuItem item = new JMenuItem(m[0]);

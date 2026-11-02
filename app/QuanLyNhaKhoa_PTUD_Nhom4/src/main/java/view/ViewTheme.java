@@ -78,25 +78,25 @@ public final class ViewTheme {
         return LocalDateTime.now().format(F_BAY_GIO);
     }
 
-    public static JLabel tieuDeTrang(String chu) {
-        JLabel lb = new JLabel(chu);
-        lb.setFont(FONT_TRANG);
-        lb.setForeground(CHU);
-        return lb;
+    public static JLabel lblTieuDeTrang(String chu) {
+        JLabel lbl = new JLabel(chu);
+        lbl.setFont(FONT_TRANG);
+        lbl.setForeground(CHU);
+        return lbl;
     }
 
-    public static JLabel tieuDeMuc(String chu) {
-        JLabel lb = new JLabel(chu);
-        lb.setFont(FONT_DAM);
-        lb.setForeground(new Color(46, 160, 80));
-        return lb;
+    public static JLabel lblTieuDeMuc(String chu) {
+        JLabel lbl = new JLabel(chu);
+        lbl.setFont(FONT_DAM);
+        lbl.setForeground(new Color(46, 160, 80));
+        return lbl;
     }
 
-    public static JLabel chuPhu(String chu) {
-        JLabel lb = new JLabel(chu);
-        lb.setFont(FONT);
-        lb.setForeground(CHU_NHAT);
-        return lb;
+    public static JLabel lblChuPhu(String chu) {
+        JLabel lbl = new JLabel(chu);
+        lbl.setFont(FONT);
+        lbl.setForeground(CHU_NHAT);
+        return lbl;
     }
 
     public static void vienNhap(JComponent c) {
@@ -108,13 +108,13 @@ public final class ViewTheme {
                 new EmptyBorder(6, 8, 6, 8)));
     }
 
-    public static void vienHop(JComboBox<?> c) {
+    public static void cmbVienHop(JComboBox<?> c) {
         c.setFont(FONT);
         c.setBackground(TRANG);
         c.setPreferredSize(new Dimension(160, 32));
     }
 
-    public static void nutMau(JButton b, Color nen, Color chu) {
+    public static void btnNutMau(JButton b, Color nen, Color chu) {
         b.setUI(new BasicButtonUI());
         b.setBackground(nen);
         b.setForeground(chu);
@@ -147,31 +147,31 @@ public final class ViewTheme {
         }
     }
 
-    public static void nutChinh(JButton b) {
-        nutMau(b, XANH, TRANG);
+    public static void btnNutChinh(JButton b) {
+        btnNutMau(b, XANH, TRANG);
     }
 
-    public static void nutPhu(JButton b) {
-        nutMau(b, DO, TRANG);
+    public static void btnNutPhu(JButton b) {
+    	btnNutMau(b, DO, TRANG);
     }
 
-    public static void nutXanh(JButton b) {
-        nutMau(b, XANH_LA, TRANG);
+    public static void btnNutXanh(JButton b) {
+    	btnNutMau(b, XANH_LA, TRANG);
     }
 
-    public static void nutCam(JButton b) {
-        nutMau(b, CAM, TRANG);
+    public static void btnNutCam(JButton b) {
+    	btnNutMau(b, CAM, TRANG);
     }
 
-    public static void nutXam(JButton b) {
-        nutMau(b, new Color(226, 230, 234), CHU);
+    public static void btnNutXam(JButton b) {
+    	btnNutMau(b, new Color(226, 230, 234), CHU);
     }
 
-    public static void nutDo(JButton b) {
-        nutMau(b, DO, TRANG);
+    public static void btnNutDo(JButton b) {
+    	btnNutMau(b, DO, TRANG);
     }
 
-    public static void nutTrong(JButton b) {
+    public static void btnNutTrong(JButton b) {
         b.setUI(new BasicButtonUI());
         b.setContentAreaFilled(false);
         b.setOpaque(false);
@@ -182,7 +182,7 @@ public final class ViewTheme {
         b.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
     }
 
-    public static void nutLink(JButton b) {
+    public static void btnNutLink(JButton b) {
         b.setUI(new BasicButtonUI());
         b.setContentAreaFilled(false);
         b.setOpaque(false);
@@ -239,33 +239,33 @@ public final class ViewTheme {
         return dong;
     }
 
-    public static void trangTriBang(JTable bang) {
-        bang.setFont(FONT);
-        bang.setRowHeight(36);
-        bang.setForeground(CHU);
-        bang.setGridColor(VIEN);
-        bang.setShowHorizontalLines(true);
-        bang.setShowVerticalLines(false);
-        bang.setSelectionBackground(XANH_DUONG_NHAT);
-        bang.setSelectionForeground(CHU);
-        bang.setFillsViewportHeight(true);
-        bang.setAutoCreateRowSorter(false);
-        JTableHeader dau = bang.getTableHeader();
+    public static void trangTriBang(JTable tbl) {
+        tbl.setFont(FONT);
+        tbl.setRowHeight(36);
+        tbl.setForeground(CHU);
+        tbl.setGridColor(VIEN);
+        tbl.setShowHorizontalLines(true);
+        tbl.setShowVerticalLines(false);
+        tbl.setSelectionBackground(XANH_DUONG_NHAT);
+        tbl.setSelectionForeground(CHU);
+        tbl.setFillsViewportHeight(true);
+        tbl.setAutoCreateRowSorter(false);
+        JTableHeader dau = tbl.getTableHeader();
         dau.setReorderingAllowed(false);
         dau.setPreferredSize(new Dimension(0, 36));
         dau.setDefaultRenderer(new DefaultTableCellRenderer() {
             @Override
             public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
-                JLabel lb = (JLabel) super.getTableCellRendererComponent(table, value, false, false, row, column);
-                lb.setBackground(NEN_TIM);
-                lb.setForeground(CHU_NHAT);
-                lb.setFont(FONT_DAM);
-                lb.setBorder(BorderFactory.createMatteBorder(0, 0, 1, 0, VIEN));
-                lb.setHorizontalAlignment(SwingConstants.LEFT);
-                return lb;
+                JLabel lbl = (JLabel) super.getTableCellRendererComponent(table, value, false, false, row, column);
+                lbl.setBackground(NEN_TIM);
+                lbl.setForeground(CHU_NHAT);
+                lbl.setFont(FONT_DAM);
+                lbl.setBorder(BorderFactory.createMatteBorder(0, 0, 1, 0, VIEN));
+                lbl.setHorizontalAlignment(SwingConstants.LEFT);
+                return lbl;
             }
         });
-        bang.setDefaultRenderer(String.class, new DefaultTableCellRenderer() {
+        tbl.setDefaultRenderer(String.class, new DefaultTableCellRenderer() {
             @Override
             public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
                 Component c = super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
@@ -294,28 +294,28 @@ public final class ViewTheme {
                 return c;
             }
         });
-        if (bang.getColumnCount() > 0 && "".equals(bang.getColumnName(0))) {
-            bang.getColumnModel().getColumn(0).setMaxWidth(46);
-            bang.getColumnModel().getColumn(0).setPreferredWidth(46);
+        if (tbl.getColumnCount() > 0 && "".equals(tbl.getColumnName(0))) {
+        	tbl.getColumnModel().getColumn(0).setMaxWidth(46);
+        	tbl.getColumnModel().getColumn(0).setPreferredWidth(46);
         }
-        int cuoi = bang.getColumnCount() - 1;
-        if (cuoi >= 0 && "Thao tác".equals(bang.getColumnName(cuoi))) {
-            bang.getColumnModel().getColumn(cuoi).setPreferredWidth(160);
-            bang.getColumnModel().getColumn(cuoi).setMaxWidth(180);
+        int cuoi = tbl.getColumnCount() - 1;
+        if (cuoi >= 0 && "Thao tác".equals(tbl.getColumnName(cuoi))) {
+        	tbl.getColumnModel().getColumn(cuoi).setPreferredWidth(160);
+        	tbl.getColumnModel().getColumn(cuoi).setMaxWidth(180);
         }
-        for (int i = 0; i < bang.getColumnCount(); i++) {
-            if (i == 0 && "".equals(bang.getColumnName(0))) {
+        for (int i = 0; i < tbl.getColumnCount(); i++) {
+            if (i == 0 && "".equals(tbl.getColumnName(0))) {
                 continue;
             }
-            if ("Thao tác".equals(bang.getColumnName(i))) {
+            if ("Thao tác".equals(tbl.getColumnName(i))) {
                 continue;
             }
-            bang.getColumnModel().getColumn(i).setPreferredWidth(140);
+            tbl.getColumnModel().getColumn(i).setPreferredWidth(140);
         }
-        if (bang.getColumnCount() <= 7) {
-            bang.setAutoResizeMode(JTable.AUTO_RESIZE_SUBSEQUENT_COLUMNS);
+        if (tbl.getColumnCount() <= 7) {
+        	tbl.setAutoResizeMode(JTable.AUTO_RESIZE_SUBSEQUENT_COLUMNS);
         } else {
-            bang.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
+        	tbl.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
         }
     }
 

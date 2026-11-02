@@ -196,7 +196,7 @@ public final class BieuMau {
         panelDs.setOpaque(false);
         panelDs.add(panelHang);
         JButton btnCong = new JButton("+");
-        ViewTheme.nutChinh(btnCong);
+        ViewTheme.btnNutChinh(btnCong);
         btnCong.addActionListener(e -> {
             panelDs.add(dongSanPham());
             panelDs.revalidate();
@@ -217,11 +217,11 @@ public final class BieuMau {
     private static JPanel kiemKho() {
         JPanel panel = new JPanel(new GridLayout(1, 4, 0, 0));
         panel.setOpaque(false);
-        panel.add(ViewTheme.chuPhu("Sản phẩm"));
-        panel.add(ViewTheme.chuPhu("Số lượng hệ thống"));
-        panel.add(ViewTheme.chuPhu("Số lượng thực tế"));
-        panel.add(ViewTheme.chuPhu("Chênh lệch"));
-        panel.add(ViewTheme.chuPhu(""));
+        panel.add(ViewTheme.lblChuPhu("Sản phẩm"));
+        panel.add(ViewTheme.lblChuPhu("Số lượng hệ thống"));
+        panel.add(ViewTheme.lblChuPhu("Số lượng thực tế"));
+        panel.add(ViewTheme.lblChuPhu("Chênh lệch"));
+        panel.add(ViewTheme.lblChuPhu(""));
         return panel;
     }
 
@@ -230,7 +230,7 @@ public final class BieuMau {
         panel.setOpaque(false);
         panel.setBorder(new EmptyBorder(4, 0, 4, 0));
         JComboBox<String> cboSanPham = new JComboBox<>(DuLieuMau.dsSanPham());
-        ViewTheme.vienHop(cboSanPham);
+        ViewTheme.cmbVienHop(cboSanPham);
         JTextField txtSoLuong = new JTextField("0");
         JTextField txtChenhLech = new JTextField("0");
         JTextField txtGia = new JTextField("0");
@@ -238,7 +238,7 @@ public final class BieuMau {
         ViewTheme.vienNhap(txtChenhLech);
         ViewTheme.vienNhap(txtGia);
         JButton btnXoa = new JButton("Xóa");
-        ViewTheme.nutDo(btnXoa);
+        ViewTheme.btnNutDo(btnXoa);
         btnXoa.addActionListener(e -> {
             Container cha = panel.getParent();
             if (cha != null && cha.getComponentCount() > 1) {

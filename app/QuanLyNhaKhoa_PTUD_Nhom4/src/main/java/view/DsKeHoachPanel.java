@@ -48,9 +48,9 @@ public class DsKeHoachPanel extends JPanel {
         the.setBackground(ViewTheme.TRANG);
         the.setBorder(new EmptyBorder(12, 14, 12, 14));
 
-        JLabel lblTieuDe = ViewTheme.tieuDeTrang("Kế hoạch điều trị");
+        JLabel lblTieuDe = ViewTheme.lblTieuDeTrang("Kế hoạch điều trị");
         JButton btnThem = new JButton("+ Kế hoạch điều trị");
-        ViewTheme.nutXanh(btnThem);
+        ViewTheme.btnNutXanh(btnThem);
         btnThem.addActionListener(e -> moThem());
         JPanel panelDau = new JPanel(new BorderLayout());
         panelDau.setOpaque(false);
@@ -67,7 +67,7 @@ public class DsKeHoachPanel extends JPanel {
         for (String k : DuLieuMau.dsKhach()) {
             cboKhach.addItem(k);
         }
-        ViewTheme.vienHop(cboKhach);
+        ViewTheme.cmbVienHop(cboKhach);
         cboKhach.addActionListener(e -> {
             Object sel = cboKhach.getSelectedItem();
             if (cboKhach.getSelectedIndex() <= 0 || sel == null) {
@@ -82,7 +82,7 @@ public class DsKeHoachPanel extends JPanel {
         JPanel panelLoc = new JPanel(new BorderLayout(0, 8));
         panelLoc.setBackground(ViewTheme.NEN_TIM);
         panelLoc.setBorder(new EmptyBorder(10, 12, 10, 12));
-        panelLoc.add(ViewTheme.chuPhu("Khách hàng"), BorderLayout.NORTH);
+        panelLoc.add(ViewTheme.lblChuPhu("Khách hàng"), BorderLayout.NORTH);
         panelLoc.add(cboKhach, BorderLayout.CENTER);
         panelLoc.add(lblThongTinKh, BorderLayout.SOUTH);
 

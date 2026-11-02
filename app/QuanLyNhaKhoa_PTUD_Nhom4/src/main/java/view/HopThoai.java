@@ -49,8 +49,8 @@ public class HopThoai extends JDialog {
 
         JButton boQua = new JButton("Bỏ qua");
         JButton luu = new JButton(nhanLuu);
-        ViewTheme.nutXam(boQua);
-        ViewTheme.nutChinh(luu);
+        ViewTheme.btnNutXam(boQua);
+        ViewTheme.btnNutChinh(luu);
         boQua.addActionListener(e -> dispose());
         luu.addActionListener(e -> luu());
         JPanel phai = new JPanel(new FlowLayout(FlowLayout.RIGHT, 8, 0));
@@ -119,16 +119,16 @@ public class HopThoai extends JDialog {
 
     public JComboBox<String> chon(String nhan, boolean batBuocTruong, String... muc) {
         JComboBox<String> c = new JComboBox<String>(muc);
-        ViewTheme.vienHop(c);
+        ViewTheme.cmbVienHop(c);
         them(nhan, c, c, batBuocTruong);
         return c;
     }
 
     public JComboBox<String> chonVoiNut(String nhan, boolean batBuocTruong, String... muc) {
         JComboBox<String> c = new JComboBox<String>(muc);
-        ViewTheme.vienHop(c);
+        ViewTheme.cmbVienHop(c);
         JButton cong = new JButton("+");
-        ViewTheme.nutXam(cong);
+        ViewTheme.btnNutXam(cong);
         cong.setPreferredSize(new Dimension(42, 34));
         cong.addActionListener(e -> {
             String ten = JOptionPane.showInputDialog(this, "Nhập giá trị mới");

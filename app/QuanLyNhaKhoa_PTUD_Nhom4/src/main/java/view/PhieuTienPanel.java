@@ -60,9 +60,9 @@ public class PhieuTienPanel extends JPanel {
         panelThe.setBackground(ViewTheme.TRANG);
         panelThe.setBorder(new EmptyBorder(12, 14, 12, 14));
 
-        JLabel nhanTieuDe = ViewTheme.tieuDeTrang(laPhieuThu ? "Phiếu thu" : "Phiếu chi");
+        JLabel nhanTieuDe = ViewTheme.lblTieuDeTrang(laPhieuThu ? "Phiếu thu" : "Phiếu chi");
         JButton btnThem = new JButton(laPhieuThu ? "Thêm phiếu thu" : "Thêm phiếu chi");
-        ViewTheme.nutXanh(btnThem);
+        ViewTheme.btnNutXanh(btnThem);
         btnThem.addActionListener(e -> moForm(-1));
         JPanel panelDau = new JPanel(new BorderLayout());
         panelDau.setOpaque(false);
@@ -79,7 +79,7 @@ public class PhieuTienPanel extends JPanel {
         JPanel panelLoc = new JPanel(new BorderLayout(0, 8));
         panelLoc.setBackground(ViewTheme.NEN_TIM);
         panelLoc.setBorder(new EmptyBorder(10, 12, 10, 12));
-        panelLoc.add(ViewTheme.chuPhu("Tìm kiếm"), BorderLayout.NORTH);
+        panelLoc.add(ViewTheme.lblChuPhu("Tìm kiếm"), BorderLayout.NORTH);
         panelLoc.add(txtTim, BorderLayout.CENTER);
 
         JScrollPane scrollBang = new JScrollPane(bang);

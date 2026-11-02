@@ -189,7 +189,7 @@ public class LichHenPanel extends JPanel {
         goi.setForeground(ViewTheme.CHU_NHAT);
         trai.add(goi);
         trai.add(txtTimBacSi);
-        ViewTheme.vienHop(cboTrangThai);
+        ViewTheme.cmbVienHop(cboTrangThai);
         trai.add(cboTrangThai);
         loc.add(trai, BorderLayout.CENTER);
         JPanel huy = new JPanel(new FlowLayout(FlowLayout.RIGHT, 6, 0));
@@ -203,9 +203,9 @@ public class LichHenPanel extends JPanel {
         JButton truoc = new JButton("‹");
         JButton sau = new JButton("›");
         JButton homNay = new JButton("Hôm nay");
-        ViewTheme.nutXam(truoc);
-        ViewTheme.nutXam(sau);
-        ViewTheme.nutXam(homNay);
+        ViewTheme.btnNutXam(truoc);
+        ViewTheme.btnNutXam(sau);
+        ViewTheme.btnNutXam(homNay);
         truoc.addActionListener(e -> doiNgay(-1));
         sau.addActionListener(e -> doiNgay(1));
         homNay.addActionListener(e -> {
@@ -226,7 +226,7 @@ public class LichHenPanel extends JPanel {
         for (int i = 0; i < CHE_DO.length; i++) {
             final String ma = CHE_DO[i];
             nutCheDo[i] = new JButton(NHAN_CHE_DO[i]);
-            ViewTheme.nutXam(nutCheDo[i]);
+            ViewTheme.btnNutXam(nutCheDo[i]);
             nutCheDo[i].addActionListener(e -> {
                 cheDo = ma;
                 ve();
@@ -517,7 +517,7 @@ public class LichHenPanel extends JPanel {
             JLabel ten = new JLabel(cot[i], SwingConstants.CENTER);
             ten.setFont(ViewTheme.FONT_DAM);
             JButton them = new JButton("Thêm lịch hẹn");
-            ViewTheme.nutLink(them);
+            ViewTheme.btnNutLink(them);
             them.setHorizontalAlignment(SwingConstants.CENTER);
             them.setForeground(ViewTheme.XANH_DAM);
             final int nhom = i;
@@ -618,9 +618,9 @@ public class LichHenPanel extends JPanel {
             }
             JButton o = new JButton("<html><center>" + i + (so > 0 ? "<br><font color='#0e84b8'>" + so + " lịch</font>" : "") + "</center></html>");
             if (d.equals(ngay)) {
-                ViewTheme.nutChinh(o);
+                ViewTheme.btnNutChinh(o);
             } else {
-                ViewTheme.nutXam(o);
+                ViewTheme.btnNutXam(o);
             }
             o.addActionListener(e -> {
                 ngay = d;

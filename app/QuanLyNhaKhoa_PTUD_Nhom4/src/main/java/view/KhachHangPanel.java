@@ -71,17 +71,17 @@ public class KhachHangPanel extends JPanel {
         the.setBackground(ViewTheme.TRANG);
         the.setBorder(new EmptyBorder(12, 14, 12, 14));
 
-        JLabel lblTieuDe = ViewTheme.tieuDeTrang("Khách hàng");
+        JLabel lblTieuDe = ViewTheme.lblTieuDeTrang("Khách hàng");
         JButton btnXuat = new JButton("Xuất Excel");
         JButton btnToa = new JButton("Toa thuốc");
         JButton btnThem = new JButton("Thêm khách hàng");
         JComboBox<String> cboHienThi = new JComboBox<String>(new String[]{"Hiển thị", "Tất cả cột", "Cột chính"});
         JComboBox<String> cboDang = new JComboBox<String>(new String[]{"Dạng", "Bảng", "Thẻ"});
-        ViewTheme.nutXam(btnXuat);
-        ViewTheme.nutXanh(btnToa);
-        ViewTheme.nutCam(btnThem);
-        ViewTheme.vienHop(cboHienThi);
-        ViewTheme.vienHop(cboDang);
+        ViewTheme.btnNutXam(btnXuat);
+        ViewTheme.btnNutXanh(btnToa);
+        ViewTheme.btnNutCam(btnThem);
+        ViewTheme.cmbVienHop(cboHienThi);
+        ViewTheme.cmbVienHop(cboDang);
         btnThem.addActionListener(e -> moForm(-1));
         btnToa.addActionListener(e -> moToaChoKhach());
         btnXuat.addActionListener(e -> JOptionPane.showMessageDialog(this, "Đã chuẩn bị dữ liệu khách hàng để xuất Excel."));
@@ -101,7 +101,7 @@ public class KhachHangPanel extends JPanel {
         ViewTheme.vienNhap(txtTim);
         txtTim.setPreferredSize(new Dimension(220, 32));
         JButton btnTim = new JButton("Tìm");
-        ViewTheme.nutChinh(btnTim);
+        ViewTheme.btnNutChinh(btnTim);
         btnTim.addActionListener(e -> loc());
         txtTim.addActionListener(e -> loc());
 
@@ -111,7 +111,7 @@ public class KhachHangPanel extends JPanel {
         JComboBox<String> cboTrangThai = hop("Trạng thái điều trị", "Tất cả", "Đang điều trị", "Hoàn tất");
         JComboBox<String> cboDichVu = hop("Dịch vụ", "Tất cả", "Thăm khám", "Cạo vôi");
         JButton btnMore = new JButton("More");
-        ViewTheme.nutChinh(btnMore);
+        ViewTheme.btnNutChinh(btnMore);
 
         panelLocThem.setOpaque(false);
         panelLocThem.setVisible(false);
@@ -126,7 +126,7 @@ public class KhachHangPanel extends JPanel {
         panelLocThem.add(o("Số tiền dịch vụ"));
         panelLocThem.add(o("Số tiền nợ còn lại"));
         JButton btnLess = new JButton("Less");
-        ViewTheme.nutChinh(btnLess);
+        ViewTheme.btnNutChinh(btnLess);
         panelLocThem.add(btnLess);
         btnMore.addActionListener(e -> panelLocThem.setVisible(true));
         btnLess.addActionListener(e -> panelLocThem.setVisible(false));
@@ -174,7 +174,7 @@ public class KhachHangPanel extends JPanel {
         panelTrai.setOpaque(false);
         panelTrai.add(new JLabel("Display"));
         JComboBox<String> cboSoBanGhi = new JComboBox<String>(new String[]{"15", "10", "25"});
-        ViewTheme.vienHop(cboSoBanGhi);
+        ViewTheme.cmbVienHop(cboSoBanGhi);
         panelTrai.add(cboSoBanGhi);
         panelTrai.add(new JLabel("records"));
         panelTrai.add(lblDem);
@@ -332,7 +332,7 @@ public class KhachHangPanel extends JPanel {
         JTextField email = oForm(sua ? String.valueOf(model.getValueAt(hang, 6)) : "");
         JTextField cccd = oForm(sua ? String.valueOf(model.getValueAt(hang, 8)) : "");
         JComboBox<String> gioi = new JComboBox<String>(new String[]{"Nam", "Nữ", "Khác"});
-        ViewTheme.vienHop(gioi);
+        ViewTheme.cmbVienHop(gioi);
         if (sua) {
             gioi.setSelectedItem(model.getValueAt(hang, 3));
         }
@@ -340,7 +340,7 @@ public class KhachHangPanel extends JPanel {
         JTextField diaChi = oForm(sua ? String.valueOf(model.getValueAt(hang, 7)) : "");
         JTextField ghi = oForm(sua ? String.valueOf(model.getValueAt(hang, 9)) : "");
         JComboBox<String> chiNhanh = new JComboBox<String>(new String[]{"CN1", "Quang Thanh"});
-        ViewTheme.vienHop(chiNhanh);
+        ViewTheme.cmbVienHop(chiNhanh);
 
         JPanel trai = cotForm("Thông tin khách hàng",
                 new String[]{"Mã KH", "Họ và tên", "Số điện thoại", "Địa chỉ email", "CCCD", "Giới tính", "Ngày sinh", "Địa chỉ", "Ghi chú", "Chi nhánh"},
@@ -360,8 +360,8 @@ public class KhachHangPanel extends JPanel {
             bacSi.addItem(nhan);
             tuVan.addItem(nhan);
         }
-        ViewTheme.vienHop(bacSi);
-        ViewTheme.vienHop(tuVan);
+        ViewTheme.cmbVienHop(bacSi);
+        ViewTheme.cmbVienHop(tuVan);
         if (sua) {
             chonMa(bacSi, String.valueOf(model.getValueAt(hang, 15)));
             chonMa(tuVan, String.valueOf(model.getValueAt(hang, 16)));
@@ -384,8 +384,8 @@ public class KhachHangPanel extends JPanel {
 
         JButton boQua = new JButton("Bỏ qua");
         JButton luu = new JButton(sua ? "Lưu" : "Thêm");
-        ViewTheme.nutXam(boQua);
-        ViewTheme.nutChinh(luu);
+        ViewTheme.btnNutXam(boQua);
+        ViewTheme.btnNutChinh(luu);
         boQua.addActionListener(e -> d.dispose());
         luu.addActionListener(e -> {
             if (ten.getText().trim().isEmpty()) {
@@ -471,7 +471,7 @@ public class KhachHangPanel extends JPanel {
                 c.addItem(m);
             }
         }
-        ViewTheme.vienHop(c);
+        ViewTheme.cmbVienHop(c);
         return c;
     }
 

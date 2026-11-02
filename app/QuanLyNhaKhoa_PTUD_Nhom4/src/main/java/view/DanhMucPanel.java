@@ -30,7 +30,7 @@ public class DanhMucPanel extends JPanel {
         JPanel the = new JPanel(new BorderLayout(0, 10));
         the.setBackground(ViewTheme.TRANG);
         the.setBorder(new EmptyBorder(12, 14, 16, 14));
-        the.add(ViewTheme.tieuDeTrang("Danh mục"), BorderLayout.NORTH);
+        the.add(ViewTheme.lblTieuDeTrang("Danh mục"), BorderLayout.NORTH);
 
         JTextField tim = new ONhap("Search for objects by name", 30);
         tim.setPreferredSize(new Dimension(400, 34));
@@ -129,13 +129,13 @@ public class DanhMucPanel extends JPanel {
         p.setBorder(BorderFactory.createCompoundBorder(
                 BorderFactory.createLineBorder(ViewTheme.VIEN),
                 new EmptyBorder(8, 10, 8, 10)));
-        JLabel lb = ViewTheme.tieuDeMuc(tieu);
+        JLabel lb = ViewTheme.lblTieuDeMuc(tieu);
         p.add(lb, BorderLayout.NORTH);
         JPanel ds = new JPanel(new GridLayout(0, 1, 0, 0));
         ds.setOpaque(false);
         for (String[] m : muc) {
             JButton b = new JButton(m[0]);
-            ViewTheme.nutLink(b);
+            ViewTheme.btnNutLink(b);
             b.putClientProperty("tu", m[0]);
             b.addActionListener(e -> dieuHuong.mo(m[1]));
             ds.add(b);
