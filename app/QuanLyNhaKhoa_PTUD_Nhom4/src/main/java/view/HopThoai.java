@@ -52,7 +52,10 @@ public class HopThoai extends JDialog {
         ViewTheme.nutXam(btnBoQua);
         ViewTheme.nutChinh(btnLuu);
         btnBoQua.addActionListener(e -> dispose());
-        btnLuu.addActionListener(e -> luu());
+        btnLuu.addActionListener(e -> {
+            luu();
+            dispose();
+        });
         JPanel pnlPhai = new JPanel(new FlowLayout(FlowLayout.RIGHT, 8, 0));
         pnlPhai.setOpaque(false);
         pnlPhai.add(btnBoQua);
