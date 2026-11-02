@@ -1,7 +1,7 @@
 package repository.impl;
 
 import entity.TaiKhoan;
-import i_repository.TaiKhoan_IDAO;
+import repository.TaiKhoan_IDAO;
 import java.util.List;
 import mapper.TaiKhoanMapper;
 

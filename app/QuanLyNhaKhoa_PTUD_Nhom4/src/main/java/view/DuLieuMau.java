@@ -1,10 +1,16 @@
 package view;
 
-import view.model.CauHinhTrang;
+import entity.KhachHang;
+import entity.NhanVien;
+import entity.NhomDichVu;
+import entity.SanPham;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import service.impl.DanhMuc_Service;
+import service.impl.KhachHang_Service;
+import view.model.CauHinhTrang;
 
 public final class DuLieuMau {
 
@@ -144,68 +150,64 @@ public final class DuLieuMau {
         return DS.get(ma);
     }
 
-    /** Khách hàng từ DB, fallback mock. */
     public static String[] dsKhach() {
         try {
-            List<String> kq = new ArrayList<>();
-            for (entity.KhachHang kh : new service.impl.KhachHang_Service().findAllKhachHang()) {
-                String sdt = kh.getSoDienThoai() == null || kh.getSoDienThoai().isBlank()
-                        ? "" : " - " + kh.getSoDienThoai();
-                kq.add(kh.getMaKH() + " - " + kh.getHoTen() + sdt);
+            List<String> ketQua = new ArrayList<>();
+            for (KhachHang khachHang : new KhachHang_Service().findAllKhachHang()) {
+                String sdt = khachHang.getSoDienThoai() == null || khachHang.getSoDienThoai().isBlank()
+                        ? "" : " - " + khachHang.getSoDienThoai();
+                ketQua.add(khachHang.getMaKH() + " - " + khachHang.getHoTen() + sdt);
             }
-            if (!kq.isEmpty()) {
-                return kq.toArray(new String[0]);
+            if (!ketQua.isEmpty()) {
+                return ketQua.toArray(new String[0]);
             }
         } catch (Exception ignored) {
         }
         return KHACH;
     }
 
-    /** Tên bác sĩ / nhân viên từ DB, fallback mock. */
     public static String[] dsBacSi() {
         try {
-            List<String> kq = new ArrayList<>();
-            for (entity.NhanVien nv : new service.impl.DanhMuc_Service().findAllNhanVien()) {
-                if (nv.getHoTen() != null && !nv.getHoTen().isBlank()) {
-                    kq.add(nv.getHoTen());
+            List<String> ketQua = new ArrayList<>();
+            for (NhanVien nhanVien : new DanhMuc_Service().findAllNhanVien()) {
+                if (nhanVien.getHoTen() != null && !nhanVien.getHoTen().isBlank()) {
+                    ketQua.add(nhanVien.getHoTen());
                 }
             }
-            if (!kq.isEmpty()) {
-                return kq.toArray(new String[0]);
+            if (!ketQua.isEmpty()) {
+                return ketQua.toArray(new String[0]);
             }
         } catch (Exception ignored) {
         }
         return BAC_SI;
     }
 
-    /** Nhóm dịch vụ từ DB, fallback mock. */
     public static String[] dsNhomDv() {
         try {
-            List<String> kq = new ArrayList<>();
-            for (entity.NhomDichVu n : new service.impl.DanhMuc_Service().findAllNhomDichVu()) {
-                if (n.getTenNhomDichVu() != null && !n.getTenNhomDichVu().isBlank()) {
-                    kq.add(n.getTenNhomDichVu());
+            List<String> ketQua = new ArrayList<>();
+            for (NhomDichVu nhom : new DanhMuc_Service().findAllNhomDichVu()) {
+                if (nhom.getTenNhomDichVu() != null && !nhom.getTenNhomDichVu().isBlank()) {
+                    ketQua.add(nhom.getTenNhomDichVu());
                 }
             }
-            if (!kq.isEmpty()) {
-                return kq.toArray(new String[0]);
+            if (!ketQua.isEmpty()) {
+                return ketQua.toArray(new String[0]);
             }
         } catch (Exception ignored) {
         }
         return NHOM_DV;
     }
 
-    /** Tên sản phẩm từ DB, fallback mock. */
     public static String[] dsSanPham() {
         try {
-            List<String> kq = new ArrayList<>();
-            for (entity.SanPham sp : new service.impl.DanhMuc_Service().findAllSanPham()) {
-                if (sp.getTenSanPham() != null && !sp.getTenSanPham().isBlank()) {
-                    kq.add(sp.getTenSanPham());
+            List<String> ketQua = new ArrayList<>();
+            for (SanPham sanPham : new DanhMuc_Service().findAllSanPham()) {
+                if (sanPham.getTenSanPham() != null && !sanPham.getTenSanPham().isBlank()) {
+                    ketQua.add(sanPham.getTenSanPham());
                 }
             }
-            if (!kq.isEmpty()) {
-                return kq.toArray(new String[0]);
+            if (!ketQua.isEmpty()) {
+                return ketQua.toArray(new String[0]);
             }
         } catch (Exception ignored) {
         }
@@ -217,9 +219,9 @@ public final class DuLieuMau {
             return "";
         }
         try {
-            for (entity.NhanVien nv : new service.impl.DanhMuc_Service().findAllNhanVien()) {
-                if (ten.equals(nv.getHoTen())) {
-                    return nv.getMaNhanVien();
+            for (NhanVien nhanVien : new DanhMuc_Service().findAllNhanVien()) {
+                if (ten.equals(nhanVien.getHoTen())) {
+                    return nhanVien.getMaNhanVien();
                 }
             }
         } catch (Exception ignored) {
@@ -236,7 +238,7 @@ public final class DuLieuMau {
         return "";
     }
 
-    private static void dat(CauHinhTrang c) {
-        DS.put(c.ma, c);
+    private static void dat(CauHinhTrang cauHinh) {
+        DS.put(cauHinh.ma, cauHinh);
     }
 }

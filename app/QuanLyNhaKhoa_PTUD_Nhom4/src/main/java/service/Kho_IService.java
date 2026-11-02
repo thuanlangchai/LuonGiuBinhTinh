@@ -42,9 +42,7 @@ public interface Kho_IService {
 
     List<NhaCungCap> findAllNhaCungCap();
 
-    /** Lưu phiếu nhập kèm chi tiết và cộng tồn sản phẩm. */
     Integer nhapKho(PhieuNhapKho phieu, List<ChiTietNhapKho> chiTiet);
 
-    /** Lưu phiếu xuất kèm chi tiết và trừ tồn sản phẩm. */
     Integer xuatKho(PhieuXuatKho phieu, List<ChiTietXuatKho> chiTiet);
 }

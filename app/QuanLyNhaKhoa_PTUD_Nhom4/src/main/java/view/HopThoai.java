@@ -1,6 +1,7 @@
 package view;
 
 import java.awt.BorderLayout;
+import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.GridBagConstraints;
@@ -194,12 +195,12 @@ public class HopThoai extends JDialog {
     }
 
     private void xoaO() {
-        for (java.awt.Component c : luoi.getComponents()) {
-            if (c instanceof JTextField) {
-                ((JTextField) c).setText("");
+        for (Component component : luoi.getComponents()) {
+            if (component instanceof JTextField) {
+                ((JTextField) component).setText("");
             }
-            if (c instanceof JScrollPane) {
-                java.awt.Component view = ((JScrollPane) c).getViewport().getView();
+            if (component instanceof JScrollPane) {
+                Component view = ((JScrollPane) component).getViewport().getView();
                 if (view instanceof JTextArea) {
                     ((JTextArea) view).setText("");
                 }

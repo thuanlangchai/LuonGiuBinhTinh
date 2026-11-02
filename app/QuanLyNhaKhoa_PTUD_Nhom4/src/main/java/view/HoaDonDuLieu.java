@@ -24,10 +24,10 @@ import view.model.HoaDonView;
 public final class HoaDonDuLieu {
 
     private static final List<Runnable> LANG_NGHE = new ArrayList<>();
-    private static final HoaDon_Service svc = new HoaDon_Service();
-    private static final KhachHang_Service khSvc = new KhachHang_Service();
-    private static final DanhMuc_Service dmSvc = new DanhMuc_Service();
-    private static final PhieuThu_Service thuSvc = new PhieuThu_Service();
+    private static final HoaDon_Service hoaDonService = new HoaDon_Service();
+    private static final KhachHang_Service khachHangService = new KhachHang_Service();
+    private static final DanhMuc_Service danhMucService = new DanhMuc_Service();
+    private static final PhieuThu_Service phieuThuService = new PhieuThu_Service();
 
     private HoaDonDuLieu() {
     }
@@ -45,34 +45,34 @@ public final class HoaDonDuLieu {
     }
 
     public static List<HoaDonView> tatCa() {
-        List<HoaDonView> kq = new ArrayList<>();
-        for (HoaDon e : svc.findAllHoaDon()) {
-            kq.add(mapView(e));
+        List<HoaDonView> ketQua = new ArrayList<>();
+        for (HoaDon e : hoaDonService.findAllHoaDon()) {
+            ketQua.add(mapView(e));
         }
-        return kq;
+        return ketQua;
     }
 
     public static HoaDonView theoMa(String ma) {
-        HoaDon e = svc.findById(ma);
+        HoaDon e = hoaDonService.findById(ma);
         return e == null ? null : mapView(e);
     }
 
     public static List<HoaDonView> theoKhach(String maKh) {
-        List<HoaDonView> kq = new ArrayList<>();
-        for (HoaDon e : svc.findByMaKH(maKh)) {
-            kq.add(mapView(e));
+        List<HoaDonView> ketQua = new ArrayList<>();
+        for (HoaDon e : hoaDonService.findByMaKH(maKh)) {
+            ketQua.add(mapView(e));
         }
-        return kq;
+        return ketQua;
     }
 
     public static List<HoaDonView> conNoTheoKhach(String maKh) {
-        List<HoaDonView> kq = new ArrayList<>();
+        List<HoaDonView> ketQua = new ArrayList<>();
         for (HoaDonView hd : theoKhach(maKh)) {
             if (hd.conNo() > 0) {
-                kq.add(hd);
+                ketQua.add(hd);
             }
         }
-        return kq;
+        return ketQua;
     }
 
     public static HoaDonView them(String ngayLap, String maKh, String tenKh, String keHoach, String bacSi,
@@ -111,7 +111,7 @@ public final class HoaDonDuLieu {
         e.setDaThu(0);
         e.setConNo(e.getThanhTien());
         e.setTrangThai("Chưa thanh toán");
-        if (svc.themHoaDonVoiChiTiet(e, cts) == null) {
+        if (hoaDonService.themHoaDonVoiChiTiet(e, cts) == null) {
             return null;
         }
         bao();
@@ -122,7 +122,7 @@ public final class HoaDonDuLieu {
         if (hd == null || soTien <= 0) {
             return;
         }
-        HoaDon e = svc.findById(hd.ma);
+        HoaDon e = hoaDonService.findById(hd.ma);
         if (e == null) {
             return;
         }
@@ -139,7 +139,7 @@ public final class HoaDonDuLieu {
         } else {
             e.setTrangThai("Đã thanh toán");
         }
-        svc.update(e);
+        hoaDonService.update(e);
 
         PhieuThu pt = new PhieuThu();
         pt.setMaPhieuThu(maPhieuThuMoi());
@@ -152,7 +152,7 @@ public final class HoaDonDuLieu {
         pt.setTrangThai("Đã chi trả");
         pt.setNgayTao(LocalDateTime.now());
         pt.setNguoiTao(DuLieuMau.NGUOI);
-        thuSvc.add(pt);
+        phieuThuService.add(pt);
 
         hd.daThu = e.getDaThu();
         hd.capNhatTrangThai();
@@ -163,7 +163,7 @@ public final class HoaDonDuLieu {
         if (hd == null) {
             return;
         }
-        svc.delete(hd.ma);
+        hoaDonService.delete(hd.ma);
         bao();
     }
 
@@ -227,10 +227,10 @@ public final class HoaDonDuLieu {
         v.ma = e.getMaHoaDon();
         v.ngayLap = NgayUtil.fmt(e.getNgayLap());
         v.maKh = e.getMaKH();
-        KhachHang kh = khSvc.findById(e.getMaKH());
+        KhachHang kh = khachHangService.findById(e.getMaKH());
         v.tenKh = kh != null ? kh.getHoTen() : e.getMaKH();
         v.keHoach = e.getMaKeHoach() == null ? "" : "Kế hoạch " + e.getMaKeHoach();
-        NhanVien nv = e.getMaBacSi() == null ? null : dmSvc.findNhanVienById(e.getMaBacSi());
+        NhanVien nv = e.getMaBacSi() == null ? null : danhMucService.findNhanVienById(e.getMaBacSi());
         v.bacSi = nv != null ? nv.getHoTen() : (e.getMaBacSi() == null ? "" : e.getMaBacSi());
         v.ghiChu = e.getGhiChu();
         v.trangThai = e.getTrangThai();
@@ -241,7 +241,7 @@ public final class HoaDonDuLieu {
         v.daThu = e.getDaThu();
         Map<String, String> tenDv = tenDichVu();
         Map<String, String> tenRang = tenRang();
-        for (ChiTietHoaDon ct : svc.findChiTietByMaHoaDon(e.getMaHoaDon())) {
+        for (ChiTietHoaDon ct : hoaDonService.findChiTietByMaHoaDon(e.getMaHoaDon())) {
             v.chiTiet.add(new ChiTietHoaDonView(
                     NgayUtil.fmt(ct.getNgay()),
                     ct.getMaRang() == null ? "" : tenRang.getOrDefault(ct.getMaRang(), ct.getMaRang()),
@@ -255,7 +255,7 @@ public final class HoaDonDuLieu {
 
     private static String maMoi() {
         int max = 0;
-        for (HoaDon e : svc.findAllHoaDon()) {
+        for (HoaDon e : hoaDonService.findAllHoaDon()) {
             try {
                 max = Math.max(max, Integer.parseInt(e.getMaHoaDon()));
             } catch (Exception ignored) {
@@ -266,7 +266,7 @@ public final class HoaDonDuLieu {
 
     private static String maPhieuThuMoi() {
         int max = 0;
-        for (PhieuThu p : thuSvc.findAllPhieuThu()) {
+        for (PhieuThu p : phieuThuService.findAllPhieuThu()) {
             try {
                 max = Math.max(max, Integer.parseInt(p.getMaPhieuThu()));
             } catch (Exception ignored) {
@@ -296,7 +296,7 @@ public final class HoaDonDuLieu {
         if (ten == null || ten.isBlank()) {
             return null;
         }
-        for (NhanVien nv : dmSvc.findAllNhanVien()) {
+        for (NhanVien nv : danhMucService.findAllNhanVien()) {
             if (ten.equals(nv.getHoTen()) || ten.equals(nv.getMaNhanVien())) {
                 return nv.getMaNhanVien();
             }
@@ -305,7 +305,7 @@ public final class HoaDonDuLieu {
     }
 
     private static String maDichVuTheoTen(String ten) {
-        for (DichVu dv : dmSvc.findAllDichVu()) {
+        for (DichVu dv : danhMucService.findAllDichVu()) {
             if (ten != null && ten.equals(dv.getTenDichVu())) {
                 return dv.getMaDichVu();
             }
@@ -317,7 +317,7 @@ public final class HoaDonDuLieu {
         if (ten == null || ten.isBlank()) {
             return null;
         }
-        for (Rang r : dmSvc.findAllRang()) {
+        for (Rang r : danhMucService.findAllRang()) {
             if (ten.equals(r.getMaRang()) || ten.equals(r.getTenRang())) {
                 return r.getMaRang();
             }
@@ -327,7 +327,7 @@ public final class HoaDonDuLieu {
 
     private static Map<String, String> tenDichVu() {
         Map<String, String> m = new HashMap<>();
-        for (DichVu dv : dmSvc.findAllDichVu()) {
+        for (DichVu dv : danhMucService.findAllDichVu()) {
             m.put(dv.getMaDichVu(), dv.getTenDichVu());
         }
         return m;
@@ -335,7 +335,7 @@ public final class HoaDonDuLieu {
 
     private static Map<String, String> tenRang() {
         Map<String, String> m = new HashMap<>();
-        for (Rang r : dmSvc.findAllRang()) {
+        for (Rang r : danhMucService.findAllRang()) {
             m.put(r.getMaRang(), r.getTenRang());
         }
         return m;

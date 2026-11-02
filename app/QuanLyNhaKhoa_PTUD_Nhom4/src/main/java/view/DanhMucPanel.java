@@ -1,6 +1,8 @@
 package view;
 
 import java.awt.BorderLayout;
+import java.awt.Component;
+import java.awt.Container;
 import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
@@ -14,6 +16,8 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.border.EmptyBorder;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
 
 public class DanhMucPanel extends JPanel {
 
@@ -81,19 +85,19 @@ public class DanhMucPanel extends JPanel {
         gbc.gridx = 2;
         luoi.add(cot3, gbc);
 
-        tim.getDocument().addDocumentListener(new javax.swing.event.DocumentListener() {
+        tim.getDocument().addDocumentListener(new DocumentListener() {
             @Override
-            public void insertUpdate(javax.swing.event.DocumentEvent e) {
+            public void insertUpdate(DocumentEvent e) {
                 loc(luoi, tim.getText());
             }
 
             @Override
-            public void removeUpdate(javax.swing.event.DocumentEvent e) {
+            public void removeUpdate(DocumentEvent e) {
                 loc(luoi, tim.getText());
             }
 
             @Override
-            public void changedUpdate(javax.swing.event.DocumentEvent e) {
+            public void changedUpdate(DocumentEvent e) {
                 loc(luoi, tim.getText());
             }
         });
@@ -147,14 +151,14 @@ public class DanhMucPanel extends JPanel {
         goc.repaint();
     }
 
-    private void anHien(java.awt.Container goc, String khoa) {
-        for (java.awt.Component c : goc.getComponents()) {
-            if (c instanceof JButton) {
-                Object ten = ((JButton) c).getClientProperty("tu");
+    private void anHien(Container goc, String khoa) {
+        for (Component component : goc.getComponents()) {
+            if (component instanceof JButton) {
+                Object ten = ((JButton) component).getClientProperty("tu");
                 boolean hien = khoa.isEmpty() || (ten != null && ten.toString().toLowerCase().contains(khoa));
-                c.setVisible(hien);
-            } else if (c instanceof java.awt.Container) {
-                anHien((java.awt.Container) c, khoa);
+                component.setVisible(hien);
+            } else if (component instanceof Container) {
+                anHien((Container) component, khoa);
             }
         }
     }

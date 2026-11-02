@@ -16,7 +16,7 @@ import entity.ThoiGianLamViec;
 import entity.Thuoc;
 import java.util.List;
 
-/** Facade danh mục phục vụ DanhMucPanel / TrangDanhSach / combo form. */
+
 public interface DanhMuc_IService {
 
     List<DichVu> findAllDichVu();

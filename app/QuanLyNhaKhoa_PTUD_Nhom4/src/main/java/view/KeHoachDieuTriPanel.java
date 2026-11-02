@@ -40,16 +40,16 @@ public class KeHoachDieuTriPanel extends JPanel {
 
     private static final DateTimeFormatter NGAY = DateTimeFormatter.ofPattern("dd/MM/yyyy");
 
-    private final JLabel ten = new JLabel();
-    private final JLabel lienHe = new JLabel();
-    private final JLabel benh = new JLabel();
-    private final JLabel tong = new JLabel();
-    private final JLabel lbKeHoach = new JLabel();
-    private final JLabel lbTongCong = new JLabel();
-    private final JLabel lbChietKhau = new JLabel();
-    private final JLabel lbThanhTien = new JLabel();
-    private final JLabel lbDaChiTra = new JLabel();
-    private final JLabel lbConNo = new JLabel();
+    private final JLabel lblTen = new JLabel();
+    private final JLabel lblLienHe = new JLabel();
+    private final JLabel lblBenh = new JLabel();
+    private final JLabel lblTong = new JLabel();
+    private final JLabel lblKeHoach = new JLabel();
+    private final JLabel lblTongCong = new JLabel();
+    private final JLabel lblChietKhau = new JLabel();
+    private final JLabel lblThanhTien = new JLabel();
+    private final JLabel lblDaChiTra = new JLabel();
+    private final JLabel lblConNo = new JLabel();
     private final DefaultTableModel model = ViewTheme.taoModel(
             new String[]{"Ngày", "Răng", "Dịch vụ", "Số lượng", "Đơn giá", "Thành tiền", "Trạng thái", "Mã hóa đơn"},
             true, true);
@@ -72,10 +72,10 @@ public class KeHoachDieuTriPanel extends JPanel {
     private KeHoachView keHoachHienTai;
     private String maKeHoach;
     private String kyHieu = "KH";
-    private JTextField donGia;
-    private JComboBox<String> dichVu;
-    private HopThoai h;
-    private JTextField sl;
+    private JTextField txtDonGia;
+    private JComboBox<String> cboDichVu;
+    private HopThoai hopThoai;
+    private JTextField txtSoLuong;
 
     public KeHoachDieuTriPanel() {
         this(null);
@@ -89,20 +89,20 @@ public class KeHoachDieuTriPanel extends JPanel {
 
         avatar.setPreferredSize(new Dimension(140, 110));
         avatar.setOpaque(false);
-        ten.setFont(ViewTheme.FONT_TRANG);
-        lienHe.setFont(ViewTheme.FONT);
-        benh.setFont(ViewTheme.FONT);
-        lbKeHoach.setFont(ViewTheme.FONT);
-        lbKeHoach.setForeground(ViewTheme.CHU_NHAT);
+        lblTen.setFont(ViewTheme.FONT_TRANG);
+        lblLienHe.setFont(ViewTheme.FONT);
+        lblBenh.setFont(ViewTheme.FONT);
+        lblKeHoach.setFont(ViewTheme.FONT);
+        lblKeHoach.setForeground(ViewTheme.CHU_NHAT);
 
         JPanel trai = new JPanel(new BorderLayout(0, 8));
         trai.setBackground(ViewTheme.TRANG);
         trai.setBorder(new EmptyBorder(8, 8, 8, 8));
         JPanel thongTin = new JPanel(new BorderLayout(0, 8));
         thongTin.setOpaque(false);
-        thongTin.add(ten, BorderLayout.NORTH);
-        thongTin.add(lienHe, BorderLayout.CENTER);
-        thongTin.add(benh, BorderLayout.SOUTH);
+        thongTin.add(lblTen, BorderLayout.NORTH);
+        thongTin.add(lblLienHe, BorderLayout.CENTER);
+        thongTin.add(lblBenh, BorderLayout.SOUTH);
         trai.add(avatar, BorderLayout.NORTH);
         trai.add(thongTin, BorderLayout.CENTER);
         trai.add(ViewTheme.tieuDeMuc("Tóm tắt bệnh lý"), BorderLayout.SOUTH);
@@ -130,11 +130,11 @@ public class KeHoachDieuTriPanel extends JPanel {
 
         JPanel thongKe = new JPanel(new FlowLayout(FlowLayout.RIGHT, 18, 0));
         thongKe.setOpaque(false);
-        thongKe.add(oSo(lbTongCong, "Tổng cộng", ViewTheme.CHU));
-        thongKe.add(oSo(lbChietKhau, "Chiết khấu", ViewTheme.CHU_NHAT));
-        thongKe.add(oSo(lbThanhTien, "Thành tiền", ViewTheme.CHU));
-        thongKe.add(oSo(lbDaChiTra, "Đã chi trả", new Color(40, 150, 70)));
-        thongKe.add(oSo(lbConNo, "Chưa thanh toán", ViewTheme.DO));
+        thongKe.add(oSo(lblTongCong, "Tổng cộng", ViewTheme.CHU));
+        thongKe.add(oSo(lblChietKhau, "Chiết khấu", ViewTheme.CHU_NHAT));
+        thongKe.add(oSo(lblThanhTien, "Thành tiền", ViewTheme.CHU));
+        thongKe.add(oSo(lblDaChiTra, "Đã chi trả", new Color(40, 150, 70)));
+        thongKe.add(oSo(lblConNo, "Chưa thanh toán", ViewTheme.DO));
 
         JPanel thanhCongCu = new JPanel(new BorderLayout());
         thanhCongCu.setOpaque(false);
@@ -144,19 +144,19 @@ public class KeHoachDieuTriPanel extends JPanel {
         JPanel dauPhai = new JPanel(new BorderLayout(0, 8));
         dauPhai.setOpaque(false);
         dauPhai.add(ViewTheme.tieuDeTrang("Chi tiết kế hoạch điều trị"), BorderLayout.NORTH);
-        dauPhai.add(lbKeHoach, BorderLayout.CENTER);
+        dauPhai.add(lblKeHoach, BorderLayout.CENTER);
         dauPhai.add(thanhCongCu, BorderLayout.SOUTH);
 
-        tong.setFont(ViewTheme.FONT_SO);
-        tong.setForeground(ViewTheme.XANH_DAM);
-        tong.setHorizontalAlignment(SwingConstants.RIGHT);
+        lblTong.setFont(ViewTheme.FONT_SO);
+        lblTong.setForeground(ViewTheme.XANH_DAM);
+        lblTong.setHorizontalAlignment(SwingConstants.RIGHT);
 
         JPanel phai = new JPanel(new BorderLayout(0, 8));
         phai.setBackground(ViewTheme.TRANG);
         phai.setBorder(new EmptyBorder(8, 8, 8, 8));
         phai.add(dauPhai, BorderLayout.NORTH);
         phai.add(cuon, BorderLayout.CENTER);
-        phai.add(tong, BorderLayout.SOUTH);
+        phai.add(lblTong, BorderLayout.SOUTH);
 
         JSplitPane tach = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, trai, phai);
         tach.setDividerLocation(280);
@@ -168,10 +168,10 @@ public class KeHoachDieuTriPanel extends JPanel {
         if (maKeHoach != null && !maKeHoach.isEmpty()) {
             napMaKeHoach(maKeHoach);
         } else {
-            ten.setText("Chọn kế hoạch để xem");
-            lienHe.setText("");
-            benh.setText("");
-            lbKeHoach.setText("Mở từ danh sách kế hoạch điều trị");
+            lblTen.setText("Chọn kế hoạch để xem");
+            lblLienHe.setText("");
+            lblBenh.setText("");
+            lblKeHoach.setText("Mở từ danh sách kế hoạch điều trị");
             veBang();
         }
     }
@@ -205,10 +205,10 @@ public class KeHoachDieuTriPanel extends JPanel {
         this.maKeHoach = ma;
         this.keHoachHienTai = KeHoachDuLieu.theoMa(ma);
         if (keHoachHienTai == null) {
-            ten.setText("Không tìm thấy kế hoạch");
-            lienHe.setText("");
-            benh.setText("");
-            lbKeHoach.setText("Mã: " + ma);
+            lblTen.setText("Không tìm thấy kế hoạch");
+            lblLienHe.setText("");
+            lblBenh.setText("");
+            lblKeHoach.setText("Mã: " + ma);
             hienTai = null;
             veBang();
             return;
@@ -222,23 +222,22 @@ public class KeHoachDieuTriPanel extends JPanel {
         }
         hienTai = hs;
         kyHieu = vietTat(keHoachHienTai.tenKh);
-        ten.setText(keHoachHienTai.tenKh);
-        lienHe.setText("<html>Mã KH: " + keHoachHienTai.maKH
+        lblTen.setText(keHoachHienTai.tenKh);
+        lblLienHe.setText("<html>Mã KH: " + keHoachHienTai.maKH
                 + (hs.sdt == null || hs.sdt.isEmpty() ? "" : "<br>" + hs.sdt)
                 + (hs.email == null || hs.email.isEmpty() ? "" : "<br>" + hs.email)
                 + (hs.diaChi == null || hs.diaChi.isEmpty() ? "" : "<br>" + hs.diaChi)
                 + "</html>");
-        benh.setText("<html>Lý do điều trị: " + nullSafe(keHoachHienTai.lyDoDieuTri)
+        lblBenh.setText("<html>Lý do điều trị: " + nullSafe(keHoachHienTai.lyDoDieuTri)
                 + "<br>Bác sĩ: " + nullSafe(keHoachHienTai.tenBacSi)
                 + "<br>Ghi chú: " + nullSafe(keHoachHienTai.ghiChu) + "</html>");
-        lbKeHoach.setText("Mã KHĐT: " + keHoachHienTai.maKeHoach
+        lblKeHoach.setText("Mã KHĐT: " + keHoachHienTai.maKeHoach
                 + "  |  Ngày lập: " + keHoachHienTai.ngayLap
                 + "  |  Trạng thái: " + keHoachHienTai.trangThai);
         avatar.repaint();
         veBang();
     }
 
-    /** Giữ tương thích: nạp hồ sơ khách rồi mở kế hoạch mới nhất / tạo nếu chưa có. */
     public void nap(String ma, String hoTen, String sdt, String email, String diaChi, String lyDo, String dieuTri) {
         HoSo hs = hoSoTheoMa.get(ma);
         if (hs == null) {
@@ -274,14 +273,14 @@ public class KeHoachDieuTriPanel extends JPanel {
             return;
         }
         Window w = SwingUtilities.getWindowAncestor(this);
-        h = new HopThoai(w, "Thêm dịch vụ vào kế hoạch", "+ Thêm");
-        JComboBox<String> ngay = h.chon("Ngày", true, homNay(), "19/10/2026", "27/09/2026");
+        hopThoai = new HopThoai(w, "Thêm dịch vụ vào kế hoạch", "+ Thêm");
+        JComboBox<String> ngay = hopThoai.chon("Ngày", true, homNay(), "19/10/2026", "27/09/2026");
         ngay.setEditable(true);
-        JComboBox<String> rang = h.chon("Răng", false, tenRang());
-        dichVu = h.chon("Dịch vụ", true, tenDichVu());
-        sl = h.chu("Số lượng", "1", true);
-        donGia = h.chu("Đơn giá", ViewTheme.tien(giaDichVu(String.valueOf(dichVu.getSelectedItem()))), true);
-        sl.getDocument().addDocumentListener(new DocumentListener() {
+        JComboBox<String> rang = hopThoai.chon("Răng", false, tenRang());
+        cboDichVu = hopThoai.chon("Dịch vụ", true, tenDichVu());
+        txtSoLuong = hopThoai.chu("Số lượng", "1", true);
+        txtDonGia = hopThoai.chu("Đơn giá", ViewTheme.tien(giaDichVu(String.valueOf(cboDichVu.getSelectedItem()))), true);
+        txtSoLuong.getDocument().addDocumentListener(new DocumentListener() {
             @Override
             public void insertUpdate(DocumentEvent e) {
                 setDonGia();
@@ -296,29 +295,29 @@ public class KeHoachDieuTriPanel extends JPanel {
             public void changedUpdate(DocumentEvent e) {
             }
         });
-        donGia.setEditable(false);
-        JComboBox<String> trangThai = h.chon("Trạng thái", true, "Mới", "Đang điều trị", "Hoàn tất");
-        JTextField ghiChu = h.chu("Ghi chú", "", false);
-        dichVu.addActionListener(e -> donGia.setText(ViewTheme.tien(giaDichVu(String.valueOf(dichVu.getSelectedItem())))));
-        h.hien(() -> {
+        txtDonGia.setEditable(false);
+        JComboBox<String> trangThai = hopThoai.chon("Trạng thái", true, "Mới", "Đang điều trị", "Hoàn tất");
+        JTextField ghiChu = hopThoai.chu("Ghi chú", "", false);
+        cboDichVu.addActionListener(e -> txtDonGia.setText(ViewTheme.tien(giaDichVu(String.valueOf(cboDichVu.getSelectedItem())))));
+        hopThoai.hien(() -> {
             String ngayKH = String.valueOf(ngay.getEditor().getItem()).trim();
             if (ngayKH.isEmpty()) {
-                JOptionPane.showMessageDialog(h, "Vui lòng nhập ngày.");
+                JOptionPane.showMessageDialog(hopThoai, "Vui lòng nhập ngày.");
                 return;
             }
-            int soLuong = parseSo(String.valueOf(sl.getText()), 1);
-            long donGiaDv = giaDichVu(String.valueOf(dichVu.getSelectedItem()));
+            int soLuong = parseSo(String.valueOf(txtSoLuong.getText()), 1);
+            long donGiaDv = giaDichVu(String.valueOf(cboDichVu.getSelectedItem()));
             HangDT hang = new HangDT(
                     maKeHoach,
                     ngayKH,
                     String.valueOf(rang.getSelectedItem()),
-                    String.valueOf(dichVu.getSelectedItem()),
+                    String.valueOf(cboDichVu.getSelectedItem()),
                     soLuong,
                     donGiaDv,
                     String.valueOf(trangThai.getSelectedItem()));
             hang.ghiChu = ghiChu.getText().trim();
             if (!KeHoachDuLieu.themDichVu(maKeHoach, hang)) {
-                JOptionPane.showMessageDialog(h, "Không thêm được dịch vụ vào kế hoạch.");
+                JOptionPane.showMessageDialog(hopThoai, "Không thêm được dịch vụ vào kế hoạch.");
                 return;
             }
             napMaKeHoach(maKeHoach);
@@ -520,12 +519,12 @@ public class KeHoachDieuTriPanel extends JPanel {
             chuaXuat += hang.thanhTien();
         }
         long conNo = conNoHd + chuaXuat;
-        lbTongCong.setText(ViewTheme.tien(tongTien) + "đ");
-        lbChietKhau.setText("0đ");
-        lbThanhTien.setText(ViewTheme.tien(tongTien) + "đ");
-        lbDaChiTra.setText(ViewTheme.tien(daTra) + "đ");
-        lbConNo.setText(ViewTheme.tien(conNo) + "đ");
-        tong.setText("Tổng: " + ViewTheme.tien(tongTien) + "   Còn nợ HĐ: " + ViewTheme.tien(conNoHd));
+        lblTongCong.setText(ViewTheme.tien(tongTien) + "đ");
+        lblChietKhau.setText("0đ");
+        lblThanhTien.setText(ViewTheme.tien(tongTien) + "đ");
+        lblDaChiTra.setText(ViewTheme.tien(daTra) + "đ");
+        lblConNo.setText(ViewTheme.tien(conNo) + "đ");
+        lblTong.setText("Tổng: " + ViewTheme.tien(tongTien) + "   Còn nợ HĐ: " + ViewTheme.tien(conNoHd));
     }
 
     private JPanel oSo(JLabel so, String nhan, Color mau) {
@@ -618,7 +617,7 @@ public class KeHoachDieuTriPanel extends JPanel {
     }
 
     private void setDonGia() {
-        donGia.setText(ViewTheme.tien(giaDichVu(String.valueOf(dichVu.getSelectedItem()))));
+        txtDonGia.setText(ViewTheme.tien(giaDichVu(String.valueOf(cboDichVu.getSelectedItem()))));
     }
 
     private static String nullSafe(String s) {

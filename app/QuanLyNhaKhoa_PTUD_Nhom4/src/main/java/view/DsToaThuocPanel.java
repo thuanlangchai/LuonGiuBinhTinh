@@ -1,10 +1,13 @@
 package view;
 
 import java.awt.BorderLayout;
+import java.awt.Dialog;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.GridLayout;
 import java.awt.Window;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
@@ -15,9 +18,11 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
+import javax.swing.RowFilter;
 import javax.swing.SwingUtilities;
 import javax.swing.border.EmptyBorder;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableRowSorter;
 import view.model.ChiTietToaThuocView;
 import view.model.ToaThuocView;
 
@@ -30,8 +35,8 @@ public class DsToaThuocPanel extends JPanel {
 
     private final DefaultTableModel model = ViewTheme.taoModel(COT, true, true);
     private final JTable bang = new JTable(model);
-    private final JTextField tim = new ONhap("", 24);
-    private final JLabel dem = new JLabel();
+    private final JTextField txtTim = new ONhap("", 24);
+    private final JLabel nhanDem = new JLabel();
     private final JComboBox<String> cboKhach = new JComboBox<String>();
     private final Runnable moLapToa;
 
@@ -40,73 +45,73 @@ public class DsToaThuocPanel extends JPanel {
         setOpaque(false);
         setBorder(new EmptyBorder(6, 6, 16, 6));
 
-        JPanel the = new JPanel(new BorderLayout(0, 8));
-        the.setBackground(ViewTheme.TRANG);
-        the.setBorder(new EmptyBorder(12, 14, 12, 14));
+        JPanel panelThe = new JPanel(new BorderLayout(0, 8));
+        panelThe.setBackground(ViewTheme.TRANG);
+        panelThe.setBorder(new EmptyBorder(12, 14, 12, 14));
 
-        JLabel tieu = ViewTheme.tieuDeTrang("Toa thuốc");
-        JButton them = new JButton("Thêm toa thuốc");
-        ViewTheme.nutXanh(them);
-        them.addActionListener(e -> {
+        JLabel nhanTieuDe = ViewTheme.tieuDeTrang("Toa thuốc");
+        JButton btnThem = new JButton("Thêm toa thuốc");
+        ViewTheme.nutXanh(btnThem);
+        btnThem.addActionListener(e -> {
             if (moLapToa != null) {
                 moLapToa.run();
             }
         });
-        JPanel dau = new JPanel(new BorderLayout());
-        dau.setOpaque(false);
-        dau.add(tieu, BorderLayout.WEST);
-        JPanel phai = new JPanel(new FlowLayout(FlowLayout.RIGHT, 8, 0));
-        phai.setOpaque(false);
-        phai.add(them);
-        dau.add(phai, BorderLayout.EAST);
+        JPanel panelDau = new JPanel(new BorderLayout());
+        panelDau.setOpaque(false);
+        panelDau.add(nhanTieuDe, BorderLayout.WEST);
+        JPanel panelPhai = new JPanel(new FlowLayout(FlowLayout.RIGHT, 8, 0));
+        panelPhai.setOpaque(false);
+        panelPhai.add(btnThem);
+        panelDau.add(panelPhai, BorderLayout.EAST);
 
-        ((ONhap) tim).datGoiY("Tìm toa thuốc...");
-        tim.setPreferredSize(new Dimension(360, 32));
-        tim.addActionListener(e -> loc());
+        ((ONhap) txtTim).datGoiY("Tìm toa thuốc...");
+        txtTim.setPreferredSize(new Dimension(360, 32));
+        txtTim.addActionListener(e -> loc());
         cboKhach.addItem("Khách hàng");
-        for (String k : DuLieuMau.dsKhach()) {
-            cboKhach.addItem(k);
+        for (String khach : DuLieuMau.dsKhach()) {
+            cboKhach.addItem(khach);
         }
         ViewTheme.vienHop(cboKhach);
         cboKhach.addActionListener(e -> loc());
 
-        JPanel loc = new JPanel(new BorderLayout(0, 8));
-        loc.setBackground(ViewTheme.NEN_TIM);
-        loc.setBorder(new EmptyBorder(10, 12, 10, 12));
-        loc.add(ViewTheme.chuPhu("Tìm kiếm"), BorderLayout.NORTH);
-        loc.add(tim, BorderLayout.CENTER);
-        JPanel dong = new JPanel(new FlowLayout(FlowLayout.LEFT, 8, 0));
-        dong.setOpaque(false);
-        dong.add(cboKhach);
-        loc.add(dong, BorderLayout.SOUTH);
+        JPanel panelLoc = new JPanel(new BorderLayout(0, 8));
+        panelLoc.setBackground(ViewTheme.NEN_TIM);
+        panelLoc.setBorder(new EmptyBorder(10, 12, 10, 12));
+        panelLoc.add(ViewTheme.chuPhu("Tìm kiếm"), BorderLayout.NORTH);
+        panelLoc.add(txtTim, BorderLayout.CENTER);
+        JPanel panelDong = new JPanel(new FlowLayout(FlowLayout.LEFT, 8, 0));
+        panelDong.setOpaque(false);
+        panelDong.add(cboKhach);
+        panelLoc.add(panelDong, BorderLayout.SOUTH);
 
         ViewTheme.trangTriBang(bang);
         ViewTheme.ganThaoTac(bang, this::xuLy);
-        bang.addMouseListener(new java.awt.event.MouseAdapter() {
+        bang.addMouseListener(new MouseAdapter() {
             @Override
-            public void mouseClicked(java.awt.event.MouseEvent e) {
+            public void mouseClicked(MouseEvent e) {
                 if (e.getClickCount() == 2 && bang.rowAtPoint(e.getPoint()) >= 0
                         && bang.columnAtPoint(e.getPoint()) != bang.getColumnCount() - 1) {
                     moChiTiet(toaTai(bang.convertRowIndexToModel(bang.rowAtPoint(e.getPoint()))));
                 }
             }
         });
-        JScrollPane cuon = new JScrollPane(bang);
-        cuon.setPreferredSize(new Dimension(400, 220));
-        cuon.setBorder(BorderFactory.createLineBorder(ViewTheme.VIEN));
-        cuon.getViewport().setBackground(ViewTheme.TRANG);
-        dem.setFont(ViewTheme.FONT_NHO);
-        dem.setForeground(ViewTheme.CHU_NHAT);
+        JScrollPane scrollBang = new JScrollPane(bang);
+        scrollBang.setPreferredSize(new Dimension(400, 220));
+        scrollBang.setBorder(BorderFactory.createLineBorder(ViewTheme.VIEN));
+        scrollBang.getViewport().setBackground(ViewTheme.TRANG);
+        nhanDem.setFont(ViewTheme.FONT_NHO);
+        nhanDem.setForeground(ViewTheme.CHU_NHAT);
 
-        the.add(dau, BorderLayout.NORTH);
-        JPanel giua = new JPanel(new BorderLayout(0, 8));
-        giua.setOpaque(false);
-        giua.add(loc, BorderLayout.NORTH);
-        giua.add(cuon, BorderLayout.CENTER);
-        giua.add(dem, BorderLayout.SOUTH);
-        the.add(giua, BorderLayout.CENTER);
+        panelThe.add(panelDau, BorderLayout.NORTH);
+        JPanel panelGiua = new JPanel(new BorderLayout(0, 8));
+        panelGiua.setOpaque(false);
+        panelGiua.add(panelLoc, BorderLayout.NORTH);
+        panelGiua.add(scrollBang, BorderLayout.CENTER);
+        panelGiua.add(nhanDem, BorderLayout.SOUTH);
+        panelThe.add(panelGiua, BorderLayout.CENTER);
         setLayout(new BorderLayout());
-        add(the, BorderLayout.NORTH);
+        add(panelThe, BorderLayout.NORTH);
 
         ToaThuocDuLieu.khiDoi(this::lamMoi);
         lamMoi();
@@ -130,50 +135,50 @@ public class DsToaThuocPanel extends JPanel {
         if (cboKhach.getSelectedIndex() <= 0) {
             return null;
         }
-        String kh = String.valueOf(cboKhach.getSelectedItem());
-        return kh.length() >= 4 ? kh.substring(0, 4) : kh;
+        String khach = String.valueOf(cboKhach.getSelectedItem());
+        return khach.length() >= 4 ? khach.substring(0, 4) : khach;
     }
 
     public void lamMoi() {
         model.setRowCount(0);
-        for (ToaThuocView tt : ToaThuocDuLieu.tatCa()) {
-            model.addRow(ViewTheme.dongBang(dongToa(tt), true, true));
+        for (ToaThuocView toaThuoc : ToaThuocDuLieu.tatCa()) {
+            model.addRow(ViewTheme.dongBang(dongToa(toaThuoc), true, true));
         }
-        int n = ToaThuocDuLieu.tatCa().size();
-        dem.setText(ViewTheme.demDong(n == 0 ? 0 : 1, n, n));
+        int soLuong = ToaThuocDuLieu.tatCa().size();
+        nhanDem.setText(ViewTheme.demDong(soLuong == 0 ? 0 : 1, soLuong, soLuong));
         loc();
     }
 
-    private static Object[] dongToa(ToaThuocView tt) {
+    private static Object[] dongToa(ToaThuocView toaThuoc) {
         return new Object[]{
-            tt.maToaThuoc, tt.maKH, tt.tenKh, tt.maChanDoan, tt.tenBacSi,
-            tt.hinhThucThanhToan, tt.nhanTaiPhongKham ? "Có" : "Không",
-            tt.ghiChu, ViewTheme.tien(tt.thanhTien), tt.ngayTao
+            toaThuoc.maToaThuoc, toaThuoc.maKH, toaThuoc.tenKh, toaThuoc.maChanDoan, toaThuoc.tenBacSi,
+            toaThuoc.hinhThucThanhToan, toaThuoc.nhanTaiPhongKham ? "Có" : "Không",
+            toaThuoc.ghiChu, ViewTheme.tien(toaThuoc.thanhTien), toaThuoc.ngayTao
         };
     }
 
     private void loc() {
-        String tu = tim.getText().trim();
-        String kh = String.valueOf(cboKhach.getSelectedItem());
-        javax.swing.table.TableRowSorter<DefaultTableModel> sx =
-                new javax.swing.table.TableRowSorter<DefaultTableModel>(model);
-        bang.setRowSorter(sx);
-        sx.setRowFilter(new javax.swing.RowFilter<DefaultTableModel, Integer>() {
+        String tuKhoa = txtTim.getText().trim();
+        String khach = String.valueOf(cboKhach.getSelectedItem());
+        TableRowSorter<DefaultTableModel> sorter =
+                new TableRowSorter<DefaultTableModel>(model);
+        bang.setRowSorter(sorter);
+        sorter.setRowFilter(new RowFilter<DefaultTableModel, Integer>() {
             @Override
             public boolean include(Entry<? extends DefaultTableModel, ? extends Integer> entry) {
                 if (cboKhach.getSelectedIndex() > 0) {
-                    String maKH = kh.length() >= 4 ? kh.substring(0, 4) : kh;
+                    String maKH = khach.length() >= 4 ? khach.substring(0, 4) : khach;
                     if (!maKH.equals(String.valueOf(entry.getValue(2)))) {
                         return false;
                     }
                 }
-                if (tu.isEmpty()) {
+                if (tuKhoa.isEmpty()) {
                     return true;
                 }
-                String khoa = tu.toLowerCase();
+                String khoa = tuKhoa.toLowerCase();
                 for (int i = 1; i < entry.getValueCount() - 1; i++) {
-                    Object v = entry.getValue(i);
-                    if (v != null && v.toString().toLowerCase().contains(khoa)) {
+                    Object giaTri = entry.getValue(i);
+                    if (giaTri != null && giaTri.toString().toLowerCase().contains(khoa)) {
                         return true;
                     }
                 }
@@ -183,18 +188,18 @@ public class DsToaThuocPanel extends JPanel {
     }
 
     private void xuLy(String lenh, int hang) {
-        ToaThuocView tt = toaTai(hang);
-        if (tt == null) {
+        ToaThuocView toaThuoc = toaTai(hang);
+        if (toaThuoc == null) {
             return;
         }
         if ("Xóa".equals(lenh)) {
-            if (JOptionPane.showConfirmDialog(this, "Xóa toa thuốc " + tt.maToaThuoc + "?",
+            if (JOptionPane.showConfirmDialog(this, "Xóa toa thuốc " + toaThuoc.maToaThuoc + "?",
                     "Xác nhận", JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) {
-                ToaThuocDuLieu.xoa(tt);
+                ToaThuocDuLieu.xoa(toaThuoc);
             }
             return;
         }
-        moChiTiet(tt);
+        moChiTiet(toaThuoc);
     }
 
     private ToaThuocView toaTai(int hangModel) {
@@ -204,96 +209,96 @@ public class DsToaThuocPanel extends JPanel {
         return ToaThuocDuLieu.theoMa(String.valueOf(model.getValueAt(hangModel, 1)));
     }
 
-    private void moChiTiet(ToaThuocView tt) {
-        if (tt == null) {
+    private void moChiTiet(ToaThuocView toaThuoc) {
+        if (toaThuoc == null) {
             return;
         }
-        Window w = SwingUtilities.getWindowAncestor(this);
-        JDialog d = new JDialog(w, "Chi tiết toa thuốc " + tt.maToaThuoc, java.awt.Dialog.ModalityType.APPLICATION_MODAL);
-        d.setLayout(new BorderLayout());
+        Window cuaSoCha = SwingUtilities.getWindowAncestor(this);
+        JDialog dialog = new JDialog(cuaSoCha, "Chi tiết toa thuốc " + toaThuoc.maToaThuoc, Dialog.ModalityType.APPLICATION_MODAL);
+        dialog.setLayout(new BorderLayout());
 
-        JPanel dau = new JPanel(new GridLayout(0, 4, 10, 8));
-        dau.setBackground(ViewTheme.TRANG);
-        dau.setBorder(new EmptyBorder(12, 16, 8, 16));
-        dau.add(nhan("Mã toa"));
-        dau.add(oKhoa(tt.maToaThuoc));
-        dau.add(nhan("Ngày tạo"));
-        dau.add(oKhoa(tt.ngayTao));
-        dau.add(nhan("Khách hàng"));
-        dau.add(oKhoa(tt.maKH + " - " + tt.tenKh));
-        dau.add(nhan("Chẩn đoán"));
-        dau.add(oKhoa(tt.maChanDoan));
-        dau.add(nhan("Bác sĩ"));
-        dau.add(oKhoa(tt.tenBacSi));
-        dau.add(nhan("Hình thức TT"));
-        dau.add(oKhoa(tt.hinhThucThanhToan));
-        dau.add(nhan("Nhận tại PK"));
-        dau.add(oKhoa(tt.nhanTaiPhongKham ? "Có" : "Không"));
-        dau.add(nhan("Ghi chú"));
-        dau.add(oKhoa(tt.ghiChu));
+        JPanel panelDau = new JPanel(new GridLayout(0, 4, 10, 8));
+        panelDau.setBackground(ViewTheme.TRANG);
+        panelDau.setBorder(new EmptyBorder(12, 16, 8, 16));
+        panelDau.add(nhan("Mã toa"));
+        panelDau.add(oKhoa(toaThuoc.maToaThuoc));
+        panelDau.add(nhan("Ngày tạo"));
+        panelDau.add(oKhoa(toaThuoc.ngayTao));
+        panelDau.add(nhan("Khách hàng"));
+        panelDau.add(oKhoa(toaThuoc.maKH + " - " + toaThuoc.tenKh));
+        panelDau.add(nhan("Chẩn đoán"));
+        panelDau.add(oKhoa(toaThuoc.maChanDoan));
+        panelDau.add(nhan("Bác sĩ"));
+        panelDau.add(oKhoa(toaThuoc.tenBacSi));
+        panelDau.add(nhan("Hình thức TT"));
+        panelDau.add(oKhoa(toaThuoc.hinhThucThanhToan));
+        panelDau.add(nhan("Nhận tại PK"));
+        panelDau.add(oKhoa(toaThuoc.nhanTaiPhongKham ? "Có" : "Không"));
+        panelDau.add(nhan("Ghi chú"));
+        panelDau.add(oKhoa(toaThuoc.ghiChu));
 
-        DefaultTableModel ct = ViewTheme.taoModel(
+        DefaultTableModel modelChiTiet = ViewTheme.taoModel(
                 new String[]{"#", "Thuốc", "Số ngày", "Cách sử dụng", "Tổng số", "Đơn giá", "Thành tiền"},
                 false, false);
         int stt = 1;
-        for (ChiTietToaThuocView c : tt.chiTiet) {
-            ct.addRow(new Object[]{
-                String.valueOf(stt++), c.tenThuoc, String.valueOf(c.soNgay), c.cachSuDung,
-                String.valueOf(c.tongSo), ViewTheme.tien(c.donGia), ViewTheme.tien(c.thanhTien)
+        for (ChiTietToaThuocView chiTiet : toaThuoc.chiTiet) {
+            modelChiTiet.addRow(new Object[]{
+                String.valueOf(stt++), chiTiet.tenThuoc, String.valueOf(chiTiet.soNgay), chiTiet.cachSuDung,
+                String.valueOf(chiTiet.tongSo), ViewTheme.tien(chiTiet.donGia), ViewTheme.tien(chiTiet.thanhTien)
             });
         }
-        JTable table = new JTable(ct);
-        ViewTheme.trangTriBang(table);
-        JScrollPane cuon = new JScrollPane(table);
-        cuon.setBorder(BorderFactory.createTitledBorder("Chi tiết thuốc"));
+        JTable bangChiTiet = new JTable(modelChiTiet);
+        ViewTheme.trangTriBang(bangChiTiet);
+        JScrollPane scrollChiTiet = new JScrollPane(bangChiTiet);
+        scrollChiTiet.setBorder(BorderFactory.createTitledBorder("Chi tiết thuốc"));
 
-        JPanel tong = new JPanel(new FlowLayout(FlowLayout.RIGHT, 18, 4));
-        tong.setBackground(ViewTheme.TRANG);
-        tong.add(nhanTong("Thành tiền", ViewTheme.tien(tt.thanhTien)));
+        JPanel panelTong = new JPanel(new FlowLayout(FlowLayout.RIGHT, 18, 4));
+        panelTong.setBackground(ViewTheme.TRANG);
+        panelTong.add(nhanTong("Thành tiền", ViewTheme.tien(toaThuoc.thanhTien)));
 
-        JButton in = new JButton("In toa thuốc");
-        JButton dong = new JButton("Đóng");
-        ViewTheme.nutXanh(in);
-        ViewTheme.nutXam(dong);
-        in.addActionListener(e -> JOptionPane.showMessageDialog(d,
-                "Toa " + tt.maToaThuoc + "\nKhách: " + tt.tenKh
-                + "\nThành tiền: " + ViewTheme.tien(tt.thanhTien)));
-        dong.addActionListener(e -> d.dispose());
-        JPanel nut = new JPanel(new FlowLayout(FlowLayout.RIGHT, 8, 8));
-        nut.setBackground(ViewTheme.TRANG);
-        nut.add(in);
-        nut.add(dong);
+        JButton btnIn = new JButton("In toa thuốc");
+        JButton btnDong = new JButton("Đóng");
+        ViewTheme.nutXanh(btnIn);
+        ViewTheme.nutXam(btnDong);
+        btnIn.addActionListener(e -> JOptionPane.showMessageDialog(dialog,
+                "Toa " + toaThuoc.maToaThuoc + "\nKhách: " + toaThuoc.tenKh
+                + "\nThành tiền: " + ViewTheme.tien(toaThuoc.thanhTien)));
+        btnDong.addActionListener(e -> dialog.dispose());
+        JPanel panelNut = new JPanel(new FlowLayout(FlowLayout.RIGHT, 8, 8));
+        panelNut.setBackground(ViewTheme.TRANG);
+        panelNut.add(btnIn);
+        panelNut.add(btnDong);
 
-        JPanel duoi = new JPanel(new BorderLayout());
-        duoi.setBackground(ViewTheme.TRANG);
-        duoi.add(tong, BorderLayout.CENTER);
-        duoi.add(nut, BorderLayout.SOUTH);
+        JPanel panelDuoi = new JPanel(new BorderLayout());
+        panelDuoi.setBackground(ViewTheme.TRANG);
+        panelDuoi.add(panelTong, BorderLayout.CENTER);
+        panelDuoi.add(panelNut, BorderLayout.SOUTH);
 
-        d.add(dau, BorderLayout.NORTH);
-        d.add(cuon, BorderLayout.CENTER);
-        d.add(duoi, BorderLayout.SOUTH);
-        d.setSize(920, 560);
-        d.setLocationRelativeTo(w);
-        d.setVisible(true);
+        dialog.add(panelDau, BorderLayout.NORTH);
+        dialog.add(scrollChiTiet, BorderLayout.CENTER);
+        dialog.add(panelDuoi, BorderLayout.SOUTH);
+        dialog.setSize(920, 560);
+        dialog.setLocationRelativeTo(cuaSoCha);
+        dialog.setVisible(true);
     }
 
     private static JLabel nhan(String chu) {
-        JLabel lb = new JLabel(chu);
-        lb.setFont(ViewTheme.FONT_NHO);
-        lb.setForeground(ViewTheme.CHU_NHAT);
-        return lb;
+        JLabel nhan = new JLabel(chu);
+        nhan.setFont(ViewTheme.FONT_NHO);
+        nhan.setForeground(ViewTheme.CHU_NHAT);
+        return nhan;
     }
 
     private static JTextField oKhoa(String giaTri) {
-        JTextField t = new JTextField(giaTri == null ? "" : giaTri);
-        t.setEditable(false);
-        ViewTheme.vienNhap(t);
-        return t;
+        JTextField txt = new JTextField(giaTri == null ? "" : giaTri);
+        txt.setEditable(false);
+        ViewTheme.vienNhap(txt);
+        return txt;
     }
 
     private static JLabel nhanTong(String nhan, String so) {
-        JLabel lb = new JLabel(nhan + ": " + so);
-        lb.setFont(ViewTheme.FONT_DAM);
-        return lb;
+        JLabel lbl = new JLabel(nhan + ": " + so);
+        lbl.setFont(ViewTheme.FONT_DAM);
+        return lbl;
     }
 }

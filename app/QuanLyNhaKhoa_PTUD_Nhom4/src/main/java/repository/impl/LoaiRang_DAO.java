@@ -1,7 +1,7 @@
 package repository.impl;
 
 import entity.LoaiRang;
-import i_repository.LoaiRang_IDAO;
+import repository.LoaiRang_IDAO;
 import java.util.List;
 import mapper.LoaiRangMapper;
 

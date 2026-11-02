@@ -19,7 +19,6 @@ import java.util.List;
 import service.impl.DanhMuc_Service;
 import view.model.CauHinhTrang;
 
-/** Nạp CauHinhTrang từ database, giữ cấu trúc cột của DuLieuMau. */
 public final class DanhMucDb {
 
     private static final DanhMuc_Service SVC = new DanhMuc_Service();
@@ -70,108 +69,108 @@ public final class DanhMucDb {
         try {
             switch (maTrang) {
                 case "dichvu" -> {
-                    DichVu e = new DichVu(str(dong, 0), maNhomTheoTen(str(dong, 1)), str(dong, 2), parseTien(str(dong, 3)), str(dong, 4));
+                    DichVu dichVu = new DichVu(str(dong, 0), maNhomTheoTen(str(dong, 1)), str(dong, 2), parseTien(str(dong, 3)), str(dong, 4));
                     if (them) {
-                        return SVC.addDichVu(e) != null;
+                        return SVC.addDichVu(dichVu) != null;
                     }
-                    SVC.updateDichVu(e);
+                    SVC.updateDichVu(dichVu);
                     return true;
                 }
                 case "nhomdichvu" -> {
-                    NhomDichVu e = new NhomDichVu(str(dong, 0), str(dong, 1), str(dong, 2));
+                    NhomDichVu nhomDichVu = new NhomDichVu(str(dong, 0), str(dong, 1), str(dong, 2));
                     if (them) {
-                        return SVC.addNhomDichVu(e) != null;
+                        return SVC.addNhomDichVu(nhomDichVu) != null;
                     }
-                    SVC.updateNhomDichVu(e);
+                    SVC.updateNhomDichVu(nhomDichVu);
                     return true;
                 }
                 case "nhanvien" -> {
-                    NhanVien e = new NhanVien(str(dong, 0), str(dong, 1), str(dong, 2), str(dong, 3), str(dong, 4),
+                    NhanVien nhanVien = new NhanVien(str(dong, 0), str(dong, 1), str(dong, 2), str(dong, 3), str(dong, 4),
                             str(dong, 5), "Có".equalsIgnoreCase(str(dong, 6)) || "true".equalsIgnoreCase(str(dong, 6)), str(dong, 7));
                     if (them) {
-                        return SVC.addNhanVien(e) != null;
+                        return SVC.addNhanVien(nhanVien) != null;
                     }
-                    SVC.updateNhanVien(e);
+                    SVC.updateNhanVien(nhanVien);
                     return true;
                 }
                 case "rang" -> {
-                    Rang e = new Rang(str(dong, 0), str(dong, 1), str(dong, 2));
+                    Rang rang = new Rang(str(dong, 0), str(dong, 1), str(dong, 2));
                     if (them) {
-                        return SVC.addRang(e) != null;
+                        return SVC.addRang(rang) != null;
                     }
-                    SVC.updateRang(e);
+                    SVC.updateRang(rang);
                     return true;
                 }
                 case "loairang" -> {
-                    LoaiRang e = new LoaiRang(str(dong, 0), str(dong, 1));
+                    LoaiRang loaiRang = new LoaiRang(str(dong, 0), str(dong, 1));
                     if (them) {
-                        return SVC.addLoaiRang(e) != null;
+                        return SVC.addLoaiRang(loaiRang) != null;
                     }
-                    SVC.updateLoaiRang(e);
+                    SVC.updateLoaiRang(loaiRang);
                     return true;
                 }
                 case "dieutri" -> {
-                    DieuTri e = new DieuTri(str(dong, 0), str(dong, 1));
+                    DieuTri dieuTri = new DieuTri(str(dong, 0), str(dong, 1));
                     if (them) {
-                        return SVC.addDieuTri(e) != null;
+                        return SVC.addDieuTri(dieuTri) != null;
                     }
-                    SVC.updateDieuTri(e);
+                    SVC.updateDieuTri(dieuTri);
                     return true;
                 }
                 case "thuoc" -> {
-                    Thuoc e = new Thuoc(str(dong, 0), str(dong, 1), str(dong, 2), parseTien(str(dong, 3)), dong.length > 4 ? str(dong, 4) : "");
+                    Thuoc thuoc = new Thuoc(str(dong, 0), str(dong, 1), str(dong, 2), parseTien(str(dong, 3)), dong.length > 4 ? str(dong, 4) : "");
                     if (them) {
-                        return SVC.addThuoc(e) != null;
+                        return SVC.addThuoc(thuoc) != null;
                     }
-                    SVC.updateThuoc(e);
+                    SVC.updateThuoc(thuoc);
                     return true;
                 }
                 case "sanpham" -> {
-                    SanPham e = new SanPham(str(dong, 0), str(dong, 1), str(dong, 2), parseInt(str(dong, 3)), parseTien(str(dong, 4)));
+                    SanPham sanPham = new SanPham(str(dong, 0), str(dong, 1), str(dong, 2), parseInt(str(dong, 3)), parseTien(str(dong, 4)));
                     if (them) {
-                        return SVC.addSanPham(e) != null;
+                        return SVC.addSanPham(sanPham) != null;
                     }
-                    SVC.updateSanPham(e);
+                    SVC.updateSanPham(sanPham);
                     return true;
                 }
                 case "chinhanh" -> {
-                    ChiNhanh e = new ChiNhanh(str(dong, 0), str(dong, 1), dong.length > 2 ? str(dong, 2) : "", dong.length > 3 ? str(dong, 3) : "");
+                    ChiNhanh chiNhanh = new ChiNhanh(str(dong, 0), str(dong, 1), dong.length > 2 ? str(dong, 2) : "", dong.length > 3 ? str(dong, 3) : "");
                     if (them) {
-                        return SVC.addChiNhanh(e) != null;
+                        return SVC.addChiNhanh(chiNhanh) != null;
                     }
-                    SVC.updateChiNhanh(e);
+                    SVC.updateChiNhanh(chiNhanh);
                     return true;
                 }
                 case "nhacungcap" -> {
-                    NhaCungCap e = new NhaCungCap(str(dong, 0), str(dong, 1), dong.length > 2 ? str(dong, 2) : "", dong.length > 3 ? str(dong, 3) : "");
+                    NhaCungCap nhaCungCap = new NhaCungCap(str(dong, 0), str(dong, 1), dong.length > 2 ? str(dong, 2) : "", dong.length > 3 ? str(dong, 3) : "");
                     if (them) {
-                        return SVC.addNhaCungCap(e) != null;
+                        return SVC.addNhaCungCap(nhaCungCap) != null;
                     }
-                    SVC.updateNhaCungCap(e);
+                    SVC.updateNhaCungCap(nhaCungCap);
                     return true;
                 }
                 case "nhomkhach" -> {
-                    NhomKhachHang e = new NhomKhachHang(str(dong, 0), str(dong, 1));
+                    NhomKhachHang nhomKhachHang = new NhomKhachHang(str(dong, 0), str(dong, 1));
                     if (them) {
-                        return SVC.addNhomKhachHang(e) != null;
+                        return SVC.addNhomKhachHang(nhomKhachHang) != null;
                     }
-                    SVC.updateNhomKhachHang(e);
+                    SVC.updateNhomKhachHang(nhomKhachHang);
                     return true;
                 }
                 case "donvi" -> {
-                    DonVi e = new DonVi(str(dong, 0), str(dong, 1));
+                    DonVi donVi = new DonVi(str(dong, 0), str(dong, 1));
                     if (them) {
-                        return SVC.addDonVi(e) != null;
+                        return SVC.addDonVi(donVi) != null;
                     }
-                    SVC.updateDonVi(e);
+                    SVC.updateDonVi(donVi);
                     return true;
                 }
                 case "loaisanpham" -> {
-                    LoaiSanPham e = new LoaiSanPham(str(dong, 0), str(dong, 1));
+                    LoaiSanPham loaiSanPham = new LoaiSanPham(str(dong, 0), str(dong, 1));
                     if (them) {
-                        return SVC.addLoaiSanPham(e) != null;
+                        return SVC.addLoaiSanPham(loaiSanPham) != null;
                     }
-                    SVC.updateLoaiSanPham(e);
+                    SVC.updateLoaiSanPham(loaiSanPham);
                     return true;
                 }
                 default -> {
@@ -185,83 +184,83 @@ public final class DanhMucDb {
     }
 
     private static Object[][] napDuLieu(String ma) {
-        List<Object[]> ds = new ArrayList<>();
+        List<Object[]> danhSach = new ArrayList<>();
         switch (ma) {
             case "dichvu" -> {
-                for (DichVu e : SVC.findAllDichVu()) {
-                    ds.add(new Object[]{e.getMaDichVu(), tenNhom(e.getMaNhomDichVu()), e.getTenDichVu(),
-                        ViewTheme.tien(e.getGia()), e.getTrangThai()});
+                for (DichVu dichVu : SVC.findAllDichVu()) {
+                    danhSach.add(new Object[]{dichVu.getMaDichVu(), tenNhom(dichVu.getMaNhomDichVu()), dichVu.getTenDichVu(),
+                        ViewTheme.tien(dichVu.getGia()), dichVu.getTrangThai()});
                 }
             }
             case "nhomdichvu" -> {
-                for (NhomDichVu e : SVC.findAllNhomDichVu()) {
-                    ds.add(new Object[]{e.getMaNhom(), e.getTenNhomDichVu(), e.getMoTa() == null ? "" : e.getMoTa()});
+                for (NhomDichVu nhomDichVu : SVC.findAllNhomDichVu()) {
+                    danhSach.add(new Object[]{nhomDichVu.getMaNhom(), nhomDichVu.getTenNhomDichVu(), nhomDichVu.getMoTa() == null ? "" : nhomDichVu.getMoTa()});
                 }
             }
             case "nhanvien" -> {
-                for (NhanVien e : SVC.findAllNhanVien()) {
-                    ds.add(new Object[]{e.getMaNhanVien(), e.getChucDanh(), e.getHoTen(), e.getEmail(),
-                        e.getSoDienThoai(), e.getVaiTro(), e.isKichHoat() ? "Có" : "Không", e.getMaChiNhanh()});
+                for (NhanVien nhanVien : SVC.findAllNhanVien()) {
+                    danhSach.add(new Object[]{nhanVien.getMaNhanVien(), nhanVien.getChucDanh(), nhanVien.getHoTen(), nhanVien.getEmail(),
+                        nhanVien.getSoDienThoai(), nhanVien.getVaiTro(), nhanVien.isKichHoat() ? "Có" : "Không", nhanVien.getMaChiNhanh()});
                 }
             }
             case "rang" -> {
-                for (Rang e : SVC.findAllRang()) {
-                    ds.add(new Object[]{e.getMaRang(), e.getTenRang(), e.getMaLoaiRang()});
+                for (Rang rang : SVC.findAllRang()) {
+                    danhSach.add(new Object[]{rang.getMaRang(), rang.getTenRang(), rang.getMaLoaiRang()});
                 }
             }
             case "loairang" -> {
-                for (LoaiRang e : SVC.findAllLoaiRang()) {
-                    ds.add(new Object[]{e.getMaLoaiRang(), e.getTenLoaiRang()});
+                for (LoaiRang loaiRang : SVC.findAllLoaiRang()) {
+                    danhSach.add(new Object[]{loaiRang.getMaLoaiRang(), loaiRang.getTenLoaiRang()});
                 }
             }
             case "dieutri" -> {
-                for (DieuTri e : SVC.findAllDieuTri()) {
-                    ds.add(new Object[]{e.getMaDieuTri(), e.getTenDieuTri()});
+                for (DieuTri dieuTri : SVC.findAllDieuTri()) {
+                    danhSach.add(new Object[]{dieuTri.getMaDieuTri(), dieuTri.getTenDieuTri()});
                 }
             }
             case "thoigian" -> {
-                for (ThoiGianLamViec e : SVC.findAllThoiGianLamViec()) {
-                    ds.add(new Object[]{e.getMaLich(), e.getNgay(),
-                        e.getGioBatDau() == null ? "" : e.getGioBatDau().toString(),
-                        e.getGioKetThuc() == null ? "" : e.getGioKetThuc().toString(),
-                        e.getMaBacSi(), e.getMaChiNhanh()});
+                for (ThoiGianLamViec thoiGian : SVC.findAllThoiGianLamViec()) {
+                    danhSach.add(new Object[]{thoiGian.getMaLich(), thoiGian.getNgay(),
+                        thoiGian.getGioBatDau() == null ? "" : thoiGian.getGioBatDau().toString(),
+                        thoiGian.getGioKetThuc() == null ? "" : thoiGian.getGioKetThuc().toString(),
+                        thoiGian.getMaBacSi(), thoiGian.getMaChiNhanh()});
                 }
             }
             case "loaisanpham" -> {
-                for (LoaiSanPham e : SVC.findAllLoaiSanPham()) {
-                    ds.add(new Object[]{e.getMaLoai(), e.getTenLoaiSanPham()});
+                for (LoaiSanPham loaiSanPham : SVC.findAllLoaiSanPham()) {
+                    danhSach.add(new Object[]{loaiSanPham.getMaLoai(), loaiSanPham.getTenLoaiSanPham()});
                 }
             }
             case "thuoc" -> {
-                for (Thuoc e : SVC.findAllThuoc()) {
-                    ds.add(new Object[]{e.getMaThuoc(), e.getTenThuoc(), e.getMaDonVi(), ViewTheme.tien(e.getGia()),
-                        e.getCachDung() == null ? "" : e.getCachDung()});
+                for (Thuoc thuoc : SVC.findAllThuoc()) {
+                    danhSach.add(new Object[]{thuoc.getMaThuoc(), thuoc.getTenThuoc(), thuoc.getMaDonVi(), ViewTheme.tien(thuoc.getGia()),
+                        thuoc.getCachDung() == null ? "" : thuoc.getCachDung()});
                 }
             }
             case "sanpham" -> {
-                for (SanPham e : SVC.findAllSanPham()) {
-                    ds.add(new Object[]{e.getMaSanPham(), e.getTenSanPham(), e.getMaLoai(),
-                        String.valueOf(e.getSoLuong()), ViewTheme.tien(e.getDonGia())});
+                for (SanPham sanPham : SVC.findAllSanPham()) {
+                    danhSach.add(new Object[]{sanPham.getMaSanPham(), sanPham.getTenSanPham(), sanPham.getMaLoai(),
+                        String.valueOf(sanPham.getSoLuong()), ViewTheme.tien(sanPham.getDonGia())});
                 }
             }
             case "chinhanh" -> {
-                for (ChiNhanh e : SVC.findAllChiNhanh()) {
-                    ds.add(new Object[]{e.getMaChiNhanh(), e.getTenChiNhanh(), e.getDiaChi(), e.getDienThoai()});
+                for (ChiNhanh chiNhanh : SVC.findAllChiNhanh()) {
+                    danhSach.add(new Object[]{chiNhanh.getMaChiNhanh(), chiNhanh.getTenChiNhanh(), chiNhanh.getDiaChi(), chiNhanh.getDienThoai()});
                 }
             }
             case "nhacungcap" -> {
-                for (NhaCungCap e : SVC.findAllNhaCungCap()) {
-                    ds.add(new Object[]{e.getMaNhaCungCap(), e.getTenNhaCungCap(), e.getDienThoai(), e.getDiaChi()});
+                for (NhaCungCap nhaCungCap : SVC.findAllNhaCungCap()) {
+                    danhSach.add(new Object[]{nhaCungCap.getMaNhaCungCap(), nhaCungCap.getTenNhaCungCap(), nhaCungCap.getDienThoai(), nhaCungCap.getDiaChi()});
                 }
             }
             case "nhomkhach" -> {
-                for (NhomKhachHang e : SVC.findAllNhomKhachHang()) {
-                    ds.add(new Object[]{e.getMaNhom(), e.getTenNhom()});
+                for (NhomKhachHang nhomKhachHang : SVC.findAllNhomKhachHang()) {
+                    danhSach.add(new Object[]{nhomKhachHang.getMaNhom(), nhomKhachHang.getTenNhom()});
                 }
             }
             case "donvi" -> {
-                for (DonVi e : SVC.findAllDonVi()) {
-                    ds.add(new Object[]{e.getMaDonVi(), e.getTenDonVi()});
+                for (DonVi donVi : SVC.findAllDonVi()) {
+                    danhSach.add(new Object[]{donVi.getMaDonVi(), donVi.getTenDonVi()});
                 }
             }
             default -> {
@@ -269,22 +268,22 @@ public final class DanhMucDb {
                 return mau == null ? new Object[0][] : mau.duLieu;
             }
         }
-        return ds.toArray(new Object[0][]);
+        return danhSach.toArray(new Object[0][]);
     }
 
     private static String tenNhom(String ma) {
-        for (NhomDichVu n : SVC.findAllNhomDichVu()) {
-            if (n.getMaNhom().equals(ma)) {
-                return n.getTenNhomDichVu();
+        for (NhomDichVu nhom : SVC.findAllNhomDichVu()) {
+            if (nhom.getMaNhom().equals(ma)) {
+                return nhom.getTenNhomDichVu();
             }
         }
         return ma;
     }
 
     private static String maNhomTheoTen(String ten) {
-        for (NhomDichVu n : SVC.findAllNhomDichVu()) {
-            if (n.getTenNhomDichVu().equals(ten) || n.getMaNhom().equals(ten)) {
-                return n.getMaNhom();
+        for (NhomDichVu nhom : SVC.findAllNhomDichVu()) {
+            if (nhom.getTenNhomDichVu().equals(ten) || nhom.getMaNhom().equals(ten)) {
+                return nhom.getMaNhom();
             }
         }
         return ten;

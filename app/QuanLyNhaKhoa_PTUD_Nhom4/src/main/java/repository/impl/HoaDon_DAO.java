@@ -1,7 +1,7 @@
 package repository.impl;
 
 import entity.HoaDon;
-import i_repository.HoaDon_IDAO;
+import repository.HoaDon_IDAO;
 import java.util.List;
 import mapper.HoaDonMapper;
 

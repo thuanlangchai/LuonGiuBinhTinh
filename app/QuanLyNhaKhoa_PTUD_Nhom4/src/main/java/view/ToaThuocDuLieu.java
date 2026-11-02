@@ -17,9 +17,9 @@ import view.model.ToaThuocView;
 public final class ToaThuocDuLieu {
 
     private static final List<Runnable> LANG_NGHE = new ArrayList<>();
-    private static final ToaThuoc_Service svc = new ToaThuoc_Service();
-    private static final KhachHang_Service khSvc = new KhachHang_Service();
-    private static final DanhMuc_Service dmSvc = new DanhMuc_Service();
+    private static final ToaThuoc_Service toaThuocService = new ToaThuoc_Service();
+    private static final KhachHang_Service khachHangService = new KhachHang_Service();
+    private static final DanhMuc_Service danhMucService = new DanhMuc_Service();
 
     private ToaThuocDuLieu() {
     }
@@ -37,24 +37,24 @@ public final class ToaThuocDuLieu {
     }
 
     public static List<ToaThuocView> tatCa() {
-        List<ToaThuocView> kq = new ArrayList<>();
-        for (ToaThuoc e : svc.findAllToaThuoc()) {
-            kq.add(mapView(e));
+        List<ToaThuocView> ketQua = new ArrayList<>();
+        for (ToaThuoc e : toaThuocService.findAllToaThuoc()) {
+            ketQua.add(mapView(e));
         }
-        return kq;
+        return ketQua;
     }
 
     public static ToaThuocView theoMa(String ma) {
-        ToaThuoc e = svc.findById(ma);
+        ToaThuoc e = toaThuocService.findById(ma);
         return e == null ? null : mapView(e);
     }
 
     public static List<ToaThuocView> theoKhach(String maKH) {
-        List<ToaThuocView> kq = new ArrayList<>();
-        for (ToaThuoc e : svc.findByMaKH(maKH)) {
-            kq.add(mapView(e));
+        List<ToaThuocView> ketQua = new ArrayList<>();
+        for (ToaThuoc e : toaThuocService.findByMaKH(maKH)) {
+            ketQua.add(mapView(e));
         }
-        return kq;
+        return ketQua;
     }
 
     public static ToaThuocView them(ToaThuocView tt) {
@@ -89,7 +89,7 @@ public final class ToaThuocDuLieu {
             ct.setThanhTien(cv.thanhTien);
             cts.add(ct);
         }
-        if (svc.themToaVoiChiTiet(e, cts) == null) {
+        if (toaThuocService.themToaVoiChiTiet(e, cts) == null) {
             return null;
         }
         bao();
@@ -100,7 +100,7 @@ public final class ToaThuocDuLieu {
         if (tt == null) {
             return;
         }
-        svc.delete(tt.maToaThuoc);
+        toaThuocService.delete(tt.maToaThuoc);
         bao();
     }
 
@@ -108,19 +108,19 @@ public final class ToaThuocDuLieu {
         ToaThuocView v = new ToaThuocView();
         v.maToaThuoc = e.getMaToaThuoc();
         v.maKH = e.getMaKH();
-        KhachHang kh = khSvc.findById(e.getMaKH());
+        KhachHang kh = khachHangService.findById(e.getMaKH());
         v.tenKh = kh != null ? kh.getHoTen() : e.getMaKH();
         v.maChanDoan = e.getMaChanDoan();
         v.maBacSi = e.getMaBacSi();
-        NhanVien nv = e.getMaBacSi() == null ? null : dmSvc.findNhanVienById(e.getMaBacSi());
+        NhanVien nv = e.getMaBacSi() == null ? null : danhMucService.findNhanVienById(e.getMaBacSi());
         v.tenBacSi = nv != null ? nv.getHoTen() : "";
         v.hinhThucThanhToan = e.getHinhThucThanhToan();
         v.nhanTaiPhongKham = e.isNhanTaiPhongKham();
         v.ghiChu = e.getGhiChu();
         v.thanhTien = e.getThanhTien();
         v.ngayTao = NgayUtil.fmtFull(e.getNgayTao());
-        for (ChiTietToaThuoc ct : svc.findChiTietByMaToaThuoc(e.getMaToaThuoc())) {
-            Thuoc th = dmSvc.findThuocById(ct.getMaThuoc());
+        for (ChiTietToaThuoc ct : toaThuocService.findChiTietByMaToaThuoc(e.getMaToaThuoc())) {
+            Thuoc th = danhMucService.findThuocById(ct.getMaThuoc());
             v.chiTiet.add(new ChiTietToaThuocView(
                     ct.getMaThuoc(),
                     th != null ? th.getTenThuoc() : ct.getMaThuoc(),
@@ -135,7 +135,7 @@ public final class ToaThuocDuLieu {
 
     private static String maMoi() {
         int max = 0;
-        for (ToaThuoc e : svc.findAllToaThuoc()) {
+        for (ToaThuoc e : toaThuocService.findAllToaThuoc()) {
             String ma = e.getMaToaThuoc();
             if (ma != null && ma.startsWith("TT")) {
                 try {

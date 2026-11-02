@@ -15,6 +15,5 @@ public interface TaiKhoan_IService {
 
     void delete(String tenDangNhap);
 
-    /** Đăng nhập: trả về tài khoản nếu đúng và đang kích hoạt, ngược lại null. */
     TaiKhoan dangNhap(String tenDangNhap, String matKhau);
 }

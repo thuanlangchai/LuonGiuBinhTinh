@@ -26,6 +26,5 @@ public interface HoaDon_IService {
 
     void deleteChiTiet(String maChiTiet);
 
-    /** Lập hóa đơn kèm danh sách chi tiết. */
     Integer themHoaDonVoiChiTiet(HoaDon hoaDon, List<ChiTietHoaDon> chiTiet);
 }
