@@ -230,8 +230,8 @@ public class BaoCaoPanel extends JPanel {
     private JPanel dau(String tieuDe, boolean taiLai) {
         JPanel pnl = new JPanel(new BorderLayout());
         pnl.setOpaque(false);
-        JLabel nhanTieuDe = ViewTheme.tieuDeTrang(tieuDe);
-        pnl.add(nhanTieuDe, BorderLayout.WEST);
+        JLabel lblNhanTieuDe = ViewTheme.tieuDeTrang(tieuDe);
+        pnl.add(lblNhanTieuDe, BorderLayout.WEST);
         if (taiLai) {
             JButton btnTai = new JButton("Tải lại");
             ViewTheme.nutXanh(btnTai);
@@ -254,12 +254,12 @@ public class BaoCaoPanel extends JPanel {
     private JPanel oSo(String nhan, String so) {
         JPanel pnl = new JPanel(new BorderLayout());
         pnl.setOpaque(false);
-        JLabel nhanTieu = ViewTheme.chuPhu(nhan);
-        JLabel nhanSo = new JLabel(so);
-        nhanSo.setFont(ViewTheme.FONT_SO);
-        nhanSo.setForeground(ViewTheme.CHU);
-        pnl.add(nhanTieu, BorderLayout.NORTH);
-        pnl.add(nhanSo, BorderLayout.CENTER);
+        JLabel lblNhanTieu = ViewTheme.chuPhu(nhan);
+        JLabel lblNhanSo = new JLabel(so);
+        lblNhanSo.setFont(ViewTheme.FONT_SO);
+        lblNhanSo.setForeground(ViewTheme.CHU);
+        pnl.add(lblNhanTieu, BorderLayout.NORTH);
+        pnl.add(lblNhanSo, BorderLayout.CENTER);
         return pnl;
     }
 
@@ -268,13 +268,13 @@ public class BaoCaoPanel extends JPanel {
         for (Object[] hang : dong) {
             model.addRow(hang);
         }
-        JTable table = new JTable(model);
-        ViewTheme.trangTriBang(table);
-        JScrollPane scrollBang = new JScrollPane(table);
-        scrollBang.setPreferredSize(new Dimension(400, 180));
-        scrollBang.setBorder(BorderFactory.createLineBorder(ViewTheme.VIEN));
-        scrollBang.getViewport().setBackground(ViewTheme.TRANG);
-        return scrollBang;
+        JTable tbl = new JTable(model);
+        ViewTheme.trangTriBang(tbl);
+        JScrollPane scrBang = new JScrollPane(tbl);
+        scrBang.setPreferredSize(new Dimension(400, 180));
+        scrBang.setBorder(BorderFactory.createLineBorder(ViewTheme.VIEN));
+        scrBang.getViewport().setBackground(ViewTheme.TRANG);
+        return scrBang;
     }
 
     private JPanel nutIn(boolean excel) {

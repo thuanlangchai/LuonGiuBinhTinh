@@ -79,22 +79,22 @@ public final class BieuMau {
         HopThoai hopThoai = new HopThoai(cuaSo, sua(cu) ? "Cập nhật dịch vụ" : "Thêm dịch vụ",
                 sua(cu) ? "Lưu" : "Thêm dịch vụ");
         JTextField txtMa = hopThoai.chu("Mã dịch vụ", gia(cu, 0), true);
-        JComboBox<String> cboNhom = hopThoai.chonVoiNut("Nhóm dịch vụ", true, DuLieuMau.dsNhomDv());
+        JComboBox<String> cmbNhom = hopThoai.chonVoiNut("Nhóm dịch vụ", true, DuLieuMau.dsNhomDv());
         if (!gia(cu, 1).isEmpty()) {
-            cboNhom.setSelectedItem(gia(cu, 1));
+            cmbNhom.setSelectedItem(gia(cu, 1));
         }
         JTextField txtTen = hopThoai.chu("Tên dịch vụ", gia(cu, 2), true);
         JTextField txtGia = hopThoai.chu("Giá", gia(cu, 3).isEmpty() ? "0" : gia(cu, 3), false);
-        JComboBox<String> cboTrangThai = hopThoai.chon("Trạng thái", false, "Hoạt động", "Ngừng");
+        JComboBox<String> cmbTrangThai = hopThoai.chon("Trạng thái", false, "Hoạt động", "Ngừng");
         if (!gia(cu, 6).isEmpty()) {
-            cboTrangThai.setSelectedItem(gia(cu, 6));
+            cmbTrangThai.setSelectedItem(gia(cu, 6));
         }
         hopThoai.hien(() -> luu.nhan(new Object[]{
             txtMa.getText().trim(),
-            String.valueOf(cboNhom.getSelectedItem()),
+            String.valueOf(cmbNhom.getSelectedItem()),
             txtTen.getText().trim(),
             txtGia.getText().trim(),
-            String.valueOf(cboTrangThai.getSelectedItem())
+            String.valueOf(cmbTrangThai.getSelectedItem())
         }));
     }
 
@@ -107,17 +107,17 @@ public final class BieuMau {
         JTextField txtTen = hopThoai.chu("Họ và tên", gia(cu, 2), true);
         JTextField txtEmail = hopThoai.chu("Email", gia(cu, 3), false);
         JTextField txtSdt = hopThoai.chu("Số điện thoại", gia(cu, 4), false);
-        JComboBox<String> cboVaiTro = hopThoai.chon("Vai trò", true, "Bác sĩ", "Phụ tá", "Lễ tân", "Tư vấn", "Sale");
+        JComboBox<String> cmbVaiTro = hopThoai.chon("Vai trò", true, "Bác sĩ", "Phụ tá", "Lễ tân", "Tư vấn", "Sale");
         if (!gia(cu, 5).isEmpty()) {
-            cboVaiTro.setSelectedItem(gia(cu, 5));
+            cmbVaiTro.setSelectedItem(gia(cu, 5));
         }
-        JComboBox<String> cboKichHoat = hopThoai.chon("Kích hoạt", true, "Có", "Không");
+        JComboBox<String> cmbKichHoat = hopThoai.chon("Kích hoạt", true, "Có", "Không");
         if (!gia(cu, 6).isEmpty()) {
-            cboKichHoat.setSelectedItem(gia(cu, 6));
+            cmbKichHoat.setSelectedItem(gia(cu, 6));
         }
-        JComboBox<String> cboChiNhanh = hopThoai.chon("Chi nhánh", true, "CN1");
+        JComboBox<String> cmbChiNhanh = hopThoai.chon("Chi nhánh", true, "CN1");
         if (!gia(cu, 7).isEmpty()) {
-            cboChiNhanh.setSelectedItem(gia(cu, 7));
+            cmbChiNhanh.setSelectedItem(gia(cu, 7));
         }
         hopThoai.hien(() -> luu.nhan(new Object[]{
             txtMa.getText().trim(),
@@ -125,9 +125,9 @@ public final class BieuMau {
             txtTen.getText().trim(),
             txtEmail.getText().trim(),
             txtSdt.getText().trim(),
-            String.valueOf(cboVaiTro.getSelectedItem()),
-            String.valueOf(cboKichHoat.getSelectedItem()),
-            String.valueOf(cboChiNhanh.getSelectedItem())
+            String.valueOf(cmbVaiTro.getSelectedItem()),
+            String.valueOf(cmbKichHoat.getSelectedItem()),
+            String.valueOf(cmbChiNhanh.getSelectedItem())
         }));
     }
 
@@ -142,8 +142,8 @@ public final class BieuMau {
     private static void thoiGian(Window cuaSo, Object[] cu, Luu luu) {
         HopThoai hopThoai = new HopThoai(cuaSo, sua(cu) ? "Cập nhật thời gian làm việc" : "Thêm thời gian làm việc",
                 sua(cu) ? "Lưu" : "Thêm thời gian làm việc");
-        JPanel panelNgay = new JPanel(new FlowLayout(FlowLayout.LEFT, 8, 0));
-        panelNgay.setOpaque(false);
+        JPanel pnlNgay = new JPanel(new FlowLayout(FlowLayout.LEFT, 8, 0));
+        pnlNgay.setOpaque(false);
         String[] nhanNgay = {"Mo", "Tu", "We", "Th", "Fr", "Sa", "Su"};
         JCheckBox[] chkNgay = new JCheckBox[nhanNgay.length];
         for (int i = 0; i < nhanNgay.length; i++) {
@@ -152,19 +152,19 @@ public final class BieuMau {
             if (gia(cu, 1).contains(nhanNgay[i])) {
                 chkNgay[i].setSelected(true);
             }
-            panelNgay.add(chkNgay[i]);
+            pnlNgay.add(chkNgay[i]);
         }
-        hopThoai.them("Ngày", panelNgay, null, true);
+        hopThoai.them("Ngày", pnlNgay, null, true);
         JTextField txtMa = hopThoai.chu("Mã lịch", gia(cu, 0), true);
         JTextField txtBatDau = hopThoai.chu("Giờ bắt đầu", gia(cu, 2).isEmpty() ? "08:00" : gia(cu, 2), true);
         JTextField txtKetThuc = hopThoai.chu("Giờ kết thúc", gia(cu, 3).isEmpty() ? "17:00" : gia(cu, 3), true);
-        JComboBox<String> cboBacSi = hopThoai.chonVoiNut("Bác sĩ", true, DuLieuMau.dsBacSi());
+        JComboBox<String> cmbBacSi = hopThoai.chonVoiNut("Bác sĩ", true, DuLieuMau.dsBacSi());
         if (!gia(cu, 4).isEmpty()) {
-            cboBacSi.setSelectedItem(gia(cu, 4));
+            cmbBacSi.setSelectedItem(gia(cu, 4));
         }
-        JComboBox<String> cboChiNhanh = hopThoai.chon("Chi nhánh", true, "CN1");
+        JComboBox<String> cmbChiNhanh = hopThoai.chon("Chi nhánh", true, "CN1");
         if (!gia(cu, 5).isEmpty()) {
-            cboChiNhanh.setSelectedItem(gia(cu, 5));
+            cmbChiNhanh.setSelectedItem(gia(cu, 5));
         }
         hopThoai.hien(() -> {
             StringBuilder ngayChon = new StringBuilder();
@@ -180,7 +180,7 @@ public final class BieuMau {
                 ngayChon.append("Mo, Tu, We, Th, Fr");
             }
             luu.nhan(new Object[]{txtMa.getText().trim(), ngayChon.toString(), txtBatDau.getText().trim(), txtKetThuc.getText().trim(),
-                String.valueOf(cboBacSi.getSelectedItem()), String.valueOf(cboChiNhanh.getSelectedItem())});
+                String.valueOf(cmbBacSi.getSelectedItem()), String.valueOf(cmbChiNhanh.getSelectedItem())});
         });
     }
 
@@ -190,23 +190,23 @@ public final class BieuMau {
         JTextField txtLyDo = new JTextField(gia(cu, 1));
         ViewTheme.vienNhap(txtLyDo);
         hopThoai.them("Lý do", txtLyDo, txtLyDo, true);
-        JPanel panelHang = dongSanPham();
-        JPanel panelDs = new JPanel();
-        panelDs.setLayout(new BoxLayout(panelDs, BoxLayout.Y_AXIS));
-        panelDs.setOpaque(false);
-        panelDs.add(panelHang);
+        JPanel pnlHang = dongSanPham();
+        JPanel pnlDs = new JPanel();
+        pnlDs.setLayout(new BoxLayout(pnlDs, BoxLayout.Y_AXIS));
+        pnlDs.setOpaque(false);
+        pnlDs.add(pnlHang);
         JButton btnCong = new JButton("+");
         ViewTheme.nutChinh(btnCong);
         btnCong.addActionListener(e -> {
-            panelDs.add(dongSanPham());
-            panelDs.revalidate();
+            pnlDs.add(dongSanPham());
+            pnlDs.revalidate();
         });
-        JPanel panelGiua = new JPanel(new FlowLayout(FlowLayout.CENTER));
-        panelGiua.setOpaque(false);
-        panelGiua.add(btnCong);
+        JPanel pnlGiua = new JPanel(new FlowLayout(FlowLayout.CENTER));
+        pnlGiua.setOpaque(false);
+        pnlGiua.add(btnCong);
         hopThoai.themHang(kiemKho());
-        hopThoai.themHang(panelDs);
-        hopThoai.themHang(panelGiua);
+        hopThoai.themHang(pnlDs);
+        hopThoai.themHang(pnlGiua);
         hopThoai.hien(() -> {
             String ma = sua(cu) ? gia(cu, 0) : String.format("%06d", demKiem++);
             luu.nhan(new Object[]{ma, txtLyDo.getText().trim(), "Đã duyệt", DuLieuMau.NGUOI,
@@ -215,22 +215,22 @@ public final class BieuMau {
     }
 
     private static JPanel kiemKho() {
-        JPanel panel = new JPanel(new GridLayout(1, 4, 0, 0));
-        panel.setOpaque(false);
-        panel.add(ViewTheme.chuPhu("Sản phẩm"));
-        panel.add(ViewTheme.chuPhu("Số lượng hệ thống"));
-        panel.add(ViewTheme.chuPhu("Số lượng thực tế"));
-        panel.add(ViewTheme.chuPhu("Chênh lệch"));
-        panel.add(ViewTheme.chuPhu(""));
-        return panel;
+        JPanel pnl = new JPanel(new GridLayout(1, 4, 0, 0));
+        pnl.setOpaque(false);
+        pnl.add(ViewTheme.chuPhu("Sản phẩm"));
+        pnl.add(ViewTheme.chuPhu("Số lượng hệ thống"));
+        pnl.add(ViewTheme.chuPhu("Số lượng thực tế"));
+        pnl.add(ViewTheme.chuPhu("Chênh lệch"));
+        pnl.add(ViewTheme.chuPhu(""));
+        return pnl;
     }
 
     private static JPanel dongSanPham() {
-        JPanel panel = new JPanel(new GridLayout(1, 5, 8, 0));
-        panel.setOpaque(false);
-        panel.setBorder(new EmptyBorder(4, 0, 4, 0));
-        JComboBox<String> cboSanPham = new JComboBox<>(DuLieuMau.dsSanPham());
-        ViewTheme.vienHop(cboSanPham);
+        JPanel pnl = new JPanel(new GridLayout(1, 5, 8, 0));
+        pnl.setOpaque(false);
+        pnl.setBorder(new EmptyBorder(4, 0, 4, 0));
+        JComboBox<String> cmbSanPham = new JComboBox<>(DuLieuMau.dsSanPham());
+        ViewTheme.vienHop(cmbSanPham);
         JTextField txtSoLuong = new JTextField("0");
         JTextField txtChenhLech = new JTextField("0");
         JTextField txtGia = new JTextField("0");
@@ -240,20 +240,20 @@ public final class BieuMau {
         JButton btnXoa = new JButton("Xóa");
         ViewTheme.nutDo(btnXoa);
         btnXoa.addActionListener(e -> {
-            Container cha = panel.getParent();
+            Container cha = pnl.getParent();
             if (cha != null && cha.getComponentCount() > 1) {
-                cha.remove(panel);
+                cha.remove(pnl);
                 cha.revalidate();
                 cha.repaint();
             }
         });
-        panel.add(cboSanPham);
-        panel.add(txtSoLuong);
-        panel.add(txtChenhLech);
-        panel.add(txtGia);
-        panel.add(btnXoa);
-        panel.setMaximumSize(new Dimension(Integer.MAX_VALUE, 42));
-        return panel;
+        pnl.add(cmbSanPham);
+        pnl.add(txtSoLuong);
+        pnl.add(txtChenhLech);
+        pnl.add(txtGia);
+        pnl.add(btnXoa);
+        pnl.setMaximumSize(new Dimension(Integer.MAX_VALUE, 42));
+        return pnl;
     }
 
     private static void loaiSanPham(Window cuaSo, Object[] cu, Luu luu) {
@@ -270,29 +270,29 @@ public final class BieuMau {
         JTextField txtMa = hopThoai.chu("Mã lịch hẹn", gia(cu, 0), true);
         JTextField txtMaKH = hopThoai.chu("Mã KH", gia(cu, 1), true);
         JTextField txtBatDau = hopThoai.chu("Bắt đầu", gia(cu, 2).isEmpty() ? "2026-09-28 08:00" : gia(cu, 2), true);
-        JComboBox<String> cboPhut = hopThoai.chon("Thời lượng (phút)", true, "15", "30", "45", "60", "90");
+        JComboBox<String> cmbPhut = hopThoai.chon("Thời lượng (phút)", true, "15", "30", "45", "60", "90");
         if (!gia(cu, 3).isEmpty()) {
-            cboPhut.setSelectedItem(gia(cu, 3));
+            cmbPhut.setSelectedItem(gia(cu, 3));
         }
-        JComboBox<String> cboBacSi = hopThoai.chon("Bác sĩ", false, "NV03", "NV02", "NV01");
+        JComboBox<String> cmbBacSi = hopThoai.chon("Bác sĩ", false, "NV03", "NV02", "NV01");
         if (!gia(cu, 4).isEmpty()) {
-            cboBacSi.setSelectedItem(gia(cu, 4));
+            cmbBacSi.setSelectedItem(gia(cu, 4));
         }
         JTextField txtPhuTa = hopThoai.chu("Phụ tá", gia(cu, 5), false);
         JTextField txtGhiChu = hopThoai.chu("Ghi chú", gia(cu, 6), false);
-        JComboBox<String> cboTrangThai = hopThoai.chon("Trạng thái", false, "Mới", "Xác nhận", "Đang đợi", "Đang điều trị", "Hoàn tất", "Khách ra về", "Hủy bỏ");
+        JComboBox<String> cmbTrangThai = hopThoai.chon("Trạng thái", false, "Mới", "Xác nhận", "Đang đợi", "Đang điều trị", "Hoàn tất", "Khách ra về", "Hủy bỏ");
         if (!gia(cu, 7).isEmpty()) {
-            cboTrangThai.setSelectedItem(gia(cu, 7));
+            cmbTrangThai.setSelectedItem(gia(cu, 7));
         }
         hopThoai.hien(() -> luu.nhan(new Object[]{
             txtMa.getText().trim(),
             txtMaKH.getText().trim(),
             txtBatDau.getText().trim(),
-            String.valueOf(cboPhut.getSelectedItem()),
-            String.valueOf(cboBacSi.getSelectedItem()),
+            String.valueOf(cmbPhut.getSelectedItem()),
+            String.valueOf(cmbBacSi.getSelectedItem()),
             txtPhuTa.getText().trim(),
             txtGhiChu.getText().trim(),
-            String.valueOf(cboTrangThai.getSelectedItem())
+            String.valueOf(cmbTrangThai.getSelectedItem())
         }));
     }
 

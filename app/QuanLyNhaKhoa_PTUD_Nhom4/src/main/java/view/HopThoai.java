@@ -26,7 +26,7 @@ import javax.swing.border.EmptyBorder;
 
 public class HopThoai extends JDialog {
 
-    private final JPanel luoi = new JPanel(new GridBagLayout());
+    private final JPanel pnlLuoi = new JPanel(new GridBagLayout());
     private final List<JComponent> batBuoc = new ArrayList<JComponent>();
     private int dong;
     private Runnable khiLuu;
@@ -34,34 +34,34 @@ public class HopThoai extends JDialog {
     public HopThoai(Window owner, String tieuDe, String nhanLuu) {
         super(owner, tieuDe, ModalityType.APPLICATION_MODAL);
         setDefaultCloseOperation(DISPOSE_ON_CLOSE);
-        luoi.setBackground(ViewTheme.TRANG);
-        luoi.setBorder(new EmptyBorder(16, 28, 12, 28));
+        pnlLuoi.setBackground(ViewTheme.TRANG);
+        pnlLuoi.setBorder(new EmptyBorder(16, 28, 12, 28));
 
-        JScrollPane cuon = new JScrollPane(luoi);
-        cuon.setBorder(BorderFactory.createEmptyBorder());
-        cuon.getViewport().setBackground(ViewTheme.TRANG);
+        JScrollPane scrCuon = new JScrollPane(pnlLuoi);
+        scrCuon.setBorder(BorderFactory.createEmptyBorder());
+        scrCuon.getViewport().setBackground(ViewTheme.TRANG);
 
-        JPanel chan = new JPanel(new BorderLayout());
-        chan.setBackground(ViewTheme.TRANG);
-        chan.setBorder(BorderFactory.createCompoundBorder(
+        JPanel pnlChan = new JPanel(new BorderLayout());
+        pnlChan.setBackground(ViewTheme.TRANG);
+        pnlChan.setBorder(BorderFactory.createCompoundBorder(
                 BorderFactory.createMatteBorder(1, 0, 0, 0, ViewTheme.VIEN),
                 new EmptyBorder(12, 20, 12, 20)));
 
-        JButton boQua = new JButton("Bỏ qua");
-        JButton luu = new JButton(nhanLuu);
-        ViewTheme.nutXam(boQua);
-        ViewTheme.nutChinh(luu);
-        boQua.addActionListener(e -> dispose());
-        luu.addActionListener(e -> luu());
-        JPanel phai = new JPanel(new FlowLayout(FlowLayout.RIGHT, 8, 0));
-        phai.setOpaque(false);
-        phai.add(boQua);
-        phai.add(luu);
-        chan.add(phai, BorderLayout.EAST);
+        JButton btnBoQua = new JButton("Bỏ qua");
+        JButton btnLuu = new JButton(nhanLuu);
+        ViewTheme.nutXam(btnBoQua);
+        ViewTheme.nutChinh(btnLuu);
+        btnBoQua.addActionListener(e -> dispose());
+        btnLuu.addActionListener(e -> luu());
+        JPanel pnlPhai = new JPanel(new FlowLayout(FlowLayout.RIGHT, 8, 0));
+        pnlPhai.setOpaque(false);
+        pnlPhai.add(btnBoQua);
+        pnlPhai.add(btnLuu);
+        pnlChan.add(pnlPhai, BorderLayout.EAST);
 
-        add(cuon, BorderLayout.CENTER);
-        add(chan, BorderLayout.SOUTH);
-        getRootPane().setDefaultButton(luu);
+        add(scrCuon, BorderLayout.CENTER);
+        add(pnlChan, BorderLayout.SOUTH);
+        getRootPane().setDefaultButton(btnLuu);
     }
 
     public void them(String nhan, JComponent hien, JComponent kiemTra, boolean batBuocTruong) {
@@ -70,11 +70,11 @@ public class HopThoai extends JDialog {
         lc.gridy = dong;
         lc.anchor = GridBagConstraints.EAST;
         lc.insets = new Insets(7, 4, 7, 12);
-        JLabel lb = new JLabel(batBuocTruong
+        JLabel lbl = new JLabel(batBuocTruong
                 ? "<html>" + nhan + " <font color='#e74c3c'>*</font></html>"
                 : nhan);
-        lb.setFont(ViewTheme.FONT);
-        luoi.add(lb, lc);
+        lbl.setFont(ViewTheme.FONT);
+        pnlLuoi.add(lbl, lc);
 
         GridBagConstraints fc = new GridBagConstraints();
         fc.gridx = 1;
@@ -85,7 +85,7 @@ public class HopThoai extends JDialog {
         if (!(hien instanceof JScrollPane)) {
             hien.setPreferredSize(new Dimension(360, 34));
         }
-        luoi.add(hien, fc);
+        pnlLuoi.add(hien, fc);
         if (batBuocTruong && kiemTra != null) {
             batBuoc.add(kiemTra);
         }
@@ -93,10 +93,10 @@ public class HopThoai extends JDialog {
     }
 
     public JTextField chu(String nhan, String giaTri, boolean batBuocTruong) {
-        JTextField t = new JTextField(giaTri == null ? "" : giaTri);
-        ViewTheme.vienNhap(t);
-        them(nhan, t, t, batBuocTruong);
-        return t;
+        JTextField txt = new JTextField(giaTri == null ? "" : giaTri);
+        ViewTheme.vienNhap(txt);
+        them(nhan, txt, txt, batBuocTruong);
+        return txt;
     }
 
     public JTextField chuGoiY(String nhan, String goiY, boolean batBuocTruong) {
@@ -106,53 +106,52 @@ public class HopThoai extends JDialog {
     }
 
     public JTextArea vung(String nhan, String giaTri, int hang) {
-        JTextArea a = new JTextArea(giaTri == null ? "" : giaTri, hang, 24);
-        a.setLineWrap(true);
-        a.setWrapStyleWord(true);
-        a.setFont(ViewTheme.FONT);
-        JScrollPane cuon = new JScrollPane(a);
-        cuon.setBorder(BorderFactory.createLineBorder(ViewTheme.VIEN));
-        cuon.setPreferredSize(new Dimension(360, 70));
-        them(nhan, cuon, a, false);
-        return a;
+        JTextArea txa = new JTextArea(giaTri == null ? "" : giaTri, hang, 24);
+        txa.setLineWrap(true);
+        txa.setWrapStyleWord(true);
+        txa.setFont(ViewTheme.FONT);
+        JScrollPane scrCuon = new JScrollPane(txa);
+        scrCuon.setBorder(BorderFactory.createLineBorder(ViewTheme.VIEN));
+        scrCuon.setPreferredSize(new Dimension(360, 70));
+        them(nhan, scrCuon, txa, false);
+        return txa;
     }
 
     public JComboBox<String> chon(String nhan, boolean batBuocTruong, String... muc) {
-        JComboBox<String> c = new JComboBox<String>(muc);
-        ViewTheme.vienHop(c);
-        them(nhan, c, c, batBuocTruong);
-        return c;
+        JComboBox<String> cmb = new JComboBox<String>(muc);
+        ViewTheme.vienHop(cmb);
+        them(nhan, cmb, cmb, batBuocTruong);
+        return cmb;
     }
 
     public JComboBox<String> chonVoiNut(String nhan, boolean batBuocTruong, String... muc) {
-        JComboBox<String> c = new JComboBox<String>(muc);
-        ViewTheme.vienHop(c);
-        JButton cong = new JButton("+");
-        ViewTheme.nutXam(cong);
-        cong.setPreferredSize(new Dimension(42, 34));
-        cong.addActionListener(e -> {
+        JComboBox<String> cmb = new JComboBox<String>(muc);
+        ViewTheme.vienHop(cmb);
+        JButton btnCong = new JButton("+");
+        ViewTheme.nutXam(btnCong);
+        btnCong.setPreferredSize(new Dimension(42, 34));
+        btnCong.addActionListener(e -> {
             String ten = JOptionPane.showInputDialog(this, "Nhập giá trị mới");
             if (ten != null && !ten.trim().isEmpty()) {
-                c.addItem(ten.trim());
-                c.setSelectedItem(ten.trim());
+                cmb.addItem(ten.trim());
+                cmb.setSelectedItem(ten.trim());
             }
         });
-        JPanel p = new JPanel(new BorderLayout(6, 0));
-        p.setOpaque(false);
-        p.add(c, BorderLayout.CENTER);
-        p.add(cong, BorderLayout.EAST);
-        them(nhan, p, c, batBuocTruong);
-        return c;
+        JPanel pnl = new JPanel(new BorderLayout(6, 0));
+        pnl.setOpaque(false);
+        pnl.add(cmb, BorderLayout.CENTER);
+        pnl.add(btnCong, BorderLayout.EAST);
+        them(nhan, pnl, cmb, batBuocTruong);
+        return cmb;
     }
 
     public JCheckBox oChon(String nhan, boolean bat) {
-        JCheckBox c = new JCheckBox();
-        c.setSelected(bat);
-        c.setOpaque(false);
-        them(nhan, c, null, false);
-        return c;
+        JCheckBox chk = new JCheckBox();
+        chk.setSelected(bat);
+        chk.setOpaque(false);
+        them(nhan, chk, null, false);
+        return chk;
     }
-
 
     public void themHang(JComponent c) {
         GridBagConstraints fc = new GridBagConstraints();
@@ -162,7 +161,7 @@ public class HopThoai extends JDialog {
         fc.weightx = 1;
         fc.fill = GridBagConstraints.HORIZONTAL;
         fc.insets = new Insets(6, 4, 6, 4);
-        luoi.add(c, fc);
+        pnlLuoi.add(c, fc);
         dong++;
     }
 
@@ -188,14 +187,14 @@ public class HopThoai extends JDialog {
             }
         }
         if (khiLuu != null) {
-            khiLuu.run();        
+            khiLuu.run();
         } else {
             dispose();
         }
     }
 
     private void xoaO() {
-        for (Component component : luoi.getComponents()) {
+        for (Component component : pnlLuoi.getComponents()) {
             if (component instanceof JTextField) {
                 ((JTextField) component).setText("");
             }
