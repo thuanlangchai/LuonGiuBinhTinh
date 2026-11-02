@@ -78,21 +78,21 @@ public final class ViewTheme {
         return LocalDateTime.now().format(F_BAY_GIO);
     }
 
-    public static JLabel lblTieuDeTrang(String chu) {
+    public static JLabel tieuDeTrang(String chu) {
         JLabel lbl = new JLabel(chu);
         lbl.setFont(FONT_TRANG);
         lbl.setForeground(CHU);
         return lbl;
     }
 
-    public static JLabel lblTieuDeMuc(String chu) {
+    public static JLabel tieuDeMuc(String chu) {
         JLabel lbl = new JLabel(chu);
         lbl.setFont(FONT_DAM);
         lbl.setForeground(new Color(46, 160, 80));
         return lbl;
     }
 
-    public static JLabel lblChuPhu(String chu) {
+    public static JLabel chuPhu(String chu) {
         JLabel lbl = new JLabel(chu);
         lbl.setFont(FONT);
         lbl.setForeground(CHU_NHAT);
@@ -108,13 +108,13 @@ public final class ViewTheme {
                 new EmptyBorder(6, 8, 6, 8)));
     }
 
-    public static void cmbVienHop(JComboBox<?> c) {
+    public static void vienHop(JComboBox<?> c) {
         c.setFont(FONT);
         c.setBackground(TRANG);
         c.setPreferredSize(new Dimension(160, 32));
     }
 
-    public static void btnNutMau(JButton b, Color nen, Color chu) {
+    public static void nutMau(JButton b, Color nen, Color chu) {
         b.setUI(new BasicButtonUI());
         b.setBackground(nen);
         b.setForeground(chu);
@@ -147,31 +147,31 @@ public final class ViewTheme {
         }
     }
 
-    public static void btnNutChinh(JButton b) {
-        btnNutMau(b, XANH, TRANG);
+    public static void nutChinh(JButton b) {
+       nutMau(b, XANH, TRANG);
     }
 
-    public static void btnNutPhu(JButton b) {
-    	btnNutMau(b, DO, TRANG);
+    public static void nutPhu(JButton b) {
+    	nutMau(b, DO, TRANG);
     }
 
-    public static void btnNutXanh(JButton b) {
-    	btnNutMau(b, XANH_LA, TRANG);
+    public static void nutXanh(JButton b) {
+    	nutMau(b, XANH_LA, TRANG);
     }
 
-    public static void btnNutCam(JButton b) {
-    	btnNutMau(b, CAM, TRANG);
+    public static void nutCam(JButton b) {
+    	nutMau(b, CAM, TRANG);
     }
 
-    public static void btnNutXam(JButton b) {
-    	btnNutMau(b, new Color(226, 230, 234), CHU);
+    public static void nutXam(JButton b) {
+    	nutMau(b, new Color(226, 230, 234), CHU);
     }
 
-    public static void btnNutDo(JButton b) {
-    	btnNutMau(b, DO, TRANG);
+    public static void nutDo(JButton b) {
+    	nutMau(b, DO, TRANG);
     }
 
-    public static void btnNutTrong(JButton b) {
+    public static void nutTrong(JButton b) {
         b.setUI(new BasicButtonUI());
         b.setContentAreaFilled(false);
         b.setOpaque(false);
@@ -182,7 +182,7 @@ public final class ViewTheme {
         b.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
     }
 
-    public static void btnNutLink(JButton b) {
+    public static void nutLink(JButton b) {
         b.setUI(new BasicButtonUI());
         b.setContentAreaFilled(false);
         b.setOpaque(false);

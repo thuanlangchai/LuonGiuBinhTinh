@@ -48,9 +48,9 @@ public class DsKeHoachPanel extends JPanel {
         pnlThe.setBackground(ViewTheme.TRANG);
         pnlThe.setBorder(new EmptyBorder(12, 14, 12, 14));
 
-        JLabel lblTieuDe = ViewTheme.lblTieuDeTrang("Kế hoạch điều trị");
+        JLabel lblTieuDe = ViewTheme.tieuDeTrang("Kế hoạch điều trị");
         JButton btnThem = new JButton("+ Kế hoạch điều trị");
-        ViewTheme.btnNutXanh(btnThem);
+        ViewTheme.nutXanh(btnThem);
         btnThem.addActionListener(e -> moThem());
         JPanel pnlDau = new JPanel(new BorderLayout());
         pnlDau.setOpaque(false);

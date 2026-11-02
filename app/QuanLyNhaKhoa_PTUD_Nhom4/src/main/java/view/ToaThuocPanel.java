@@ -34,7 +34,7 @@ public class ToaThuocPanel extends JPanel {
 
 	private final DefaultTableModel model = ViewTheme.taoModel(
 			new String[] { "#", "Thuốc", "Số ngày", "Cách sử dụng", "Tổng số", "Đơn giá", "Thành tiền" }, false, true);
-	private final JLabel lblThanhTien = new JLabel("0");
+	private final JLabel thanhTien = new JLabel("0");
 	private final JPanel pnlDsThuoc = new JPanel();
 	private final JTextField txtTim = new ONhap("Tìm thuốc ...", 16);
 	private final JComboBox<String> cmbKhach = new JComboBox<String>(DuLieuMau.dsKhach());
@@ -63,7 +63,7 @@ public class ToaThuocPanel extends JPanel {
 		pnlTrai.setBorder(BorderFactory.createLineBorder(ViewTheme.VIEN));
 		txtTim.setPreferredSize(new Dimension(200, 32));
 		JButton btnAll = new JButton("ALL");
-		ViewTheme.btnNutChinh(btnAll);
+		ViewTheme.nutChinh(btnAll);
 		btnAll.setPreferredSize(new Dimension(220, 32));
 		btnAll.addActionListener(e -> {
 			txtTim.setText("");
@@ -97,9 +97,9 @@ public class ToaThuocPanel extends JPanel {
 		pnlTrai.add(new JScrollPane(pnlDsThuoc), BorderLayout.CENTER);
 
 		ViewTheme.vienNhap(txtChanDoan);
-		ViewTheme.cmbVienHop(cmbKhach);
-		JLabel lblThongTin = new JLabel("Giới tính: Nam     Ngày: 28/09/2026");
-		lblThongTin.setFont(ViewTheme.FONT);
+		ViewTheme.vienHop(cmbKhach);
+		JLabel thongTin = new JLabel("Giới tính: Nam     Ngày: 28/09/2026");
+		thongTin.setFont(ViewTheme.FONT);
 
 		JTable tblBang = new JTable(model);
 		ViewTheme.trangTriBang(tblBang);
@@ -115,12 +115,12 @@ public class ToaThuocPanel extends JPanel {
 		scrBang.setBorder(BorderFactory.createLineBorder(ViewTheme.VIEN));
 
 		ViewTheme.vienNhap(txtGhiChu);
-		ViewTheme.cmbVienHop(cmbHinhThuc);
-		ViewTheme.cmbVienHop(cmbBacSi);
+		ViewTheme.vienHop(cmbHinhThuc);
+		ViewTheme.vienHop(cmbBacSi);
 		chkNhanPK.setOpaque(false);
 		chkNhanPK.setFont(ViewTheme.FONT);
 		JButton btnLuu = new JButton("Lưu toa thuốc");
-		ViewTheme.btnNutChinh(btnLuu);
+		ViewTheme.nutChinh(btnLuu);
 		btnLuu.addActionListener(e -> luuToa());
 
 		JPanel pnlChan = new JPanel(new GridLayout(2, 1, 0, 8));
@@ -128,8 +128,8 @@ public class ToaThuocPanel extends JPanel {
 		JPanel pnlDong1 = new JPanel(new FlowLayout(FlowLayout.LEFT, 8, 0));
 		pnlDong1.setOpaque(false);
 		pnlDong1.add(new JLabel("Thành tiền:"));
-		lblThanhTien.setFont(ViewTheme.FONT_SO);
-		pnlDong1.add(lblThanhTien);
+		thanhTien.setFont(ViewTheme.FONT_SO);
+		pnlDong1.add(thanhTien);
 		pnlDong1.add(cmbHinhThuc);
 		pnlDong1.add(cmbBacSi);
 		pnlDong1.add(btnLuu);
@@ -148,7 +148,7 @@ public class ToaThuocPanel extends JPanel {
 		pnlTraiDau.add(cmbKhach);
 		pnlTraiDau.add(txtChanDoan);
 		pnlDau.add(pnlTraiDau, BorderLayout.CENTER);
-		pnlDau.add(lblThongTin, BorderLayout.EAST);
+		pnlDau.add(thongTin, BorderLayout.EAST);
 		pnlPhai.add(pnlDau, BorderLayout.NORTH);
 		pnlPhai.add(scrBang, BorderLayout.CENTER);
 		JPanel pnlDuoi = new JPanel(new BorderLayout(0, 8));
@@ -157,10 +157,10 @@ public class ToaThuocPanel extends JPanel {
 		pnlDuoi.add(pnlChan, BorderLayout.SOUTH);
 		pnlPhai.add(pnlDuoi, BorderLayout.SOUTH);
 
-		JLabel lblTieuDe = ViewTheme.lblTieuDeTrang("Lập toa thuốc");
+		JLabel tieuDe = ViewTheme.tieuDeTrang("Lập toa thuốc");
 		JPanel pnlNoiDung = new JPanel(new BorderLayout(0, 8));
 		pnlNoiDung.setOpaque(false);
-		pnlNoiDung.add(lblTieuDe, BorderLayout.NORTH);
+		pnlNoiDung.add(tieuDe, BorderLayout.NORTH);
 		pnlNoiDung.add(pnlPhai, BorderLayout.CENTER);
 		add(pnlTrai, BorderLayout.WEST);
 		add(pnlNoiDung, BorderLayout.CENTER);
@@ -265,8 +265,8 @@ public class ToaThuocPanel extends JPanel {
 				new EmptyBorder(8, 8, 8, 8)));
 		pnlThe.setMaximumSize(new Dimension(Integer.MAX_VALUE, 64));
 		pnlThe.putClientProperty("ten", ten);
-		JLabel lblThe = new JLabel("<html><b>" + ten + "</b><br>Giá: " + giaNhan + "</html>");
-		pnlThe.add(lblThe);
+		JLabel the = new JLabel("<html><b>" + ten + "</b><br>Giá: " + giaNhan + "</html>");
+		pnlThe.add(the);
 		pnlThe.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 		pnlThe.addMouseListener(new MouseAdapter() {
 			@Override
@@ -305,6 +305,6 @@ public class ToaThuocPanel extends JPanel {
 		for (int i = 0; i < model.getRowCount(); i++) {
 			tong += parseTien(model.getValueAt(i, 6));
 		}
-		lblThanhTien.setText(ViewTheme.tien(tong));
+		thanhTien.setText(ViewTheme.tien(tong));
 	}
 }

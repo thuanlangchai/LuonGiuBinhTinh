@@ -51,7 +51,7 @@ public class DsToaThuocPanel extends JPanel {
 
         JLabel lblNhanTieuDe = ViewTheme.tieuDeTrang("Toa thuốc");
         JButton btnThem = new JButton("Thêm toa thuốc");
-        ViewTheme.btnNutXanh(btnThem);
+        ViewTheme.nutXanh(btnThem);
         btnThem.addActionListener(e -> {
             if (moLapToa != null) {
                 moLapToa.run();
@@ -258,8 +258,8 @@ public class DsToaThuocPanel extends JPanel {
 
         JButton btnIn = new JButton("In toa thuốc");
         JButton btnDong = new JButton("Đóng");
-        ViewTheme.btnNutXanh(btnIn);
-        ViewTheme.btnNutXam(btnDong);
+        ViewTheme.nutXanh(btnIn);
+        ViewTheme.nutXam(btnDong);
         btnIn.addActionListener(e -> JOptionPane.showMessageDialog(dialog,
                 "Toa " + toaThuoc.maToaThuoc + "\nKhách: " + toaThuoc.tenKh
                 + "\nThành tiền: " + ViewTheme.tien(toaThuoc.thanhTien)));

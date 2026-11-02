@@ -28,7 +28,7 @@ import view.model.CauHinhTrang;
 public class TrangDanhSach extends JPanel {
 
 	private final JPanel pnlThe = new JPanel(new BorderLayout(0, 8));
-	private final JLabel lblTieuDe = ViewTheme.lblTieuDeTrang("Danh sách");
+	private final JLabel lblTieuDe = ViewTheme.tieuDeTrang("Danh sách");
 	private final JButton btnThem = new JButton("Thêm");
 	private final ONhap txtTim = new ONhap("Tìm...", 28);
 	private final JLabel lblGhiChu = new JLabel(
@@ -55,7 +55,7 @@ public class TrangDanhSach extends JPanel {
 				new EmptyBorder(12, 14, 12, 14)));
 		add(pnlThe, BorderLayout.NORTH);
 
-		ViewTheme.btnNutXanh(btnThem);
+		ViewTheme.nutXanh(btnThem);
 		btnThem.addActionListener(e -> moForm(null, -1));
 
 		JPanel pnlDau = new JPanel(new BorderLayout());
@@ -69,13 +69,13 @@ public class TrangDanhSach extends JPanel {
 		JPanel pnlVungTim = new JPanel(new BorderLayout(0, 6));
 		pnlVungTim.setBackground(ViewTheme.NEN_TIM);
 		pnlVungTim.setBorder(new EmptyBorder(10, 12, 10, 12));
-		JLabel lblTim = ViewTheme.lblChuPhu("Tìm kiếm");
+		JLabel lblTim = ViewTheme.chuPhu("Tìm kiếm");
 		JPanel pnlDongTim = new JPanel(new BorderLayout(8, 0));
 		pnlDongTim.setOpaque(false);
 		txtTim.setPreferredSize(new Dimension(280, 34));
 		pnlDongTim.add(txtTim, BorderLayout.CENTER);
 		JButton btnNangCao = new JButton("Hiển thị tìm nâng cao");
-		ViewTheme.btnNutLink(btnNangCao);
+		ViewTheme.nutLink(btnNangCao);
 		btnNangCao.setForeground(ViewTheme.XANH_DAM);
 		pnlBoLocThem.setOpaque(false);
 		pnlBoLocThem.setVisible(false);
@@ -123,7 +123,7 @@ public class TrangDanhSach extends JPanel {
 
 		lblDem.setFont(ViewTheme.FONT_NHO);
 		lblDem.setForeground(ViewTheme.CHU_NHAT);
-		ViewTheme.cmbVienHop(cmbKichThuoc);
+		ViewTheme.vienHop(cmbKichThuoc);
 		cmbKichThuoc.addActionListener(e -> {
 			trang = 1;
 			loc();
@@ -194,7 +194,7 @@ public class TrangDanhSach extends JPanel {
 			for (String n : DuLieuMau.dsNhomDv()) {
 				cmbNhom.addItem(n);
 			}
-			ViewTheme.cmbVienHop(cmbNhom);
+			ViewTheme.vienHop(cmbNhom);
 			JTextField txtNgay = new JTextField("Ngày cập nhật");
 			ViewTheme.vienNhap(txtNgay);
 			txtNgay.setPreferredSize(new Dimension(180, 32));
@@ -207,7 +207,7 @@ public class TrangDanhSach extends JPanel {
 		} else if ("nhanvien".equals(cauHinh.ma)) {
 			cmbVaiTro = new JComboBox<String>(
 					new String[] { "Tất cả vai trò", "Bác sĩ", "Phụ tá", "Lễ tân", "Tư vấn", "Sale" });
-			ViewTheme.cmbVienHop(cmbVaiTro);
+			ViewTheme.vienHop(cmbVaiTro);
 			pnlBoLocThem.add(cmbVaiTro);
 			pnlBoLocThem.add(new JLabel("Kích hoạt"));
 			cmbVaiTro.addActionListener(e -> {
@@ -330,7 +330,7 @@ public class TrangDanhSach extends JPanel {
 
 	private JButton btnNutTrang(String chu, int toi) {
 		JButton btn = new JButton(chu);
-		ViewTheme.btnNutXam(btn);
+		ViewTheme.nutXam(btn);
 		btn.addActionListener(e -> {
 			trang = toi;
 			loc();

@@ -62,7 +62,7 @@ public class PhieuTienPanel extends JPanel {
 
         JLabel lblNhanTieuDe = ViewTheme.tieuDeTrang(laPhieuThu ? "Phiếu thu" : "Phiếu chi");
         JButton btnThem = new JButton(laPhieuThu ? "Thêm phiếu thu" : "Thêm phiếu chi");
-        ViewTheme.btnNutXanh(btnThem);
+        ViewTheme.nutXanh(btnThem);
         btnThem.addActionListener(e -> moForm(-1));
         JPanel pnlDau = new JPanel(new BorderLayout());
         pnlDau.setOpaque(false);
