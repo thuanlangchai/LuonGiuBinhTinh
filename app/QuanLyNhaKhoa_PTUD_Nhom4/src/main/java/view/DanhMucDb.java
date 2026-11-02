@@ -94,7 +94,7 @@ public final class DanhMucDb {
                     return true;
                 }
                 case "rang" -> {
-                    Rang rang = new Rang(str(dong, 0), str(dong, 1), str(dong, 2));
+                    Rang rang = new Rang(str(dong, 0), str(dong, 1), maLoaiRangTheoGiaTri(str(dong, 2)));
                     if (them) {
                         return SVC.addRang(rang) != null;
                     }
@@ -126,7 +126,8 @@ public final class DanhMucDb {
                     return true;
                 }
                 case "sanpham" -> {
-                    SanPham sanPham = new SanPham(str(dong, 0), str(dong, 1), str(dong, 2), parseInt(str(dong, 3)), parseTien(str(dong, 4)));
+                    SanPham sanPham = new SanPham(str(dong, 0), str(dong, 1), maLoaiSanPhamTheoGiaTri(str(dong, 2)),
+                            parseInt(str(dong, 3)), parseTien(str(dong, 4)));
                     if (them) {
                         return SVC.addSanPham(sanPham) != null;
                     }
@@ -205,7 +206,7 @@ public final class DanhMucDb {
             }
             case "rang" -> {
                 for (Rang rang : SVC.findAllRang()) {
-                    danhSach.add(new Object[]{rang.getMaRang(), rang.getTenRang(), rang.getMaLoaiRang()});
+                    danhSach.add(new Object[]{rang.getMaRang(), rang.getTenRang(), tenLoaiRang(rang.getMaLoaiRang())});
                 }
             }
             case "loairang" -> {
@@ -239,7 +240,8 @@ public final class DanhMucDb {
             }
             case "sanpham" -> {
                 for (SanPham sanPham : SVC.findAllSanPham()) {
-                    danhSach.add(new Object[]{sanPham.getMaSanPham(), sanPham.getTenSanPham(), sanPham.getMaLoai(),
+                    danhSach.add(new Object[]{sanPham.getMaSanPham(), sanPham.getTenSanPham(),
+                        tenLoaiSanPham(sanPham.getMaLoai()),
                         String.valueOf(sanPham.getSoLuong()), ViewTheme.tien(sanPham.getDonGia())});
                 }
             }
@@ -287,6 +289,52 @@ public final class DanhMucDb {
             }
         }
         return ten;
+    }
+
+    private static String tenLoaiRang(String ma) {
+        for (LoaiRang loaiRang : SVC.findAllLoaiRang()) {
+            if (loaiRang.getMaLoaiRang().equals(ma)) {
+                return loaiRang.getTenLoaiRang();
+            }
+        }
+        return ma;
+    }
+
+    private static String maLoaiRangTheoGiaTri(String giaTri) {
+        if (giaTri == null || giaTri.isBlank()) {
+            return "";
+        }
+        String ma = giaTri.contains(" - ") ? giaTri.substring(0, giaTri.indexOf(" - ")).trim() : giaTri.trim();
+        for (LoaiRang loaiRang : SVC.findAllLoaiRang()) {
+            if (loaiRang.getMaLoaiRang().equals(ma) || loaiRang.getTenLoaiRang().equals(giaTri)
+                    || loaiRang.getTenLoaiRang().equals(ma)) {
+                return loaiRang.getMaLoaiRang();
+            }
+        }
+        return ma;
+    }
+
+    private static String tenLoaiSanPham(String ma) {
+        for (LoaiSanPham loaiSanPham : SVC.findAllLoaiSanPham()) {
+            if (loaiSanPham.getMaLoai().equals(ma)) {
+                return loaiSanPham.getTenLoaiSanPham();
+            }
+        }
+        return ma;
+    }
+
+    private static String maLoaiSanPhamTheoGiaTri(String giaTri) {
+        if (giaTri == null || giaTri.isBlank()) {
+            return "";
+        }
+        String ma = giaTri.contains(" - ") ? giaTri.substring(0, giaTri.indexOf(" - ")).trim() : giaTri.trim();
+        for (LoaiSanPham loaiSanPham : SVC.findAllLoaiSanPham()) {
+            if (loaiSanPham.getMaLoai().equals(ma) || loaiSanPham.getTenLoaiSanPham().equals(giaTri)
+                    || loaiSanPham.getTenLoaiSanPham().equals(ma)) {
+                return loaiSanPham.getMaLoai();
+            }
+        }
+        return ma;
     }
 
     private static String str(Object[] dong, int i) {

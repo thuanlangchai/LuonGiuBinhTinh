@@ -238,9 +238,9 @@ public class LichHenPanel extends JPanel {
         pnlDieuHuong.add(pnlGiua, BorderLayout.CENTER);
         pnlDieuHuong.add(pnlChe, BorderLayout.EAST);
 
-        pnlLoc.add(pnlLoc, BorderLayout.NORTH);
-        pnlLoc.add(pnlDieuHuong, BorderLayout.SOUTH);
-        return pnlLoc;
+        pnlGoc.add(pnlLoc, BorderLayout.NORTH);
+        pnlGoc.add(pnlDieuHuong, BorderLayout.SOUTH);
+        return pnlGoc;
     }
 
     private void doiNgay(int buoc) {

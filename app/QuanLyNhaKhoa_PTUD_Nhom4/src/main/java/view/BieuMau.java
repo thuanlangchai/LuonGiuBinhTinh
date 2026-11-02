@@ -19,6 +19,7 @@ import view.model.CauHinhTrang;
 public final class BieuMau {
 
     public interface Luu {
+
         void nhan(Object[] dong);
     }
 
@@ -43,6 +44,10 @@ public final class BieuMau {
             loaiSanPham(cuaSo, cu, luu);
         } else if ("lichhen-ds".equals(cauHinh.ma)) {
             lichHen(cuaSo, cu, luu);
+        } else if ("sanpham".equals(cauHinh.ma)) {
+            sanPham(cuaSo, cu, luu);
+        } else if ("rang".equals(cauHinh.ma)) {
+            rang(cuaSo, cu, luu);
         } else {
             macDinh(cuaSo, cauHinh, cu, luu);
         }
@@ -73,6 +78,64 @@ public final class BieuMau {
             }
             luu.nhan(dong);
         });
+    }
+
+    private static void sanPham(Window cuaSo, Object[] cu, Luu luu) {
+        HopThoai hopThoai = new HopThoai(cuaSo, sua(cu) ? "Cập nhật sản phẩm" : "Thêm sản phẩm",
+                sua(cu) ? "Lưu" : "Thêm sản phẩm");
+        JTextField txtMa = hopThoai.chu("Mã SP", gia(cu, 0), true);
+        JTextField txtTen = hopThoai.chu("Tên sản phẩm", gia(cu, 1), true);
+        JComboBox<String> cmbLoai = hopThoai.chon("Loại", true, DuLieuMau.dsLoaiSanPham());
+        chonCombo(cmbLoai, gia(cu, 2));
+        JTextField txtSoLuong = hopThoai.chu("Số lượng", gia(cu, 3).isEmpty() ? "0" : gia(cu, 3), false);
+        JTextField txtDonGia = hopThoai.chu("Đơn giá", gia(cu, 4).isEmpty() ? "0" : gia(cu, 4), false);
+        hopThoai.hien(() -> luu.nhan(new Object[]{
+            txtMa.getText().trim(),
+            txtTen.getText().trim(),
+            maTuCombo(cmbLoai),
+            txtSoLuong.getText().trim(),
+            txtDonGia.getText().trim()
+        }));
+    }
+
+    private static void rang(Window cuaSo, Object[] cu, Luu luu) {
+        HopThoai hopThoai = new HopThoai(cuaSo, sua(cu) ? "Cập nhật răng" : "Thêm răng",
+                sua(cu) ? "Lưu" : "Thêm răng");
+        JTextField txtMa = hopThoai.chu("Mã răng", gia(cu, 0), true);
+        JTextField txtTen = hopThoai.chu("Tên răng", gia(cu, 1), false);
+        JComboBox<String> cmbLoai = hopThoai.chon("Loại răng", true, DuLieuMau.dsLoaiRang());
+        chonCombo(cmbLoai, gia(cu, 2));
+        hopThoai.hien(() -> luu.nhan(new Object[]{
+            txtMa.getText().trim(),
+            txtTen.getText().trim(),
+            maTuCombo(cmbLoai)
+        }));
+    }
+
+    private static void chonCombo(JComboBox<String> cmb, String giaTri) {
+        if (giaTri == null || giaTri.isEmpty()) {
+            return;
+        }
+        for (int i = 0; i < cmb.getItemCount(); i++) {
+            String item = cmb.getItemAt(i);
+            if (item == null) {
+                continue;
+            }
+            if (item.equals(giaTri) || item.startsWith(giaTri + " - ") || item.endsWith(" - " + giaTri)) {
+                cmb.setSelectedIndex(i);
+                return;
+            }
+        }
+    }
+
+    private static String maTuCombo(JComboBox<String> cmb) {
+        Object chon = cmb.getSelectedItem();
+        if (chon == null) {
+            return "";
+        }
+        String giaTri = String.valueOf(chon).trim();
+        int viTri = giaTri.indexOf(" - ");
+        return viTri > 0 ? giaTri.substring(0, viTri).trim() : giaTri;
     }
 
     private static void dichVu(Window cuaSo, Object[] cu, Luu luu) {
