@@ -1,7 +1,7 @@
 package repository.impl;
 
 import entity.NhomDichVu;
-import i_repository.NhomDichVu_IDAO;
+import repository.NhomDichVu_IDAO;
 import java.util.List;
 import mapper.NhomDichVuMapper;
 

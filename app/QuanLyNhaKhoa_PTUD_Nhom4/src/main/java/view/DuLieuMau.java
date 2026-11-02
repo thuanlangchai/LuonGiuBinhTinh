@@ -1,10 +1,16 @@
 package view;
 
-import view.model.CauHinhTrang;
+import entity.KhachHang;
+import entity.NhanVien;
+import entity.NhomDichVu;
+import entity.SanPham;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import service.impl.DanhMuc_Service;
+import service.impl.KhachHang_Service;
+import view.model.CauHinhTrang;
 
 public final class DuLieuMau {
 
@@ -144,7 +150,95 @@ public final class DuLieuMau {
         return DS.get(ma);
     }
 
-    private static void dat(CauHinhTrang c) {
-        DS.put(c.ma, c);
+    public static String[] dsKhach() {
+        try {
+            List<String> ketQua = new ArrayList<>();
+            for (KhachHang khachHang : new KhachHang_Service().findAllKhachHang()) {
+                String sdt = khachHang.getSoDienThoai() == null || khachHang.getSoDienThoai().isBlank()
+                        ? "" : " - " + khachHang.getSoDienThoai();
+                ketQua.add(khachHang.getMaKH() + " - " + khachHang.getHoTen() + sdt);
+            }
+            if (!ketQua.isEmpty()) {
+                return ketQua.toArray(new String[0]);
+            }
+        } catch (Exception ignored) {
+        }
+        return KHACH;
+    }
+
+    public static String[] dsBacSi() {
+        try {
+            List<String> ketQua = new ArrayList<>();
+            for (NhanVien nhanVien : new DanhMuc_Service().findAllNhanVien()) {
+                if (nhanVien.getHoTen() != null && !nhanVien.getHoTen().isBlank()) {
+                    ketQua.add(nhanVien.getHoTen());
+                }
+            }
+            if (!ketQua.isEmpty()) {
+                return ketQua.toArray(new String[0]);
+            }
+        } catch (Exception ignored) {
+        }
+        return BAC_SI;
+    }
+
+    public static String[] dsNhomDv() {
+        try {
+            List<String> ketQua = new ArrayList<>();
+            for (NhomDichVu nhom : new DanhMuc_Service().findAllNhomDichVu()) {
+                if (nhom.getTenNhomDichVu() != null && !nhom.getTenNhomDichVu().isBlank()) {
+                    ketQua.add(nhom.getTenNhomDichVu());
+                }
+            }
+            if (!ketQua.isEmpty()) {
+                return ketQua.toArray(new String[0]);
+            }
+        } catch (Exception ignored) {
+        }
+        return NHOM_DV;
+    }
+
+    public static String[] dsSanPham() {
+        try {
+            List<String> ketQua = new ArrayList<>();
+            for (SanPham sanPham : new DanhMuc_Service().findAllSanPham()) {
+                if (sanPham.getTenSanPham() != null && !sanPham.getTenSanPham().isBlank()) {
+                    ketQua.add(sanPham.getTenSanPham());
+                }
+            }
+            if (!ketQua.isEmpty()) {
+                return ketQua.toArray(new String[0]);
+            }
+        } catch (Exception ignored) {
+        }
+        return new String[]{"Găng tay", "Khẩu trang", "Mũi khoan", "aptx 4869"};
+    }
+
+    public static String maBacSiTheoTen(String ten) {
+        if (ten == null || ten.isBlank()) {
+            return "";
+        }
+        try {
+            for (NhanVien nhanVien : new DanhMuc_Service().findAllNhanVien()) {
+                if (ten.equals(nhanVien.getHoTen())) {
+                    return nhanVien.getMaNhanVien();
+                }
+            }
+        } catch (Exception ignored) {
+        }
+        if ("Lê Trần Quang Thanh".equals(ten)) {
+            return "NV03";
+        }
+        if ("Hồ Văn Khánh".equals(ten)) {
+            return "NV02";
+        }
+        if ("Nguyễn Khắc Duy".equals(ten)) {
+            return "NV01";
+        }
+        return "";
+    }
+
+    private static void dat(CauHinhTrang cauHinh) {
+        DS.put(cauHinh.ma, cauHinh);
     }
 }

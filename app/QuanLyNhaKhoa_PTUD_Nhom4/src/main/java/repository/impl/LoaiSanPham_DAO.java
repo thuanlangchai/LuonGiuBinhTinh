@@ -1,7 +1,7 @@
 package repository.impl;
 
 import entity.LoaiSanPham;
-import i_repository.LoaiSanPham_IDAO;
+import repository.LoaiSanPham_IDAO;
 import java.util.List;
 import mapper.LoaiSanPhamMapper;
 

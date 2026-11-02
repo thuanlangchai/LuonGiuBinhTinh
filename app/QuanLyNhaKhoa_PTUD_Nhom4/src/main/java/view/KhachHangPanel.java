@@ -1,15 +1,24 @@
 package view;
 
+import entity.KhachHang;
+import entity.NhanVien;
 import java.awt.BorderLayout;
+import java.awt.Dialog;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.GridLayout;
 import java.awt.Window;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.time.LocalDateTime;
+import java.util.List;
+import java.util.function.Consumer;
 import java.util.regex.Pattern;
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JComponent;
+import javax.swing.JDialog;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
@@ -18,9 +27,12 @@ import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.RowFilter;
 import javax.swing.SwingUtilities;
+import javax.swing.SwingWorker;
 import javax.swing.border.EmptyBorder;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableRowSorter;
+import service.impl.DanhMuc_Service;
+import service.impl.KhachHang_Service;
 
 public class KhachHangPanel extends JPanel {
 
@@ -30,110 +42,118 @@ public class KhachHangPanel extends JPanel {
         "Bác sĩ", "Tư vấn", "Số lần khám", "Lần khám gần nhất", "Ngày tạo"
     };
 
-    private final KeHoachDieuTriPanel keHoach;
-    private final Runnable moKeHoach;
+    @FunctionalInterface
+    public interface MoHoSoKeHoach {
+        void mo(String ma, String ten, String sdt, String email, String diaChi, String lyDo);
+    }
+
+    private final MoHoSoKeHoach moKeHoach;
+    private final Consumer<String> moToaThuoc;
+    private final KhachHang_Service khachHangService = new KhachHang_Service();
+    private final DanhMuc_Service danhMucService = new DanhMuc_Service();
     private final DefaultTableModel model;
     private final JTable bang;
-    private final JTextField tim = new JTextField();
-    private final JPanel locThem = new JPanel(new GridLayout(2, 6, 8, 8));
-    private int demMa = 3;
+    private final JTextField txtTim = new JTextField();
+    private final JPanel panelLocThem = new JPanel(new GridLayout(2, 6, 8, 8));
+    private final JLabel lblDem = new JLabel();
+    private int demMa = 1;
 
-    public KhachHangPanel(KeHoachDieuTriPanel keHoach, Runnable moKeHoach) {
-        this.keHoach = keHoach;
+    public KhachHangPanel(MoHoSoKeHoach moKeHoach) {
+        this(moKeHoach, null);
+    }
+
+    public KhachHangPanel(MoHoSoKeHoach moKeHoach, Consumer<String> moToaThuoc) {
         this.moKeHoach = moKeHoach;
+        this.moToaThuoc = moToaThuoc;
         setOpaque(false);
         setBorder(new EmptyBorder(6, 6, 16, 6));
         JPanel the = new JPanel(new BorderLayout(0, 8));
         the.setBackground(ViewTheme.TRANG);
         the.setBorder(new EmptyBorder(12, 14, 12, 14));
 
-        JLabel tieu = ViewTheme.tieuDeTrang("Khách hàng");
-        JButton xuat = new JButton("Xuất Excel");
-        JButton them = new JButton("Thêm khách hàng");
-        JComboBox<String> hienThi = new JComboBox<String>(new String[]{"Hiển thị", "Tất cả cột", "Cột chính"});
-        JComboBox<String> dang = new JComboBox<String>(new String[]{"Dạng", "Bảng", "Thẻ"});
-        ViewTheme.nutXam(xuat);
-        ViewTheme.nutCam(them);
-        ViewTheme.vienHop(hienThi);
-        ViewTheme.vienHop(dang);
-        them.addActionListener(e -> moForm(-1));
-        xuat.addActionListener(e -> JOptionPane.showMessageDialog(this, "Đã chuẩn bị dữ liệu khách hàng để xuất Excel."));
+        JLabel lblTieuDe = ViewTheme.tieuDeTrang("Khách hàng");
+        JButton btnXuat = new JButton("Xuất Excel");
+        JButton btnToa = new JButton("Toa thuốc");
+        JButton btnThem = new JButton("Thêm khách hàng");
+        JComboBox<String> cboHienThi = new JComboBox<String>(new String[]{"Hiển thị", "Tất cả cột", "Cột chính"});
+        JComboBox<String> cboDang = new JComboBox<String>(new String[]{"Dạng", "Bảng", "Thẻ"});
+        ViewTheme.nutXam(btnXuat);
+        ViewTheme.nutXanh(btnToa);
+        ViewTheme.nutCam(btnThem);
+        ViewTheme.vienHop(cboHienThi);
+        ViewTheme.vienHop(cboDang);
+        btnThem.addActionListener(e -> moForm(-1));
+        btnToa.addActionListener(e -> moToaChoKhach());
+        btnXuat.addActionListener(e -> JOptionPane.showMessageDialog(this, "Đã chuẩn bị dữ liệu khách hàng để xuất Excel."));
 
-        JPanel dau = new JPanel(new BorderLayout());
-        dau.setOpaque(false);
-        dau.add(tieu, BorderLayout.WEST);
-        JPanel phai = new JPanel(new FlowLayout(FlowLayout.RIGHT, 8, 0));
-        phai.setOpaque(false);
-        phai.add(xuat);
-        phai.add(them);
-        phai.add(hienThi);
-        phai.add(dang);
-        dau.add(phai, BorderLayout.EAST);
+        JPanel panelDau = new JPanel(new BorderLayout());
+        panelDau.setOpaque(false);
+        panelDau.add(lblTieuDe, BorderLayout.WEST);
+        JPanel panelPhai = new JPanel(new FlowLayout(FlowLayout.RIGHT, 8, 0));
+        panelPhai.setOpaque(false);
+        panelPhai.add(btnXuat);
+        panelPhai.add(btnToa);
+        panelPhai.add(btnThem);
+        panelPhai.add(cboHienThi);
+        panelPhai.add(cboDang);
+        panelDau.add(panelPhai, BorderLayout.EAST);
 
-        ViewTheme.vienNhap(tim);
-        tim.setPreferredSize(new Dimension(220, 32));
-        JButton nutTim = new JButton("Tìm");
-        ViewTheme.nutChinh(nutTim);
-        nutTim.addActionListener(e -> loc());
-        tim.addActionListener(e -> loc());
+        ViewTheme.vienNhap(txtTim);
+        txtTim.setPreferredSize(new Dimension(220, 32));
+        JButton btnTim = new JButton("Tìm");
+        ViewTheme.nutChinh(btnTim);
+        btnTim.addActionListener(e -> loc());
+        txtTim.addActionListener(e -> loc());
 
-        JComboBox<String> phanLoai = hop("Phân loại", "Tất cả", "Mới", "Cũ");
-        JComboBox<String> bacSi = hop("Bác sĩ", "Tất cả", "Lê Trần Quang Thanh", "Hồ Văn Khánh");
-        JComboBox<String> nhan = hop("Nhãn", "Tất cả", "Nhổ răng khôn", "Chỉnh nha");
-        JComboBox<String> trangThai = hop("Trạng thái điều trị", "Tất cả", "Đang điều trị", "Hoàn tất");
-        JComboBox<String> dichVu = hop("Dịch vụ", "Tất cả", "Thăm khám", "Cạo vôi");
-        JButton more = new JButton("More");
-        ViewTheme.nutChinh(more);
+        JComboBox<String> cboPhanLoai = hop("Phân loại", "Tất cả", "Mới", "Cũ");
+        JComboBox<String> cboBacSiLoc = hop("Bác sĩ", "Tất cả", "Lê Trần Quang Thanh", "Hồ Văn Khánh");
+        JComboBox<String> cboNhan = hop("Nhãn", "Tất cả", "Nhổ răng khôn", "Chỉnh nha");
+        JComboBox<String> cboTrangThai = hop("Trạng thái điều trị", "Tất cả", "Đang điều trị", "Hoàn tất");
+        JComboBox<String> cboDichVu = hop("Dịch vụ", "Tất cả", "Thăm khám", "Cạo vôi");
+        JButton btnMore = new JButton("More");
+        ViewTheme.nutChinh(btnMore);
 
-        locThem.setOpaque(false);
-        locThem.setVisible(false);
-        locThem.add(hop("Giới tính", "Tất cả", "Nam", "Nữ"));
-        locThem.add(hop("Nguồn", "Tất cả", "Cư dân", "Facebook"));
-        locThem.add(o("Ngày điều trị"));
-        locThem.add(o("Ngày hẹn"));
-        locThem.add(o("Ngày tạo"));
-        locThem.add(hop("Nhóm khách hàng", "Tất cả", "PTUD", "VIP"));
-        locThem.add(o("Chọn độ tuổi hoặc tháng sinh"));
-        locThem.add(o("Số tiền đã thanh toán"));
-        locThem.add(o("Số tiền dịch vụ"));
-        locThem.add(o("Số tiền nợ còn lại"));
-        JButton less = new JButton("Less");
-        ViewTheme.nutChinh(less);
-        locThem.add(less);
-        more.addActionListener(e -> locThem.setVisible(true));
-        less.addActionListener(e -> locThem.setVisible(false));
+        panelLocThem.setOpaque(false);
+        panelLocThem.setVisible(false);
+        panelLocThem.add(hop("Giới tính", "Tất cả", "Nam", "Nữ"));
+        panelLocThem.add(hop("Nguồn", "Tất cả", "Cư dân", "Facebook"));
+        panelLocThem.add(o("Ngày điều trị"));
+        panelLocThem.add(o("Ngày hẹn"));
+        panelLocThem.add(o("Ngày tạo"));
+        panelLocThem.add(hop("Nhóm khách hàng", "Tất cả", "PTUD", "VIP"));
+        panelLocThem.add(o("Chọn độ tuổi hoặc tháng sinh"));
+        panelLocThem.add(o("Số tiền đã thanh toán"));
+        panelLocThem.add(o("Số tiền dịch vụ"));
+        panelLocThem.add(o("Số tiền nợ còn lại"));
+        JButton btnLess = new JButton("Less");
+        ViewTheme.nutChinh(btnLess);
+        panelLocThem.add(btnLess);
+        btnMore.addActionListener(e -> panelLocThem.setVisible(true));
+        btnLess.addActionListener(e -> panelLocThem.setVisible(false));
 
-        JPanel dong1 = new JPanel(new FlowLayout(FlowLayout.LEFT, 8, 4));
-        dong1.setOpaque(false);
-        dong1.add(tim);
-        dong1.add(nutTim);
-        dong1.add(phanLoai);
-        dong1.add(bacSi);
-        dong1.add(nhan);
-        dong1.add(trangThai);
-        dong1.add(dichVu);
-        dong1.add(more);
+        JPanel panelDong1 = new JPanel(new FlowLayout(FlowLayout.LEFT, 8, 4));
+        panelDong1.setOpaque(false);
+        panelDong1.add(txtTim);
+        panelDong1.add(btnTim);
+        panelDong1.add(cboPhanLoai);
+        panelDong1.add(cboBacSiLoc);
+        panelDong1.add(cboNhan);
+        panelDong1.add(cboTrangThai);
+        panelDong1.add(cboDichVu);
+        panelDong1.add(btnMore);
 
-        JPanel vungLoc = new JPanel(new BorderLayout());
-        vungLoc.setOpaque(false);
-        vungLoc.add(dong1, BorderLayout.NORTH);
-        vungLoc.add(locThem, BorderLayout.CENTER);
+        JPanel panelVungLoc = new JPanel(new BorderLayout());
+        panelVungLoc.setOpaque(false);
+        panelVungLoc.add(panelDong1, BorderLayout.NORTH);
+        panelVungLoc.add(panelLocThem, BorderLayout.CENTER);
 
         model = ViewTheme.taoModel(COT, true, true);
-        model.addRow(ViewTheme.dongBang(new Object[]{
-            "0001", "Lê Trần Quang Thanh", "Nam", "27/08/2006", "03xxxx2808", "thanhqt@gmail.com", "28 Lê Lai", "",
-            "", "NK01", "CN1", "Đau răng", "Béo phì", "", "NV03", "", "1", "27/09/2026", "27/09/2026"
-        }, true, true));
-        model.addRow(ViewTheme.dongBang(new Object[]{
-            "0002", "Nguyễn Minh Lý", "Nam", "", "09xxxx8352", "minh@maysoft.vn", "29 Nội Khu Mỹ Toàn - Q7 - TP.HCM", "",
-            "", "NK01", "CN1", "", "", "", "", "", "0", "", "27/09/2026"
-        }, true, true));
         bang = new JTable(model);
         ViewTheme.trangTriBang(bang);
         ViewTheme.ganThaoTac(bang, (lenh, hang) -> xuLy(lenh, hang));
-        bang.addMouseListener(new java.awt.event.MouseAdapter() {
+        bang.addMouseListener(new MouseAdapter() {
             @Override
-            public void mouseClicked(java.awt.event.MouseEvent e) {
+            public void mouseClicked(MouseEvent e) {
                 if (e.getClickCount() == 2 && bang.rowAtPoint(e.getPoint()) >= 0
                         && bang.columnAtPoint(e.getPoint()) != bang.getColumnCount() - 1) {
                     moHoSo(bang.convertRowIndexToModel(bang.rowAtPoint(e.getPoint())));
@@ -141,57 +161,139 @@ public class KhachHangPanel extends JPanel {
             }
         });
 
-        JScrollPane cuon = new JScrollPane(bang);
-        cuon.setBorder(BorderFactory.createLineBorder(ViewTheme.VIEN));
-        cuon.setPreferredSize(new Dimension(400, 220));
-        cuon.getViewport().setBackground(ViewTheme.TRANG);
+        JScrollPane scrollBang = new JScrollPane(bang);
+        scrollBang.setBorder(BorderFactory.createLineBorder(ViewTheme.VIEN));
+        scrollBang.setPreferredSize(new Dimension(400, 220));
+        scrollBang.getViewport().setBackground(ViewTheme.TRANG);
 
-        JLabel dem = new JLabel("Hiển thị 1 tới 2 của 2 kết quả");
-        dem.setFont(ViewTheme.FONT_NHO);
-        dem.setForeground(ViewTheme.CHU_NHAT);
-        JPanel chan = new JPanel(new BorderLayout());
-        chan.setOpaque(false);
-        JPanel trai = new JPanel(new FlowLayout(FlowLayout.LEFT, 6, 0));
-        trai.setOpaque(false);
-        trai.add(new JLabel("Display"));
-        JComboBox<String> so = new JComboBox<String>(new String[]{"15", "10", "25"});
-        ViewTheme.vienHop(so);
-        trai.add(so);
-        trai.add(new JLabel("records"));
-        trai.add(dem);
-        chan.add(trai, BorderLayout.WEST);
+        lblDem.setFont(ViewTheme.FONT_NHO);
+        lblDem.setForeground(ViewTheme.CHU_NHAT);
+        JPanel panelChan = new JPanel(new BorderLayout());
+        panelChan.setOpaque(false);
+        JPanel panelTrai = new JPanel(new FlowLayout(FlowLayout.LEFT, 6, 0));
+        panelTrai.setOpaque(false);
+        panelTrai.add(new JLabel("Display"));
+        JComboBox<String> cboSoBanGhi = new JComboBox<String>(new String[]{"15", "10", "25"});
+        ViewTheme.vienHop(cboSoBanGhi);
+        panelTrai.add(cboSoBanGhi);
+        panelTrai.add(new JLabel("records"));
+        panelTrai.add(lblDem);
+        panelChan.add(panelTrai, BorderLayout.WEST);
 
-        the.add(dau, BorderLayout.NORTH);
-        JPanel giua = new JPanel(new BorderLayout(0, 8));
-        giua.setOpaque(false);
-        giua.add(vungLoc, BorderLayout.NORTH);
-        giua.add(cuon, BorderLayout.CENTER);
-        the.add(giua, BorderLayout.CENTER);
-        the.add(chan, BorderLayout.SOUTH);
+        the.add(panelDau, BorderLayout.NORTH);
+        JPanel panelGiua = new JPanel(new BorderLayout(0, 8));
+        panelGiua.setOpaque(false);
+        panelGiua.add(panelVungLoc, BorderLayout.NORTH);
+        panelGiua.add(scrollBang, BorderLayout.CENTER);
+        the.add(panelGiua, BorderLayout.CENTER);
+        the.add(panelChan, BorderLayout.SOUTH);
         setLayout(new BorderLayout());
         add(the, BorderLayout.NORTH);
+        taiLai();
+    }
+
+    public void taiLai() {
+        new SwingWorker<List<KhachHang>, Void>() {
+            @Override
+            protected List<KhachHang> doInBackground() {
+                return khachHangService.findAllKhachHang();
+            }
+
+            @Override
+            protected void done() {
+                try {
+                    napBang(get());
+                } catch (Exception ex) {
+                    JOptionPane.showMessageDialog(KhachHangPanel.this,
+                            "Không tải được danh sách khách hàng.\n" + ex.getMessage(),
+                            "Lỗi", JOptionPane.ERROR_MESSAGE);
+                    napBang(List.of());
+                }
+            }
+        }.execute();
+    }
+
+    private void napBang(List<KhachHang> ds) {
+        model.setRowCount(0);
+        int max = 0;
+        for (KhachHang kh : ds) {
+            model.addRow(ViewTheme.dongBang(dongTuEntity(kh), true, true));
+            try {
+                max = Math.max(max, Integer.parseInt(kh.getMaKH()));
+            } catch (Exception ignored) {
+            }
+        }
+        demMa = max + 1;
+        lblDem.setText(ViewTheme.demDong(ds.isEmpty() ? 0 : 1, ds.size(), ds.size()));
+        loc();
+    }
+
+    private Object[] dongTuEntity(KhachHang kh) {
+        return new Object[]{
+            kh.getMaKH(),
+            kh.getHoTen(),
+            nullToEmpty(kh.getGioiTinh()),
+            NgayUtil.fmt(kh.getNgaySinh()),
+            nullToEmpty(kh.getSoDienThoai()),
+            nullToEmpty(kh.getEmail()),
+            nullToEmpty(kh.getDiaChi()),
+            nullToEmpty(kh.getCccd()),
+            nullToEmpty(kh.getGhiChu()),
+            nullToEmpty(kh.getMaNhom()),
+            nullToEmpty(kh.getMaChiNhanh()),
+            nullToEmpty(kh.getLyDoKham()),
+            nullToEmpty(kh.getTienSuBenh()),
+            nullToEmpty(kh.getDiUng()),
+            nullToEmpty(kh.getMaBacSi()),
+            nullToEmpty(kh.getMaTuVan()),
+            String.valueOf(kh.getSoLanKham()),
+            NgayUtil.fmt(kh.getLanKhamGanNhat()),
+            NgayUtil.fmt(kh.getNgayTao())
+        };
     }
 
     public void tim(String tuKhoa) {
-        tim.setText(tuKhoa == null ? "" : tuKhoa);
+        txtTim.setText(tuKhoa == null ? "" : tuKhoa);
         loc();
     }
 
     private void loc() {
-        String tu = tim.getText().trim().toLowerCase();
-        TableRowSorter<DefaultTableModel> sx = new TableRowSorter<>(model);
-        bang.setRowSorter(sx);
-        if (tu.isEmpty()) {
-            sx.setRowFilter(null);
+        String tuKhoa = txtTim.getText().trim().toLowerCase();
+        TableRowSorter<DefaultTableModel> sorter = new TableRowSorter<>(model);
+        bang.setRowSorter(sorter);
+        if (tuKhoa.isEmpty()) {
+            sorter.setRowFilter(null);
         } else {
-            sx.setRowFilter(RowFilter.regexFilter("(?i)" + Pattern.quote(tu)));
+            sorter.setRowFilter(RowFilter.regexFilter("(?i)" + Pattern.quote(tuKhoa)));
+        }
+    }
+
+    private void moToaChoKhach() {
+        int hang = bang.getSelectedRow();
+        if (hang < 0 && bang.getRowCount() > 0) {
+            hang = 0;
+        }
+        if (hang < 0) {
+            JOptionPane.showMessageDialog(this, "Chọn khách hàng trước.");
+            return;
+        }
+        int modelHang = bang.convertRowIndexToModel(hang);
+        String maKH = String.valueOf(model.getValueAt(modelHang, 1));
+        if (moToaThuoc != null) {
+            moToaThuoc.accept(maKH);
         }
     }
 
     private void xuLy(String lenh, int hang) {
         if ("Xóa".equals(lenh)) {
             if (JOptionPane.showConfirmDialog(this, "Xóa khách hàng này?", "Xác nhận", JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) {
-                model.removeRow(hang);
+                String ma = String.valueOf(model.getValueAt(hang, 1));
+                try {
+                    khachHangService.delete(ma);
+                    taiLai();
+                } catch (Exception ex) {
+                    JOptionPane.showMessageDialog(this, "Không xóa được khách hàng.\n" + ex.getMessage());
+                }
             }
             return;
         }
@@ -203,21 +305,21 @@ public class KhachHangPanel extends JPanel {
     }
 
     private void moHoSo(int hang) {
-        keHoach.nap(
-                String.valueOf(model.getValueAt(hang, 1)),
-                String.valueOf(model.getValueAt(hang, 2)),
-                String.valueOf(model.getValueAt(hang, 5)),
-                String.valueOf(model.getValueAt(hang, 6)),
-                String.valueOf(model.getValueAt(hang, 7)),
-                String.valueOf(model.getValueAt(hang, 12)),
-                "");
-        moKeHoach.run();
+        if (moKeHoach != null) {
+            moKeHoach.mo(
+                    String.valueOf(model.getValueAt(hang, 1)),
+                    String.valueOf(model.getValueAt(hang, 2)),
+                    String.valueOf(model.getValueAt(hang, 5)),
+                    String.valueOf(model.getValueAt(hang, 6)),
+                    String.valueOf(model.getValueAt(hang, 7)),
+                    String.valueOf(model.getValueAt(hang, 12)));
+        }
     }
 
     private void moForm(int hang) {
         boolean sua = hang >= 0;
         Window w = SwingUtilities.getWindowAncestor(this);
-        javax.swing.JDialog d = new javax.swing.JDialog(w, sua ? "Cập nhật khách hàng" : "Thêm khách hàng", java.awt.Dialog.ModalityType.APPLICATION_MODAL);
+        JDialog d = new JDialog(w, sua ? "Cập nhật khách hàng" : "Thêm khách hàng", Dialog.ModalityType.APPLICATION_MODAL);
         d.setLayout(new BorderLayout());
         JPanel noi = new JPanel(new GridLayout(1, 2, 18, 0));
         noi.setBackground(ViewTheme.TRANG);
@@ -248,21 +350,32 @@ public class KhachHangPanel extends JPanel {
         JTextField lyDo = oForm(sua ? String.valueOf(model.getValueAt(hang, 12)) : "");
         JTextField tienSu = oForm(sua ? String.valueOf(model.getValueAt(hang, 13)) : "");
         JTextField diUng = oForm(sua ? String.valueOf(model.getValueAt(hang, 14)) : "");
-        JComboBox<String> nhom = new JComboBox<>(new String[]{"NK01", "NK02", "NK03"});                
-        JComboBox<String> bacSi = new JComboBox<String>(DuLieuMau.BAC_SI);
-        JComboBox<String> tuVan = new JComboBox<String>(DuLieuMau.BAC_SI);
+        JComboBox<String> nhom = new JComboBox<>(new String[]{"NK01", "NK02", "NK03"});
+        JComboBox<String> bacSi = new JComboBox<>();
+        JComboBox<String> tuVan = new JComboBox<>();
+        bacSi.addItem("");
+        tuVan.addItem("");
+        for (NhanVien nv : danhMucService.findAllNhanVien()) {
+            String nhan = nv.getMaNhanVien() + " - " + nv.getHoTen();
+            bacSi.addItem(nhan);
+            tuVan.addItem(nhan);
+        }
         ViewTheme.vienHop(bacSi);
         ViewTheme.vienHop(tuVan);
+        if (sua) {
+            chonMa(bacSi, String.valueOf(model.getValueAt(hang, 15)));
+            chonMa(tuVan, String.valueOf(model.getValueAt(hang, 16)));
+        }
 
         JPanel phai = new JPanel(new BorderLayout(0, 12));
         phai.setOpaque(false);
         phai.add(cotForm("Bệnh lý",
                 new String[]{"Lý do đến khám", "Tiền sử bệnh", "Dị ứng", "Nhóm khách hàng"},
-                new javax.swing.JComponent[]{lyDo, tienSu, diUng, nhom},
+                new JComponent[]{lyDo, tienSu, diUng, nhom},
                 new boolean[]{false, false, false, false, false}), BorderLayout.NORTH);
         phai.add(cotForm("Người phụ trách",
                 new String[]{"Bác sĩ", "Tư vấn"},
-                new javax.swing.JComponent[]{bacSi, tuVan},
+                new JComponent[]{bacSi, tuVan},
                 new boolean[]{false, false}), BorderLayout.CENTER);
 
         noi.add(trai);
@@ -279,35 +392,47 @@ public class KhachHangPanel extends JPanel {
                 JOptionPane.showMessageDialog(d, "Vui lòng nhập họ và tên.");
                 return;
             }
-            Object[] dong = new Object[]{
-                sua ? model.getValueAt(hang, 1) : String.format("%04d", demMa++),
-                ten.getText().trim(),
-                String.valueOf(gioi.getSelectedItem()),
-                ngaySinh.getText().trim(),
-                sdt.getText().trim(),
-                email.getText().trim(),
-                diaChi.getText().trim(),
-                cccd.getText().trim(),
-                ghi.getText().trim(),
-                String.valueOf(nhom.getSelectedItem()),
-                String.valueOf(chiNhanh.getSelectedItem()),
-                lyDo.getText().trim(),
-                tienSu.getText().trim(),
-                diUng.getText().trim(),
-                String.valueOf(bacSi.getSelectedItem()),
-                String.valueOf(tuVan.getSelectedItem()),
-                sua ? model.getValueAt(hang, 17) : "0",
-                sua ? model.getValueAt(hang, 18) : "",
-                sua ? model.getValueAt(hang, 19) : "12/10/2026"
-            };
-            if (sua) {
-                for (int i = 0; i < dong.length; i++) {
-                    model.setValueAt(dong[i], hang, i + 1);
-                }
-            } else {
-                model.addRow(ViewTheme.dongBang(dong, true, true));
+            String maKH = sua ? String.valueOf(model.getValueAt(hang, 1)) : String.format("%04d", demMa);
+            KhachHang kh = sua ? khachHangService.findById(maKH) : new KhachHang();
+            if (kh == null) {
+                kh = new KhachHang();
             }
-            d.dispose();
+            kh.setMaKH(maKH);
+            kh.setHoTen(ten.getText().trim());
+            kh.setGioiTinh(String.valueOf(gioi.getSelectedItem()));
+            kh.setNgaySinh(NgayUtil.parseDate(ngaySinh.getText()));
+            kh.setSoDienThoai(sdt.getText().trim());
+            kh.setEmail(email.getText().trim());
+            kh.setDiaChi(diaChi.getText().trim());
+            kh.setCccd(cccd.getText().trim());
+            kh.setGhiChu(ghi.getText().trim());
+            kh.setMaNhom(String.valueOf(nhom.getSelectedItem()));
+            String cn = String.valueOf(chiNhanh.getSelectedItem());
+            kh.setMaChiNhanh(cn.startsWith("CN") ? cn.split(" ")[0] : "CN1");
+            kh.setLyDoKham(lyDo.getText().trim());
+            kh.setTienSuBenh(tienSu.getText().trim());
+            kh.setDiUng(diUng.getText().trim());
+            kh.setMaBacSi(maTuCombo(bacSi));
+            kh.setMaTuVan(maTuCombo(tuVan));
+            if (!sua) {
+                kh.setSoLanKham(0);
+                kh.setNgayTao(LocalDateTime.now());
+            }
+            try {
+                if (sua) {
+                    khachHangService.update(kh);
+                } else {
+                    if (khachHangService.add(kh) == null) {
+                        JOptionPane.showMessageDialog(d, "Không thêm được khách hàng vào database.");
+                        return;
+                    }
+                    demMa++;
+                }
+                d.dispose();
+                taiLai();
+            } catch (Exception ex) {
+                JOptionPane.showMessageDialog(d, "Lỗi lưu khách hàng.\n" + ex.getMessage());
+            }
         });
         JPanel chan = new JPanel(new FlowLayout(FlowLayout.RIGHT, 8, 8));
         chan.setBackground(ViewTheme.TRANG);
@@ -319,7 +444,7 @@ public class KhachHangPanel extends JPanel {
         d.setVisible(true);
     }
 
-    private JPanel cotForm(String tieu, String[] nhan, javax.swing.JComponent[] o, boolean[] batBuoc) {
+    private JPanel cotForm(String tieu, String[] nhan, JComponent[] o, boolean[] batBuoc) {
         JPanel p = new JPanel(new GridLayout(0, 2, 8, 8));
         p.setOpaque(false);
         p.setBorder(BorderFactory.createTitledBorder(tieu));
@@ -354,5 +479,35 @@ public class KhachHangPanel extends JPanel {
         JTextField t = new ONhap(goi, 12);
         t.setPreferredSize(new Dimension(160, 32));
         return t;
+    }
+
+    private static String nullToEmpty(String s) {
+        return s == null ? "" : s;
+    }
+
+    private static String maTuCombo(JComboBox<String> cbo) {
+        Object sel = cbo.getSelectedItem();
+        if (sel == null) {
+            return null;
+        }
+        String s = String.valueOf(sel).trim();
+        if (s.isEmpty()) {
+            return null;
+        }
+        int i = s.indexOf(" - ");
+        return i > 0 ? s.substring(0, i).trim() : s;
+    }
+
+    private static void chonMa(JComboBox<String> cbo, String ma) {
+        if (ma == null || ma.isBlank()) {
+            cbo.setSelectedIndex(0);
+            return;
+        }
+        for (int i = 0; i < cbo.getItemCount(); i++) {
+            if (cbo.getItemAt(i).startsWith(ma)) {
+                cbo.setSelectedIndex(i);
+                return;
+            }
+        }
     }
 }

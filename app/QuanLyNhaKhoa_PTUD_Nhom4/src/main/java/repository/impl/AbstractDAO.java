@@ -29,13 +29,7 @@ public abstract class AbstractDAO<T> implements Generic<T> {
         } catch (SQLException e) {
             System.out.println(e);
         } finally {
-            try {
-                conn.close();
-                stm.close();
-                rs.close();
-            } catch (SQLException e) {
-                System.out.println(e);
-            }
+            closeQuietly(rs, stm, conn);
         }
         return null;
     }
@@ -47,36 +41,29 @@ public abstract class AbstractDAO<T> implements Generic<T> {
         ResultSet rs = null;
         try {
             conn = getConnection();
-            conn.setAutoCommit(false);
-            stm = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
-            setParameters(stm, parameters);
-            stm.executeUpdate();
-            rs = stm.getGeneratedKeys();
-            Integer id = null;
-            if (rs.next()) {
-                id = rs.getInt(1);
+            if (conn == null) {
+                return null;
             }
+            conn.setAutoCommit(false);
+            stm = conn.prepareStatement(sql);
+            setParameters(stm, parameters);
+            int rows = stm.executeUpdate();
             conn.commit();
-            return id;
+            return rows;
         } catch (SQLException e) {
             try {
                 e.printStackTrace();
-                conn.rollback();
+                if (conn != null) {
+                    conn.rollback();
+                }
             } catch (SQLException ex) {
                 System.out.println(ex);
             }
         } finally {
-            try {
-                conn.close();
-                stm.close();
-            } catch (SQLException e) {
-                System.out.println(e);
-            }
+            closeQuietly(rs, stm, conn);
         }
         return null;
     }
-
-    ;
 
     @Override
     public void update(String sql, Object... parameters) {
@@ -84,23 +71,18 @@ public abstract class AbstractDAO<T> implements Generic<T> {
         PreparedStatement stm = null;
         try {
             conn = getConnection();
+            if (conn == null) {
+                return;
+            }
             stm = conn.prepareStatement(sql);
             setParameters(stm, parameters);
             stm.executeUpdate();
-            conn.close();
         } catch (SQLException e) {
             System.out.println(e);
         } finally {
-            try {
-                conn.close();
-                stm.close();
-            } catch (SQLException e) {
-                System.out.println(e);
-            }
+            closeQuietly(null, stm, conn);
         }
     }
-
-    ;
 
     @Override
     public void delete(String sql, Object... parameters) {
@@ -108,22 +90,42 @@ public abstract class AbstractDAO<T> implements Generic<T> {
         PreparedStatement stm = null;
         try {
             conn = getConnection();
+            if (conn == null) {
+                return;
+            }
             stm = conn.prepareStatement(sql);
             setParameters(stm, parameters);
             stm.executeUpdate();
         } catch (SQLException e) {
             System.out.println(e);
         } finally {
+            closeQuietly(null, stm, conn);
+        }
+    }
+
+    private static void closeQuietly(ResultSet rs, Statement stm, Connection conn) {
+        if (rs != null) {
             try {
-                conn.close();
+                rs.close();
+            } catch (SQLException e) {
+                System.out.println(e);
+            }
+        }
+        if (stm != null) {
+            try {
                 stm.close();
             } catch (SQLException e) {
                 System.out.println(e);
             }
         }
+        if (conn != null) {
+            try {
+                conn.close();
+            } catch (SQLException e) {
+                System.out.println(e);
+            }
+        }
     }
-
-    ;
     
     public void setParameters(PreparedStatement stm, Object... parameters) throws SQLException {
         for (int i = 0; i < parameters.length; i++) {

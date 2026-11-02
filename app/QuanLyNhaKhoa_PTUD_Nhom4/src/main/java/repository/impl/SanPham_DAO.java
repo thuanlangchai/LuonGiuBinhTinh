@@ -1,7 +1,7 @@
 package repository.impl;
 
 import entity.SanPham;
-import i_repository.SanPham_IDAO;
+import repository.SanPham_IDAO;
 import java.util.List;
 import mapper.SanPhamMapper;
 

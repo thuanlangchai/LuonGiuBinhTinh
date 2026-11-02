@@ -1,7 +1,7 @@
 package repository.impl;
 
 import entity.NhomKhachHang;
-import i_repository.NhomKhachHang_IDAO;
+import repository.NhomKhachHang_IDAO;
 import java.util.List;
 import mapper.NhomKhachHangMapper;
 

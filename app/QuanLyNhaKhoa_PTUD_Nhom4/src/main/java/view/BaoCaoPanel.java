@@ -1,10 +1,19 @@
 package view;
 
+import entity.ChiTietKeHoachDieuTri;
+import entity.HoaDon;
+import entity.KeHoachDieuTri;
+import entity.LichHen;
+import entity.PhieuChi;
+import entity.PhieuThu;
 import java.awt.BorderLayout;
 import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.GridLayout;
+import java.util.ArrayList;
+import java.util.List;
+import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
@@ -14,6 +23,10 @@ import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.border.EmptyBorder;
 import javax.swing.table.DefaultTableModel;
+import service.impl.BaoCao_Service;
+import service.impl.KhachHang_Service;
+import view.model.ChiTietToaThuocView;
+import view.model.ToaThuocView;
 
 public class BaoCaoPanel extends JPanel {
 
@@ -30,78 +43,122 @@ public class BaoCaoPanel extends JPanel {
         removeAll();
         setLayout(new BorderLayout());
         setBorder(new EmptyBorder(6, 6, 16, 6));
-        JPanel the = new JPanel(new BorderLayout(0, 8));
-        the.setBackground(ViewTheme.TRANG);
-        the.setBorder(new EmptyBorder(12, 14, 12, 14));
+        JPanel pnlThe = new JPanel(new BorderLayout(0, 8));
+        pnlThe.setBackground(ViewTheme.TRANG);
+        pnlThe.setBorder(new EmptyBorder(12, 14, 12, 14));
         if ("donthuoc".equals(ma)) {
-            the.add(donThuoc(), BorderLayout.CENTER);
+            pnlThe.add(donThuoc(), BorderLayout.CENTER);
         } else if ("thuchi".equals(ma) || "thuchihangngay".equals(ma)) {
-            the.add(thuChi("thuchihangngay".equals(ma) ? "Báo cáo thu chi hàng ngày" : "Báo cáo thu chi"), BorderLayout.CENTER);       
+            pnlThe.add(thuChi("thuchihangngay".equals(ma) ? "Báo cáo thu chi hàng ngày" : "Báo cáo thu chi"), BorderLayout.CENTER);
         } else if ("dtdichvu".equals(ma)) {
-            the.add(doanhThuDichVu(), BorderLayout.CENTER);
+            pnlThe.add(doanhThuDichVu(), BorderLayout.CENTER);
         } else if ("dtcanhan".equals(ma)) {
-            the.add(doanhThuCaNhan(), BorderLayout.CENTER);
+            pnlThe.add(doanhThuCaNhan(), BorderLayout.CENTER);
         } else {
-            the.add(mauChung(tieuCua(ma), cotCua(ma), dongCua(ma)), BorderLayout.CENTER);
+            pnlThe.add(mauChung(tieuCua(ma), cotCua(ma), dongCua(ma)), BorderLayout.CENTER);
         }
-        add(the, BorderLayout.NORTH);
+        add(pnlThe, BorderLayout.NORTH);
         revalidate();
         repaint();
     }
 
     private JPanel donThuoc() {
-        JPanel p = new JPanel(new BorderLayout(0, 8));
-        p.setOpaque(false);
-        p.add(dau("Báo cáo toa thuốc", true), BorderLayout.NORTH);
-        JPanel tomTat = new JPanel(new GridLayout(1, 3, 12, 0));
-        tomTat.setOpaque(false);
-        tomTat.add(oSo("Tổng tiền thuốc", "36,000"));
-        tomTat.add(oSo("Tổng chiết khấu", "0"));
-        tomTat.add(oSo("Thành tiền", "36,000"));
-        JPanel tren = new JPanel(new BorderLayout(12, 0));
-        tren.setOpaque(false);
-        tren.add(oNgay(), BorderLayout.WEST);
-        tren.add(tomTat, BorderLayout.CENTER);
+        JPanel pnl = new JPanel(new BorderLayout(0, 8));
+        pnl.setOpaque(false);
+        pnl.add(dau("Báo cáo toa thuốc", true), BorderLayout.NORTH);
+        long tongTien = 0;
+        List<ToaThuocView> danhSach = ToaThuocDuLieu.tatCa();
+        Object[][] dong = new Object[Math.max(1, danhSach.size())][];
+        int i = 0;
+        for (ToaThuocView toaThuoc : danhSach) {
+            StringBuilder chiTiet = new StringBuilder();
+            for (ChiTietToaThuocView ct : toaThuoc.chiTiet) {
+                if (chiTiet.length() > 0) {
+                    chiTiet.append("; ");
+                }
+                chiTiet.append(ct.tongSo).append(" x ").append(ct.tenThuoc)
+                        .append(" (").append(ViewTheme.tien(ct.donGia)).append(")");
+            }
+            tongTien += toaThuoc.thanhTien;
+            dong[i] = new Object[]{
+                String.valueOf(i + 1), toaThuoc.maToaThuoc, toaThuoc.ngayTao, toaThuoc.tenKh, chiTiet.toString(),
+                toaThuoc.hinhThucThanhToan, ViewTheme.tien(toaThuoc.thanhTien), "0",
+                ViewTheme.tien(toaThuoc.thanhTien), toaThuoc.tenBacSi
+            };
+            i++;
+        }
+        if (danhSach.isEmpty()) {
+            dong[0] = new Object[]{"", "", "", "", "", "", "0", "0", "0", ""};
+        }
+        JPanel pnlTomTat = new JPanel(new GridLayout(1, 3, 12, 0));
+        pnlTomTat.setOpaque(false);
+        pnlTomTat.add(oSo("Tổng tiền thuốc", ViewTheme.tien(tongTien)));
+        pnlTomTat.add(oSo("Tổng chiết khấu", "0"));
+        pnlTomTat.add(oSo("Thành tiền", ViewTheme.tien(tongTien)));
+        JPanel pnlTren = new JPanel(new BorderLayout(12, 0));
+        pnlTren.setOpaque(false);
+        pnlTren.add(oNgay(), BorderLayout.WEST);
+        pnlTren.add(pnlTomTat, BorderLayout.CENTER);
         String[] cot = {"#", "Mã toa thuốc", "Ngày tạo", "Khách hàng", "Toa thuốc chi tiết", "Hình thức TT", "Tiền thuốc", "Chiết khấu", "Thành tiền", "Bác sĩ"};
-        Object[][] dong = {{"1", "0002", "28/09/2026", "Lê Trần Quang Thanh", "3 x aptx 4869 (36000)", "Tiền mặt", "36,000", "0", "36,000", "Lê Trần Quang Thanh"}};
-        JPanel than = new JPanel(new BorderLayout(0, 8));
-        than.setOpaque(false);
-        than.add(tren, BorderLayout.NORTH);
-        than.add(bang(cot, dong), BorderLayout.CENTER);
-        than.add(nutIn(true), BorderLayout.SOUTH);
-        p.add(than, BorderLayout.CENTER);
-        return p;
+        JPanel pnlThan = new JPanel(new BorderLayout(0, 8));
+        pnlThan.setOpaque(false);
+        pnlThan.add(pnlTren, BorderLayout.NORTH);
+        pnlThan.add(bang(cot, dong), BorderLayout.CENTER);
+        pnlThan.add(nutIn(true), BorderLayout.SOUTH);
+        pnl.add(pnlThan, BorderLayout.CENTER);
+        return pnl;
     }
 
-
-
-    private JPanel thuChi(String tieu) {
-        JPanel p = new JPanel(new BorderLayout(0, 8));
-        p.setOpaque(false);
-        p.add(dau(tieu, false), BorderLayout.NORTH);
-        JPanel so = new JPanel(new GridLayout(1, 3, 8, 0));
-        so.setOpaque(false);
-        so.add(oSo("Tổng thu", "36,000"));
-        so.add(oSo("Tổng chi", "0"));
-        so.add(oSo("Tổng (Thu - chi)", "36,000"));
-        JPanel tren = new JPanel(new BorderLayout(12, 0));
-        tren.setOpaque(false);
-        tren.add(oNgay(), BorderLayout.WEST);
-        tren.add(so, BorderLayout.CENTER);
+    private JPanel thuChi(String tieuDe) {
+        JPanel pnl = new JPanel(new BorderLayout(0, 8));
+        pnl.setOpaque(false);
+        pnl.add(dau(tieuDe, false), BorderLayout.NORTH);
+        BaoCao_Service baoCaoService = new BaoCao_Service();
+        long tongThu = 0;
+        long tongChi = 0;
+        List<Object[]> rows = new ArrayList<>();
+        int stt = 1;
+        for (PhieuThu phieuThu : baoCaoService.danhSachPhieuThu()) {
+            tongThu += phieuThu.getSoTien();
+            rows.add(new Object[]{
+                String.valueOf(stt++), phieuThu.getMaPhieuThu(), NgayUtil.fmt(phieuThu.getNgayThu()),
+                phieuThu.getMaKH(), "", phieuThu.getLyDo(),
+                ViewTheme.tien(phieuThu.getSoTien()), "0", "0", "0", ViewTheme.tien(phieuThu.getSoTien()),
+                "0", "0", "0", "0", "0"
+            });
+        }
+        for (PhieuChi phieuChi : baoCaoService.danhSachPhieuChi()) {
+            tongChi += phieuChi.getSoTien();
+            rows.add(new Object[]{
+                String.valueOf(stt++), phieuChi.getMaPhieuChi(), NgayUtil.fmt(phieuChi.getNgayChi()),
+                "", phieuChi.getMaNhaCungCap(), phieuChi.getLyDoChi(),
+                "0", "0", "0", "0", "0",
+                ViewTheme.tien(phieuChi.getSoTien()), "0", "0", "0", ViewTheme.tien(phieuChi.getSoTien())
+            });
+        }
+        rows.add(new Object[]{"", "", "", "", "", "Tổng tiền",
+            ViewTheme.tien(tongThu), "0", "0", "0", ViewTheme.tien(tongThu),
+            ViewTheme.tien(tongChi), "0", "0", "0", ViewTheme.tien(tongChi)});
+        JPanel pnlSo = new JPanel(new GridLayout(1, 3, 8, 0));
+        pnlSo.setOpaque(false);
+        pnlSo.add(oSo("Tổng thu", ViewTheme.tien(tongThu)));
+        pnlSo.add(oSo("Tổng chi", ViewTheme.tien(tongChi)));
+        pnlSo.add(oSo("Tổng (Thu - chi)", ViewTheme.tien(tongThu - tongChi)));
+        JPanel pnlTren = new JPanel(new BorderLayout(12, 0));
+        pnlTren.setOpaque(false);
+        pnlTren.add(oNgay(), BorderLayout.WEST);
+        pnlTren.add(pnlSo, BorderLayout.CENTER);
         String[] cot = {"#", "Mã phiếu", "Ngày", "Khách hàng", "Nhà cung cấp", "Lý do",
             "Thu - Tiền mặt", "Thu - Thẻ", "Thu - Chuyển khoản", "Thu - Trả góp", "Thu - Tổng",
             "Chi - Tiền mặt", "Chi - Thẻ", "Chi - Chuyển khoản", "Chi - Trả góp", "Chi - Tổng"};
-        Object[][] dong = {
-            {"1", "0002", "28/09/2026", "Lê Trần Quang Thanh", "", "3 x aptx 4869 (36000)", "36,000", "0", "0", "0", "36,000", "0", "0", "0", "0", "0"},
-            {"", "", "", "", "", "Tổng tiền", "36,000", "0", "0", "0", "36,000", "0", "0", "0", "0", "0"}
-        };
-        JPanel than = new JPanel(new BorderLayout(0, 8));
-        than.setOpaque(false);
-        than.add(tren, BorderLayout.NORTH);
-        than.add(bang(cot, dong), BorderLayout.CENTER);
-        than.add(nutIn(true), BorderLayout.SOUTH);
-        p.add(than, BorderLayout.CENTER);
-        return p;
+        Object[][] dong = rows.toArray(new Object[0][]);
+        JPanel pnlThan = new JPanel(new BorderLayout(0, 8));
+        pnlThan.setOpaque(false);
+        pnlThan.add(pnlTren, BorderLayout.NORTH);
+        pnlThan.add(bang(cot, dong), BorderLayout.CENTER);
+        pnlThan.add(nutIn(true), BorderLayout.SOUTH);
+        pnl.add(pnlThan, BorderLayout.CENTER);
+        return pnl;
     }
 
     private JPanel doanhThuDichVu() {
@@ -118,125 +175,122 @@ public class BaoCaoPanel extends JPanel {
                 new Object[][]{{"", "", "", "", "", "", "", "", "", "", "", "Tổng tiền", "0"}});
     }
 
-
-
-    private JPanel baoCaoTab(String tieu, String[] tab, String[] cot, Object[][] dong) {
-        JPanel p = new JPanel(new BorderLayout(0, 8));
-        p.setOpaque(false);
-        p.add(dau(tieu, false), BorderLayout.NORTH);
-        JPanel thanh = new JPanel(new FlowLayout(FlowLayout.LEFT, 4, 0));
-        thanh.setOpaque(false);
-        JPanel vung = new JPanel(new BorderLayout());
-        vung.setOpaque(false);
-        vung.add(bang(cot, dong), BorderLayout.CENTER);
+    private JPanel baoCaoTab(String tieuDe, String[] tab, String[] cot, Object[][] dong) {
+        JPanel pnl = new JPanel(new BorderLayout(0, 8));
+        pnl.setOpaque(false);
+        pnl.add(dau(tieuDe, false), BorderLayout.NORTH);
+        JPanel pnlThanh = new JPanel(new FlowLayout(FlowLayout.LEFT, 4, 0));
+        pnlThanh.setOpaque(false);
+        JPanel pnlVung = new JPanel(new BorderLayout());
+        pnlVung.setOpaque(false);
+        pnlVung.add(bang(cot, dong), BorderLayout.CENTER);
         for (int i = 0; i < tab.length; i++) {
-            JButton b = new JButton(tab[i]);
+            JButton btnTab = new JButton(tab[i]);
             if (i == 0) {
-                ViewTheme.nutChinh(b);
+                ViewTheme.nutChinh(btnTab);
             } else {
-                ViewTheme.nutXam(b);
+                ViewTheme.nutXam(btnTab);
             }
-            b.addActionListener(e -> {
-                for (Component c : thanh.getComponents()) {
-                    if (c instanceof JButton) {
-                        ViewTheme.nutXam((JButton) c);
+            btnTab.addActionListener(e -> {
+                for (Component component : pnlThanh.getComponents()) {
+                    if (component instanceof JButton) {
+                        ViewTheme.nutXam((JButton) component);
                     }
                 }
-                ViewTheme.nutChinh(b);
+                ViewTheme.nutChinh(btnTab);
             });
-            thanh.add(b);
+            pnlThanh.add(btnTab);
         }
-        JPanel tren = new JPanel(new BorderLayout(0, 8));
-        tren.setOpaque(false);
-        tren.add(oNgay(), BorderLayout.NORTH);
-        tren.add(thanh, BorderLayout.SOUTH);
-        JPanel than = new JPanel(new BorderLayout(0, 8));
-        than.setOpaque(false);
-        than.add(tren, BorderLayout.NORTH);
-        than.add(vung, BorderLayout.CENTER);
-        than.add(nutIn(true), BorderLayout.SOUTH);
-        p.add(than, BorderLayout.CENTER);
-        return p;
+        JPanel pnlTren = new JPanel(new BorderLayout(0, 8));
+        pnlTren.setOpaque(false);
+        pnlTren.add(oNgay(), BorderLayout.NORTH);
+        pnlTren.add(pnlThanh, BorderLayout.SOUTH);
+        JPanel pnlThan = new JPanel(new BorderLayout(0, 8));
+        pnlThan.setOpaque(false);
+        pnlThan.add(pnlTren, BorderLayout.NORTH);
+        pnlThan.add(pnlVung, BorderLayout.CENTER);
+        pnlThan.add(nutIn(true), BorderLayout.SOUTH);
+        pnl.add(pnlThan, BorderLayout.CENTER);
+        return pnl;
     }
 
-    private JPanel mauChung(String tieu, String[] cot, Object[][] dong) {
-        JPanel p = new JPanel(new BorderLayout(0, 8));
-        p.setOpaque(false);
-        p.add(dau(tieu, false), BorderLayout.NORTH);
-        JPanel than = new JPanel(new BorderLayout(0, 8));
-        than.setOpaque(false);
-        than.add(oNgay(), BorderLayout.NORTH);
-        than.add(bang(cot, dong), BorderLayout.CENTER);
-        than.add(nutIn(true), BorderLayout.SOUTH);
-        p.add(than, BorderLayout.CENTER);
-        return p;
+    private JPanel mauChung(String tieuDe, String[] cot, Object[][] dong) {
+        JPanel pnl = new JPanel(new BorderLayout(0, 8));
+        pnl.setOpaque(false);
+        pnl.add(dau(tieuDe, false), BorderLayout.NORTH);
+        JPanel pnlThan = new JPanel(new BorderLayout(0, 8));
+        pnlThan.setOpaque(false);
+        pnlThan.add(oNgay(), BorderLayout.NORTH);
+        pnlThan.add(bang(cot, dong), BorderLayout.CENTER);
+        pnlThan.add(nutIn(true), BorderLayout.SOUTH);
+        pnl.add(pnlThan, BorderLayout.CENTER);
+        return pnl;
     }
 
-    private JPanel dau(String tieu, boolean taiLai) {
-        JPanel p = new JPanel(new BorderLayout());
-        p.setOpaque(false);
-        JLabel lb = ViewTheme.tieuDeTrang(tieu);
-        p.add(lb, BorderLayout.WEST);
+    private JPanel dau(String tieuDe, boolean taiLai) {
+        JPanel pnl = new JPanel(new BorderLayout());
+        pnl.setOpaque(false);
+        JLabel lblNhanTieuDe = ViewTheme.tieuDeTrang(tieuDe);
+        pnl.add(lblNhanTieuDe, BorderLayout.WEST);
         if (taiLai) {
-            JButton tai = new JButton("Tải lại");
-            ViewTheme.nutXanh(tai);
-            tai.addActionListener(e -> chon(ma));
-            JPanel phai = new JPanel(new FlowLayout(FlowLayout.LEFT, 8, 0));
-            phai.setOpaque(false);
-            phai.add(tai);
-            p.add(phai, BorderLayout.CENTER);
+            JButton btnTai = new JButton("Tải lại");
+            ViewTheme.nutXanh(btnTai);
+            btnTai.addActionListener(e -> chon(ma));
+            JPanel pnlPhai = new JPanel(new FlowLayout(FlowLayout.LEFT, 8, 0));
+            pnlPhai.setOpaque(false);
+            pnlPhai.add(btnTai);
+            pnl.add(pnlPhai, BorderLayout.CENTER);
         }
-        return p;
+        return pnl;
     }
 
     private JTextField oNgay() {
-        JTextField t = new JTextField("28/09/2026 - 28/09/2026");
-        ViewTheme.vienNhap(t);
-        t.setPreferredSize(new Dimension(220, 32));
-        return t;
+        JTextField txtNgay = new JTextField("28/09/2026 - 28/09/2026");
+        ViewTheme.vienNhap(txtNgay);
+        txtNgay.setPreferredSize(new Dimension(220, 32));
+        return txtNgay;
     }
 
-
     private JPanel oSo(String nhan, String so) {
-        JPanel p = new JPanel(new BorderLayout());
-        p.setOpaque(false);
-        JLabel a = ViewTheme.chuPhu(nhan);
-        JLabel b = new JLabel(so);
-        b.setFont(ViewTheme.FONT_SO);
-        b.setForeground(ViewTheme.CHU);
-        p.add(a, BorderLayout.NORTH);
-        p.add(b, BorderLayout.CENTER);
-        return p;
+        JPanel pnl = new JPanel(new BorderLayout());
+        pnl.setOpaque(false);
+        JLabel lblNhanTieu = ViewTheme.chuPhu(nhan);
+        JLabel lblNhanSo = new JLabel(so);
+        lblNhanSo.setFont(ViewTheme.FONT_SO);
+        lblNhanSo.setForeground(ViewTheme.CHU);
+        pnl.add(lblNhanTieu, BorderLayout.NORTH);
+        pnl.add(lblNhanSo, BorderLayout.CENTER);
+        return pnl;
     }
 
     private JScrollPane bang(String[] cot, Object[][] dong) {
         DefaultTableModel model = ViewTheme.taoModel(cot, false, false);
-        for (Object[] r : dong) {
-            model.addRow(r);
+        for (Object[] hang : dong) {
+            model.addRow(hang);
         }
-        JTable table = new JTable(model);
-        ViewTheme.trangTriBang(table);
-        JScrollPane cuon = new JScrollPane(table);
-        cuon.setPreferredSize(new Dimension(400, 180));
-        cuon.setBorder(javax.swing.BorderFactory.createLineBorder(ViewTheme.VIEN));
-        cuon.getViewport().setBackground(ViewTheme.TRANG);
-        return cuon;
+        JTable tbl = new JTable(model);
+        ViewTheme.trangTriBang(tbl);
+        JScrollPane scrBang = new JScrollPane(tbl);
+        scrBang.setPreferredSize(new Dimension(400, 180));
+        scrBang.setBorder(BorderFactory.createLineBorder(ViewTheme.VIEN));
+        scrBang.getViewport().setBackground(ViewTheme.TRANG);
+        return scrBang;
     }
 
     private JPanel nutIn(boolean excel) {
-        JPanel p = new JPanel(new FlowLayout(FlowLayout.RIGHT, 8, 0));
-        p.setOpaque(false);
-        JButton in = new JButton("In");
-        ViewTheme.nutXanh(in);
-        in.addActionListener(e -> JOptionPane.showMessageDialog(this, "Đã chuẩn bị bản in " + tieuCua(ma) + "."));
-        p.add(in);
+        JPanel pnl = new JPanel(new FlowLayout(FlowLayout.RIGHT, 8, 0));
+        pnl.setOpaque(false);
+        JButton btnIn = new JButton("In");
+        ViewTheme.nutXanh(btnIn);
+        btnIn.addActionListener(e -> JOptionPane.showMessageDialog(this, "Đã chuẩn bị bản in " + tieuCua(ma) + "."));
+        pnl.add(btnIn);
         if (excel) {
-            JButton xuat = new JButton("Xuất excel...");
-            ViewTheme.nutXanh(xuat);
-            xuat.addActionListener(e -> JOptionPane.showMessageDialog(this, "Đã chuẩn bị file Excel cho " + tieuCua(ma) + "."));
-            p.add(xuat);
+            JButton btnXuat = new JButton("Xuất excel...");
+            ViewTheme.nutXanh(btnXuat);
+            btnXuat.addActionListener(e -> JOptionPane.showMessageDialog(this, "Đã chuẩn bị file Excel cho " + tieuCua(ma) + "."));
+            pnl.add(btnXuat);
         }
-        return p;
+        return pnl;
     }
 
     private String tieuCua(String maBaoCao) {
@@ -284,35 +338,61 @@ public class BaoCaoPanel extends JPanel {
     }
 
     private Object[][] dongCua(String maBaoCao) {
+        BaoCao_Service baoCaoService = new BaoCao_Service();
         if ("lichhen".equals(maBaoCao)) {
-            return new Object[][]{{"1", "Lê Trần Quang Thanh", "Chỉnh nha", "Lê Trần Quang Thanh", "28/09/2026 08:00", "Đang điều trị"}};
+            List<Object[]> rows = new ArrayList<>();
+            int i = 1;
+            for (LichHen lichHen : baoCaoService.danhSachLichHen()) {
+                rows.add(new Object[]{
+                    String.valueOf(i++), lichHen.getMaKH(), "", lichHen.getMaBacSi(),
+                    NgayUtil.fmtFull(lichHen.getBatDau()), lichHen.getTrangThai()
+                });
+            }
+            return rows.isEmpty() ? new Object[][]{{"", "", "", "", "", ""}} : rows.toArray(new Object[0][]);
         }
         if ("dieutri".equals(maBaoCao)) {
-            return new Object[][]{{"1", "Lê Trần Quang Thanh", "Thăm khám - Tư vấn", "27/09/2026", "Lê Trần Quang Thanh", "200,000"}};
+            List<Object[]> rows = new ArrayList<>();
+            int i = 1;
+            for (KeHoachDieuTri keHoach : baoCaoService.danhSachKeHoach()) {
+                for (ChiTietKeHoachDieuTri chiTiet : baoCaoService.chiTietTheoKeHoach(keHoach.getMaKeHoach())) {
+                    rows.add(new Object[]{
+                        String.valueOf(i++), keHoach.getMaKH(), chiTiet.getMaDichVu(),
+                        NgayUtil.fmt(chiTiet.getNgay()), keHoach.getMaBacSi(), ViewTheme.tien(chiTiet.getThanhTien())
+                    });
+                }
+            }
+            return rows.isEmpty() ? new Object[][]{{"", "", "", "", "", "0"}} : rows.toArray(new Object[0][]);
         }
         if ("congno".equals(maBaoCao)) {
             return HoaDonDuLieu.dongCongNo();
         }
         if ("chiphi".equals(maBaoCao)) {
-            return new Object[][]{{"", "", "", "Tổng tiền", "0"}};
+            long tong = 0;
+            for (PhieuChi phieuChi : baoCaoService.danhSachPhieuChi()) {
+                tong += phieuChi.getSoTien();
+            }
+            return new Object[][]{{"", "", "", "Tổng tiền", ViewTheme.tien(tong)}};
         }
         if ("nhatky".equals(maBaoCao)) {
-            return new Object[][]{{"1", "28/09/2026 09:34", DuLieuMau.NGUOI, "Tạo phiếu thu", "0002"}};
+            List<PhieuThu> danhSachPhieuThu = baoCaoService.danhSachPhieuThu();
+            if (danhSachPhieuThu.isEmpty()) {
+                return new Object[][]{{"", "", "", "", ""}};
+            }
+            PhieuThu phieuThu = danhSachPhieuThu.get(0);
+            return new Object[][]{{"1", NgayUtil.fmtFull(phieuThu.getNgayTao()), phieuThu.getNguoiTao(), "Tạo phiếu thu", phieuThu.getMaPhieuThu()}};
         }
-        if ("sale".equals(maBaoCao)) {
-            return new Object[][]{{"1", "Nguyễn Khắc Duy", "1", "36,000"}};
-        }
-        if ("nguon".equals(maBaoCao)) {
-            return new Object[][]{{"1", "Cư dân", "1", "36,000"}};
-        }
-        if ("baocaolabo".equals(maBaoCao)) {
-            return new Object[][]{{"1", "0001", "STRAUMANN", "Nguyễn Minh Lý", "Mão sứ răng 11", "Mới", "28/09/2026"}};
+        if ("sale".equals(maBaoCao) || "nguon".equals(maBaoCao) || "baocaolabo".equals(maBaoCao)) {
+            return new Object[][]{{"", "", "", "0"}};
         }
         if ("tongquan".equals(maBaoCao)) {
+            long doanhThu = 0;
+            for (HoaDon hoaDon : baoCaoService.danhSachHoaDon()) {
+                doanhThu += hoaDon.getThanhTien();
+            }
             return new Object[][]{
-                {"1", "Lịch hẹn trong ngày", "3", ""},
-                {"2", "Khách hàng", "2", ""},
-                {"3", "Doanh thu", "", "36,000"}
+                {"1", "Lịch hẹn", String.valueOf(baoCaoService.danhSachLichHen().size()), ""},
+                {"2", "Khách hàng", String.valueOf(new KhachHang_Service().findAllKhachHang().size()), ""},
+                {"3", "Doanh thu", "", ViewTheme.tien(doanhThu)}
             };
         }
         return new Object[][]{{"", "", "Tổng", "0"}};

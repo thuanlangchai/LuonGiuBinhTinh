@@ -1,15 +1,18 @@
 package view;
 
-import view.model.HangDT;
 import java.awt.BorderLayout;
+import java.awt.Dialog;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.GridLayout;
 import java.awt.Window;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.regex.Pattern;
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
@@ -20,10 +23,13 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
+import javax.swing.RowFilter;
 import javax.swing.SwingUtilities;
 import javax.swing.border.EmptyBorder;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableRowSorter;
 import view.model.ChiTietHoaDonView;
+import view.model.HangDT;
 import view.model.HoaDonView;
 
 public class HoaDonPanel extends JPanel {
@@ -37,8 +43,8 @@ public class HoaDonPanel extends JPanel {
     private final PhieuTienPanel phieuThu;
     private final DefaultTableModel model = ViewTheme.taoModel(COT, true, true);
     private final JTable bang = new JTable(model);
-    private final JTextField tim = new ONhap("", 24);
-    private final JLabel dem = new JLabel();
+    private final JTextField txtTim = new ONhap("", 24);
+    private final JLabel lblDem = new JLabel();
     private Runnable moPhieuThu;
 
     public HoaDonPanel(KeHoachDieuTriPanel keHoach, PhieuTienPanel phieuThu) {
@@ -51,70 +57,70 @@ public class HoaDonPanel extends JPanel {
         the.setBackground(ViewTheme.TRANG);
         the.setBorder(new EmptyBorder(12, 14, 12, 14));
 
-        JLabel tieu = ViewTheme.tieuDeTrang("Hóa đơn");
-        JButton them = new JButton("Thêm hóa đơn");
-        ViewTheme.nutXanh(them);
-        them.addActionListener(e -> moLapHoaDon(null, null));
-        JPanel dau = new JPanel(new BorderLayout());
-        dau.setOpaque(false);
-        dau.add(tieu, BorderLayout.WEST);
-        JPanel phai = new JPanel(new FlowLayout(FlowLayout.RIGHT, 8, 0));
-        phai.setOpaque(false);
-        phai.add(them);
-        dau.add(phai, BorderLayout.EAST);
+        JLabel lblTieuDe = ViewTheme.tieuDeTrang("Hóa đơn");
+        JButton btnThem = new JButton("Thêm hóa đơn");
+        ViewTheme.nutXanh(btnThem);
+        btnThem.addActionListener(e -> moLapHoaDon(null, null));
+        JPanel panelDau = new JPanel(new BorderLayout());
+        panelDau.setOpaque(false);
+        panelDau.add(lblTieuDe, BorderLayout.WEST);
+        JPanel panelPhai = new JPanel(new FlowLayout(FlowLayout.RIGHT, 8, 0));
+        panelPhai.setOpaque(false);
+        panelPhai.add(btnThem);
+        panelDau.add(panelPhai, BorderLayout.EAST);
 
-        ((ONhap) tim).datGoiY("Tìm hóa đơn...");
-        tim.setPreferredSize(new Dimension(360, 32));
-        tim.addActionListener(e -> loc());
-        JComboBox<String> khach = new JComboBox<String>();
-        khach.addItem("Khách hàng");
-        for (String k : DuLieuMau.KHACH) {
-            khach.addItem(k);
+        ((ONhap) txtTim).datGoiY("Tìm hóa đơn...");
+        txtTim.setPreferredSize(new Dimension(360, 32));
+        txtTim.addActionListener(e -> loc());
+        JComboBox<String> cboKhach = new JComboBox<String>();
+        cboKhach.addItem("Khách hàng");
+        for (String k : DuLieuMau.dsKhach()) {
+            cboKhach.addItem(k);
         }
-        JComboBox<String> tt = new JComboBox<String>(new String[]{
+        JComboBox<String> cboTrangThai = new JComboBox<String>(new String[]{
             "Trạng thái", "Chưa thanh toán", "Thanh toán một phần", "Đã thanh toán"
         });
-        ViewTheme.vienHop(khach);
-        ViewTheme.vienHop(tt);
-        khach.addActionListener(e -> loc());
-        tt.addActionListener(e -> loc());
+        ViewTheme.vienHop(cboKhach);
+        ViewTheme.vienHop(cboTrangThai);
+        cboKhach.addActionListener(e -> loc());
+        cboTrangThai.addActionListener(e -> loc());
 
-        JPanel loc = new JPanel(new BorderLayout(0, 8));
-        loc.setBackground(ViewTheme.NEN_TIM);
-        loc.setBorder(new EmptyBorder(10, 12, 10, 12));
-        loc.add(ViewTheme.chuPhu("Tìm kiếm"), BorderLayout.NORTH);
-        loc.add(tim, BorderLayout.CENTER);
-        JPanel dong = new JPanel(new FlowLayout(FlowLayout.LEFT, 8, 0));
-        dong.setOpaque(false);
-        dong.add(khach);
-        dong.add(tt);
-        loc.add(dong, BorderLayout.SOUTH);
+        JPanel panelLoc = new JPanel(new BorderLayout(0, 8));
+        panelLoc.setBackground(ViewTheme.NEN_TIM);
+        panelLoc.setBorder(new EmptyBorder(10, 12, 10, 12));
+        panelLoc.add(ViewTheme.chuPhu("Tìm kiếm"), BorderLayout.NORTH);
+        panelLoc.add(txtTim, BorderLayout.CENTER);
+        JPanel panelDongLoc = new JPanel(new FlowLayout(FlowLayout.LEFT, 8, 0));
+        panelDongLoc.setOpaque(false);
+        panelDongLoc.add(cboKhach);
+        panelDongLoc.add(cboTrangThai);
+        panelLoc.add(panelDongLoc, BorderLayout.SOUTH);
 
         ViewTheme.trangTriBang(bang);
         ViewTheme.ganThaoTac(bang, this::xuLy);
-        bang.addMouseListener(new java.awt.event.MouseAdapter() {
+        bang.addMouseListener(new MouseAdapter() {
             @Override
-            public void mouseClicked(java.awt.event.MouseEvent e) {
+            public void mouseClicked(MouseEvent e) {
                 if (e.getClickCount() == 2 && bang.rowAtPoint(e.getPoint()) >= 0
                         && bang.columnAtPoint(e.getPoint()) != bang.getColumnCount() - 1) {
                     moChiTiet(hoaDonTai(bang.convertRowIndexToModel(bang.rowAtPoint(e.getPoint()))));
                 }
             }
         });
-        JScrollPane cuon = new JScrollPane(bang);
-        cuon.setPreferredSize(new Dimension(400, 220));
-        cuon.setBorder(BorderFactory.createLineBorder(ViewTheme.VIEN));
-        cuon.getViewport().setBackground(ViewTheme.TRANG);
-        dem.setFont(ViewTheme.FONT_NHO);
-        dem.setForeground(ViewTheme.CHU_NHAT);
+        JScrollPane scrollBang = new JScrollPane(bang);
+        scrollBang.setPreferredSize(new Dimension(400, 220));
+        scrollBang.setBorder(BorderFactory.createLineBorder(ViewTheme.VIEN));
+        scrollBang.getViewport().setBackground(ViewTheme.TRANG);
+        lblDem.setFont(ViewTheme.FONT_NHO);
+        lblDem.setForeground(ViewTheme.CHU_NHAT);
 
-        the.add(dau, BorderLayout.NORTH);
-        JPanel giua = new JPanel(new BorderLayout(0, 8));
-        giua.setOpaque(false);
-        giua.add(loc, BorderLayout.NORTH);
-        giua.add(cuon, BorderLayout.CENTER);
-        giua.add(dem, BorderLayout.SOUTH);
-        the.add(giua, BorderLayout.CENTER);
+        the.add(panelDau, BorderLayout.NORTH);
+        JPanel panelGiua = new JPanel(new BorderLayout(0, 8));
+        panelGiua.setOpaque(false);
+        panelGiua.add(panelLoc, BorderLayout.NORTH);
+        panelGiua.add(scrollBang, BorderLayout.CENTER);
+        panelGiua.add(lblDem, BorderLayout.SOUTH);
+        the.add(panelGiua, BorderLayout.CENTER);
         setLayout(new BorderLayout());
         add(the, BorderLayout.NORTH);
 
@@ -131,23 +137,23 @@ public class HoaDonPanel extends JPanel {
         for (HoaDonView hd : HoaDonDuLieu.tatCa()) {
             model.addRow(ViewTheme.dongBang(dongHoaDon(hd), true, true));
         }
-        dem.setText(ViewTheme.demDong(HoaDonDuLieu.tatCa().isEmpty() ? 0 : 1,
+        lblDem.setText(ViewTheme.demDong(HoaDonDuLieu.tatCa().isEmpty() ? 0 : 1,
                 HoaDonDuLieu.tatCa().size(), HoaDonDuLieu.tatCa().size()));
     }
 
     public void moLapHoaDon(String maKh, List<HangDT> goiY) {
         Window w = SwingUtilities.getWindowAncestor(this);
-        JDialog d = new JDialog(w, "Lập hóa đơn", java.awt.Dialog.ModalityType.APPLICATION_MODAL);
+        JDialog d = new JDialog(w, "Lập hóa đơn", Dialog.ModalityType.APPLICATION_MODAL);
         d.setLayout(new BorderLayout());
 
         JTextField ngay = o(HoaDonDuLieu.homNay());
-        JComboBox<String> khach = new JComboBox<String>(DuLieuMau.KHACH);
+        JComboBox<String> khach = new JComboBox<String>(DuLieuMau.dsKhach());
         ViewTheme.vienHop(khach);
         khach.setPreferredSize(new Dimension(360, 34));
         if (maKh != null) {
             chonKhach(khach, maKh);
         }
-        JComboBox<String> bacSi = new JComboBox<String>(DuLieuMau.BAC_SI);
+        JComboBox<String> bacSi = new JComboBox<String>(DuLieuMau.dsBacSi());
         ViewTheme.vienHop(bacSi);
         JTextField chietKhau = o("0");
         JTextField ghiChu = o("Xuất từ kế hoạch điều trị");
@@ -334,7 +340,7 @@ public class HoaDonPanel extends JPanel {
             return;
         }
         Window w = SwingUtilities.getWindowAncestor(this);
-        JDialog d = new JDialog(w, "Chi tiết hóa đơn " + hd.ma, java.awt.Dialog.ModalityType.APPLICATION_MODAL);
+        JDialog d = new JDialog(w, "Chi tiết hóa đơn " + hd.ma, Dialog.ModalityType.APPLICATION_MODAL);
         d.setLayout(new BorderLayout());
 
         JPanel dau = new JPanel(new GridLayout(0, 4, 10, 8));
@@ -420,14 +426,13 @@ public class HoaDonPanel extends JPanel {
     }
 
     private void loc() {
-        String tu = tim.getText().trim();
-        javax.swing.table.TableRowSorter<DefaultTableModel> sx =
-                new javax.swing.table.TableRowSorter<DefaultTableModel>(model);
-        bang.setRowSorter(sx);
-        if (tu.isEmpty()) {
-            sx.setRowFilter(null);
+        String tuKhoa = txtTim.getText().trim();
+        TableRowSorter<DefaultTableModel> sorter = new TableRowSorter<DefaultTableModel>(model);
+        bang.setRowSorter(sorter);
+        if (tuKhoa.isEmpty()) {
+            sorter.setRowFilter(null);
         } else {
-            sx.setRowFilter(javax.swing.RowFilter.regexFilter("(?i)" + java.util.regex.Pattern.quote(tu)));
+            sorter.setRowFilter(RowFilter.regexFilter("(?i)" + Pattern.quote(tuKhoa)));
         }
     }
 

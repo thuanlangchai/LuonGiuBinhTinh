@@ -1,7 +1,7 @@
 package repository.impl;
 
 import entity.ChiTietNhapKho;
-import i_repository.ChiTietNhapKho_IDAO;
+import repository.ChiTietNhapKho_IDAO;
 import java.util.List;
 import mapper.ChiTietNhapKhoMapper;
 

@@ -1,7 +1,7 @@
 package repository.impl;
 
 import entity.PhieuXuatKho;
-import i_repository.PhieuXuatKho_IDAO;
+import repository.PhieuXuatKho_IDAO;
 import java.util.List;
 import mapper.PhieuXuatKhoMapper;
 

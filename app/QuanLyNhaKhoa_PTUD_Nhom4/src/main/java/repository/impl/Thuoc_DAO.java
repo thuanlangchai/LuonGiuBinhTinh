@@ -1,7 +1,7 @@
 package repository.impl;
 
 import entity.Thuoc;
-import i_repository.Thuoc_IDAO;
+import repository.Thuoc_IDAO;
 import java.util.List;
 import mapper.ThuocMapper;
 

@@ -1,7 +1,7 @@
 package repository.impl;
 
 import entity.ChiNhanh;
-import i_repository.ChiNhanh_IDAO;
+import repository.ChiNhanh_IDAO;
 import java.util.List;
 import mapper.ChiNhanhMapper;
 

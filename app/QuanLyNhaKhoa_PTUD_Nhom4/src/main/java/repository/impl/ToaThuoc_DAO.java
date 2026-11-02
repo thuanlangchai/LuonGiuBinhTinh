@@ -1,7 +1,7 @@
 package repository.impl;
 
 import entity.ToaThuoc;
-import i_repository.ToaThuoc_IDAO;
+import repository.ToaThuoc_IDAO;
 import java.util.List;
 import mapper.ToaThuocMapper;
 
@@ -40,5 +40,11 @@ public class ToaThuoc_DAO extends AbstractDAO<ToaThuoc> implements ToaThuoc_IDAO
     public void delete(String maToaThuoc) {
         String sql = "DELETE FROM ToaThuoc WHERE maToaThuoc = ?";
         delete(sql, maToaThuoc);
+    }
+
+    @Override
+    public List<ToaThuoc> findByMaKH(String maKH) {
+        String sql = "SELECT * FROM ToaThuoc WHERE maKH = ?";
+        return findAll(sql, new ToaThuocMapper(), maKH);
     }
 }

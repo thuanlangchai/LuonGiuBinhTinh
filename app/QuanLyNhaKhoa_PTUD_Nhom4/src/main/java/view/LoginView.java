@@ -1,5 +1,6 @@
 package view;
 
+import entity.TaiKhoan;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
@@ -13,7 +14,9 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JPasswordField;
 import javax.swing.JTextField;
+import javax.swing.SwingWorker;
 import javax.swing.border.EmptyBorder;
+import service.impl.TaiKhoan_Service;
 
 public class LoginView extends JFrame {
 
@@ -21,6 +24,7 @@ public class LoginView extends JFrame {
     private final JPasswordField txtMatKhau = new JPasswordField(22);
     private final JButton btnDangNhap = new JButton("Đăng nhập");
     private final JButton btnThoat = new JButton("Thoát");
+    private final TaiKhoan_Service taiKhoanService = new TaiKhoan_Service();
 
     public LoginView() {
         setTitle("Đăng nhập - Quản lý nha khoa");
@@ -29,37 +33,37 @@ public class LoginView extends JFrame {
         setMinimumSize(new Dimension(420, 420));
         setLocationRelativeTo(null);
 
-        JPanel goc = new JPanel(new BorderLayout());
-        goc.setBackground(ViewTheme.NEN_TIM);
+        JPanel panelGoc = new JPanel(new BorderLayout());
+        panelGoc.setBackground(ViewTheme.NEN_TIM);
 
-        JPanel dau = new JPanel(new GridLayout(2, 1));
-        dau.setBackground(ViewTheme.XANH);
-        dau.setBorder(new EmptyBorder(28, 16, 28, 16));
-        JLabel logo = new JLabel("MAYDENTAL", JLabel.CENTER);
-        logo.setFont(new Font("Segoe UI", Font.BOLD, 28));
-        logo.setForeground(Color.WHITE);
-        JLabel phu = new JLabel("Hệ thống quản lý nha khoa", JLabel.CENTER);
-        phu.setFont(ViewTheme.FONT);
-        phu.setForeground(new Color(224, 242, 254));
-        dau.add(logo);
-        dau.add(phu);
+        JPanel panelDau = new JPanel(new GridLayout(2, 1));
+        panelDau.setBackground(ViewTheme.XANH);
+        panelDau.setBorder(new EmptyBorder(28, 16, 28, 16));
+        JLabel nhanLogo = new JLabel("MAYDENTAL", JLabel.CENTER);
+        nhanLogo.setFont(new Font("Segoe UI", Font.BOLD, 28));
+        nhanLogo.setForeground(Color.WHITE);
+        JLabel nhanPhu = new JLabel("Hệ thống quản lý nha khoa", JLabel.CENTER);
+        nhanPhu.setFont(ViewTheme.FONT);
+        nhanPhu.setForeground(new Color(224, 242, 254));
+        panelDau.add(nhanLogo);
+        panelDau.add(nhanPhu);
 
-        JPanel the = new JPanel(new BorderLayout(0, 16));
-        the.setBackground(Color.WHITE);
-        the.setBorder(BorderFactory.createCompoundBorder(
+        JPanel panelThe = new JPanel(new BorderLayout(0, 16));
+        panelThe.setBackground(Color.WHITE);
+        panelThe.setBorder(BorderFactory.createCompoundBorder(
                 BorderFactory.createLineBorder(ViewTheme.VIEN),
                 new EmptyBorder(24, 28, 24, 28)));
-        JLabel tieu = ViewTheme.tieuDeTrang("Đăng nhập");
-        JPanel form = new JPanel(new GridLayout(4, 1, 0, 6));
-        form.setOpaque(false);
-        JLabel lbTen = ViewTheme.chuPhu("Tên đăng nhập");
-        JLabel lbMk = ViewTheme.chuPhu("Mật khẩu");
+        JLabel nhanTieuDe = ViewTheme.tieuDeTrang("Đăng nhập");
+        JPanel panelForm = new JPanel(new GridLayout(4, 1, 0, 6));
+        panelForm.setOpaque(false);
+        JLabel nhanTen = ViewTheme.chuPhu("Tên đăng nhập");
+        JLabel nhanMatKhau = ViewTheme.chuPhu("Mật khẩu");
         ViewTheme.vienNhap(txtTen);
         ViewTheme.vienNhap(txtMatKhau);
-        form.add(lbTen);
-        form.add(txtTen);
-        form.add(lbMk);
-        form.add(txtMatKhau);
+        panelForm.add(nhanTen);
+        panelForm.add(txtTen);
+        panelForm.add(nhanMatKhau);
+        panelForm.add(txtMatKhau);
         ViewTheme.nutChinh(btnDangNhap);
         ViewTheme.nutMau(btnThoat, new Color(232, 109, 109), Color.WHITE);
         Dimension kichThuocNut = new Dimension(160, 42);
@@ -70,36 +74,61 @@ public class LoginView extends JFrame {
         btnDangNhap.addActionListener(e -> dangNhap());
         btnThoat.addActionListener(e -> thoat());
 
-        JPanel nut = new JPanel(new GridLayout(1, 2, 16, 0));
-        nut.setOpaque(false);
-        nut.setBorder(new EmptyBorder(18, 0, 0, 0));
-        nut.add(btnDangNhap);
-        nut.add(btnThoat);
+        JPanel panelNut = new JPanel(new GridLayout(1, 2, 16, 0));
+        panelNut.setOpaque(false);
+        panelNut.setBorder(new EmptyBorder(18, 0, 0, 0));
+        panelNut.add(btnDangNhap);
+        panelNut.add(btnThoat);
 
-        the.add(tieu, BorderLayout.NORTH);
-        the.add(form, BorderLayout.CENTER);
-        the.add(nut, BorderLayout.SOUTH);
+        panelThe.add(nhanTieuDe, BorderLayout.NORTH);
+        panelThe.add(panelForm, BorderLayout.CENTER);
+        panelThe.add(panelNut, BorderLayout.SOUTH);
 
-        JPanel giua = new JPanel(new BorderLayout());
-        giua.setOpaque(false);
-        giua.setBorder(new EmptyBorder(28, 36, 36, 36));
-        giua.add(the, BorderLayout.CENTER);
+        JPanel panelGiua = new JPanel(new BorderLayout());
+        panelGiua.setOpaque(false);
+        panelGiua.setBorder(new EmptyBorder(28, 36, 36, 36));
+        panelGiua.add(panelThe, BorderLayout.CENTER);
 
-        goc.add(dau, BorderLayout.NORTH);
-        goc.add(giua, BorderLayout.CENTER);
-        setContentPane(goc);
+        panelGoc.add(panelDau, BorderLayout.NORTH);
+        panelGoc.add(panelGiua, BorderLayout.CENTER);
+        setContentPane(panelGoc);
         getRootPane().setDefaultButton(btnDangNhap);
     }
 
     private void dangNhap() {
-        String ten = txtTen.getText().trim();
-        String mk = String.valueOf(txtMatKhau.getPassword());
-        if (ten.isEmpty() || mk.isEmpty()) {
+        String tenDangNhap = txtTen.getText().trim();
+        String matKhau = String.valueOf(txtMatKhau.getPassword());
+        if (tenDangNhap.isEmpty() || matKhau.isEmpty()) {
             JOptionPane.showMessageDialog(this, "Vui lòng nhập đủ tên đăng nhập và mật khẩu.", "Chú ý", JOptionPane.WARNING_MESSAGE);
             return;
         }
-        dispose();
-        new TrangChuView(ten).setVisible(true);
+        btnDangNhap.setEnabled(false);
+        new SwingWorker<TaiKhoan, Void>() {
+            @Override
+            protected TaiKhoan doInBackground() {
+                return taiKhoanService.dangNhap(tenDangNhap, matKhau);
+            }
+
+            @Override
+            protected void done() {
+                btnDangNhap.setEnabled(true);
+                try {
+                    TaiKhoan taiKhoan = get();
+                    if (taiKhoan == null) {
+                        JOptionPane.showMessageDialog(LoginView.this,
+                                "Sai tên đăng nhập hoặc mật khẩu, hoặc tài khoản bị khóa.",
+                                "Đăng nhập thất bại", JOptionPane.ERROR_MESSAGE);
+                        return;
+                    }
+                    dispose();
+                    new TrangChuView(taiKhoan.getTenDangNhap()).setVisible(true);
+                } catch (Exception ex) {
+                    JOptionPane.showMessageDialog(LoginView.this,
+                            "Không kết nối được cơ sở dữ liệu.\n" + ex.getMessage(),
+                            "Lỗi", JOptionPane.ERROR_MESSAGE);
+                }
+            }
+        }.execute();
     }
 
     private void thoat() {

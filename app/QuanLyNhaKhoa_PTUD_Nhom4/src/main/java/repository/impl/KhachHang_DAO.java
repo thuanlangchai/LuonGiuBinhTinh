@@ -1,7 +1,7 @@
 package repository.impl;
 
 import entity.KhachHang;
-import i_repository.KhachHang_IDAO;
+import repository.KhachHang_IDAO;
 import java.util.List;
 import mapper.KhachHangMapper;
 
