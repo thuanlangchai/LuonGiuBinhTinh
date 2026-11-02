@@ -618,7 +618,7 @@ public class KeHoachDieuTriPanel extends JPanel {
 
     private void setDonGia() {
         int soLuong = Integer.parseInt(txtSoLuong.getText());
-        long donGia = giaDichVu(String.valueOf(cboDichVu.getSelectedItem()));
+        long donGia = giaDichVu(String.valueOf(cmbDichVu.getSelectedItem()));
         long sum = donGia * soLuong;
         txtDonGia.setText(ViewTheme.tien(sum));
     }
