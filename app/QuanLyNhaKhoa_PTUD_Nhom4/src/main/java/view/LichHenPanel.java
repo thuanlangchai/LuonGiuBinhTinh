@@ -170,11 +170,11 @@ public class LichHenPanel extends JPanel {
     }
 
     private JPanel taoThanh() {
-        JPanel goc = new JPanel(new BorderLayout(0, 8));
-        goc.setOpaque(false);
+        JPanel pnlpnlGoc = new JPanel(new BorderLayout(0, 8));
+        pnlpnlGoc.setOpaque(false);
 
-        JPanel loc = new JPanel(new BorderLayout());
-        loc.setOpaque(false);
+        JPanel pnlLoc = new JPanel(new BorderLayout());
+        pnlLoc.setOpaque(false);
         JPanel trai = new JPanel(new FlowLayout(FlowLayout.LEFT, 10, 0));
         trai.setOpaque(false);
         String[] tenDem = {"Tổng cộng", "Đang chờ", "Đang xử lý", "Hoàn thành", "Huỷ", "Chờ lâu"};
@@ -191,10 +191,10 @@ public class LichHenPanel extends JPanel {
         trai.add(txtTimBacSi);
         ViewTheme.vienHop(cboTrangThai);
         trai.add(cboTrangThai);
-        loc.add(trai, BorderLayout.CENTER);
+        pnlLoc.add(trai, BorderLayout.CENTER);
         JPanel huy = new JPanel(new FlowLayout(FlowLayout.RIGHT, 6, 0));
         huy.setOpaque(false);
-        loc.add(huy, BorderLayout.EAST);
+        pnlLoc.add(huy, BorderLayout.EAST);
 
         JPanel dieuHuong = new JPanel(new BorderLayout());
         dieuHuong.setOpaque(false);
@@ -237,9 +237,9 @@ public class LichHenPanel extends JPanel {
         dieuHuong.add(giua, BorderLayout.CENTER);
         dieuHuong.add(che, BorderLayout.EAST);
 
-        goc.add(loc, BorderLayout.NORTH);
-        goc.add(dieuHuong, BorderLayout.SOUTH);
-        return goc;
+        pnlLoc.add(pnlLoc, BorderLayout.NORTH);
+        pnlLoc.add(dieuHuong, BorderLayout.SOUTH);
+        return pnlLoc;
     }
 
     private void doiNgay(int buoc) {
@@ -279,12 +279,12 @@ public class LichHenPanel extends JPanel {
             if (CHE_DO[i].equals(cheDo)) {
                 nutCheDo[i].setBackground(ViewTheme.XANH);
                 nutCheDo[i].setForeground(Color.WHITE);
-                nutCheDo[i].putClientProperty("nenGoc", ViewTheme.XANH);
+                nutCheDo[i].putClientProperty("nenpnlGoc", ViewTheme.XANH);
             } else {
                 Color xam = new Color(226, 230, 234);
                 nutCheDo[i].setBackground(xam);
                 nutCheDo[i].setForeground(ViewTheme.CHU);
-                nutCheDo[i].putClientProperty("nenGoc", xam);
+                nutCheDo[i].putClientProperty("nenpnlGoc", xam);
             }
         }
     }
@@ -424,7 +424,7 @@ public class LichHenPanel extends JPanel {
     }
 
     private JPanel cotNgay(LocalDate d, List<CuocHen> hien) {
-        JPanel cot = new JPanel(null) {
+        JPanel pnlCot = new JPanel(null) {
             @Override
             protected void paintComponent(Graphics g) {
                 super.paintComponent(g);
@@ -440,12 +440,12 @@ public class LichHenPanel extends JPanel {
                 }
             }
         };
-        cot.setBackground(ViewTheme.TRANG);
-        cot.setPreferredSize(new Dimension(180, SO_O * CAO_O));
-        cot.addMouseListener(new MouseAdapter() {
+        pnlCot.setBackground(ViewTheme.TRANG);
+        pnlCot.setPreferredSize(new Dimension(180, SO_O * CAO_O));
+        pnlCot.addMouseListener(new MouseAdapter() {
             @Override
             public void mousePressed(MouseEvent e) {
-                if (e.getComponent() != cot) {
+                if (e.getComponent() != pnlCot) {
                     return;
                 }
                 int o = Math.max(0, Math.min(SO_O - 1, e.getY() / CAO_O));
@@ -479,20 +479,20 @@ public class LichHenPanel extends JPanel {
                     moForm(c, c.batDau);
                 }
             });
-            cot.add(the);
+            pnlCot.add(the);
         }
-        cot.addComponentListener(new ComponentAdapter() {
+        pnlCot.addComponentListener(new ComponentAdapter() {
             @Override
             public void componentResized(ComponentEvent e) {
-                int rong = Math.max(48, cot.getWidth() - 12);
-                for (Component c : cot.getComponents()) {
+                int rong = Math.max(48, pnlCot.getWidth() - 12);
+                for (Component c : pnlCot.getComponents()) {
                     if (c instanceof JPanel && Boolean.TRUE.equals(((JPanel) c).getClientProperty("khoi"))) {
                         c.setSize(rong, c.getHeight());
                     }
                 }
             }
         });
-        return cot;
+        return pnlCot;
     }
 
     private JPanel veKanban() {
@@ -504,9 +504,9 @@ public class LichHenPanel extends JPanel {
             new Color(46, 140, 70),
             new Color(186, 104, 200)
         };
-        JPanel luoi = new JPanel(new GridLayout(1, 5, 8, 8));
-        luoi.setOpaque(false);
-        luoi.setBorder(new EmptyBorder(8, 0, 0, 0));
+        JPanel pnlLuoi = new JPanel(new GridLayout(1, 5, 8, 8));
+        pnlLuoi.setOpaque(false);
+        pnlLuoi.setBorder(new EmptyBorder(8, 0, 0, 0));
         List<CuocHen> hien = dangXem();
         for (int i = 0; i < cot.length; i++) {
             JPanel the = new JPanel(new BorderLayout(0, 8));
@@ -549,9 +549,9 @@ public class LichHenPanel extends JPanel {
             the.add(ten, BorderLayout.NORTH);
             the.add(new JScrollPane(dsThe), BorderLayout.CENTER);
             the.add(them, BorderLayout.SOUTH);
-            luoi.add(the);
+            pnlLuoi.add(the);
         }
-        return luoi;
+        return pnlLuoi;
     }
 
     private JScrollPane veBang() {
@@ -570,13 +570,13 @@ public class LichHenPanel extends JPanel {
                 c.trangThai
             });
         }
-        JTable bang = new JTable(model);
-        ViewTheme.trangTriBang(bang);
-        bang.addMouseListener(new MouseAdapter() {
+        JTable tblBang = new JTable(model);
+        ViewTheme.trangTriBang(tblBang);
+        tblBang.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
-                if (e.getClickCount() == 2 && bang.getSelectedRow() >= 0) {
-                    int i = bang.convertRowIndexToModel(bang.getSelectedRow());
+                if (e.getClickCount() == 2 && tblBang.getSelectedRow() >= 0) {
+                    int i = tblBang.convertRowIndexToModel(tblBang.getSelectedRow());
                     List<CuocHen> hien = dangXem();
                     if (i >= 0 && i < hien.size()) {
                         moForm(hien.get(i), hien.get(i).batDau);
@@ -584,28 +584,28 @@ public class LichHenPanel extends JPanel {
                 }
             }
         });
-        JScrollPane cuon = new JScrollPane(bang);
-        cuon.setBorder(BorderFactory.createLineBorder(ViewTheme.VIEN));
-        cuon.getViewport().setBackground(ViewTheme.TRANG);
-        return cuon;
+        JScrollPane srcCuon = new JScrollPane(tblBang);
+        srcCuon.setBorder(BorderFactory.createLineBorder(ViewTheme.VIEN));
+        srcCuon.getViewport().setBackground(ViewTheme.TRANG);
+        return srcCuon;
     }
 
     private JPanel veThang() {
-        JPanel goc = new JPanel(new BorderLayout(0, 8));
-        goc.setOpaque(false);
-        JPanel luoi = new JPanel(new GridLayout(0, 7, 6, 6));
-        luoi.setOpaque(false);
+        JPanel pnlGoc = new JPanel(new BorderLayout(0, 8));
+        pnlGoc.setOpaque(false);
+        JPanel pnlLuoi = new JPanel(new GridLayout(0, 7, 6, 6));
+        pnlLuoi.setOpaque(false);
         String[] nhan = {"T2", "T3", "T4", "T5", "T6", "T7", "CN"};
         for (String n : nhan) {
             JLabel lbl = new JLabel(n, SwingConstants.CENTER);
             lbl.setFont(ViewTheme.FONT_DAM);
             lbl.setForeground(ViewTheme.CHU_NHAT);
-            luoi.add(lbl);
+            pnlLuoi.add(lbl);
         }
         LocalDate dau = ngay.withDayOfMonth(1);
         int lech = dau.getDayOfWeek().getValue() - 1;
         for (int i = 0; i < lech; i++) {
-            luoi.add(new JLabel());
+        	pnlLuoi.add(new JLabel());
         }
         int soNgay = ngay.lengthOfMonth();
         for (int i = 1; i <= soNgay; i++) {
@@ -627,10 +627,10 @@ public class LichHenPanel extends JPanel {
                 cheDo = "ngay";
                 ve();
             });
-            luoi.add(btnO);
+            pnlLuoi.add(btnO);
         }
-        goc.add(luoi, BorderLayout.NORTH);
-        return goc;
+        pnlGoc.add(pnlLuoi, BorderLayout.NORTH);
+        return pnlGoc;
     }
 
     private void moForm(CuocHen cu, LocalDateTime luc) {
@@ -641,8 +641,8 @@ public class LichHenPanel extends JPanel {
         HopThoai hopThoai = new HopThoai(cuaSoCha(), cu == null ? "Thêm lịch hẹn" : "Cập nhật lịch hẹn",
                 cu == null ? "Thêm" : "Lưu");
         JComboBox<String> cmbKh = hopThoai.chon("Khách hàng", false, dsKhachCombo());
-        JTextField ghi = hopThoai.chu("Ghi chú", cu == null ? "" : cu.ghiChu, false);
-        JTextField batDau = hopThoai.chu("Bắt đầu", (cu == null ? luc : cu.batDau).format(F_NGAY_GIO), true);
+        JTextField txtGhi = hopThoai.chu("Ghi chú", cu == null ? "" : cu.ghiChu, false);
+        JTextField txtBatDau = hopThoai.chu("Bắt đầu", (cu == null ? luc : cu.batDau).format(F_NGAY_GIO), true);
         JComboBox<String> cmbDuKien = hopThoai.chon("Thời lượng (phút)", true, "15", "30", "45", "60", "90", "120");
         if (cu != null) {
         	cmbDuKien.setSelectedItem(String.valueOf(cu.phut));
@@ -660,7 +660,7 @@ public class LichHenPanel extends JPanel {
         hopThoai.hien(() -> {
             LocalDateTime gio;
             try {
-                gio = LocalDateTime.parse(batDau.getText().trim(), F_NGAY_GIO);
+                gio = LocalDateTime.parse(txtBatDau.getText().trim(), F_NGAY_GIO);
             } catch (DateTimeParseException ex) {
                 JOptionPane.showMessageDialog(this, "Thời gian theo dạng yyyy-MM-dd HH:mm");
                 return;
@@ -689,7 +689,7 @@ public class LichHenPanel extends JPanel {
             entity.setThoiLuongPhut(phut);
             entity.setMaBacSi(maBacSiTheoTen(String.valueOf(cmbBs.getSelectedItem())));
             entity.setMaPhuTa(maBacSiTheoTen(String.valueOf(cmbPhuTa.getSelectedItem())));
-            entity.setGhiChu(ghi.getText().trim());
+            entity.setGhiChu(txtGhi.getText().trim());
             entity.setTrangThai(String.valueOf(cmbTt.getSelectedItem()));
             try {
                 if (cu == null) {
