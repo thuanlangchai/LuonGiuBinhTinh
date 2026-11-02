@@ -32,8 +32,8 @@ public class DanhMucPanel extends JPanel {
         pnlThe.setBorder(new EmptyBorder(12, 14, 16, 14));
         pnlThe.add(ViewTheme.tieuDeTrang("Danh mục"), BorderLayout.NORTH);
 
-        JTextField tim = new ONhap("Search for objects by name", 30);
-        tim.setPreferredSize(new Dimension(400, 34));
+        JTextField txtTim = new ONhap("Search for objects by name", 30);
+        txtTim.setPreferredSize(new Dimension(400, 34));
         JPanel pnlLuoi = new JPanel(new GridBagLayout());
         pnlLuoi.setOpaque(false);
         JPanel pnlCot1 = cot(
@@ -85,26 +85,26 @@ public class DanhMucPanel extends JPanel {
         gbc.gridx = 2;
         pnlLuoi.add(pnlCot3, gbc);
 
-        tim.getDocument().addDocumentListener(new DocumentListener() {
+        txtTim.getDocument().addDocumentListener(new DocumentListener() {
             @Override
             public void insertUpdate(DocumentEvent e) {
-                loc(pnlLuoi, tim.getText());
+                loc(pnlLuoi, txtTim.getText());
             }
 
             @Override
             public void removeUpdate(DocumentEvent e) {
-                loc(pnlLuoi, tim.getText());
+                loc(pnlLuoi, txtTim.getText());
             }
 
             @Override
             public void changedUpdate(DocumentEvent e) {
-                loc(pnlLuoi, tim.getText());
+                loc(pnlLuoi, txtTim.getText());
             }
         });
 
         JPanel pnlGiua = new JPanel(new BorderLayout(0, 10));
         pnlGiua.setOpaque(false);
-        pnlGiua.add(tim, BorderLayout.NORTH);
+        pnlGiua.add(txtTim, BorderLayout.NORTH);
         pnlGiua.add(pnlLuoi, BorderLayout.CENTER);
         pnlThe.add(pnlGiua, BorderLayout.CENTER);
         setLayout(new BorderLayout());
