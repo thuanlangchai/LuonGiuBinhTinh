@@ -1,0 +1,71 @@
+Viết script khởi tạo cơ sở dữ liệu (Schema & Seed Data)
+Prompt:
+
+Đề xuất cấu trúc script SQL Server (DDL) để tạo các bảng cho hệ thống quản lý phòng khám nha khoa, bao gồm khóa chính, khóa ngoại, các ràng buộc (Constraint) và dữ liệu mẫu ban đầu (Seed Data) cho tài khoản, dịch vụ.
+
+Kết quả AI trả về: Đoạn mã T-SQL tạo bảng có quan hệ 1-N, N-N, thiết lập khóa ngoại ON DELETE RESTRICT hoặc CASCADE hợp lý và dữ liệu mẫu dạng INSERT INTO.
+
+Phần giữ nguyên: Cấu trúc bảng quan hệ cơ bản và dữ liệu mẫu khởi tạo ban đầu.
+
+Phần sinh viên chỉnh sửa: Tự rà soát và bổ sung các ràng buộc kiểm tra (CHECK) cho giá tiền, số lượng; chỉnh sửa lại dữ liệu mẫu tiếng Việt có dấu chuẩn xác phù hợp với yêu cầu thực tế của đồ án nhóm.
+
+Lý do chỉnh sửa: Tránh lỗi xung đột ràng buộc khi chạy khởi tạo database lần đầu trên máy của giảng viên hoặc các thành viên khác.
+
+Phân bổ: AI 5 đơn vị; sinh viên 5 đơn vị.
+Lần 7 — Kiểm thử kết nối, hiệu năng truy vấn và tài liệu kỹ thuật
+Prompt:
+
+Hãy gợi ý danh sách các ca kiểm thử (test cases) để kiểm tra độ bền vững của tầng kết nối CSDL (như mất kết nối giữa chừng, tràn pool kết nối, lỗi transaction rollback) và cấu trúc tài liệu kỹ thuật hướng dẫn cấu hình DAO.
+
+Kết quả AI trả về: Danh sách ca kiểm thử giả lập ngắt mạng, quá tải kết nối đồng thời, và mẫu mục lục tài liệu kỹ thuật cho tầng Data Access.
+
+Phần giữ nguyên: Các kịch bản kiểm thử biên và kiểm thử lỗi hệ thống quan trọng.
+
+Phần sinh viên thực hiện: Trực tiếp viết chương trình kiểm thử kết nối đa luồng (multi-threading test), ngắt dịch vụ SQL Server thủ công để kiểm tra khả năng tự hồi phục hoặc báo lỗi của HikariCP; hoàn thiện tài liệu hướng dẫn cài đặt CSDL cho toàn bộ Nhóm 8.
+
+Lý do chỉnh sửa: Kiểm chứng thực tế trên môi trường chạy thật của đồ án thay vì chỉ dựa vào lý thuyết do AI cung cấp.
+
+Phân bổ: AI 2 đơn vị; sinh viên 8 đơn vị.
+
+Lần 3 — Xây dựng lớp DAO cơ sở (Base DAO) và mẫu truy vấn chung
+Prompt:
+
+Hãy gợi ý thiết kế lớp BaseDAO hoặc các tiện ích hỗ trợ thực thi câu lệnh SQL (SELECT, INSERT, UPDATE, DELETE) bằng PreparedStatement để hạn chế lặp code và chống SQL Injection trong Java JDBC.
+
+Kết quả AI trả về: Mẫu lớp trừu tượng hoặc tiện ích chứa các phương thức generic thực thi truy vấn, nhận vào câu lệnh SQL và danh sách tham số dạng mảng hoặc varargs.
+
+Phần giữ nguyên: Sử dụng PreparedStatement cho mọi câu lệnh SQL và cách đóng tài nguyên (try-with-resources).
+
+Phần sinh viên chỉnh sửa: Viết lại cơ chế truyền tham số linh hoạt hơn để hỗ trợ các kiểu dữ liệu phức tạp (BigDecimal, Timestamp); tùy chỉnh cách ánh xạ ResultSet thành danh sách đối tượng cụ thể theo từng DAO con.
+
+Lý do chỉnh sửa: Tránh lỗi ép kiểu tự động của AI và tối ưu hóa việc tái sử dụng mã nguồn cho các module khác trong nhóm.
+
+Phân bổ: AI 8 đơn vị; sinh viên 7 đơn vị.
+Lần 2 — Thiết kế cấu hình kết nối JDBC và Connection Pooling
+Prompt:
+
+Hãy đề xuất mẫu thiết lập kết nối JDBC đến SQL Server sử dụng Connection Pooling (ví dụ HikariCP) để tối ưu hiệu suất ứng dụng desktop Java Swing. Cung cấp file cấu hình db.properties mẫu và lớp DatabaseConnection dạng Singleton hoặc quản lý pool an toàn.
+
+Kết quả AI trả về: Đoạn mã cấu hình HikariConfig, HikariDataSource, cách đọc file properties và phương thức getConnection() tĩnh.
+
+Phần giữ nguyên: Mô hình sử dụng HikariCP để quản lý kết nối hiệu quả và mẫu đọc thông tin cấu hình từ file bên ngoài.
+
+Phần sinh viên chỉnh sửa: Tự cấu hình chuỗi kết nối (jdbc:sqlserver://...) đúng với tên instance SQL Server cục bộ; bổ sung xử lý đóng nguồn (shutdown hook) khi ứng dụng tắt; mã hóa thông tin tài khoản hoặc cấu hình bảo mật file properties.
+
+Lý do chỉnh sửa: Đảm bảo ứng dụng chạy mượt trên máy cá nhân của các thành viên trong nhóm và tránh rò rỉ tài nguyên kết nối.
+
+Phân bổ: AI 10 đơn vị; sinh viên 5 đơn vị.
+Lần 1 — Phân tích cấu trúc cơ sở dữ liệu và ánh xạ thực thể
+Prompt:
+
+Tôi phụ trách tầng kết nối và truy xuất dữ liệu (Data Access Layer) cho ứng dụng quản lý phòng khám nha khoa bằng Java Swing và JDBC kết nối SQL Server. Hãy gợi ý cách ánh xạ các bảng chính (Bệnh nhân, Bác sĩ, Dịch vụ, Lịch hẹn, Hóa đơn) sang các lớp Model trong Java và nguyên tắc đặt tên chuẩn.
+
+Kết quả AI trả về: Gợi ý cấu trúc package model, cách dùng LocalDate/LocalDateTime thay vì java.sql.Date cũ, và quy tắc đặt tên thuộc tính camelCase khớp với snake_case trong cột CSDL.
+
+Phần giữ nguyên: Quy tắc chuyển đổi kiểu dữ liệu thời gian hiện đại (java.time) và cách tổ chức package model.
+
+Phần sinh viên chỉnh sửa: Tự đối chiếu khóa chính (Primary Key), khóa ngoại (Foreign Key) thực tế của nhóm; bổ sung các trường định danh UUID hoặc kiểu số tự tăng theo schema thực tế của đồ án; thêm các phương thức getter/setter và constructor phù hợp.
+
+Lý do chỉnh sửa: Bảo đảm Model khớp hoàn toàn với script tạo bảng SQL Server mà nhóm đã thống nhất từ trước.
+
+Phân bổ: AI 5 đơn vị; sinh viên 10 đơn vị.
