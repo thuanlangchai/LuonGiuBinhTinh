@@ -23,7 +23,7 @@ public class QuanLyView extends JFrame implements DieuHuong {
 
     private final String tenDangNhap;
     private final VungTrang vung = new VungTrang();
-    private final JScrollPane cuon;
+    private final JScrollPane srcCuon;
     private final LichHenPanel lichHen = new LichHenPanel();
     private final KeHoachDieuTriPanel keHoach = new KeHoachDieuTriPanel();
     private final DsKeHoachPanel dsKeHoach;
@@ -66,14 +66,14 @@ public class QuanLyView extends JFrame implements DieuHuong {
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         setLocationRelativeTo(null);
         getContentPane().setBackground(ViewTheme.NEN);
-        cuon = new JScrollPane(vung);
-        cuon.setBorder(BorderFactory.createEmptyBorder());
-        cuon.getViewport().setBackground(ViewTheme.NEN);
-        cuon.getVerticalScrollBar().setUnitIncrement(18);
+        srcCuon = new JScrollPane(vung);
+        srcCuon.setBorder(BorderFactory.createEmptyBorder());
+        srcCuon.getViewport().setBackground(ViewTheme.NEN);
+        srcCuon.getVerticalScrollBar().setUnitIncrement(18);
         JPanel goc = new JPanel(new BorderLayout());
         goc.setBackground(ViewTheme.NEN);
         goc.add(taoDau(), BorderLayout.NORTH);
-        goc.add(cuon, BorderLayout.CENTER);
+        goc.add(srcCuon, BorderLayout.CENTER);
         JLabel banQuyen = new JLabel("Luon Giu Binh Tinh. All rights reserved. Hotline: 0933.942.776", JLabel.CENTER);
         banQuyen.setForeground(Color.WHITE);
         banQuyen.setFont(ViewTheme.FONT_NHO);
@@ -144,11 +144,11 @@ public class QuanLyView extends JFrame implements DieuHuong {
             {"Báo cáo đơn thuốc", "bc:donthuoc"},
             {"Báo cáo thu chi", "bc:thuchi"}
         }));
-        JLabel user = new JLabel(tenDangNhap);
-        user.setForeground(Color.WHITE);
-        user.setFont(ViewTheme.FONT_DAM);
-        user.setBorder(new EmptyBorder(8, 10, 8, 4));
-        panelNav.add(user);
+        JLabel lblUser = new JLabel(tenDangNhap);
+        lblUser.setForeground(Color.WHITE);
+        lblUser.setFont(ViewTheme.FONT_DAM);
+        lblUser.setBorder(new EmptyBorder(8, 10, 8, 4));
+        panelNav.add(lblUser);
 
         dau.add(trai, BorderLayout.WEST);
         dau.add(panelNav, BorderLayout.CENTER);
@@ -161,16 +161,16 @@ public class QuanLyView extends JFrame implements DieuHuong {
     }
 
     private JButton nutMenu(String chu, String[][] muc) {
-        JButton b = new JButton(chu);
-        ViewTheme.nutTrong(b);
-        JPopupMenu pop = new JPopupMenu();
+        JButton btnB = new JButton(chu);
+        ViewTheme.nutTrong(btnB);
+        JPopupMenu pmnPop = new JPopupMenu();
         for (String[] m : muc) {
-            JMenuItem item = new JMenuItem(m[0]);
-            item.addActionListener(e -> chonMuc(m[1]));
-            pop.add(item);
+            JMenuItem nmiItem = new JMenuItem(m[0]);
+            nmiItem.addActionListener(e -> chonMuc(m[1]));
+            pmnPop.add(nmiItem);
         }
-        b.addActionListener(e -> pop.show(b, 0, b.getHeight()));
-        return b;
+        btnB.addActionListener(e -> pmnPop.show(btnB, 0, btnB.getHeight()));
+        return btnB;
     }
 
     private void chonMuc(String ma) {
@@ -228,7 +228,7 @@ public class QuanLyView extends JFrame implements DieuHuong {
                 hien(danhSach);
             }
         }
-        cuon.getVerticalScrollBar().setValue(0);
+        srcCuon.getVerticalScrollBar().setValue(0);
     }
 
     private void hien(JPanel trang) {
