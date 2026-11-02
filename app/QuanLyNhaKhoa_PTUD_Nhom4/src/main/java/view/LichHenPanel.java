@@ -640,23 +640,23 @@ public class LichHenPanel extends JPanel {
     private void moForm(CuocHen cu, LocalDateTime luc, String trangThaiMacDinh) {
         HopThoai hopThoai = new HopThoai(cuaSoCha(), cu == null ? "Thêm lịch hẹn" : "Cập nhật lịch hẹn",
                 cu == null ? "Thêm" : "Lưu");
-        JComboBox<String> kh = hopThoai.chon("Khách hàng", false, dsKhachCombo());
+        JComboBox<String> cmbKh = hopThoai.chon("Khách hàng", false, dsKhachCombo());
         JTextField ghi = hopThoai.chu("Ghi chú", cu == null ? "" : cu.ghiChu, false);
         JTextField batDau = hopThoai.chu("Bắt đầu", (cu == null ? luc : cu.batDau).format(F_NGAY_GIO), true);
-        JComboBox<String> duKien = hopThoai.chon("Thời lượng (phút)", true, "15", "30", "45", "60", "90", "120");
+        JComboBox<String> cmbDuKien = hopThoai.chon("Thời lượng (phút)", true, "15", "30", "45", "60", "90", "120");
         if (cu != null) {
-            duKien.setSelectedItem(String.valueOf(cu.phut));
+        	cmbDuKien.setSelectedItem(String.valueOf(cu.phut));
         }
-        JComboBox<String> bs = hopThoai.chon("Bác sĩ", true, dsBacSiCombo());
+        JComboBox<String> cmbBs = hopThoai.chon("Bác sĩ", true, dsBacSiCombo());
         if (cu != null) {
-            bs.setSelectedItem(cu.bacSi);
+        	cmbBs.setSelectedItem(cu.bacSi);
         }
-        JComboBox<String> phuTa = hopThoai.chon("Phụ tá", false, "", "Nguyễn Khắc Duy", "Hồ Văn Khánh");
+        JComboBox<String> cmbPhuTa = hopThoai.chon("Phụ tá", false, "", "Nguyễn Khắc Duy", "Hồ Văn Khánh");
         if (cu != null && cu.phuTa != null && !cu.phuTa.isEmpty()) {
-            phuTa.setSelectedItem(cu.phuTa);
+        	cmbPhuTa.setSelectedItem(cu.phuTa);
         }
-        JComboBox<String> tt = hopThoai.chon("Trạng thái", false, "Mới", "Xác nhận", "Đang đợi", "Đang điều trị", "Hoàn tất", "Khách ra về", "Hủy bỏ");
-        tt.setSelectedItem(trangThaiMacDinh);
+        JComboBox<String> cmbTt = hopThoai.chon("Trạng thái", false, "Mới", "Xác nhận", "Đang đợi", "Đang điều trị", "Hoàn tất", "Khách ra về", "Hủy bỏ");
+        cmbTt.setSelectedItem(trangThaiMacDinh);
         hopThoai.hien(() -> {
             LocalDateTime gio;
             try {
@@ -665,8 +665,8 @@ public class LichHenPanel extends JPanel {
                 JOptionPane.showMessageDialog(this, "Thời gian theo dạng yyyy-MM-dd HH:mm");
                 return;
             }
-            int phut = Integer.parseInt(String.valueOf(duKien.getSelectedItem()));
-            String tenKhach = String.valueOf(kh.getSelectedItem());
+            int phut = Integer.parseInt(String.valueOf(cmbDuKien.getSelectedItem()));
+            String tenKhach = String.valueOf(cmbKh.getSelectedItem());
             String maKH = "0001";
             if (tenKhach.contains(" - ")) {
                 String[] tach = tenKhach.split(" - ", 2);
@@ -687,10 +687,10 @@ public class LichHenPanel extends JPanel {
             entity.setMaKH(maKH);
             entity.setBatDau(gio);
             entity.setThoiLuongPhut(phut);
-            entity.setMaBacSi(maBacSiTheoTen(String.valueOf(bs.getSelectedItem())));
-            entity.setMaPhuTa(maBacSiTheoTen(String.valueOf(phuTa.getSelectedItem())));
+            entity.setMaBacSi(maBacSiTheoTen(String.valueOf(cmbBs.getSelectedItem())));
+            entity.setMaPhuTa(maBacSiTheoTen(String.valueOf(cmbPhuTa.getSelectedItem())));
             entity.setGhiChu(ghi.getText().trim());
-            entity.setTrangThai(String.valueOf(tt.getSelectedItem()));
+            entity.setTrangThai(String.valueOf(cmbTt.getSelectedItem()));
             try {
                 if (cu == null) {
                     if (lichHenService.add(entity) == null) {
