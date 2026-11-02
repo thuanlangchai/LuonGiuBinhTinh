@@ -616,18 +616,18 @@ public class LichHenPanel extends JPanel {
                     so++;
                 }
             }
-            JButton o = new JButton("<html><center>" + i + (so > 0 ? "<br><font color='#0e84b8'>" + so + " lịch</font>" : "") + "</center></html>");
+            JButton btnO = new JButton("<html><center>" + i + (so > 0 ? "<br><font color='#0e84b8'>" + so + " lịch</font>" : "") + "</center></html>");
             if (d.equals(ngay)) {
-                ViewTheme.nutChinh(o);
+                ViewTheme.nutChinh(btnO);
             } else {
-                ViewTheme.nutXam(o);
+                ViewTheme.nutXam(btnO);
             }
-            o.addActionListener(e -> {
+            btnO.addActionListener(e -> {
                 ngay = d;
                 cheDo = "ngay";
                 ve();
             });
-            luoi.add(o);
+            luoi.add(btnO);
         }
         goc.add(luoi, BorderLayout.NORTH);
         return goc;
