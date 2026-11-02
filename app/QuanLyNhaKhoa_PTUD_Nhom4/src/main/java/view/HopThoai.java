@@ -52,7 +52,10 @@ public class HopThoai extends JDialog {
         ViewTheme.nutXam(boQua);
         ViewTheme.nutChinh(luu);
         boQua.addActionListener(e -> dispose());
-        luu.addActionListener(e -> luu());
+        luu.addActionListener(e -> {
+            luu();
+            dispose();
+        });
         JPanel phai = new JPanel(new FlowLayout(FlowLayout.RIGHT, 8, 0));
         phai.setOpaque(false);
         phai.add(boQua);
@@ -153,7 +156,6 @@ public class HopThoai extends JDialog {
         return c;
     }
 
-
     public void themHang(JComponent c) {
         GridBagConstraints fc = new GridBagConstraints();
         fc.gridx = 0;
@@ -188,7 +190,7 @@ public class HopThoai extends JDialog {
             }
         }
         if (khiLuu != null) {
-            khiLuu.run();        
+            khiLuu.run();
         } else {
             dispose();
         }
