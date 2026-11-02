@@ -36,9 +36,9 @@ public class PhieuTienPanel extends JPanel {
 
     private final boolean laPhieuThu;
     private final DefaultTableModel model;
-    private final JTable bang;
+    private final JTable tblBang;
     private final JTextField txtTim = new ONhap("", 24);
-    private final JLabel nhanDem = new JLabel();
+    private final JLabel lblNhanDem = new JLabel();
     private final PhieuThu_Service thuSvc = new PhieuThu_Service();
     private final PhieuChi_Service chiSvc = new PhieuChi_Service();
     private final KhachHang_Service khSvc = new KhachHang_Service();
@@ -52,9 +52,9 @@ public class PhieuTienPanel extends JPanel {
                 ? new String[]{"Mã", "Ngày thu", "Mã KH", "Khách hàng", "Lý do", "Số tiền", "Hình thức thanh toán", "Trạng thái", "Bác sĩ", "Phụ tá", "Người giới thiệu", "Ngày tạo", "Người tạo"}
                 : new String[]{"Mã phiếu chi", "Nhà cung cấp", "Loại chi tiêu", "Lý do chi", "Số tiền", "Ngày chi", "Hình thức thanh toán", "Trạng thái", "Ngày tạo", "Người tạo"};
         model = ViewTheme.taoModel(cot, true, true);
-        bang = new JTable(model);
-        ViewTheme.trangTriBang(bang);
-        ViewTheme.ganThaoTac(bang, this::xuLy);
+        tblBang = new JTable(model);
+        ViewTheme.trangTriBang(tblBang);
+        ViewTheme.ganThaoTac(tblBang, this::xuLy);
 
         JPanel panelThe = new JPanel(new BorderLayout(0, 8));
         panelThe.setBackground(ViewTheme.TRANG);
@@ -82,19 +82,19 @@ public class PhieuTienPanel extends JPanel {
         panelLoc.add(ViewTheme.chuPhu("Tìm kiếm"), BorderLayout.NORTH);
         panelLoc.add(txtTim, BorderLayout.CENTER);
 
-        JScrollPane scrollBang = new JScrollPane(bang);
-        scrollBang.setPreferredSize(new Dimension(400, laPhieuThu ? 180 : 140));
-        scrollBang.setBorder(BorderFactory.createLineBorder(ViewTheme.VIEN));
-        scrollBang.getViewport().setBackground(ViewTheme.TRANG);
-        nhanDem.setFont(ViewTheme.FONT_NHO);
-        nhanDem.setForeground(ViewTheme.CHU_NHAT);
+        JScrollPane scrBang = new JScrollPane(tblBang);
+        scrBang.setPreferredSize(new Dimension(400, laPhieuThu ? 180 : 140));
+        scrBang.setBorder(BorderFactory.createLineBorder(ViewTheme.VIEN));
+        scrBang.getViewport().setBackground(ViewTheme.TRANG);
+        lblNhanDem.setFont(ViewTheme.FONT_NHO);
+        lblNhanDem.setForeground(ViewTheme.CHU_NHAT);
 
         panelThe.add(panelDau, BorderLayout.NORTH);
         JPanel panelGiua = new JPanel(new BorderLayout(0, 8));
         panelGiua.setOpaque(false);
         panelGiua.add(panelLoc, BorderLayout.NORTH);
-        panelGiua.add(scrollBang, BorderLayout.CENTER);
-        panelGiua.add(nhanDem, BorderLayout.SOUTH);
+        panelGiua.add(scrBang, BorderLayout.CENTER);
+        panelGiua.add(lblNhanDem, BorderLayout.SOUTH);
         panelThe.add(panelGiua, BorderLayout.CENTER);
         setLayout(new BorderLayout());
         add(panelThe, BorderLayout.NORTH);
@@ -140,7 +140,7 @@ public class PhieuTienPanel extends JPanel {
                 }, true, true));
             }
         }
-        nhanDem.setText(ViewTheme.demDong(model.getRowCount() == 0 ? 0 : 1, model.getRowCount(), model.getRowCount()));
+        lblNhanDem.setText(ViewTheme.demDong(model.getRowCount() == 0 ? 0 : 1, model.getRowCount(), model.getRowCount()));
     }
 
     public void themPhieu(String ngayThu, String maKh, String tenKh, String lyDo, String soTien,
@@ -165,7 +165,7 @@ public class PhieuTienPanel extends JPanel {
     private void loc() {
         String tuKhoa = txtTim.getText().trim();
         TableRowSorter<DefaultTableModel> sorter = new TableRowSorter<>(model);
-        bang.setRowSorter(sorter);
+        tblBang.setRowSorter(sorter);
         if (tuKhoa.isEmpty()) {
             sorter.setRowFilter(null);
         } else {
