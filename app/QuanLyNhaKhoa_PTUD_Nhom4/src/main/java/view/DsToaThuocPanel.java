@@ -34,10 +34,10 @@ public class DsToaThuocPanel extends JPanel {
     };
 
     private final DefaultTableModel model = ViewTheme.taoModel(COT, true, true);
-    private final JTable bang = new JTable(model);
+    private final JTable tblBang = new JTable(model);
     private final JTextField txtTim = new ONhap("", 24);
-    private final JLabel nhanDem = new JLabel();
-    private final JComboBox<String> cboKhach = new JComboBox<String>();
+    private final JLabel lblNhanDem = new JLabel();
+    private final JComboBox<String> cmbKhach = new JComboBox<String>();
     private final Runnable moLapToa;
 
     public DsToaThuocPanel(Runnable moLapToa) {
@@ -45,11 +45,11 @@ public class DsToaThuocPanel extends JPanel {
         setOpaque(false);
         setBorder(new EmptyBorder(6, 6, 16, 6));
 
-        JPanel panelThe = new JPanel(new BorderLayout(0, 8));
-        panelThe.setBackground(ViewTheme.TRANG);
-        panelThe.setBorder(new EmptyBorder(12, 14, 12, 14));
+        JPanel pnlThe = new JPanel(new BorderLayout(0, 8));
+        pnlThe.setBackground(ViewTheme.TRANG);
+        pnlThe.setBorder(new EmptyBorder(12, 14, 12, 14));
 
-        JLabel nhanTieuDe = ViewTheme.lblTieuDeTrang("Toa thuốc");
+        JLabel lblNhanTieuDe = ViewTheme.tieuDeTrang("Toa thuốc");
         JButton btnThem = new JButton("Thêm toa thuốc");
         ViewTheme.btnNutXanh(btnThem);
         btnThem.addActionListener(e -> {
@@ -57,61 +57,61 @@ public class DsToaThuocPanel extends JPanel {
                 moLapToa.run();
             }
         });
-        JPanel panelDau = new JPanel(new BorderLayout());
-        panelDau.setOpaque(false);
-        panelDau.add(nhanTieuDe, BorderLayout.WEST);
-        JPanel panelPhai = new JPanel(new FlowLayout(FlowLayout.RIGHT, 8, 0));
-        panelPhai.setOpaque(false);
-        panelPhai.add(btnThem);
-        panelDau.add(panelPhai, BorderLayout.EAST);
+        JPanel pnlDau = new JPanel(new BorderLayout());
+        pnlDau.setOpaque(false);
+        pnlDau.add(lblNhanTieuDe, BorderLayout.WEST);
+        JPanel pnlPhai = new JPanel(new FlowLayout(FlowLayout.RIGHT, 8, 0));
+        pnlPhai.setOpaque(false);
+        pnlPhai.add(btnThem);
+        pnlDau.add(pnlPhai, BorderLayout.EAST);
 
         ((ONhap) txtTim).datGoiY("Tìm toa thuốc...");
         txtTim.setPreferredSize(new Dimension(360, 32));
         txtTim.addActionListener(e -> loc());
-        cboKhach.addItem("Khách hàng");
+        cmbKhach.addItem("Khách hàng");
         for (String khach : DuLieuMau.dsKhach()) {
-            cboKhach.addItem(khach);
+            cmbKhach.addItem(khach);
         }
-        ViewTheme.cmbVienHop(cboKhach);
-        cboKhach.addActionListener(e -> loc());
+        ViewTheme.vienHop(cmbKhach);
+        cmbKhach.addActionListener(e -> loc());
 
-        JPanel panelLoc = new JPanel(new BorderLayout(0, 8));
-        panelLoc.setBackground(ViewTheme.NEN_TIM);
-        panelLoc.setBorder(new EmptyBorder(10, 12, 10, 12));
-        panelLoc.add(ViewTheme.lblChuPhu("Tìm kiếm"), BorderLayout.NORTH);
-        panelLoc.add(txtTim, BorderLayout.CENTER);
-        JPanel panelDong = new JPanel(new FlowLayout(FlowLayout.LEFT, 8, 0));
-        panelDong.setOpaque(false);
-        panelDong.add(cboKhach);
-        panelLoc.add(panelDong, BorderLayout.SOUTH);
+        JPanel pnlLoc = new JPanel(new BorderLayout(0, 8));
+        pnlLoc.setBackground(ViewTheme.NEN_TIM);
+        pnlLoc.setBorder(new EmptyBorder(10, 12, 10, 12));
+        pnlLoc.add(ViewTheme.chuPhu("Tìm kiếm"), BorderLayout.NORTH);
+        pnlLoc.add(txtTim, BorderLayout.CENTER);
+        JPanel pnlDong = new JPanel(new FlowLayout(FlowLayout.LEFT, 8, 0));
+        pnlDong.setOpaque(false);
+        pnlDong.add(cmbKhach);
+        pnlLoc.add(pnlDong, BorderLayout.SOUTH);
 
-        ViewTheme.trangTriBang(bang);
-        ViewTheme.ganThaoTac(bang, this::xuLy);
-        bang.addMouseListener(new MouseAdapter() {
+        ViewTheme.trangTriBang(tblBang);
+        ViewTheme.ganThaoTac(tblBang, this::xuLy);
+        tblBang.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
-                if (e.getClickCount() == 2 && bang.rowAtPoint(e.getPoint()) >= 0
-                        && bang.columnAtPoint(e.getPoint()) != bang.getColumnCount() - 1) {
-                    moChiTiet(toaTai(bang.convertRowIndexToModel(bang.rowAtPoint(e.getPoint()))));
+                if (e.getClickCount() == 2 && tblBang.rowAtPoint(e.getPoint()) >= 0
+                        && tblBang.columnAtPoint(e.getPoint()) != tblBang.getColumnCount() - 1) {
+                    moChiTiet(toaTai(tblBang.convertRowIndexToModel(tblBang.rowAtPoint(e.getPoint()))));
                 }
             }
         });
-        JScrollPane scrollBang = new JScrollPane(bang);
-        scrollBang.setPreferredSize(new Dimension(400, 220));
-        scrollBang.setBorder(BorderFactory.createLineBorder(ViewTheme.VIEN));
-        scrollBang.getViewport().setBackground(ViewTheme.TRANG);
-        nhanDem.setFont(ViewTheme.FONT_NHO);
-        nhanDem.setForeground(ViewTheme.CHU_NHAT);
+        JScrollPane scrBang = new JScrollPane(tblBang);
+        scrBang.setPreferredSize(new Dimension(400, 220));
+        scrBang.setBorder(BorderFactory.createLineBorder(ViewTheme.VIEN));
+        scrBang.getViewport().setBackground(ViewTheme.TRANG);
+        lblNhanDem.setFont(ViewTheme.FONT_NHO);
+        lblNhanDem.setForeground(ViewTheme.CHU_NHAT);
 
-        panelThe.add(panelDau, BorderLayout.NORTH);
-        JPanel panelGiua = new JPanel(new BorderLayout(0, 8));
-        panelGiua.setOpaque(false);
-        panelGiua.add(panelLoc, BorderLayout.NORTH);
-        panelGiua.add(scrollBang, BorderLayout.CENTER);
-        panelGiua.add(nhanDem, BorderLayout.SOUTH);
-        panelThe.add(panelGiua, BorderLayout.CENTER);
+        pnlThe.add(pnlDau, BorderLayout.NORTH);
+        JPanel pnlGiua = new JPanel(new BorderLayout(0, 8));
+        pnlGiua.setOpaque(false);
+        pnlGiua.add(pnlLoc, BorderLayout.NORTH);
+        pnlGiua.add(scrBang, BorderLayout.CENTER);
+        pnlGiua.add(lblNhanDem, BorderLayout.SOUTH);
+        pnlThe.add(pnlGiua, BorderLayout.CENTER);
         setLayout(new BorderLayout());
-        add(panelThe, BorderLayout.NORTH);
+        add(pnlThe, BorderLayout.NORTH);
 
         ToaThuocDuLieu.khiDoi(this::lamMoi);
         lamMoi();
@@ -119,11 +119,11 @@ public class DsToaThuocPanel extends JPanel {
 
     public void locTheoKhach(String maKH) {
         if (maKH == null || maKH.isEmpty()) {
-            cboKhach.setSelectedIndex(0);
+            cmbKhach.setSelectedIndex(0);
         } else {
-            for (int i = 0; i < cboKhach.getItemCount(); i++) {
-                if (cboKhach.getItemAt(i).startsWith(maKH)) {
-                    cboKhach.setSelectedIndex(i);
+            for (int i = 0; i < cmbKhach.getItemCount(); i++) {
+                if (cmbKhach.getItemAt(i).startsWith(maKH)) {
+                    cmbKhach.setSelectedIndex(i);
                     break;
                 }
             }
@@ -132,10 +132,10 @@ public class DsToaThuocPanel extends JPanel {
     }
 
     public String maKhachDangLoc() {
-        if (cboKhach.getSelectedIndex() <= 0) {
+        if (cmbKhach.getSelectedIndex() <= 0) {
             return null;
         }
-        String khach = String.valueOf(cboKhach.getSelectedItem());
+        String khach = String.valueOf(cmbKhach.getSelectedItem());
         return khach.length() >= 4 ? khach.substring(0, 4) : khach;
     }
 
@@ -145,7 +145,7 @@ public class DsToaThuocPanel extends JPanel {
             model.addRow(ViewTheme.dongBang(dongToa(toaThuoc), true, true));
         }
         int soLuong = ToaThuocDuLieu.tatCa().size();
-        nhanDem.setText(ViewTheme.demDong(soLuong == 0 ? 0 : 1, soLuong, soLuong));
+        lblNhanDem.setText(ViewTheme.demDong(soLuong == 0 ? 0 : 1, soLuong, soLuong));
         loc();
     }
 
@@ -159,14 +159,14 @@ public class DsToaThuocPanel extends JPanel {
 
     private void loc() {
         String tuKhoa = txtTim.getText().trim();
-        String khach = String.valueOf(cboKhach.getSelectedItem());
+        String khach = String.valueOf(cmbKhach.getSelectedItem());
         TableRowSorter<DefaultTableModel> sorter =
                 new TableRowSorter<DefaultTableModel>(model);
-        bang.setRowSorter(sorter);
+        tblBang.setRowSorter(sorter);
         sorter.setRowFilter(new RowFilter<DefaultTableModel, Integer>() {
             @Override
             public boolean include(Entry<? extends DefaultTableModel, ? extends Integer> entry) {
-                if (cboKhach.getSelectedIndex() > 0) {
+                if (cmbKhach.getSelectedIndex() > 0) {
                     String maKH = khach.length() >= 4 ? khach.substring(0, 4) : khach;
                     if (!maKH.equals(String.valueOf(entry.getValue(2)))) {
                         return false;
@@ -217,25 +217,25 @@ public class DsToaThuocPanel extends JPanel {
         JDialog dialog = new JDialog(cuaSoCha, "Chi tiết toa thuốc " + toaThuoc.maToaThuoc, Dialog.ModalityType.APPLICATION_MODAL);
         dialog.setLayout(new BorderLayout());
 
-        JPanel panelDau = new JPanel(new GridLayout(0, 4, 10, 8));
-        panelDau.setBackground(ViewTheme.TRANG);
-        panelDau.setBorder(new EmptyBorder(12, 16, 8, 16));
-        panelDau.add(nhan("Mã toa"));
-        panelDau.add(oKhoa(toaThuoc.maToaThuoc));
-        panelDau.add(nhan("Ngày tạo"));
-        panelDau.add(oKhoa(toaThuoc.ngayTao));
-        panelDau.add(nhan("Khách hàng"));
-        panelDau.add(oKhoa(toaThuoc.maKH + " - " + toaThuoc.tenKh));
-        panelDau.add(nhan("Chẩn đoán"));
-        panelDau.add(oKhoa(toaThuoc.maChanDoan));
-        panelDau.add(nhan("Bác sĩ"));
-        panelDau.add(oKhoa(toaThuoc.tenBacSi));
-        panelDau.add(nhan("Hình thức TT"));
-        panelDau.add(oKhoa(toaThuoc.hinhThucThanhToan));
-        panelDau.add(nhan("Nhận tại PK"));
-        panelDau.add(oKhoa(toaThuoc.nhanTaiPhongKham ? "Có" : "Không"));
-        panelDau.add(nhan("Ghi chú"));
-        panelDau.add(oKhoa(toaThuoc.ghiChu));
+        JPanel pnlDau = new JPanel(new GridLayout(0, 4, 10, 8));
+        pnlDau.setBackground(ViewTheme.TRANG);
+        pnlDau.setBorder(new EmptyBorder(12, 16, 8, 16));
+        pnlDau.add(nhan("Mã toa"));
+        pnlDau.add(oKhoa(toaThuoc.maToaThuoc));
+        pnlDau.add(nhan("Ngày tạo"));
+        pnlDau.add(oKhoa(toaThuoc.ngayTao));
+        pnlDau.add(nhan("Khách hàng"));
+        pnlDau.add(oKhoa(toaThuoc.maKH + " - " + toaThuoc.tenKh));
+        pnlDau.add(nhan("Chẩn đoán"));
+        pnlDau.add(oKhoa(toaThuoc.maChanDoan));
+        pnlDau.add(nhan("Bác sĩ"));
+        pnlDau.add(oKhoa(toaThuoc.tenBacSi));
+        pnlDau.add(nhan("Hình thức TT"));
+        pnlDau.add(oKhoa(toaThuoc.hinhThucThanhToan));
+        pnlDau.add(nhan("Nhận tại PK"));
+        pnlDau.add(oKhoa(toaThuoc.nhanTaiPhongKham ? "Có" : "Không"));
+        pnlDau.add(nhan("Ghi chú"));
+        pnlDau.add(oKhoa(toaThuoc.ghiChu));
 
         DefaultTableModel modelChiTiet = ViewTheme.taoModel(
                 new String[]{"#", "Thuốc", "Số ngày", "Cách sử dụng", "Tổng số", "Đơn giá", "Thành tiền"},
@@ -247,14 +247,14 @@ public class DsToaThuocPanel extends JPanel {
                 String.valueOf(chiTiet.tongSo), ViewTheme.tien(chiTiet.donGia), ViewTheme.tien(chiTiet.thanhTien)
             });
         }
-        JTable bangChiTiet = new JTable(modelChiTiet);
-        ViewTheme.trangTriBang(bangChiTiet);
-        JScrollPane scrollChiTiet = new JScrollPane(bangChiTiet);
-        scrollChiTiet.setBorder(BorderFactory.createTitledBorder("Chi tiết thuốc"));
+        JTable tblChiTiet = new JTable(modelChiTiet);
+        ViewTheme.trangTriBang(tblChiTiet);
+        JScrollPane scrChiTiet = new JScrollPane(tblChiTiet);
+        scrChiTiet.setBorder(BorderFactory.createTitledBorder("Chi tiết thuốc"));
 
-        JPanel panelTong = new JPanel(new FlowLayout(FlowLayout.RIGHT, 18, 4));
-        panelTong.setBackground(ViewTheme.TRANG);
-        panelTong.add(nhanTong("Thành tiền", ViewTheme.tien(toaThuoc.thanhTien)));
+        JPanel pnlTong = new JPanel(new FlowLayout(FlowLayout.RIGHT, 18, 4));
+        pnlTong.setBackground(ViewTheme.TRANG);
+        pnlTong.add(nhanTong("Thành tiền", ViewTheme.tien(toaThuoc.thanhTien)));
 
         JButton btnIn = new JButton("In toa thuốc");
         JButton btnDong = new JButton("Đóng");
@@ -264,29 +264,29 @@ public class DsToaThuocPanel extends JPanel {
                 "Toa " + toaThuoc.maToaThuoc + "\nKhách: " + toaThuoc.tenKh
                 + "\nThành tiền: " + ViewTheme.tien(toaThuoc.thanhTien)));
         btnDong.addActionListener(e -> dialog.dispose());
-        JPanel panelNut = new JPanel(new FlowLayout(FlowLayout.RIGHT, 8, 8));
-        panelNut.setBackground(ViewTheme.TRANG);
-        panelNut.add(btnIn);
-        panelNut.add(btnDong);
+        JPanel pnlNut = new JPanel(new FlowLayout(FlowLayout.RIGHT, 8, 8));
+        pnlNut.setBackground(ViewTheme.TRANG);
+        pnlNut.add(btnIn);
+        pnlNut.add(btnDong);
 
-        JPanel panelDuoi = new JPanel(new BorderLayout());
-        panelDuoi.setBackground(ViewTheme.TRANG);
-        panelDuoi.add(panelTong, BorderLayout.CENTER);
-        panelDuoi.add(panelNut, BorderLayout.SOUTH);
+        JPanel pnlDuoi = new JPanel(new BorderLayout());
+        pnlDuoi.setBackground(ViewTheme.TRANG);
+        pnlDuoi.add(pnlTong, BorderLayout.CENTER);
+        pnlDuoi.add(pnlNut, BorderLayout.SOUTH);
 
-        dialog.add(panelDau, BorderLayout.NORTH);
-        dialog.add(scrollChiTiet, BorderLayout.CENTER);
-        dialog.add(panelDuoi, BorderLayout.SOUTH);
+        dialog.add(pnlDau, BorderLayout.NORTH);
+        dialog.add(scrChiTiet, BorderLayout.CENTER);
+        dialog.add(pnlDuoi, BorderLayout.SOUTH);
         dialog.setSize(920, 560);
         dialog.setLocationRelativeTo(cuaSoCha);
         dialog.setVisible(true);
     }
 
     private static JLabel nhan(String chu) {
-        JLabel nhan = new JLabel(chu);
-        nhan.setFont(ViewTheme.FONT_NHO);
-        nhan.setForeground(ViewTheme.CHU_NHAT);
-        return nhan;
+        JLabel lblNhan = new JLabel(chu);
+        lblNhan.setFont(ViewTheme.FONT_NHO);
+        lblNhan.setForeground(ViewTheme.CHU_NHAT);
+        return lblNhan;
     }
 
     private static JTextField oKhoa(String giaTri) {

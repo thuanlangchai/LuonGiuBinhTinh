@@ -42,7 +42,7 @@ public class HoaDonPanel extends JPanel {
     private final KeHoachDieuTriPanel keHoach;
     private final PhieuTienPanel phieuThu;
     private final DefaultTableModel model = ViewTheme.taoModel(COT, true, true);
-    private final JTable bang = new JTable(model);
+    private final JTable tblBang = new JTable(model);
     private final JTextField txtTim = new ONhap("", 24);
     private final JLabel lblDem = new JLabel();
     private Runnable moPhieuThu;
@@ -53,76 +53,76 @@ public class HoaDonPanel extends JPanel {
         setOpaque(false);
         setBorder(new EmptyBorder(6, 6, 16, 6));
 
-        JPanel the = new JPanel(new BorderLayout(0, 8));
-        the.setBackground(ViewTheme.TRANG);
-        the.setBorder(new EmptyBorder(12, 14, 12, 14));
+        JPanel pnlThe = new JPanel(new BorderLayout(0, 8));
+        pnlThe.setBackground(ViewTheme.TRANG);
+        pnlThe.setBorder(new EmptyBorder(12, 14, 12, 14));
 
         JLabel lblTieuDe = ViewTheme.lblTieuDeTrang("Hóa đơn");
         JButton btnThem = new JButton("Thêm hóa đơn");
         ViewTheme.btnNutXanh(btnThem);
         btnThem.addActionListener(e -> moLapHoaDon(null, null));
-        JPanel panelDau = new JPanel(new BorderLayout());
-        panelDau.setOpaque(false);
-        panelDau.add(lblTieuDe, BorderLayout.WEST);
-        JPanel panelPhai = new JPanel(new FlowLayout(FlowLayout.RIGHT, 8, 0));
-        panelPhai.setOpaque(false);
-        panelPhai.add(btnThem);
-        panelDau.add(panelPhai, BorderLayout.EAST);
+        JPanel pnlDau = new JPanel(new BorderLayout());
+        pnlDau.setOpaque(false);
+        pnlDau.add(lblTieuDe, BorderLayout.WEST);
+        JPanel pnlPhai = new JPanel(new FlowLayout(FlowLayout.RIGHT, 8, 0));
+        pnlPhai.setOpaque(false);
+        pnlPhai.add(btnThem);
+        pnlDau.add(pnlPhai, BorderLayout.EAST);
 
         ((ONhap) txtTim).datGoiY("Tìm hóa đơn...");
         txtTim.setPreferredSize(new Dimension(360, 32));
         txtTim.addActionListener(e -> loc());
-        JComboBox<String> cboKhach = new JComboBox<String>();
-        cboKhach.addItem("Khách hàng");
+        JComboBox<String> cmbKhach = new JComboBox<String>();
+        cmbKhach.addItem("Khách hàng");
         for (String k : DuLieuMau.dsKhach()) {
-            cboKhach.addItem(k);
+            cmbKhach.addItem(k);
         }
         JComboBox<String> cboTrangThai = new JComboBox<String>(new String[]{
             "Trạng thái", "Chưa thanh toán", "Thanh toán một phần", "Đã thanh toán"
         });
-        ViewTheme.cmbVienHop(cboKhach);
-        ViewTheme.cmbVienHop(cboTrangThai);
-        cboKhach.addActionListener(e -> loc());
+        ViewTheme.vienHop(cmbKhach);
+        ViewTheme.vienHop(cboTrangThai);
+        cmbKhach.addActionListener(e -> loc());
         cboTrangThai.addActionListener(e -> loc());
 
-        JPanel panelLoc = new JPanel(new BorderLayout(0, 8));
-        panelLoc.setBackground(ViewTheme.NEN_TIM);
-        panelLoc.setBorder(new EmptyBorder(10, 12, 10, 12));
-        panelLoc.add(ViewTheme.lblChuPhu("Tìm kiếm"), BorderLayout.NORTH);
-        panelLoc.add(txtTim, BorderLayout.CENTER);
-        JPanel panelDongLoc = new JPanel(new FlowLayout(FlowLayout.LEFT, 8, 0));
-        panelDongLoc.setOpaque(false);
-        panelDongLoc.add(cboKhach);
-        panelDongLoc.add(cboTrangThai);
-        panelLoc.add(panelDongLoc, BorderLayout.SOUTH);
+        JPanel pnlLoc = new JPanel(new BorderLayout(0, 8));
+        pnlLoc.setBackground(ViewTheme.NEN_TIM);
+        pnlLoc.setBorder(new EmptyBorder(10, 12, 10, 12));
+        pnlLoc.add(ViewTheme.chuPhu("Tìm kiếm"), BorderLayout.NORTH);
+        pnlLoc.add(txtTim, BorderLayout.CENTER);
+        JPanel pnlDongLoc = new JPanel(new FlowLayout(FlowLayout.LEFT, 8, 0));
+        pnlDongLoc.setOpaque(false);
+        pnlDongLoc.add(cmbKhach);
+        pnlDongLoc.add(cboTrangThai);
+        pnlLoc.add(pnlDongLoc, BorderLayout.SOUTH);
 
-        ViewTheme.trangTriBang(bang);
-        ViewTheme.ganThaoTac(bang, this::xuLy);
-        bang.addMouseListener(new MouseAdapter() {
+        ViewTheme.trangTriBang(tblBang);
+        ViewTheme.ganThaoTac(tblBang, this::xuLy);
+        tblBang.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
-                if (e.getClickCount() == 2 && bang.rowAtPoint(e.getPoint()) >= 0
-                        && bang.columnAtPoint(e.getPoint()) != bang.getColumnCount() - 1) {
-                    moChiTiet(hoaDonTai(bang.convertRowIndexToModel(bang.rowAtPoint(e.getPoint()))));
+                if (e.getClickCount() == 2 && tblBang.rowAtPoint(e.getPoint()) >= 0
+                        && tblBang.columnAtPoint(e.getPoint()) != tblBang.getColumnCount() - 1) {
+                    moChiTiet(hoaDonTai(tblBang.convertRowIndexToModel(tblBang.rowAtPoint(e.getPoint()))));
                 }
             }
         });
-        JScrollPane scrollBang = new JScrollPane(bang);
-        scrollBang.setPreferredSize(new Dimension(400, 220));
-        scrollBang.setBorder(BorderFactory.createLineBorder(ViewTheme.VIEN));
-        scrollBang.getViewport().setBackground(ViewTheme.TRANG);
+        JScrollPane scbBang = new JScrollPane(tblBang);
+        scbBang.setPreferredSize(new Dimension(400, 220));
+        scbBang.setBorder(BorderFactory.createLineBorder(ViewTheme.VIEN));
+        scbBang.getViewport().setBackground(ViewTheme.TRANG);
         lblDem.setFont(ViewTheme.FONT_NHO);
         lblDem.setForeground(ViewTheme.CHU_NHAT);
 
-        the.add(panelDau, BorderLayout.NORTH);
-        JPanel panelGiua = new JPanel(new BorderLayout(0, 8));
-        panelGiua.setOpaque(false);
-        panelGiua.add(panelLoc, BorderLayout.NORTH);
-        panelGiua.add(scrollBang, BorderLayout.CENTER);
-        panelGiua.add(lblDem, BorderLayout.SOUTH);
-        the.add(panelGiua, BorderLayout.CENTER);
+        pnlThe.add(pnlDau, BorderLayout.NORTH);
+        JPanel pnlGiua = new JPanel(new BorderLayout(0, 8));
+        pnlGiua.setOpaque(false);
+        pnlGiua.add(pnlLoc, BorderLayout.NORTH);
+        pnlGiua.add(scbBang, BorderLayout.CENTER);
+        pnlGiua.add(lblDem, BorderLayout.SOUTH);
+        pnlThe.add(pnlGiua, BorderLayout.CENTER);
         setLayout(new BorderLayout());
-        add(the, BorderLayout.NORTH);
+        add(pnlThe, BorderLayout.NORTH);
 
         HoaDonDuLieu.khiDoi(this::lamMoi);
         lamMoi();
@@ -146,28 +146,28 @@ public class HoaDonPanel extends JPanel {
         JDialog d = new JDialog(w, "Lập hóa đơn", Dialog.ModalityType.APPLICATION_MODAL);
         d.setLayout(new BorderLayout());
 
-        JTextField ngay = o(HoaDonDuLieu.homNay());
-        JComboBox<String> khach = new JComboBox<String>(DuLieuMau.dsKhach());
-        ViewTheme.cmbVienHop(khach);
-        khach.setPreferredSize(new Dimension(360, 34));
+        JTextField txtNgay = o(HoaDonDuLieu.homNay());
+        JComboBox<String> cmbKhach = new JComboBox<String>(DuLieuMau.dsKhach());
+        ViewTheme.vienHop(cmbKhach);
+        cmbKhach.setPreferredSize(new Dimension(360, 34));
         if (maKh != null) {
-            chonKhach(khach, maKh);
+            chonKhach(cmbKhach, maKh);
         }
-        JComboBox<String> bacSi = new JComboBox<String>(DuLieuMau.dsBacSi());
-        ViewTheme.cmbVienHop(bacSi);
-        JTextField chietKhau = o("0");
-        JTextField ghiChu = o("Xuất từ kế hoạch điều trị");
+        JComboBox<String> cmbBacSi = new JComboBox<String>(DuLieuMau.dsBacSi());
+        ViewTheme.vienHop(cmbBacSi);
+        JTextField txtChietKhau = o("0");
+        JTextField txtGhiChu = o("Xuất từ kế hoạch điều trị");
 
         DefaultTableModel ctModel = ViewTheme.taoModel(
                 new String[]{"Ngày", "Răng", "Dịch vụ", "Số lượng", "Đơn giá", "Thành tiền", "Kế hoạch"},
                 true, false);
-        JTable ctBang = new JTable(ctModel);
-        ViewTheme.trangTriBang(ctBang);
-        JLabel tongChon = new JLabel("Tổng dịch vụ chọn: 0");
-        tongChon.setFont(ViewTheme.FONT_DAM);
+        JTable tblBang = new JTable(ctModel);
+        ViewTheme.trangTriBang(tblBang);
+        JLabel lbltongChon = new JLabel("Tổng dịch vụ chọn: 0");
+        lbltongChon.setFont(ViewTheme.FONT_DAM);
 
         Runnable napHang = () -> {
-            String ma = maKhach(String.valueOf(khach.getSelectedItem()));
+            String ma = maKhach(String.valueOf(cmbKhach.getSelectedItem()));
             List<HangDT> ds = keHoach.hangChuaXuat(ma);
             Set<HangDT> chonSan = new LinkedHashSet<HangDT>();
             if (goiY != null) {
@@ -182,43 +182,43 @@ public class HoaDonPanel extends JPanel {
                 dong[0] = Boolean.valueOf(chonSan.contains(hang) || goiY == null || goiY.isEmpty());
                 ctModel.addRow(dong);
             }
-            capNhatTongChon(ctModel, tongChon);
+            capNhatTongChon(ctModel, lbltongChon);
         };
-        khach.addActionListener(e -> napHang.run());
-        ctBang.getModel().addTableModelListener(e -> capNhatTongChon(ctModel, tongChon));
+        cmbKhach.addActionListener(e -> napHang.run());
+        tblBang.getModel().addTableModelListener(e -> capNhatTongChon(ctModel, lbltongChon));
 
-        JPanel form = new JPanel(new GridLayout(0, 2, 8, 8));
-        form.setOpaque(false);
-        form.setBorder(new EmptyBorder(12, 16, 8, 16));
-        form.add(nhan("Ngày lập *"));
-        form.add(ngay);
-        form.add(nhan("Khách hàng *"));
-        form.add(khach);
-        form.add(nhan("Bác sĩ"));
-        form.add(bacSi);
-        form.add(nhan("Chiết khấu"));
-        form.add(chietKhau);
-        form.add(nhan("Ghi chú"));
-        form.add(ghiChu);
+        JPanel pnlform = new JPanel(new GridLayout(0, 2, 8, 8));
+        pnlform.setOpaque(false);
+        pnlform.setBorder(new EmptyBorder(12, 16, 8, 16));
+        pnlform.add(nhan("Ngày lập *"));
+        pnlform.add(txtNgay);
+        pnlform.add(nhan("Khách hàng *"));
+        pnlform.add(cmbKhach);
+        pnlform.add(nhan("Bác sĩ"));
+        pnlform.add(cmbBacSi);
+        pnlform.add(nhan("Chiết khấu"));
+        pnlform.add(txtChietKhau);
+        pnlform.add(nhan("Ghi chú"));
+        pnlform.add(txtGhiChu);
 
-        JPanel giua = new JPanel(new BorderLayout(0, 8));
-        giua.setBackground(ViewTheme.TRANG);
-        giua.add(form, BorderLayout.NORTH);
-        JScrollPane cuon = new JScrollPane(ctBang);
-        cuon.setPreferredSize(new Dimension(760, 220));
-        cuon.setBorder(BorderFactory.createTitledBorder("Chi tiết hóa đơn (chọn dịch vụ đã điều trị)"));
-        giua.add(cuon, BorderLayout.CENTER);
-        giua.add(tongChon, BorderLayout.SOUTH);
-        d.add(giua, BorderLayout.CENTER);
+        JPanel pnlGiua = new JPanel(new BorderLayout(0, 8));
+        pnlGiua.setBackground(ViewTheme.TRANG);
+        pnlGiua.add(pnlform, BorderLayout.NORTH);
+        JScrollPane scbCuon = new JScrollPane(tblBang);
+        scbCuon.setPreferredSize(new Dimension(760, 220));
+        scbCuon.setBorder(BorderFactory.createTitledBorder("Chi tiết hóa đơn (chọn dịch vụ đã điều trị)"));
+        pnlGiua.add(scbCuon, BorderLayout.CENTER);
+        pnlGiua.add(lbltongChon, BorderLayout.SOUTH);
+        d.add(pnlGiua, BorderLayout.CENTER);
 
-        JButton boQua = new JButton("Bỏ qua");
-        JButton luu = new JButton("+ Thêm");
-        ViewTheme.btnNutXam(boQua);
-        ViewTheme.btnNutChinh(luu);
-        boQua.addActionListener(e -> d.dispose());
-        luu.addActionListener(e -> {
-            String ma = maKhach(String.valueOf(khach.getSelectedItem()));
-            String ten = tenKhach(String.valueOf(khach.getSelectedItem()));
+        JButton btnBoQua = new JButton("Bỏ qua");
+        JButton btnLuu = new JButton("+ Thêm");
+        ViewTheme.nutXam(btnBoQua);
+        ViewTheme.nutChinh(btnLuu);
+        btnBoQua.addActionListener(e -> d.dispose());
+        btnLuu.addActionListener(e -> {
+            String ma = maKhach(String.valueOf(cmbKhach.getSelectedItem()));
+            String ten = tenKhach(String.valueOf(cmbKhach.getSelectedItem()));
             List<HangDT> goc = keHoach.hangChuaXuat(ma);
             List<HangDT> chon = new ArrayList<HangDT>();
             List<ChiTietHoaDonView> chiTiet = new ArrayList<ChiTietHoaDonView>();
@@ -236,10 +236,10 @@ public class HoaDonPanel extends JPanel {
             }
             String keHoachTen = chiTiet.get(0).keHoach;
             HoaDonView hd = HoaDonDuLieu.them(
-                    ngay.getText().trim(), ma, ten, keHoachTen,
-                    String.valueOf(bacSi.getSelectedItem()),
-                    parseTien(chietKhau.getText()),
-                    ghiChu.getText().trim(),
+                    txtNgay.getText().trim(), ma, ten, keHoachTen,
+                    String.valueOf(cmbBacSi.getSelectedItem()),
+                    parseTien(txtChietKhau.getText()),
+                    txtGhiChu.getText().trim(),
                     chiTiet);
             keHoach.danhDauHoaDon(chon, hd.ma);
             d.dispose();
@@ -252,11 +252,11 @@ public class HoaDonPanel extends JPanel {
                 moChiTiet(hd);
             }
         });
-        JPanel chan = new JPanel(new FlowLayout(FlowLayout.RIGHT, 8, 8));
-        chan.setBackground(ViewTheme.TRANG);
-        chan.add(boQua);
-        chan.add(luu);
-        d.add(chan, BorderLayout.SOUTH);
+        JPanel pnlChan = new JPanel(new FlowLayout(FlowLayout.RIGHT, 8, 8));
+        pnlChan.setBackground(ViewTheme.TRANG);
+        pnlChan.add(btnBoQua);
+        pnlChan.add(btnLuu);
+        d.add(pnlChan, BorderLayout.SOUTH);
         napHang.run();
         d.setSize(920, 640);
         d.setLocationRelativeTo(w);
@@ -273,15 +273,15 @@ public class HoaDonPanel extends JPanel {
         }
         Window w = SwingUtilities.getWindowAncestor(this);
         HopThoai h = new HopThoai(w, "Tạo phiếu thu", "+ Thêm");
-        JTextField ngayThu = h.chu("Ngày thu", HoaDonDuLieu.homNay(), true);
+        JTextField txtNgayThu = h.chu("Ngày thu", HoaDonDuLieu.homNay(), true);
         h.chu("Khách hàng", hd.maKh + " - " + hd.tenKh, true).setEditable(false);
         h.chu("Hóa đơn", hd.ma + " - " + hd.keHoach, true).setEditable(false);
-        JTextField lyDo = h.chu("Lý do", "Thanh toán hóa đơn " + hd.ma, true);
-        JTextField soTien = h.chu("Số tiền", ViewTheme.tien(hd.conNo()), true);
-        JComboBox<String> trangThai = h.chon("Trạng thái", true, "Đã chi trả", "Chưa chi trả");
-        JComboBox<String> hinhThuc = h.chon("Hình thức thanh toán", true, "Tiền mặt", "Thẻ", "Chuyển khoản");
+        JTextField txtLyDo = h.chu("Lý do", "Thanh toán hóa đơn " + hd.ma, true);
+        JTextField txtSoTien = h.chu("Số tiền", ViewTheme.tien(hd.conNo()), true);
+        JComboBox<String> cboTrangThai = h.chon("Trạng thái", true, "Đã chi trả", "Chưa chi trả");
+        JComboBox<String> cmbHinhThuc = h.chon("Hình thức thanh toán", true, "Tiền mặt", "Thẻ", "Chuyển khoản");
         h.hien(() -> {
-            long tien = parseTien(soTien.getText());
+            long tien = parseTien(txtSoTien.getText());
             if (tien <= 0) {
                 JOptionPane.showMessageDialog(h, "Số tiền phải lớn hơn 0.");
                 return;
@@ -289,14 +289,14 @@ public class HoaDonPanel extends JPanel {
             if (tien > hd.conNo()) {
                 tien = hd.conNo();
             }
-            if ("Đã chi trả".equals(trangThai.getSelectedItem())) {
+            if ("Đã chi trả".equals(cboTrangThai.getSelectedItem())) {
                 HoaDonDuLieu.thuTien(hd, tien);
             }
             if (phieuThu != null) {
-                phieuThu.themPhieu(ngayThu.getText().trim(), hd.maKh, hd.tenKh,
-                        lyDo.getText().trim(), ViewTheme.tien(tien),
-                        String.valueOf(hinhThuc.getSelectedItem()),
-                        String.valueOf(trangThai.getSelectedItem()));
+                phieuThu.themPhieu(txtNgayThu.getText().trim(), hd.maKh, hd.tenKh,
+                        txtLyDo.getText().trim(), ViewTheme.tien(tien),
+                        String.valueOf(cmbHinhThuc.getSelectedItem()),
+                        String.valueOf(cboTrangThai.getSelectedItem()));
             }
             keHoach.lamMoiBang();
             lamMoi();
@@ -343,25 +343,25 @@ public class HoaDonPanel extends JPanel {
         JDialog d = new JDialog(w, "Chi tiết hóa đơn " + hd.ma, Dialog.ModalityType.APPLICATION_MODAL);
         d.setLayout(new BorderLayout());
 
-        JPanel dau = new JPanel(new GridLayout(0, 4, 10, 8));
-        dau.setBackground(ViewTheme.TRANG);
-        dau.setBorder(new EmptyBorder(12, 16, 8, 16));
-        dau.add(nhan("Mã hóa đơn"));
-        dau.add(oKhoa(hd.ma));
-        dau.add(nhan("Ngày lập"));
-        dau.add(oKhoa(hd.ngayLap));
-        dau.add(nhan("Khách hàng"));
-        dau.add(oKhoa(hd.maKh + " - " + hd.tenKh));
-        dau.add(nhan("Kế hoạch"));
-        dau.add(oKhoa(hd.keHoach));
-        dau.add(nhan("Bác sĩ"));
-        dau.add(oKhoa(hd.bacSi));
-        dau.add(nhan("Trạng thái"));
-        dau.add(oKhoa(hd.trangThai));
-        dau.add(nhan("Ghi chú"));
-        dau.add(oKhoa(hd.ghiChu));
-        dau.add(nhan("Ngày tạo"));
-        dau.add(oKhoa(hd.ngayTao));
+        JPanel pnlDau = new JPanel(new GridLayout(0, 4, 10, 8));
+        pnlDau.setBackground(ViewTheme.TRANG);
+        pnlDau.setBorder(new EmptyBorder(12, 16, 8, 16));
+        pnlDau.add(nhan("Mã hóa đơn"));
+        pnlDau.add(oKhoa(hd.ma));
+        pnlDau.add(nhan("Ngày lập"));
+        pnlDau.add(oKhoa(hd.ngayLap));
+        pnlDau.add(nhan("Khách hàng"));
+        pnlDau.add(oKhoa(hd.maKh + " - " + hd.tenKh));
+        pnlDau.add(nhan("Kế hoạch"));
+        pnlDau.add(oKhoa(hd.keHoach));
+        pnlDau.add(nhan("Bác sĩ"));
+        pnlDau.add(oKhoa(hd.bacSi));
+        pnlDau.add(nhan("Trạng thái"));
+        pnlDau.add(oKhoa(hd.trangThai));
+        pnlDau.add(nhan("Ghi chú"));
+        pnlDau.add(oKhoa(hd.ghiChu));
+        pnlDau.add(nhan("Ngày tạo"));
+        pnlDau.add(oKhoa(hd.ngayTao));
 
         DefaultTableModel ct = ViewTheme.taoModel(
                 new String[]{"#", "Ngày", "Răng", "Dịch vụ", "Số lượng", "Đơn giá", "Thành tiền", "Kế hoạch"},
@@ -374,52 +374,52 @@ public class HoaDonPanel extends JPanel {
                 ViewTheme.tien(c.thanhTien()), c.keHoach
             });
         }
-        JTable table = new JTable(ct);
-        ViewTheme.trangTriBang(table);
-        JScrollPane cuon = new JScrollPane(table);
-        cuon.setBorder(BorderFactory.createTitledBorder("Chi tiết dịch vụ"));
+        JTable tblTable = new JTable(ct);
+        ViewTheme.trangTriBang(tblTable);
+        JScrollPane scbCuon = new JScrollPane(tblTable);
+        scbCuon.setBorder(BorderFactory.createTitledBorder("Chi tiết dịch vụ"));
 
-        JPanel tong = new JPanel(new FlowLayout(FlowLayout.RIGHT, 18, 4));
-        tong.setBackground(ViewTheme.TRANG);
-        tong.add(nhanTong("Tổng cộng", ViewTheme.tien(hd.tong)));
-        tong.add(nhanTong("Chiết khấu", ViewTheme.tien(hd.chietKhau)));
-        tong.add(nhanTong("Thành tiền", ViewTheme.tien(hd.thanhTien)));
-        tong.add(nhanTong("Đã thu", ViewTheme.tien(hd.daThu)));
-        JLabel no = nhanTong("Còn nợ", ViewTheme.tien(hd.conNo()));
-        no.setForeground(ViewTheme.DO);
-        tong.add(no);
+        JPanel pnlTong = new JPanel(new FlowLayout(FlowLayout.RIGHT, 18, 4));
+        pnlTong.setBackground(ViewTheme.TRANG);
+        pnlTong.add(nhanTong("Tổng cộng", ViewTheme.tien(hd.tong)));
+        pnlTong.add(nhanTong("Chiết khấu", ViewTheme.tien(hd.chietKhau)));
+        pnlTong.add(nhanTong("Thành tiền", ViewTheme.tien(hd.thanhTien)));
+        pnlTong.add(nhanTong("Đã thu", ViewTheme.tien(hd.daThu)));
+        JLabel lblno = nhanTong("Còn nợ", ViewTheme.tien(hd.conNo()));
+        lblno.setForeground(ViewTheme.DO);
+        pnlTong.add(lblno);
 
-        JButton thu = new JButton("Thu tiền");
-        JButton in = new JButton("In hóa đơn");
-        JButton dong = new JButton("Đóng");
-        ViewTheme.btnNutChinh(thu);
-        ViewTheme.btnNutXanh(in);
-        ViewTheme.btnNutXam(dong);
-        thu.setEnabled(hd.conNo() > 0);
-        thu.addActionListener(e -> {
+        JButton btnThu = new JButton("Thu tiền");
+        JButton btnIn = new JButton("In hóa đơn");
+        JButton btnDong = new JButton("Đóng");
+        ViewTheme.nutChinh(btnThu);
+        ViewTheme.nutXanh(btnIn);
+        ViewTheme.nutXam(btnDong);
+        btnThu.setEnabled(hd.conNo() > 0);
+        btnThu.addActionListener(e -> {
             d.dispose();
             thuTien(hd);
         });
-        in.addActionListener(e -> JOptionPane.showMessageDialog(d,
+        btnIn.addActionListener(e -> JOptionPane.showMessageDialog(d,
                 "Hóa đơn " + hd.ma + "\nKhách: " + hd.tenKh
                 + "\nThành tiền: " + ViewTheme.tien(hd.thanhTien)
                 + "\nĐã thu: " + ViewTheme.tien(hd.daThu)
                 + "\nCòn nợ: " + ViewTheme.tien(hd.conNo())));
-        dong.addActionListener(e -> d.dispose());
-        JPanel nut = new JPanel(new FlowLayout(FlowLayout.RIGHT, 8, 8));
-        nut.setBackground(ViewTheme.TRANG);
-        nut.add(in);
-        nut.add(thu);
-        nut.add(dong);
+        btnDong.addActionListener(e -> d.dispose());
+        JPanel pnlNut = new JPanel(new FlowLayout(FlowLayout.RIGHT, 8, 8));
+        pnlNut.setBackground(ViewTheme.TRANG);
+        pnlNut.add(btnIn);
+        pnlNut.add(btnThu);
+        pnlNut.add(btnDong);
 
-        JPanel duoi = new JPanel(new BorderLayout());
-        duoi.setBackground(ViewTheme.TRANG);
-        duoi.add(tong, BorderLayout.CENTER);
-        duoi.add(nut, BorderLayout.SOUTH);
+        JPanel pnlDuoi = new JPanel(new BorderLayout());
+        pnlDuoi.setBackground(ViewTheme.TRANG);
+        pnlDuoi.add(pnlTong, BorderLayout.CENTER);
+        pnlDuoi.add(pnlNut, BorderLayout.SOUTH);
 
-        d.add(dau, BorderLayout.NORTH);
-        d.add(cuon, BorderLayout.CENTER);
-        d.add(duoi, BorderLayout.SOUTH);
+        d.add(pnlDau, BorderLayout.NORTH);
+        d.add(scbCuon, BorderLayout.CENTER);
+        d.add(pnlDuoi, BorderLayout.SOUTH);
         d.setSize(980, 620);
         d.setLocationRelativeTo(w);
         d.setVisible(true);
@@ -428,7 +428,7 @@ public class HoaDonPanel extends JPanel {
     private void loc() {
         String tuKhoa = txtTim.getText().trim();
         TableRowSorter<DefaultTableModel> sorter = new TableRowSorter<DefaultTableModel>(model);
-        bang.setRowSorter(sorter);
+        tblBang.setRowSorter(sorter);
         if (tuKhoa.isEmpty()) {
             sorter.setRowFilter(null);
         } else {
@@ -451,7 +451,7 @@ public class HoaDonPanel extends JPanel {
         };
     }
 
-    private static void capNhatTongChon(DefaultTableModel ctModel, JLabel tongChon) {
+    private static void capNhatTongChon(DefaultTableModel ctModel, JLabel lbltongChon) {
         long tong = 0;
         int so = 0;
         for (int i = 0; i < ctModel.getRowCount(); i++) {
@@ -460,7 +460,7 @@ public class HoaDonPanel extends JPanel {
                 tong += parseTien(String.valueOf(ctModel.getValueAt(i, 6)));
             }
         }
-        tongChon.setText("Đã chọn " + so + " dịch vụ - Tổng: " + ViewTheme.tien(tong));
+        lbltongChon.setText("Đã chọn " + so + " dịch vụ - Tổng: " + ViewTheme.tien(tong));
     }
 
     private static JLabel nhan(String chu) {
@@ -487,10 +487,10 @@ public class HoaDonPanel extends JPanel {
         return t;
     }
 
-    private static void chonKhach(JComboBox<String> hop, String ma) {
-        for (int i = 0; i < hop.getItemCount(); i++) {
-            if (hop.getItemAt(i).startsWith(ma)) {
-                hop.setSelectedIndex(i);
+    private static void chonKhach(JComboBox<String> cmbhop, String ma) {
+        for (int i = 0; i < cmbhop.getItemCount(); i++) {
+            if (cmbhop.getItemAt(i).startsWith(ma)) {
+                cmbhop.setSelectedIndex(i);
                 return;
             }
         }

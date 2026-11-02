@@ -40,9 +40,9 @@ public class ToaThuocPanel extends JPanel {
 	private final JComboBox<String> cmbKhach = new JComboBox<String>(DuLieuMau.dsKhach());
 	private final JTextField txtChanDoan = new JTextField();
 	private final JTextField txtGhiChu = new JTextField();
-	private final JComboBox<String> cboHinhThuc = new JComboBox<String>(
+	private final JComboBox<String> cmbHinhThuc = new JComboBox<String>(
 			new String[] { "Tiền mặt", "Thẻ", "Chuyển khoản" });
-	private final JComboBox<String> cboBacSi = new JComboBox<String>(DuLieuMau.dsBacSi());
+	private final JComboBox<String> cmbBacSi = new JComboBox<String>(DuLieuMau.dsBacSi());
 	private final JCheckBox chkNhanPK = new JCheckBox("KH nhận thuốc tại PK", true);
 	private final Runnable sauLuu;
 
@@ -115,8 +115,8 @@ public class ToaThuocPanel extends JPanel {
 		scrBang.setBorder(BorderFactory.createLineBorder(ViewTheme.VIEN));
 
 		ViewTheme.vienNhap(txtGhiChu);
-		ViewTheme.cmbVienHop(cboHinhThuc);
-		ViewTheme.cmbVienHop(cboBacSi);
+		ViewTheme.cmbVienHop(cmbHinhThuc);
+		ViewTheme.cmbVienHop(cmbBacSi);
 		chkNhanPK.setOpaque(false);
 		chkNhanPK.setFont(ViewTheme.FONT);
 		JButton btnLuu = new JButton("Lưu toa thuốc");
@@ -130,8 +130,8 @@ public class ToaThuocPanel extends JPanel {
 		pnlDong1.add(new JLabel("Thành tiền:"));
 		lblThanhTien.setFont(ViewTheme.FONT_SO);
 		pnlDong1.add(lblThanhTien);
-		pnlDong1.add(cboHinhThuc);
-		pnlDong1.add(cboBacSi);
+		pnlDong1.add(cmbHinhThuc);
+		pnlDong1.add(cmbBacSi);
 		pnlDong1.add(btnLuu);
 		JPanel pnlDong2 = new JPanel(new FlowLayout(FlowLayout.LEFT, 8, 0));
 		pnlDong2.setOpaque(false);
@@ -143,19 +143,19 @@ public class ToaThuocPanel extends JPanel {
 		pnlPhai.setOpaque(false);
 		JPanel pnlDau = new JPanel(new BorderLayout(8, 8));
 		pnlDau.setOpaque(false);
-		JPanel panelTraiDau = new JPanel(new GridLayout(2, 1, 0, 6));
-		panelTraiDau.setOpaque(false);
-		panelTraiDau.add(cmbKhach);
-		panelTraiDau.add(txtChanDoan);
-		pnlDau.add(panelTraiDau, BorderLayout.CENTER);
+		JPanel pnlTraiDau = new JPanel(new GridLayout(2, 1, 0, 6));
+		pnlTraiDau.setOpaque(false);
+		pnlTraiDau.add(cmbKhach);
+		pnlTraiDau.add(txtChanDoan);
+		pnlDau.add(pnlTraiDau, BorderLayout.CENTER);
 		pnlDau.add(lblThongTin, BorderLayout.EAST);
 		pnlPhai.add(pnlDau, BorderLayout.NORTH);
 		pnlPhai.add(scrBang, BorderLayout.CENTER);
-		JPanel panelDuoi = new JPanel(new BorderLayout(0, 8));
-		panelDuoi.setOpaque(false);
-		panelDuoi.add(txtGhiChu, BorderLayout.NORTH);
-		panelDuoi.add(pnlChan, BorderLayout.SOUTH);
-		pnlPhai.add(panelDuoi, BorderLayout.SOUTH);
+		JPanel pnlDuoi = new JPanel(new BorderLayout(0, 8));
+		pnlDuoi.setOpaque(false);
+		pnlDuoi.add(txtGhiChu, BorderLayout.NORTH);
+		pnlDuoi.add(pnlChan, BorderLayout.SOUTH);
+		pnlPhai.add(pnlDuoi, BorderLayout.SOUTH);
 
 		JLabel lblTieuDe = ViewTheme.lblTieuDeTrang("Lập toa thuốc");
 		JPanel pnlNoiDung = new JPanel(new BorderLayout(0, 8));
@@ -201,12 +201,12 @@ public class ToaThuocPanel extends JPanel {
 		toaThuoc.maKH = maKH;
 		toaThuoc.tenKh = tenKh;
 		toaThuoc.maChanDoan = txtChanDoan.getText().trim();
-		toaThuoc.tenBacSi = String.valueOf(cboBacSi.getSelectedItem());
+		toaThuoc.tenBacSi = String.valueOf(cmbBacSi.getSelectedItem());
 		toaThuoc.maBacSi = DuLieuMau.maBacSiTheoTen(toaThuoc.tenBacSi);
 		if (toaThuoc.maBacSi.isEmpty()) {
 			toaThuoc.maBacSi = "NV03";
 		}
-		toaThuoc.hinhThucThanhToan = String.valueOf(cboHinhThuc.getSelectedItem());
+		toaThuoc.hinhThucThanhToan = String.valueOf(cmbHinhThuc.getSelectedItem());
 		toaThuoc.nhanTaiPhongKham = chkNhanPK.isSelected();
 		toaThuoc.ghiChu = txtGhiChu.getText().trim();
 		for (int i = 0; i < model.getRowCount(); i++) {
