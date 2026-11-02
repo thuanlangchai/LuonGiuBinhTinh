@@ -23,7 +23,7 @@ public class QuanLyView extends JFrame implements DieuHuong {
 
     private final String tenDangNhap;
     private final VungTrang vung = new VungTrang();
-    private final JScrollPane cuon;
+    private final JScrollPane srcCuon;
     private final LichHenPanel lichHen = new LichHenPanel();
     private final KeHoachDieuTriPanel keHoach = new KeHoachDieuTriPanel();
     private final DsKeHoachPanel dsKeHoach;
@@ -66,48 +66,48 @@ public class QuanLyView extends JFrame implements DieuHuong {
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         setLocationRelativeTo(null);
         getContentPane().setBackground(ViewTheme.NEN);
-        cuon = new JScrollPane(vung);
-        cuon.setBorder(BorderFactory.createEmptyBorder());
-        cuon.getViewport().setBackground(ViewTheme.NEN);
-        cuon.getVerticalScrollBar().setUnitIncrement(18);
-        JPanel goc = new JPanel(new BorderLayout());
-        goc.setBackground(ViewTheme.NEN);
-        goc.add(taoDau(), BorderLayout.NORTH);
-        goc.add(cuon, BorderLayout.CENTER);
-        JLabel banQuyen = new JLabel("Luon Giu Binh Tinh. All rights reserved. Hotline: 0933.942.776", JLabel.CENTER);
-        banQuyen.setForeground(Color.WHITE);
-        banQuyen.setFont(ViewTheme.FONT_NHO);
-        banQuyen.setBorder(new EmptyBorder(6, 0, 6, 0));
-        goc.add(banQuyen, BorderLayout.SOUTH);
-        setContentPane(goc);
+        srcCuon = new JScrollPane(vung);
+        srcCuon.setBorder(BorderFactory.createEmptyBorder());
+        srcCuon.getViewport().setBackground(ViewTheme.NEN);
+        srcCuon.getVerticalScrollBar().setUnitIncrement(18);
+        JPanel pnlGoc = new JPanel(new BorderLayout());
+        pnlGoc.setBackground(ViewTheme.NEN);
+        pnlGoc.add(pnlTaoDau(), BorderLayout.NORTH);
+        pnlGoc.add(srcCuon, BorderLayout.CENTER);
+        JLabel lblBanQuyen = new JLabel("Luon Giu Binh Tinh. All rights reserved. Hotline: 0933.942.776", JLabel.CENTER);
+        lblBanQuyen.setForeground(Color.WHITE);
+        lblBanQuyen.setFont(ViewTheme.FONT_NHO);
+        lblBanQuyen.setBorder(new EmptyBorder(6, 0, 6, 0));
+        pnlGoc.add(lblBanQuyen, BorderLayout.SOUTH);
+        setContentPane(pnlGoc);
         mo("lichhen");
     }
 
-    private JPanel taoDau() {
-        JPanel dau = new JPanel(new BorderLayout(12, 0));
-        dau.setBackground(ViewTheme.XANH);
-        dau.setBorder(new EmptyBorder(8, 12, 8, 12));
-        JLabel logo = new JLabel("LGBTDENTAL");
-        logo.setForeground(Color.WHITE);
-        logo.setFont(new Font("Segoe UI", Font.BOLD, 18));
+    private JPanel pnlTaoDau() {
+        JPanel pnlDau = new JPanel(new BorderLayout(12, 0));
+        pnlDau.setBackground(ViewTheme.XANH);
+        pnlDau.setBorder(new EmptyBorder(8, 12, 8, 12));
+        JLabel lblLogo = new JLabel("LGBTDENTAL");
+        lblLogo.setForeground(Color.WHITE);
+        lblLogo.setFont(new Font("Segoe UI", Font.BOLD, 18));
         txtTimKhach.setPreferredSize(new Dimension(200, 32));
-        JButton nutTim = new JButton("Tìm");
-        ViewTheme.nutXam(nutTim);
-        nutTim.addActionListener(e -> timVaMo());
+        JButton btnNutTim = new JButton("Tìm");
+        ViewTheme.nutXam(btnNutTim);
+        btnNutTim.addActionListener(e -> timVaMo());
         txtTimKhach.addActionListener(e -> timVaMo());
-        JPanel trai = new JPanel(new FlowLayout(FlowLayout.LEFT, 8, 0));
-        trai.setOpaque(false);
-        trai.add(logo);
-        trai.add(txtTimKhach);
-        trai.add(nutTim);
+        JPanel pnlTrai = new JPanel(new FlowLayout(FlowLayout.LEFT, 8, 0));
+        pnlTrai.setOpaque(false);
+        pnlTrai.add(lblLogo);
+        pnlTrai.add(txtTimKhach);
+        pnlTrai.add(btnNutTim);
 
-        JPanel panelNav = new JPanel(new FlowLayout(FlowLayout.RIGHT, 2, 0));
-        panelNav.setOpaque(false);
-        panelNav.add(nutMenu("Hệ thống", new String[][]{
+        JPanel pnlNav = new JPanel(new FlowLayout(FlowLayout.RIGHT, 2, 0));
+        pnlNav.setOpaque(false);
+        pnlNav.add(btnNutMenu("Hệ thống", new String[][]{
             {"Tài khoản", "sys:taikhoan"},
             {"Đăng xuất", "sys:dangxuat"}
         }));
-        panelNav.add(nutMenu("Danh mục", new String[][]{
+        pnlNav.add(btnNutMenu("Danh mục", new String[][]{
             {"Bảng danh mục", "danhmuc"},
             {"Dịch vụ", "dichvu"},
             {"Nhóm dịch vụ", "nhomdichvu"},
@@ -120,10 +120,10 @@ public class QuanLyView extends JFrame implements DieuHuong {
             {"Sản phẩm", "sanpham"},
             {"Nhà cung cấp", "nhacungcap"}
         }));
-        panelNav.add(nutMenu("Thống kê", new String[][]{
+        pnlNav.add(btnNutMenu("Thống kê", new String[][]{
             {"Thống kê cá nhân", "bc:dtcanhan"},
             {"Thống kê doanh thu", "bc:congno"},}));
-        panelNav.add(nutMenu("Tìm kiếm", new String[][]{
+        pnlNav.add(btnNutMenu("Tìm kiếm", new String[][]{
             {"Khách hàng", "khachhang"},
             {"Lịch hẹn", "lichhen"},
             {"Hóa đơn", "hoadon"},
@@ -132,7 +132,7 @@ public class QuanLyView extends JFrame implements DieuHuong {
             {"Dịch vụ", "dichvu"},
             {"Nhân viên", "nhanvien"}
         }));
-        panelNav.add(nutMenu("Xử lý", new String[][]{
+        pnlNav.add(btnNutMenu("Xử lý", new String[][]{
             {"Kế hoạch điều trị", "kehoach"},
             {"Toa thuốc", "toathuoc"},
             {"Nhập kho", "nhapkho"},
@@ -140,19 +140,19 @@ public class QuanLyView extends JFrame implements DieuHuong {
             {"Hóa đơn", "hoadon"},
             {"Phiếu thu", "phieuthu"},
             {"Phiếu chi", "phieuchi"}}));
-        panelNav.add(nutMenu("Báo cáo", new String[][]{
+        pnlNav.add(btnNutMenu("Báo cáo", new String[][]{
             {"Báo cáo đơn thuốc", "bc:donthuoc"},
             {"Báo cáo thu chi", "bc:thuchi"}
         }));
-        JLabel user = new JLabel(tenDangNhap);
-        user.setForeground(Color.WHITE);
-        user.setFont(ViewTheme.FONT_DAM);
-        user.setBorder(new EmptyBorder(8, 10, 8, 4));
-        panelNav.add(user);
+        JLabel lblUser = new JLabel(tenDangNhap);
+        lblUser.setForeground(Color.WHITE);
+        lblUser.setFont(ViewTheme.FONT_DAM);
+        lblUser.setBorder(new EmptyBorder(8, 10, 8, 4));
+        pnlNav.add(lblUser);
 
-        dau.add(trai, BorderLayout.WEST);
-        dau.add(panelNav, BorderLayout.CENTER);
-        return dau;
+        pnlDau.add(pnlTrai, BorderLayout.WEST);
+        pnlDau.add(pnlNav, BorderLayout.CENTER);
+        return pnlDau;
     }
 
     private void timVaMo() {
@@ -160,17 +160,17 @@ public class QuanLyView extends JFrame implements DieuHuong {
         mo("khachhang");
     }
 
-    private JButton nutMenu(String chu, String[][] muc) {
-        JButton b = new JButton(chu);
-        ViewTheme.nutTrong(b);
-        JPopupMenu pop = new JPopupMenu();
+    private JButton btnNutMenu(String chu, String[][] muc) {
+        JButton btnB = new JButton(chu);
+        ViewTheme.nutTrong(btnB);
+        JPopupMenu pmnPop = new JPopupMenu();
         for (String[] m : muc) {
-            JMenuItem item = new JMenuItem(m[0]);
-            item.addActionListener(e -> chonMuc(m[1]));
-            pop.add(item);
+            JMenuItem nmiItem = new JMenuItem(m[0]);
+            nmiItem.addActionListener(e -> chonMuc(m[1]));
+            pmnPop.add(nmiItem);
         }
-        b.addActionListener(e -> pop.show(b, 0, b.getHeight()));
-        return b;
+        btnB.addActionListener(e -> pmnPop.show(btnB, 0, btnB.getHeight()));
+        return btnB;
     }
 
     private void chonMuc(String ma) {
@@ -228,7 +228,7 @@ public class QuanLyView extends JFrame implements DieuHuong {
                 hien(danhSach);
             }
         }
-        cuon.getVerticalScrollBar().setValue(0);
+        srcCuon.getVerticalScrollBar().setValue(0);
     }
 
     private void hien(JPanel trang) {

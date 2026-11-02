@@ -39,40 +39,40 @@ public class NhapKhoPanel extends JPanel {
         pnlNoiDung.setBorder(new EmptyBorder(16, 18, 16, 18));
 
         JLabel lblTieuDe = ViewTheme.tieuDeTrang(tieuDe);
-        JTextField txtNgayNhap = taoTextField("2026-09-28");
-        JComboBox<String> cboLoaiVatTu = new JComboBox<>(new String[]{
+        JTextField txtNgayNhap = txtTaoTextField("2026-09-28");
+        JComboBox<String> cmbLoaiVatTu = new JComboBox<>(new String[]{
             "Thuốc", "Vật liệu tiêu hao", "Thiết bị nha khoa", "Công cụ, dụng cụ"
         });
-        JComboBox<String> cboNhaCungCap = new JComboBox<>();
+        JComboBox<String> cmbNhaCungCap = new JComboBox<>();
         for (NhaCungCap nhaCungCap : new Kho_Service().findAllNhaCungCap()) {
-            cboNhaCungCap.addItem(nhaCungCap.getTenNhaCungCap());
+        	cmbNhaCungCap.addItem(nhaCungCap.getTenNhaCungCap());
         }
-        if (cboNhaCungCap.getItemCount() == 0) {
-            cboNhaCungCap.addItem("STRAUMANN");
+        if (cmbNhaCungCap.getItemCount() == 0) {
+        	cmbNhaCungCap.addItem("STRAUMANN");
         }
-        JTextField txtLyDo = taoTextField("");
-        ViewTheme.vienHop(cboLoaiVatTu);
-        ViewTheme.vienHop(cboNhaCungCap);
+        JTextField txtLyDo = txtTaoTextField("");
+        ViewTheme.vienHop(cmbLoaiVatTu);
+        ViewTheme.vienHop(cmbNhaCungCap);
 
         JPanel pnlForm = new JPanel(new GridLayout(0, 2, 12, 10));
         pnlForm.setOpaque(false);
-        pnlForm.add(taoLabel("Ngày nhập kho"));
+        pnlForm.add(lblTaoLabel("Ngày nhập kho"));
         pnlForm.add(txtNgayNhap);
-        pnlForm.add(taoLabel("Loại vật tư"));
-        pnlForm.add(cboLoaiVatTu);
-        pnlForm.add(taoLabel("Nhà cung cấp"));
-        pnlForm.add(cboNhaCungCap);
-        pnlForm.add(taoLabel("<html>Lý do <font color='#e74c3c'>*</font></html>"));
+        pnlForm.add(lblTaoLabel("Loại vật tư"));
+        pnlForm.add(cmbLoaiVatTu);
+        pnlForm.add(lblTaoLabel("Nhà cung cấp"));
+        pnlForm.add(cmbNhaCungCap);
+        pnlForm.add(lblTaoLabel("<html>Lý do <font color='#e74c3c'>*</font></html>"));
         pnlForm.add(txtLyDo);
 
         pnlDanhSachDong.setLayout(new BoxLayout(pnlDanhSachDong, BoxLayout.Y_AXIS));
         pnlDanhSachDong.setOpaque(false);
-        pnlDanhSachDong.add(taoDongHang());
+        pnlDanhSachDong.add(pnlTaoDongHang());
 
         JButton btnThemDong = new JButton("+");
         ViewTheme.nutChinh(btnThemDong);
         btnThemDong.addActionListener(e -> {
-            pnlDanhSachDong.add(taoDongHang());
+            pnlDanhSachDong.add(pnlTaoDongHang());
             pnlDanhSachDong.revalidate();
         });
         JPanel pnlThemDong = new JPanel(new FlowLayout(FlowLayout.CENTER));
@@ -83,9 +83,9 @@ public class NhapKhoPanel extends JPanel {
         JButton btnChonFile = new JButton("Choose File");
         ViewTheme.nutXam(btnChonFile);
         btnChonFile.addActionListener(e -> {
-            JFileChooser ofd = new JFileChooser();
-            if (ofd.showOpenDialog(this) == JFileChooser.APPROVE_OPTION) {
-                lblTenFile.setText(ofd.getSelectedFile().getName());
+            JFileChooser fch = new JFileChooser();
+            if (fch.showOpenDialog(this) == JFileChooser.APPROVE_OPTION) {
+                lblTenFile.setText(fch.getSelectedFile().getName());
             }
         });
         JButton btnTaiMau = new JButton("Tải file excel mẫu");
@@ -97,13 +97,13 @@ public class NhapKhoPanel extends JPanel {
         JPanel pnlExcel = new JPanel(new GridLayout(0, 2, 8, 8));
         pnlExcel.setOpaque(false);
         pnlExcel.setBorder(BorderFactory.createTitledBorder("Nhập liệu từ excel"));
-        pnlExcel.add(taoLabel("Nhập file excel"));
+        pnlExcel.add(lblTaoLabel("Nhập file excel"));
         JPanel pnlHangFile = new JPanel(new FlowLayout(FlowLayout.LEFT, 8, 0));
         pnlHangFile.setOpaque(false);
         pnlHangFile.add(btnChonFile);
         pnlHangFile.add(lblTenFile);
         pnlExcel.add(pnlHangFile);
-        pnlExcel.add(taoLabel("File mẫu"));
+        pnlExcel.add(lblTaoLabel("File mẫu"));
         pnlExcel.add(btnTaiMau);
 
         JButton btnBoQua = new JButton("Bỏ qua");
@@ -166,18 +166,18 @@ public class NhapKhoPanel extends JPanel {
         add(pnlNoiDung, BorderLayout.NORTH);
     }
 
-    private JPanel taoDongHang() {
+    private JPanel pnlTaoDongHang() {
         JPanel pnlDong = new JPanel(new GridLayout(1, 5, 8, 0));
         pnlDong.setOpaque(false);
         pnlDong.setBorder(new EmptyBorder(4, 0, 4, 0));
         pnlDong.setMaximumSize(new Dimension(Integer.MAX_VALUE, 42));
 
-        JComboBox<String> cboSanPham = new JComboBox<>(DuLieuMau.dsSanPham());
-        JTextField txtSoLuong = taoTextField("0");
-        JTextField txtDonGia = taoTextField("0");
-        JTextField txtThanhTien = taoTextField("0");
+        JComboBox<String> cmbSanPham = new JComboBox<>(DuLieuMau.dsSanPham());
+        JTextField txtSoLuong = txtTaoTextField("0");
+        JTextField txtDonGia = txtTaoTextField("0");
+        JTextField txtThanhTien = txtTaoTextField("0");
         txtThanhTien.setEditable(false);
-        ViewTheme.vienHop(cboSanPham);
+        ViewTheme.vienHop(cmbSanPham);
 
         Runnable tinhThanhTien = () -> {
             try {
@@ -220,7 +220,7 @@ public class NhapKhoPanel extends JPanel {
             }
         });
 
-        pnlDong.add(cboSanPham);
+        pnlDong.add(cmbSanPham);
         pnlDong.add(txtSoLuong);
         pnlDong.add(txtDonGia);
         pnlDong.add(txtThanhTien);
@@ -246,13 +246,13 @@ public class NhapKhoPanel extends JPanel {
         lblTongTien.setText(ViewTheme.tien(tongTien));
     }
 
-    private JTextField taoTextField(String giaTri) {
+    private JTextField txtTaoTextField(String giaTri) {
         JTextField txt = new JTextField(giaTri);
         ViewTheme.vienNhap(txt);
         return txt;
     }
 
-    private JLabel taoLabel(String noiDung) {
+    private JLabel lblTaoLabel(String noiDung) {
         JLabel lbl = new JLabel(noiDung, JLabel.RIGHT);
         lbl.setFont(ViewTheme.FONT);
         return lbl;
