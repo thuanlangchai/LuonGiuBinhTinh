@@ -383,9 +383,9 @@ public class LichHenPanel extends JPanel {
         for (int i = 0; i < soNgay; i++) {
             LocalDate d = dau.plusDays(i);
             String chu = soNgay == 1 ? "Lê Trần Quang Thanh" : (d.getDayOfMonth() + "/" + d.getMonthValue() + " " + THU[d.getDayOfWeek().getValue() - 1]);
-            JLabel lb = new JLabel(chu, SwingConstants.CENTER);
-            lb.setFont(ViewTheme.FONT_DAM);
-            tenCot.add(lb);
+            JLabel lbl = new JLabel(chu, SwingConstants.CENTER);
+            lbl.setFont(ViewTheme.FONT_DAM);
+            tenCot.add(lbl);
         }
         JPanel le = new JPanel();
         le.setPreferredSize(new Dimension(68, 36));
@@ -398,10 +398,10 @@ public class LichHenPanel extends JPanel {
         gio.setBackground(ViewTheme.TRANG);
         for (int i = 0; i < SO_O; i++) {
             int phut = (GIO_DAU * 60) + i * 30;
-            JLabel lb = new JLabel(String.format("%02d:%02d", phut / 60, phut % 60));
-            lb.setForeground(ViewTheme.CHU_NHAT);
-            lb.setBounds(6, i * CAO_O, 58, CAO_O);
-            gio.add(lb);
+            JLabel lbl = new JLabel(String.format("%02d:%02d", phut / 60, phut % 60));
+            lbl.setForeground(ViewTheme.CHU_NHAT);
+            lbl.setBounds(6, i * CAO_O, 58, CAO_O);
+            gio.add(lbl);
         }
 
         JPanel cot = new JPanel(new GridLayout(1, soNgay));
@@ -597,10 +597,10 @@ public class LichHenPanel extends JPanel {
         luoi.setOpaque(false);
         String[] nhan = {"T2", "T3", "T4", "T5", "T6", "T7", "CN"};
         for (String n : nhan) {
-            JLabel lb = new JLabel(n, SwingConstants.CENTER);
-            lb.setFont(ViewTheme.FONT_DAM);
-            lb.setForeground(ViewTheme.CHU_NHAT);
-            luoi.add(lb);
+            JLabel lbl = new JLabel(n, SwingConstants.CENTER);
+            lbl.setFont(ViewTheme.FONT_DAM);
+            lbl.setForeground(ViewTheme.CHU_NHAT);
+            luoi.add(lbl);
         }
         LocalDate dau = ngay.withDayOfMonth(1);
         int lech = dau.getDayOfWeek().getValue() - 1;
