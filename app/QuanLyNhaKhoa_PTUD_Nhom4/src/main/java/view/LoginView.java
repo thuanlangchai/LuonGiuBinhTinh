@@ -61,19 +61,19 @@ public class LoginView extends JFrame {
         panelThe.setBorder(BorderFactory.createCompoundBorder(
                 BorderFactory.createLineBorder(ViewTheme.VIEN),
                 new EmptyBorder(24, 28, 24, 28)));
-        JLabel nhanTieuDe = ViewTheme.tieuDeTrang("Đăng nhập");
+        JLabel nhanTieuDe = ViewTheme.lblTieuDeTrang("Đăng nhập");
         JPanel panelForm = new JPanel(new GridLayout(4, 1, 0, 6));
         panelForm.setOpaque(false);
-        JLabel nhanTen = ViewTheme.chuPhu("Tên đăng nhập");
-        JLabel nhanMatKhau = ViewTheme.chuPhu("Mật khẩu");
+        JLabel nhanTen = ViewTheme.lblChuPhu("Tên đăng nhập");
+        JLabel nhanMatKhau = ViewTheme.lblChuPhu("Mật khẩu");
         ViewTheme.vienNhap(txtTen);
         ViewTheme.vienNhap(txtMatKhau);
         panelForm.add(nhanTen);
         panelForm.add(txtTen);
         panelForm.add(nhanMatKhau);
         panelForm.add(txtMatKhau);
-        ViewTheme.nutChinh(btnDangNhap);
-        ViewTheme.nutMau(btnThoat, new Color(232, 109, 109), Color.WHITE);
+        ViewTheme.btnNutChinh(btnDangNhap);
+        ViewTheme.btnNutMau(btnThoat, new Color(232, 109, 109), Color.WHITE);
         Dimension kichThuocNut = new Dimension(160, 42);
         btnDangNhap.setPreferredSize(kichThuocNut);
         btnThoat.setPreferredSize(kichThuocNut);

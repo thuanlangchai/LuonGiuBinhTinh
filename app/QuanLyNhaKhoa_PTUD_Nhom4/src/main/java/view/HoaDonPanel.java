@@ -57,9 +57,9 @@ public class HoaDonPanel extends JPanel {
         pnlThe.setBackground(ViewTheme.TRANG);
         pnlThe.setBorder(new EmptyBorder(12, 14, 12, 14));
 
-        JLabel lblTieuDe = ViewTheme.tieuDeTrang("Hóa đơn");
+        JLabel lblTieuDe = ViewTheme.lblTieuDeTrang("Hóa đơn");
         JButton btnThem = new JButton("Thêm hóa đơn");
-        ViewTheme.nutXanh(btnThem);
+        ViewTheme.btnNutXanh(btnThem);
         btnThem.addActionListener(e -> moLapHoaDon(null, null));
         JPanel pnlDau = new JPanel(new BorderLayout());
         pnlDau.setOpaque(false);

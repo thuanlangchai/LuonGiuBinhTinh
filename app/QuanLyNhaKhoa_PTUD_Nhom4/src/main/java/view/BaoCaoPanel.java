@@ -187,17 +187,17 @@ public class BaoCaoPanel extends JPanel {
         for (int i = 0; i < tab.length; i++) {
             JButton btnTab = new JButton(tab[i]);
             if (i == 0) {
-                ViewTheme.nutChinh(btnTab);
+                ViewTheme.btnNutChinh(btnTab);
             } else {
-                ViewTheme.nutXam(btnTab);
+                ViewTheme.btnNutXam(btnTab);
             }
             btnTab.addActionListener(e -> {
                 for (Component component : pnlThanh.getComponents()) {
                     if (component instanceof JButton) {
-                        ViewTheme.nutXam((JButton) component);
+                        ViewTheme.btnNutXam((JButton) component);
                     }
                 }
-                ViewTheme.nutChinh(btnTab);
+                ViewTheme.btnNutChinh(btnTab);
             });
             pnlThanh.add(btnTab);
         }
@@ -234,7 +234,7 @@ public class BaoCaoPanel extends JPanel {
         pnl.add(lblNhanTieuDe, BorderLayout.WEST);
         if (taiLai) {
             JButton btnTai = new JButton("Tải lại");
-            ViewTheme.nutXanh(btnTai);
+            ViewTheme.btnNutXanh(btnTai);
             btnTai.addActionListener(e -> chon(ma));
             JPanel pnlPhai = new JPanel(new FlowLayout(FlowLayout.LEFT, 8, 0));
             pnlPhai.setOpaque(false);
@@ -281,12 +281,12 @@ public class BaoCaoPanel extends JPanel {
         JPanel pnl = new JPanel(new FlowLayout(FlowLayout.RIGHT, 8, 0));
         pnl.setOpaque(false);
         JButton btnIn = new JButton("In");
-        ViewTheme.nutXanh(btnIn);
+        ViewTheme.btnNutXanh(btnIn);
         btnIn.addActionListener(e -> JOptionPane.showMessageDialog(this, "Đã chuẩn bị bản in " + tieuCua(ma) + "."));
         pnl.add(btnIn);
         if (excel) {
             JButton btnXuat = new JButton("Xuất excel...");
-            ViewTheme.nutXanh(btnXuat);
+            ViewTheme.btnNutXanh(btnXuat);
             btnXuat.addActionListener(e -> JOptionPane.showMessageDialog(this, "Đã chuẩn bị file Excel cho " + tieuCua(ma) + "."));
             pnl.add(btnXuat);
         }

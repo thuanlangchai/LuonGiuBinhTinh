@@ -196,7 +196,7 @@ public final class BieuMau {
         pnlDs.setOpaque(false);
         pnlDs.add(pnlHang);
         JButton btnCong = new JButton("+");
-        ViewTheme.nutChinh(btnCong);
+        ViewTheme.btnNutChinh(btnCong);
         btnCong.addActionListener(e -> {
             pnlDs.add(dongSanPham());
             pnlDs.revalidate();
@@ -238,7 +238,7 @@ public final class BieuMau {
         ViewTheme.vienNhap(txtChenhLech);
         ViewTheme.vienNhap(txtGia);
         JButton btnXoa = new JButton("Xóa");
-        ViewTheme.nutDo(btnXoa);
+        ViewTheme.btnNutDo(btnXoa);
         btnXoa.addActionListener(e -> {
             Container cha = pnl.getParent();
             if (cha != null && cha.getComponentCount() > 1) {

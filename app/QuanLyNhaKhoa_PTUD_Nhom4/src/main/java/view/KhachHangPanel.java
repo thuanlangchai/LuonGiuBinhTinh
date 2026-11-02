@@ -71,7 +71,7 @@ public class KhachHangPanel extends JPanel {
         pnlthe.setBackground(ViewTheme.TRANG);
         pnlthe.setBorder(new EmptyBorder(12, 14, 12, 14));
 
-        JLabel lblTieuDe = ViewTheme.tieuDeTrang("Khách hàng");
+        JLabel lblTieuDe = ViewTheme.lblTieuDeTrang("Khách hàng");
         JButton btnXuat = new JButton("Xuất Excel");
         JButton btnToa = new JButton("Toa thuốc");
         JButton btnThem = new JButton("Thêm khách hàng");
@@ -101,7 +101,7 @@ public class KhachHangPanel extends JPanel {
         ViewTheme.vienNhap(txtTim);
         txtTim.setPreferredSize(new Dimension(220, 32));
         JButton btnTim = new JButton("Tìm");
-        ViewTheme.nutChinh(btnTim);
+        ViewTheme.btnNutChinh(btnTim);
         btnTim.addActionListener(e -> loc());
         txtTim.addActionListener(e -> loc());
 
@@ -111,7 +111,7 @@ public class KhachHangPanel extends JPanel {
         JComboBox<String> cmbTrangThai = hop("Trạng thái điều trị", "Tất cả", "Đang điều trị", "Hoàn tất");
         JComboBox<String> cmbDichVu = hop("Dịch vụ", "Tất cả", "Thăm khám", "Cạo vôi");
         JButton btnMore = new JButton("More");
-        ViewTheme.nutChinh(btnMore);
+        ViewTheme.btnNutChinh(btnMore);
 
         panelLocThem.setOpaque(false);
         panelLocThem.setVisible(false);
@@ -126,7 +126,7 @@ public class KhachHangPanel extends JPanel {
         panelLocThem.add(o("Số tiền dịch vụ"));
         panelLocThem.add(o("Số tiền nợ còn lại"));
         JButton btnLess = new JButton("Less");
-        ViewTheme.nutChinh(btnLess);
+        ViewTheme.btnNutChinh(btnLess);
         panelLocThem.add(btnLess);
         btnMore.addActionListener(e -> panelLocThem.setVisible(true));
         btnLess.addActionListener(e -> panelLocThem.setVisible(false));
@@ -471,7 +471,7 @@ public class KhachHangPanel extends JPanel {
                 c.addItem(m);
             }
         }
-        ViewTheme.vienHop(c);
+        ViewTheme.cmbVienHop(c);
         return c;
     }
 
