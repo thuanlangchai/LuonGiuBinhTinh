@@ -1,0 +1,1 @@
+package repository;import entity.LoaiRang;import java.util.List;public interface LoaiRang_IDAO {    List<LoaiRang> findAllLoaiRang();    LoaiRang findById(String maLoaiRang);    Integer add(LoaiRang entity);    void update(LoaiRang entity);    void delete(String maLoaiRang);}

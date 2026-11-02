@@ -38,7 +38,6 @@ public class TrangChuView extends JFrame {
 
     private ImageIcon napNen() {
         URL url = TrangChuView.class.getResource("/nen-rang.jpg");
-//        URL url = TrangChuView.class.getResource("/nen-rang-v2.png");
         if (url == null) {
             return null;
         }

@@ -1,0 +1,13 @@
+package repository;
+
+import entity.ToaThuoc;
+import java.util.List;
+
+public interface ToaThuoc_IDAO {
+    List<ToaThuoc> findAllToaThuoc();
+    ToaThuoc findById(String maToaThuoc);
+    Integer add(ToaThuoc entity);
+    void update(ToaThuoc entity);
+    void delete(String maToaThuoc);
+    List<ToaThuoc> findByMaKH(String maKH);
+}

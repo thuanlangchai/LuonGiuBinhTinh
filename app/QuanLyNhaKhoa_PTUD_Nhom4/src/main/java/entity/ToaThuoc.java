@@ -6,7 +6,7 @@ public class ToaThuoc {
 
     private String maToaThuoc;
     private String maKH;
-    private String maChanDoan;
+    private String chanDoan;
     private String maBacSi;
     private String hinhThucThanhToan;
     private boolean nhanTaiPhongKham;
@@ -17,10 +17,10 @@ public class ToaThuoc {
     public ToaThuoc() {
     }
 
-    public ToaThuoc(String maToaThuoc, String maKH, String maChanDoan, String maBacSi, String hinhThucThanhToan, boolean nhanTaiPhongKham, String ghiChu, long thanhTien, LocalDateTime ngayTao) {
+    public ToaThuoc(String maToaThuoc, String maKH, String chanDoan, String maBacSi, String hinhThucThanhToan, boolean nhanTaiPhongKham, String ghiChu, long thanhTien, LocalDateTime ngayTao) {
         this.maToaThuoc = maToaThuoc;
         this.maKH = maKH;
-        this.maChanDoan = maChanDoan;
+        this.chanDoan = chanDoan;
         this.maBacSi = maBacSi;
         this.hinhThucThanhToan = hinhThucThanhToan;
         this.nhanTaiPhongKham = nhanTaiPhongKham;
@@ -46,11 +46,11 @@ public class ToaThuoc {
     }
 
     public String getMaChanDoan() {
-        return maChanDoan;
+        return chanDoan;
     }
 
-    public void setMaChanDoan(String maChanDoan) {
-        this.maChanDoan = maChanDoan;
+    public void setMaChanDoan(String chanDoan) {
+        this.chanDoan = chanDoan;
     }
 
     public String getMaBacSi() {

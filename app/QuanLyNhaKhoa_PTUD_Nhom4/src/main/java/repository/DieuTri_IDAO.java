@@ -1,0 +1,1 @@
+package repository;import entity.DieuTri;import java.util.List;public interface DieuTri_IDAO {    List<DieuTri> findAllDieuTri();    DieuTri findById(String maDieuTri);    Integer add(DieuTri entity);    void update(DieuTri entity);    void delete(String maDieuTri);}

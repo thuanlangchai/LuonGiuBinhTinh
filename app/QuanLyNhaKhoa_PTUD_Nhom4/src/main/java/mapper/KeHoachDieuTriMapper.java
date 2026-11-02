@@ -1,0 +1,28 @@
+package mapper;
+
+import entity.KeHoachDieuTri;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+
+public class KeHoachDieuTriMapper implements RowMapper<KeHoachDieuTri> {
+
+    @Override
+    public KeHoachDieuTri mapper(ResultSet rs) {
+        try {
+            String maKeHoach = rs.getString("maKeHoach");
+            String maKH = rs.getString("maKH");
+            LocalDate ngayKeHoach = Rs.date(rs, "ngayKeHoach");
+            String maBacSi = rs.getString("maBacSi");
+            String lyDoDieuTri = rs.getString("lyDoDieuTri");
+            String ghiChu = rs.getString("ghiChu");
+            String trangThai = rs.getString("trangThai");
+            LocalDateTime ngayTao = Rs.dateTime(rs, "ngayTao");
+            String nguoiTao = rs.getString("nguoiTao");
+            return new KeHoachDieuTri(maKeHoach, maKH, ngayKeHoach, maBacSi, lyDoDieuTri, ghiChu, trangThai, ngayTao, nguoiTao);
+        } catch (SQLException e) {
+            return null;
+        }
+    }
+}

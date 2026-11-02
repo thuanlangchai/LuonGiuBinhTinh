@@ -1,7 +1,7 @@
 package view;
 
-import view.model.CauHinhTrang;
 import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.event.MouseAdapter;
@@ -23,17 +23,18 @@ import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableRowSorter;
+import view.model.CauHinhTrang;
 
 public class TrangDanhSach extends JPanel {
 
     private final JPanel the = new JPanel(new BorderLayout(0, 8));
     private final JLabel tieuDe = ViewTheme.tieuDeTrang("Danh sách");
-    private final JButton nutThem = new JButton("Thêm");
-    private final ONhap tim = new ONhap("Tìm...", 28);
+    private final JButton btnThem = new JButton("Thêm");
+    private final ONhap txtTim = new ONhap("Tìm...", 28);
     private final JLabel ghiChu = new JLabel("<html><span style='color:#6c757d'>Bộ lọc yêu thích: Không có bộ lọc đã được yêu thích. Khi lưu bộ lọc, đánh dấu vào tùy chọn \"yêu thích\" để bộ lọc xuất hiện ở đây cho mọi người.</span></html>");
     private final JPanel boLocThem = new JPanel(new FlowLayout(FlowLayout.LEFT, 8, 0));
-    private final JLabel dem = new JLabel(" ");
-    private final JComboBox<String> kichThuoc = new JComboBox<String>(new String[]{"10", "15", "25", "50"});
+    private final JLabel lblDem = new JLabel(" ");
+    private final JComboBox<String> cboKichThuoc = new JComboBox<String>(new String[]{"10", "15", "25", "50"});
     private final JPanel phanTrang = new JPanel(new FlowLayout(FlowLayout.RIGHT, 4, 0));
     private final JTable bang = new JTable();
     private DefaultTableModel model;
@@ -50,19 +51,19 @@ public class TrangDanhSach extends JPanel {
         setBorder(new EmptyBorder(6, 6, 16, 6));
         the.setBackground(ViewTheme.TRANG);
         the.setBorder(BorderFactory.createCompoundBorder(
-                BorderFactory.createLineBorder(new java.awt.Color(255, 255, 255)),
+                BorderFactory.createLineBorder(new Color(255, 255, 255)),
                 new EmptyBorder(12, 14, 12, 14)));
         add(the, BorderLayout.NORTH);
 
-        ViewTheme.nutXanh(nutThem);
-        nutThem.addActionListener(e -> moForm(null, -1));
+        ViewTheme.nutXanh(btnThem);
+        btnThem.addActionListener(e -> moForm(null, -1));
 
         JPanel dau = new JPanel(new BorderLayout());
         dau.setOpaque(false);
         dau.add(tieuDe, BorderLayout.WEST);
         JPanel phai = new JPanel(new FlowLayout(FlowLayout.RIGHT, 0, 0));
         phai.setOpaque(false);
-        phai.add(nutThem);
+        phai.add(btnThem);
         dau.add(phai, BorderLayout.EAST);
 
         JPanel vungTim = new JPanel(new BorderLayout(0, 6));
@@ -71,8 +72,8 @@ public class TrangDanhSach extends JPanel {
         JLabel lbTim = ViewTheme.chuPhu("Tìm kiếm");
         JPanel dongTim = new JPanel(new BorderLayout(8, 0));
         dongTim.setOpaque(false);
-        tim.setPreferredSize(new Dimension(280, 34));
-        dongTim.add(tim, BorderLayout.CENTER);
+        txtTim.setPreferredSize(new Dimension(280, 34));
+        dongTim.add(txtTim, BorderLayout.CENTER);
         JButton nangCao = new JButton("Hiển thị tìm nâng cao");
         ViewTheme.nutLink(nangCao);
         nangCao.setForeground(ViewTheme.XANH_DAM);
@@ -98,7 +99,7 @@ public class TrangDanhSach extends JPanel {
         vungTim.add(ghiChu, BorderLayout.CENTER);
         vungTim.add(boLocThem, BorderLayout.SOUTH);
 
-        tim.getDocument().addDocumentListener(new DocumentListener() {
+        txtTim.getDocument().addDocumentListener(new DocumentListener() {
             @Override
             public void insertUpdate(DocumentEvent e) {
                 doiTim();
@@ -120,10 +121,10 @@ public class TrangDanhSach extends JPanel {
         cuon.setPreferredSize(new Dimension(200, 420));
         cuon.getViewport().setBackground(ViewTheme.TRANG);
 
-        dem.setFont(ViewTheme.FONT_NHO);
-        dem.setForeground(ViewTheme.CHU_NHAT);
-        ViewTheme.vienHop(kichThuoc);
-        kichThuoc.addActionListener(e -> {
+        lblDem.setFont(ViewTheme.FONT_NHO);
+        lblDem.setForeground(ViewTheme.CHU_NHAT);
+        ViewTheme.vienHop(cboKichThuoc);
+        cboKichThuoc.addActionListener(e -> {
             trang = 1;
             loc();
         });
@@ -132,8 +133,8 @@ public class TrangDanhSach extends JPanel {
         chan.setOpaque(false);
         JPanel trai = new JPanel(new FlowLayout(FlowLayout.LEFT, 6, 0));
         trai.setOpaque(false);
-        trai.add(dem);
-        trai.add(kichThuoc);
+        trai.add(lblDem);
+        trai.add(cboKichThuoc);
         chan.add(trai, BorderLayout.WEST);
         phanTrang.setOpaque(false);
         chan.add(phanTrang, BorderLayout.EAST);
@@ -164,9 +165,9 @@ public class TrangDanhSach extends JPanel {
         this.cauHinh = c;
         this.trang = 1;
         tieuDe.setText(c.tieuDe);
-        nutThem.setText(c.nutThem);
-        tim.setText("");
-        tim.datGoiY(c.goiY);
+        btnThem.setText(c.nutThem);
+        txtTim.setText("");
+        txtTim.datGoiY(c.goiY);
         model = ViewTheme.taoModel(c.cot, true, true);
         for (Object[] dong : c.duLieu) {
             model.addRow(ViewTheme.dongBang(dong, true, true));
@@ -190,7 +191,7 @@ public class TrangDanhSach extends JPanel {
         if ("dichvu".equals(cauHinh.ma)) {
             cboNhom = new JComboBox<String>();
             cboNhom.addItem("Tất cả nhóm");
-            for (String n : DuLieuMau.NHOM_DV) {
+            for (String n : DuLieuMau.dsNhomDv()) {
                 cboNhom.addItem(n);
             }
             ViewTheme.vienHop(cboNhom);
@@ -233,7 +234,7 @@ public class TrangDanhSach extends JPanel {
         if (model == null || sapXep == null || dangNap) {
             return;
         }
-        String tu = tim.getText().trim().toLowerCase();
+        String tu = txtTim.getText().trim().toLowerCase();
         List<Integer> khop = new ArrayList<Integer>();
         for (int i = 0; i < model.getRowCount(); i++) {
             if (!khopDong(i, tu)) {
@@ -241,7 +242,7 @@ public class TrangDanhSach extends JPanel {
             }
             khop.add(i);
         }
-        int size = Integer.parseInt(String.valueOf(kichThuoc.getSelectedItem()));
+        int size = Integer.parseInt(String.valueOf(cboKichThuoc.getSelectedItem()));
         int soTrang = Math.max(1, (khop.size() + size - 1) / size);
         if (trang > soTrang) {
             trang = soTrang;
@@ -257,7 +258,7 @@ public class TrangDanhSach extends JPanel {
         });
         int hienTu = khop.isEmpty() ? 0 : tuIdx + 1;
         int hienDen = denIdx;
-        dem.setText(ViewTheme.demDong(hienTu, hienDen, khop.size()));
+        lblDem.setText(ViewTheme.demDong(hienTu, hienDen, khop.size()));
         vePhanTrang(soTrang);
         int cao = Math.min(460, 48 + Math.max(2, hien.size()) * 36);
         bang.getParent().getParent().setPreferredSize(new Dimension(200, Math.max(160, cao)));
@@ -279,7 +280,8 @@ public class TrangDanhSach extends JPanel {
             return false;
         }
         if (cboNhom != null && cboNhom.getSelectedIndex() > 0) {
-            Object v = model.getValueAt(hang, 1);
+            int cotNhom = timCot("Nhóm dịch vụ");
+            Object v = model.getValueAt(hang, cotNhom >= 0 ? cotNhom : 1);
             if (v == null || !cboNhom.getSelectedItem().equals(v.toString())) {
                 return false;
             }
@@ -339,8 +341,12 @@ public class TrangDanhSach extends JPanel {
         if ("Xóa".equals(lenh)) {
             int chon = JOptionPane.showConfirmDialog(this, "Xóa dòng này?", "Xác nhận", JOptionPane.YES_NO_OPTION);
             if (chon == JOptionPane.YES_OPTION) {
-                model.removeRow(hang);
-                loc();
+                Object[] dong = docDong(hang);
+                if (!DanhMucDb.xoa(cauHinh.ma, dong)) {
+                    JOptionPane.showMessageDialog(this, "Không xóa được trên database.");
+                    return;
+                }
+                nap(DanhMucDb.lay(cauHinh.ma));
             }
             return;
         }
@@ -373,14 +379,12 @@ public class TrangDanhSach extends JPanel {
             return;
         }
         BieuMau.mo(this, cauHinh, cu, dong -> {
-            if (hang < 0) {
-                model.addRow(ViewTheme.dongBang(dong, true, true));
-            } else if (hang < model.getRowCount()) {
-                for (int i = 0; i < dong.length && i + 1 < model.getColumnCount() - 1; i++) {
-                    model.setValueAt(dong[i], hang, i + 1);
-                }
+            boolean them = hang < 0;
+            if (!DanhMucDb.luu(cauHinh.ma, dong, them)) {
+                JOptionPane.showMessageDialog(this, "Không lưu được lên database.");
+                return;
             }
-            loc();
+            nap(DanhMucDb.lay(cauHinh.ma));
         });
     }
 }
