@@ -37,7 +37,7 @@ public class TrangDanhSach extends JPanel {
 	private final JLabel lblDem = new JLabel(" ");
 	private final JComboBox<String> cmbKichThuoc = new JComboBox<String>(new String[] { "10", "15", "25", "50" });
 	private final JPanel pnlPhanTrang = new JPanel(new FlowLayout(FlowLayout.RIGHT, 4, 0));
-	private final JTable tbl = new JTable();
+	private final JTable tblBang = new JTable();
 	private DefaultTableModel model;
 	private TableRowSorter<DefaultTableModel> sapXep;
 	private CauHinhTrang cauHinh;
@@ -116,7 +116,7 @@ public class TrangDanhSach extends JPanel {
 			}
 		});
 
-		JScrollPane scr = new JScrollPane(tbl);
+		JScrollPane scr = new JScrollPane(tblBang);
 		ViewTheme.vienNhap(scr);
 		scr.setPreferredSize(new Dimension(200, 420));
 		scr.getViewport().setBackground(ViewTheme.TRANG);
@@ -147,13 +147,13 @@ public class TrangDanhSach extends JPanel {
 		pnlThe.add(pnlGiua, BorderLayout.CENTER);
 		pnlThe.add(pnlChan, BorderLayout.SOUTH);
 
-		ViewTheme.ganThaoTac(tbl, (lenh, hang) -> xuLy(lenh, hang));
-		tbl.addMouseListener(new MouseAdapter() {
+		ViewTheme.ganThaoTac(tblBang, (lenh, hang) -> xuLy(lenh, hang));
+		tblBang.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				if (e.getClickCount() == 2 && tbl.rowAtPoint(e.getPoint()) >= 0
-						&& !"Thao tác".equals(tbl.getColumnName(tbl.columnAtPoint(e.getPoint())))) {
-					int hang = tbl.convertRowIndexToModel(tbl.rowAtPoint(e.getPoint()));
+				if (e.getClickCount() == 2 && tblBang.rowAtPoint(e.getPoint()) >= 0
+						&& !"Thao tác".equals(tblBang.getColumnName(tblBang.columnAtPoint(e.getPoint())))) {
+					int hang = tblBang.convertRowIndexToModel(tblBang.rowAtPoint(e.getPoint()));
 					moForm(docDong(hang), hang);
 				}
 			}
@@ -172,10 +172,10 @@ public class TrangDanhSach extends JPanel {
 		for (Object[] dong : c.duLieu) {
 			model.addRow(ViewTheme.dongBang(dong, true, true));
 		}
-		tbl.setModel(model);
+		tblBang.setModel(model);
 		sapXep = new TableRowSorter<DefaultTableModel>(model);
-		tbl.setRowSorter(sapXep);
-		ViewTheme.trangTriBang(tbl);
+		tblBang.setRowSorter(sapXep);
+		ViewTheme.trangTriBang(tblBang);
 		dungBoLoc();
 		dangNap = false;
 		loc();
@@ -262,7 +262,7 @@ public class TrangDanhSach extends JPanel {
 		lblDem.setText(ViewTheme.demDong(hienTu, hienDen, khop.size()));
 		vePhanTrang(soTrang);
 		int cao = Math.min(460, 48 + Math.max(2, hien.size()) * 36);
-		tbl.getParent().getParent().setPreferredSize(new Dimension(200, Math.max(160, cao)));
+		tblBang.getParent().getParent().setPreferredSize(new Dimension(200, Math.max(160, cao)));
 		revalidate();
 	}
 

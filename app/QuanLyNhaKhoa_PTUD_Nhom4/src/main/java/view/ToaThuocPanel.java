@@ -101,16 +101,16 @@ public class ToaThuocPanel extends JPanel {
 		JLabel lblThongTin = new JLabel("Giới tính: Nam     Ngày: 28/09/2026");
 		lblThongTin.setFont(ViewTheme.FONT);
 
-		JTable tbl = new JTable(model);
-		ViewTheme.trangTriBang(tbl);
-		ViewTheme.ganThaoTac(tbl, (lenh, hang) -> {
+		JTable tblBang = new JTable(model);
+		ViewTheme.trangTriBang(tblBang);
+		ViewTheme.ganThaoTac(tblBang, (lenh, hang) -> {
 			if ("Xóa".equals(lenh) || "Sửa".equals(lenh)) {
 				model.removeRow(hang);
 				danhLai();
 				tinhTien();
 			}
 		});
-		JScrollPane scrBang = new JScrollPane(tbl);
+		JScrollPane scrBang = new JScrollPane(tblBang);
 		scrBang.setPreferredSize(new Dimension(400, 180));
 		scrBang.setBorder(BorderFactory.createLineBorder(ViewTheme.VIEN));
 
