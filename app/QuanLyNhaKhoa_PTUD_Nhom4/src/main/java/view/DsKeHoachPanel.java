@@ -31,7 +31,7 @@ public class DsKeHoachPanel extends JPanel {
         "Mã kế hoạch", "Ngày lập", "Bác sĩ phụ trách", "Lý do điều trị", "Trạng thái", "Thao tác"
     };
 
-    private final DefaultTableModel model = ViewTheme.taoModel(COT, false, true);
+    private final DefaultTableModel model = ViewTheme.taoModel(COT, false, false);
     private final JTable tblBang = new JTable(model);
     private final JLabel lblThongTinKh = new JLabel("Chưa chọn khách hàng");
     private final JLabel lblDem = new JLabel();
