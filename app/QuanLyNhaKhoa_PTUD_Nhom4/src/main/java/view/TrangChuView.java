@@ -88,9 +88,9 @@ public class TrangChuView extends JFrame {
 		pnlThe.add(Box.createVerticalStrut(16));
 		pnlThe.add(lblMoTa);
 		pnlThe.add(Box.createVerticalStrut(20));
-		pnlThe.add(taoDongChiTiet("Lịch hẹn", "Khách hàng", "Điều trị"));
+		pnlThe.add(pnlTaoDongChiTiet("Lịch hẹn", "Khách hàng", "Điều trị"));
 		pnlThe.add(Box.createVerticalStrut(8));
-		pnlThe.add(taoDongChiTiet("Kho thuốc", "Thu chi", "Báo cáo"));
+		pnlThe.add(pnlTaoDongChiTiet("Kho thuốc", "Thu chi", "Báo cáo"));
 		pnlThe.add(Box.createVerticalStrut(26));
 		pnlThe.add(btnVaoTrang);
 
@@ -133,7 +133,7 @@ public class TrangChuView extends JFrame {
 		private NenPanel() {
 			setLayout(new BorderLayout());
 			setBackground(new Color(214, 232, 242));
-			add(taoThe(), BorderLayout.EAST);
+			add(pnlTaoThe(), BorderLayout.EAST);
 		}
 
 		@Override
