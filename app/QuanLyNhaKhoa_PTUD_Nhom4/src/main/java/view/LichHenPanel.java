@@ -1,5 +1,6 @@
 package view;
 
+import view.*;
 import entity.KhachHang;
 import entity.LichHen;
 import entity.NhanVien;
@@ -49,10 +50,10 @@ import view.model.CuocHen;
 public class LichHenPanel extends JPanel {
 
     private static final int CAO_O = 36;
-    private static final int GIO_DAU = 7;
+    private static final int pnlGio_DAU = 7;
     private static final int SO_O = 24;
-    private static final DateTimeFormatter F_GIO = DateTimeFormatter.ofPattern("HH:mm");
-    private static final DateTimeFormatter F_NGAY_GIO = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
+    private static final DateTimeFormatter F_pnlGio = DateTimeFormatter.ofPattern("HH:mm");
+    private static final DateTimeFormatter F_NGAY_pnlGio = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
     private static final String[] THU = {"thứ hai", "thứ ba", "thứ tư", "thứ năm", "thứ sáu", "thứ bảy", "chủ nhật"};
     private static final String[] CHE_DO = {"ngay", "2ngay", "tuan", "thang", "kanban", "list"};
     private static final String[] NHAN_CHE_DO = {"Ngày", "2 ngày", "Tuần", "Tháng", "Kanban", "List"};
@@ -60,14 +61,14 @@ public class LichHenPanel extends JPanel {
     private LocalDate ngay = LocalDate.of(2026, 9, 28);
     private String cheDo = "ngay";
     private final List<CuocHen> ds = new ArrayList<CuocHen>();
-    private final JPanel than = new JPanel(new BorderLayout());
-    private final JLabel tieuDeNgay = new JLabel("", SwingConstants.CENTER);
-    private final JLabel[] dem = new JLabel[6];
+    private final JPanel pnlThan = new JPanel(new BorderLayout());
+    private final JLabel lblTieuDeNgay = new JLabel("", SwingConstants.CENTER);
+    private final JLabel[] lblDem = new JLabel[6];
     private final JTextField txtTimBacSi = new JTextField(18);
-    private final JComboBox<String> cboTrangThai = new JComboBox<String>(new String[]{
+    private final JComboBox<String> cmbTrangThai = new JComboBox<String>(new String[]{
         "Tất cả", "Mới", "Xác nhận", "Đang đợi", "Đang điều trị", "Hoàn tất", "Khách ra về", "Hủy bỏ"
     });
-    private final JButton[] nutCheDo = new JButton[CHE_DO.length];
+    private final JButton[] btnNutCheDo = new JButton[CHE_DO.length];
     private final LichHen_Service lichHenService = new LichHen_Service();
     private final KhachHang_Service khachHangService = new KhachHang_Service();
     private final DanhMuc_Service danhMucService = new DanhMuc_Service();
@@ -78,8 +79,8 @@ public class LichHenPanel extends JPanel {
         setBorder(new EmptyBorder(8, 10, 8, 10));
         setPreferredSize(new Dimension(1180, 820));
         add(taoThanh(), BorderLayout.NORTH);
-        than.setOpaque(false);
-        add(than, BorderLayout.CENTER);
+        pnlThan.setOpaque(false);
+        add(pnlThan, BorderLayout.CENTER);
         txtTimBacSi.getDocument().addDocumentListener(new DocumentListener() {
             @Override
             public void insertUpdate(DocumentEvent e) {
@@ -96,7 +97,7 @@ public class LichHenPanel extends JPanel {
                 ve();
             }
         });
-        cboTrangThai.addActionListener(e -> ve());
+        cmbTrangThai.addActionListener(e -> ve());
         taiLai();
     }
 
@@ -170,76 +171,76 @@ public class LichHenPanel extends JPanel {
     }
 
     private JPanel taoThanh() {
-        JPanel goc = new JPanel(new BorderLayout(0, 8));
-        goc.setOpaque(false);
+        JPanel pnlGoc = new JPanel(new BorderLayout(0, 8));
+        pnlGoc.setOpaque(false);
 
-        JPanel loc = new JPanel(new BorderLayout());
-        loc.setOpaque(false);
-        JPanel trai = new JPanel(new FlowLayout(FlowLayout.LEFT, 10, 0));
-        trai.setOpaque(false);
+        JPanel pnlLoc = new JPanel(new BorderLayout());
+        pnlLoc.setOpaque(false);
+        JPanel pnlTrai = new JPanel(new FlowLayout(FlowLayout.LEFT, 10, 0));
+        pnlTrai.setOpaque(false);
         String[] tenDem = {"Tổng cộng", "Đang chờ", "Đang xử lý", "Hoàn thành", "Huỷ", "Chờ lâu"};
         for (int i = 0; i < tenDem.length; i++) {
-            dem[i] = new JLabel(tenDem[i] + " 0");
-            dem[i].setFont(ViewTheme.FONT_DAM);
-            trai.add(dem[i]);
+        	lblDem[i] = new JLabel(tenDem[i] + " 0");
+        	lblDem[i].setFont(ViewTheme.FONT_DAM);
+            pnlTrai.add(lblDem[i]);
         }
         ViewTheme.vienNhap(txtTimBacSi);
         txtTimBacSi.setPreferredSize(new Dimension(220, 32));
-        JLabel goi = new JLabel("Nhân viên");
-        goi.setForeground(ViewTheme.CHU_NHAT);
-        trai.add(goi);
-        trai.add(txtTimBacSi);
-        ViewTheme.cmbVienHop(cboTrangThai);
-        trai.add(cboTrangThai);
-        loc.add(trai, BorderLayout.CENTER);
+        JLabel lblGoi = new JLabel("Nhân viên");
+        lblGoi.setForeground(ViewTheme.CHU_NHAT);
+        pnlTrai.add(lblGoi);
+        pnlTrai.add(txtTimBacSi);
+        ViewTheme.vienHop(cmbTrangThai);
+        pnlTrai.add(cmbTrangThai);
+        pnlLoc.add(pnlTrai, BorderLayout.CENTER);
         JPanel huy = new JPanel(new FlowLayout(FlowLayout.RIGHT, 6, 0));
         huy.setOpaque(false);
-        loc.add(huy, BorderLayout.EAST);
+        pnlLoc.add(huy, BorderLayout.EAST);
 
-        JPanel dieuHuong = new JPanel(new BorderLayout());
-        dieuHuong.setOpaque(false);
-        JPanel nutNgay = new JPanel(new FlowLayout(FlowLayout.LEFT, 6, 0));
-        nutNgay.setOpaque(false);
-        JButton truoc = new JButton("‹");
-        JButton sau = new JButton("›");
-        JButton homNay = new JButton("Hôm nay");
-        ViewTheme.btnNutXam(truoc);
-        ViewTheme.btnNutXam(sau);
-        ViewTheme.btnNutXam(homNay);
-        truoc.addActionListener(e -> doiNgay(-1));
-        sau.addActionListener(e -> doiNgay(1));
-        homNay.addActionListener(e -> {
+        JPanel pnlDieuHuong = new JPanel(new BorderLayout());
+        pnlDieuHuong.setOpaque(false);
+        JPanel pnlNutNgay = new JPanel(new FlowLayout(FlowLayout.LEFT, 6, 0));
+        pnlNutNgay.setOpaque(false);
+        JButton btnTruoc = new JButton("‹");
+        JButton btnSau = new JButton("›");
+        JButton btnHomNay = new JButton("Hôm nay");
+        ViewTheme.nutXam(btnTruoc);
+        ViewTheme.nutXam(btnSau);
+        ViewTheme.nutXam(btnHomNay);
+        btnTruoc.addActionListener(e -> doiNgay(-1));
+        btnSau.addActionListener(e -> doiNgay(1));
+        btnHomNay.addActionListener(e -> {
             ngay = LocalDate.now();
             ve();
         });
-        nutNgay.add(truoc);
-        nutNgay.add(sau);
-        nutNgay.add(homNay);
-        tieuDeNgay.setFont(new Font("Segoe UI", Font.BOLD, 18));
-        tieuDeNgay.setForeground(ViewTheme.XANH_DAM);
-        JPanel giua = new JPanel(new FlowLayout(FlowLayout.CENTER, 0, 4));
-        giua.setOpaque(false);
-        giua.add(tieuDeNgay);
+        pnlNutNgay.add(btnTruoc);
+        pnlNutNgay.add(btnSau);
+        pnlNutNgay.add(btnHomNay);
+        lblTieuDeNgay.setFont(new Font("Segoe UI", Font.BOLD, 18));
+        lblTieuDeNgay.setForeground(ViewTheme.XANH_DAM);
+        JPanel pnlGiua = new JPanel(new FlowLayout(FlowLayout.CENTER, 0, 4));
+        pnlGiua.setOpaque(false);
+        pnlGiua.add(lblTieuDeNgay);
 
-        JPanel che = new JPanel(new FlowLayout(FlowLayout.RIGHT, 4, 0));
-        che.setOpaque(false);
+        JPanel pnlChe = new JPanel(new FlowLayout(FlowLayout.RIGHT, 4, 0));
+        pnlChe.setOpaque(false);
         for (int i = 0; i < CHE_DO.length; i++) {
             final String ma = CHE_DO[i];
-            nutCheDo[i] = new JButton(NHAN_CHE_DO[i]);
-            ViewTheme.btnNutXam(nutCheDo[i]);
-            nutCheDo[i].addActionListener(e -> {
+            btnNutCheDo[i] = new JButton(NHAN_CHE_DO[i]);
+            ViewTheme.nutXam(btnNutCheDo[i]);
+            btnNutCheDo[i].addActionListener(e -> {
                 cheDo = ma;
                 ve();
             });
-            che.add(nutCheDo[i]);
+            pnlChe.add(btnNutCheDo[i]);
         }
-        dieuHuong.add(nutNgay, BorderLayout.WEST);
-        dieuHuong.add(giua, BorderLayout.CENTER);
-        dieuHuong.add(che, BorderLayout.EAST);
+        pnlDieuHuong.add(pnlNutNgay, BorderLayout.WEST);
+        pnlDieuHuong.add(pnlGiua, BorderLayout.CENTER);
+        pnlDieuHuong.add(pnlChe, BorderLayout.EAST);
 
-        goc.add(loc, BorderLayout.NORTH);
-        goc.add(dieuHuong, BorderLayout.SOUTH);
-        return goc;
+        pnlLoc.add(pnlLoc, BorderLayout.NORTH);
+        pnlLoc.add(pnlDieuHuong, BorderLayout.SOUTH);
+        return pnlLoc;
     }
 
     private void doiNgay(int buoc) {
@@ -258,33 +259,33 @@ public class LichHenPanel extends JPanel {
     private void ve() {
         capNhatNut();
         capNhatDem();
-        tieuDeNgay.setText(chuNgay());
-        than.removeAll();
+        lblTieuDeNgay.setText(chuNgay());
+        pnlThan.removeAll();
         if ("kanban".equals(cheDo)) {
-            than.add(veKanban(), BorderLayout.CENTER);
+        	pnlThan.add(pnlVeKanban(), BorderLayout.CENTER);
         } else if ("list".equals(cheDo)) {
-            than.add(veBang(), BorderLayout.CENTER);
+        	pnlThan.add(scrVeBang(), BorderLayout.CENTER);
         } else if ("thang".equals(cheDo)) {
-            than.add(veThang(), BorderLayout.CENTER);
+        	pnlThan.add(pnlVeThang(), BorderLayout.CENTER);
         } else {
             int so = "tuan".equals(cheDo) ? 7 : ("2ngay".equals(cheDo) ? 2 : 1);
-            than.add(veCot(so), BorderLayout.CENTER);
+            pnlThan.add(scrVeCot(so), BorderLayout.CENTER);
         }
-        than.revalidate();
-        than.repaint();
+        pnlThan.revalidate();
+        pnlThan.repaint();
     }
 
     private void capNhatNut() {
-        for (int i = 0; i < nutCheDo.length; i++) {
+        for (int i = 0; i < btnNutCheDo.length; i++) {
             if (CHE_DO[i].equals(cheDo)) {
-                nutCheDo[i].setBackground(ViewTheme.XANH);
-                nutCheDo[i].setForeground(Color.WHITE);
-                nutCheDo[i].putClientProperty("nenGoc", ViewTheme.XANH);
+            	btnNutCheDo[i].setBackground(ViewTheme.XANH);
+            	btnNutCheDo[i].setForeground(Color.WHITE);
+            	btnNutCheDo[i].putClientProperty("nenpnlGoc", ViewTheme.XANH);
             } else {
                 Color xam = new Color(226, 230, 234);
-                nutCheDo[i].setBackground(xam);
-                nutCheDo[i].setForeground(ViewTheme.CHU);
-                nutCheDo[i].putClientProperty("nenGoc", xam);
+                btnNutCheDo[i].setBackground(xam);
+                btnNutCheDo[i].setForeground(ViewTheme.CHU);
+                btnNutCheDo[i].putClientProperty("nenpnlGoc", xam);
             }
         }
     }
@@ -308,7 +309,7 @@ public class LichHenPanel extends JPanel {
     private List<CuocHen> dangXem() {
         List<CuocHen> kq = new ArrayList<CuocHen>();
         String tu = txtTimBacSi.getText().trim().toLowerCase();
-        String tt = String.valueOf(cboTrangThai.getSelectedItem());
+        String tt = String.valueOf(cmbTrangThai.getSelectedItem());
         for (CuocHen c : ds) {
             if (!trongKhoang(c.batDau.toLocalDate())) {
                 continue;
@@ -363,18 +364,18 @@ public class LichHenPanel extends JPanel {
                 huy++;
             }
         }
-        dem[0].setText("Tổng cộng " + tong);
-        dem[1].setText("Đang chờ " + cho);
-        dem[2].setText("Đang xử lý " + xuLy);
-        dem[3].setText("Hoàn thành " + xong);
-        dem[4].setText("Huỷ " + huy);
-        dem[5].setText("Chờ lâu " + cho);
+        lblDem[0].setText("Tổng cộng " + tong);
+        lblDem[1].setText("Đang chờ " + cho);
+        lblDem[2].setText("Đang xử lý " + xuLy);
+        lblDem[3].setText("Hoàn thành " + xong);
+        lblDem[4].setText("Huỷ " + huy);
+        lblDem[5].setText("Chờ lâu " + cho);
     }
 
-    private JScrollPane veCot(int soNgay) {
+    private JScrollPane scrVeCot(int soNgay) {
         LocalDate dau = "tuan".equals(cheDo) ? ngay.with(DayOfWeek.MONDAY) : ngay;
-        JPanel khung = new JPanel(new BorderLayout());
-        khung.setBackground(ViewTheme.TRANG);
+        JPanel pnlKhung = new JPanel(new BorderLayout());
+        pnlKhung.setBackground(ViewTheme.TRANG);
         JPanel dauBang = new JPanel(new BorderLayout());
         dauBang.setBackground(new Color(248, 250, 252));
         dauBang.setPreferredSize(new Dimension(0, 36));
@@ -383,48 +384,48 @@ public class LichHenPanel extends JPanel {
         for (int i = 0; i < soNgay; i++) {
             LocalDate d = dau.plusDays(i);
             String chu = soNgay == 1 ? "Lê Trần Quang Thanh" : (d.getDayOfMonth() + "/" + d.getMonthValue() + " " + THU[d.getDayOfWeek().getValue() - 1]);
-            JLabel lb = new JLabel(chu, SwingConstants.CENTER);
-            lb.setFont(ViewTheme.FONT_DAM);
-            tenCot.add(lb);
+            JLabel lbl = new JLabel(chu, SwingConstants.CENTER);
+            lbl.setFont(ViewTheme.FONT_DAM);
+            tenCot.add(lbl);
         }
-        JPanel le = new JPanel();
-        le.setPreferredSize(new Dimension(68, 36));
-        le.setOpaque(false);
-        dauBang.add(le, BorderLayout.WEST);
+        JPanel pnlLe = new JPanel();
+        pnlLe.setPreferredSize(new Dimension(68, 36));
+        pnlLe.setOpaque(false);
+        dauBang.add(pnlLe, BorderLayout.WEST);
         dauBang.add(tenCot, BorderLayout.CENTER);
 
-        JPanel gio = new JPanel(null);
-        gio.setPreferredSize(new Dimension(68, SO_O * CAO_O));
-        gio.setBackground(ViewTheme.TRANG);
+        JPanel pnlGio = new JPanel(null);
+        pnlGio.setPreferredSize(new Dimension(68, SO_O * CAO_O));
+        pnlGio.setBackground(ViewTheme.TRANG);
         for (int i = 0; i < SO_O; i++) {
-            int phut = (GIO_DAU * 60) + i * 30;
-            JLabel lb = new JLabel(String.format("%02d:%02d", phut / 60, phut % 60));
-            lb.setForeground(ViewTheme.CHU_NHAT);
-            lb.setBounds(6, i * CAO_O, 58, CAO_O);
-            gio.add(lb);
+            int phut = (pnlGio_DAU * 60) + i * 30;
+            JLabel lbl = new JLabel(String.format("%02d:%02d", phut / 60, phut % 60));
+            lbl.setForeground(ViewTheme.CHU_NHAT);
+            lbl.setBounds(6, i * CAO_O, 58, CAO_O);
+            pnlGio.add(lbl);
         }
 
-        JPanel cot = new JPanel(new GridLayout(1, soNgay));
-        cot.setBackground(ViewTheme.TRANG);
+        JPanel pnlCot = new JPanel(new GridLayout(1, soNgay));
+        pnlCot.setBackground(ViewTheme.TRANG);
         List<CuocHen> hien = dangXem();
         for (int i = 0; i < soNgay; i++) {
-            cot.add(cotNgay(dau.plusDays(i), hien));
+        	pnlCot.add(pnlCotNgay(dau.plusDays(i), hien));
         }
-        JPanel thanLuoi = new JPanel(new BorderLayout());
-        thanLuoi.setBackground(ViewTheme.TRANG);
-        thanLuoi.add(gio, BorderLayout.WEST);
-        thanLuoi.add(cot, BorderLayout.CENTER);
-        khung.add(dauBang, BorderLayout.NORTH);
-        khung.add(thanLuoi, BorderLayout.CENTER);
-        JScrollPane cuon = new JScrollPane(khung);
-        cuon.setBorder(BorderFactory.createLineBorder(ViewTheme.VIEN));
-        cuon.getViewport().setBackground(ViewTheme.TRANG);
-        cuon.getVerticalScrollBar().setUnitIncrement(18);
-        return cuon;
+        JPanel pnlThanLuoi = new JPanel(new BorderLayout());
+        pnlThanLuoi.setBackground(ViewTheme.TRANG);
+        pnlThanLuoi.add(pnlGio, BorderLayout.WEST);
+        pnlThanLuoi.add(pnlCot, BorderLayout.CENTER);
+        pnlKhung.add(dauBang, BorderLayout.NORTH);
+        pnlKhung.add(pnlThanLuoi, BorderLayout.CENTER);
+        JScrollPane scrCuon = new JScrollPane(pnlKhung);
+        scrCuon.setBorder(BorderFactory.createLineBorder(ViewTheme.VIEN));
+        scrCuon.getViewport().setBackground(ViewTheme.TRANG);
+        scrCuon.getVerticalScrollBar().setUnitIncrement(18);
+        return scrCuon;
     }
 
-    private JPanel cotNgay(LocalDate d, List<CuocHen> hien) {
-        JPanel cot = new JPanel(null) {
+    private JPanel pnlCotNgay(LocalDate d, List<CuocHen> hien) {
+        JPanel pnlCot = new JPanel(null) {
             @Override
             protected void paintComponent(Graphics g) {
                 super.paintComponent(g);
@@ -433,23 +434,23 @@ public class LichHenPanel extends JPanel {
                     g.drawLine(0, i * CAO_O, getWidth(), i * CAO_O);
                 }
                 g.setColor(new Color(226, 232, 236));
-                int batDau = (12 - GIO_DAU) * 2 * CAO_O;
+                int batDau = (12 - pnlGio_DAU) * 2 * CAO_O;
                 int cao = 2 * CAO_O;
                 for (int y = batDau; y < batDau + cao; y += 6) {
                     g.drawLine(0, y, getWidth(), y + 10);
                 }
             }
         };
-        cot.setBackground(ViewTheme.TRANG);
-        cot.setPreferredSize(new Dimension(180, SO_O * CAO_O));
-        cot.addMouseListener(new MouseAdapter() {
+        pnlCot.setBackground(ViewTheme.TRANG);
+        pnlCot.setPreferredSize(new Dimension(180, SO_O * CAO_O));
+        pnlCot.addMouseListener(new MouseAdapter() {
             @Override
             public void mousePressed(MouseEvent e) {
-                if (e.getComponent() != cot) {
+                if (e.getComponent() != pnlCot) {
                     return;
                 }
                 int o = Math.max(0, Math.min(SO_O - 1, e.getY() / CAO_O));
-                int phut = GIO_DAU * 60 + o * 30;
+                int phut = pnlGio_DAU * 60 + o * 30;
                 LocalDateTime luc = LocalDateTime.of(d, LocalTime.of(phut / 60, phut % 60));
                 moForm(null, luc);
             }
@@ -458,44 +459,44 @@ public class LichHenPanel extends JPanel {
             if (!c.batDau.toLocalDate().equals(d)) {
                 continue;
             }
-            int phut = c.batDau.getHour() * 60 + c.batDau.getMinute() - GIO_DAU * 60;
+            int phut = c.batDau.getHour() * 60 + c.batDau.getMinute() - pnlGio_DAU * 60;
             if (phut < 0 || phut >= SO_O * 30) {
                 continue;
             }
             int y = phut * CAO_O / 30;
             int cao = Math.max(CAO_O - 4, c.phut * CAO_O / 30 - 4);
-            JPanel the = new JPanel(new BorderLayout());
-            the.setBackground(nenTrangThai(c.trangThai));
-            the.setBorder(BorderFactory.createLineBorder(vienTrangThai(c.trangThai)));
-            JLabel lb = new JLabel("<html><b>" + c.batDau.format(F_GIO) + "</b> " + c.maLichHen + "<br>" + c.khach + "</html>");
-            lb.setFont(ViewTheme.FONT_NHO);
-            lb.setBorder(new EmptyBorder(2, 6, 2, 6));
-            the.add(lb, BorderLayout.CENTER);
-            the.setBounds(6, y + 2, 160, cao);
-            the.putClientProperty("khoi", Boolean.TRUE);
-            the.addMouseListener(new MouseAdapter() {
+            JPanel pnlThe = new JPanel(new BorderLayout());
+            pnlThe.setBackground(nenTrangThai(c.trangThai));
+            pnlThe.setBorder(BorderFactory.createLineBorder(vienTrangThai(c.trangThai)));
+            JLabel lbl = new JLabel("<html><b>" + c.batDau.format(F_pnlGio) + "</b> " + c.maLichHen + "<br>" + c.khach + "</html>");
+            lbl.setFont(ViewTheme.FONT_NHO);
+            lbl.setBorder(new EmptyBorder(2, 6, 2, 6));
+            pnlThe.add(lbl, BorderLayout.CENTER);
+            pnlThe.setBounds(6, y + 2, 160, cao);
+            pnlThe.putClientProperty("khoi", Boolean.TRUE);
+            pnlThe.addMouseListener(new MouseAdapter() {
                 @Override
                 public void mousePressed(MouseEvent e) {
                     moForm(c, c.batDau);
                 }
             });
-            cot.add(the);
+            pnlCot.add(pnlThe);
         }
-        cot.addComponentListener(new ComponentAdapter() {
+        pnlCot.addComponentListener(new ComponentAdapter() {
             @Override
             public void componentResized(ComponentEvent e) {
-                int rong = Math.max(48, cot.getWidth() - 12);
-                for (Component c : cot.getComponents()) {
+                int rong = Math.max(48, pnlCot.getWidth() - 12);
+                for (Component c : pnlCot.getComponents()) {
                     if (c instanceof JPanel && Boolean.TRUE.equals(((JPanel) c).getClientProperty("khoi"))) {
                         c.setSize(rong, c.getHeight());
                     }
                 }
             }
         });
-        return cot;
+        return pnlCot;
     }
 
-    private JPanel veKanban() {
+    private JPanel pnlVeKanban() {
         String[] cot = {"Khách hẹn", "Khách đang chờ", "Khách đang điều trị", "Khách kết thúc điều trị", "Khách ra về"};
         Color[] mau = {
             new Color(176, 184, 191),
@@ -504,57 +505,57 @@ public class LichHenPanel extends JPanel {
             new Color(46, 140, 70),
             new Color(186, 104, 200)
         };
-        JPanel luoi = new JPanel(new GridLayout(1, 5, 8, 8));
-        luoi.setOpaque(false);
-        luoi.setBorder(new EmptyBorder(8, 0, 0, 0));
+        JPanel pnlLuoi = new JPanel(new GridLayout(1, 5, 8, 8));
+        pnlLuoi.setOpaque(false);
+        pnlLuoi.setBorder(new EmptyBorder(8, 0, 0, 0));
         List<CuocHen> hien = dangXem();
         for (int i = 0; i < cot.length; i++) {
-            JPanel the = new JPanel(new BorderLayout(0, 8));
-            the.setBackground(ViewTheme.TRANG);
-            the.setBorder(BorderFactory.createCompoundBorder(
+            JPanel pnlThe = new JPanel(new BorderLayout(0, 8));
+            pnlThe.setBackground(ViewTheme.TRANG);
+            pnlThe.setBorder(BorderFactory.createCompoundBorder(
                     BorderFactory.createMatteBorder(4, 1, 1, 1, mau[i]),
                     new EmptyBorder(8, 8, 8, 8)));
-            JLabel ten = new JLabel(cot[i], SwingConstants.CENTER);
-            ten.setFont(ViewTheme.FONT_DAM);
-            JButton them = new JButton("Thêm lịch hẹn");
-            ViewTheme.btnNutLink(them);
-            them.setHorizontalAlignment(SwingConstants.CENTER);
-            them.setForeground(ViewTheme.XANH_DAM);
+            JLabel lblTen = new JLabel(cot[i], SwingConstants.CENTER);
+            lblTen.setFont(ViewTheme.FONT_DAM);
+            JButton btnThem = new JButton("Thêm lịch hẹn");
+            ViewTheme.nutLink(btnThem);
+            btnThem.setHorizontalAlignment(SwingConstants.CENTER);
+            btnThem.setForeground(ViewTheme.XANH_DAM);
             final int nhom = i;
-            them.addActionListener(e -> moForm(null, LocalDateTime.of(ngay, LocalTime.of(8, 0)), trangThaiCot(nhom)));
-            JPanel dsThe = new JPanel();
-            dsThe.setLayout(new BoxLayout(dsThe, BoxLayout.Y_AXIS));
-            dsThe.setOpaque(false);
+            btnThem.addActionListener(e -> moForm(null, LocalDateTime.of(ngay, LocalTime.of(8, 0)), trangThaiCot(nhom)));
+            JPanel pnlDsThe = new JPanel();
+            pnlDsThe.setLayout(new BoxLayout(pnlDsThe, BoxLayout.Y_AXIS));
+            pnlDsThe.setOpaque(false);
             for (CuocHen c : hien) {
                 if (cotKanban(c.trangThai) != i) {
                     continue;
                 }
-                JPanel card = new JPanel(new BorderLayout());
-                card.setBackground(new Color(248, 250, 252));
-                card.setBorder(BorderFactory.createCompoundBorder(
+                JPanel pnlCard = new JPanel(new BorderLayout());
+                pnlCard.setBackground(new Color(248, 250, 252));
+                pnlCard.setBorder(BorderFactory.createCompoundBorder(
                         BorderFactory.createLineBorder(ViewTheme.VIEN),
                         new EmptyBorder(8, 8, 8, 8)));
-                card.setMaximumSize(new Dimension(Integer.MAX_VALUE, 72));
-                JLabel lb = new JLabel("<html><b>" + c.khach + "</b><br>" + c.batDau.format(F_GIO) + " · " + c.maLichHen + "</html>");
-                card.add(lb);
-                card.addMouseListener(new MouseAdapter() {
+                pnlCard.setMaximumSize(new Dimension(Integer.MAX_VALUE, 72));
+                JLabel lbl = new JLabel("<html><b>" + c.khach + "</b><br>" + c.batDau.format(F_pnlGio) + " · " + c.maLichHen + "</html>");
+                pnlCard.add(lbl);
+                pnlCard.addMouseListener(new MouseAdapter() {
                     @Override
                     public void mousePressed(MouseEvent e) {
                         moForm(c, c.batDau);
                     }
                 });
-                dsThe.add(card);
-                dsThe.add(Box.createVerticalStrut(6));
+                pnlDsThe.add(pnlCard);
+                pnlDsThe.add(Box.createVerticalStrut(6));
             }
-            the.add(ten, BorderLayout.NORTH);
-            the.add(new JScrollPane(dsThe), BorderLayout.CENTER);
-            the.add(them, BorderLayout.SOUTH);
-            luoi.add(the);
+            pnlThe.add(lblTen, BorderLayout.NORTH);
+            pnlThe.add(new JScrollPane(pnlDsThe), BorderLayout.CENTER);
+            pnlThe.add(btnThem, BorderLayout.SOUTH);
+            pnlLuoi.add(pnlThe);
         }
-        return luoi;
+        return pnlLuoi;
     }
 
-    private JScrollPane veBang() {
+    private JScrollPane scrVeBang() {
         String[] cot = {"Mã lịch hẹn", "Mã KH", "Khách hàng", "Bắt đầu", "Thời lượng (phút)", "Bác sĩ", "Phụ tá", "Ghi chú", "Trạng thái"};
         DefaultTableModel model = ViewTheme.taoModel(cot, false, false);
         for (CuocHen c : dangXem()) {
@@ -562,7 +563,7 @@ public class LichHenPanel extends JPanel {
                 c.maLichHen,
                 c.maKH,
                 c.khach,
-                c.batDau.format(F_NGAY_GIO),
+                c.batDau.format(F_NGAY_pnlGio),
                 c.phut,
                 c.bacSi,
                 c.phuTa,
@@ -570,13 +571,13 @@ public class LichHenPanel extends JPanel {
                 c.trangThai
             });
         }
-        JTable bang = new JTable(model);
-        ViewTheme.trangTriBang(bang);
-        bang.addMouseListener(new MouseAdapter() {
+        JTable tblBang = new JTable(model);
+        ViewTheme.trangTriBang(tblBang);
+        tblBang.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
-                if (e.getClickCount() == 2 && bang.getSelectedRow() >= 0) {
-                    int i = bang.convertRowIndexToModel(bang.getSelectedRow());
+                if (e.getClickCount() == 2 && tblBang.getSelectedRow() >= 0) {
+                    int i = tblBang.convertRowIndexToModel(tblBang.getSelectedRow());
                     List<CuocHen> hien = dangXem();
                     if (i >= 0 && i < hien.size()) {
                         moForm(hien.get(i), hien.get(i).batDau);
@@ -584,28 +585,28 @@ public class LichHenPanel extends JPanel {
                 }
             }
         });
-        JScrollPane cuon = new JScrollPane(bang);
-        cuon.setBorder(BorderFactory.createLineBorder(ViewTheme.VIEN));
-        cuon.getViewport().setBackground(ViewTheme.TRANG);
-        return cuon;
+        JScrollPane srcCuon = new JScrollPane(tblBang);
+        srcCuon.setBorder(BorderFactory.createLineBorder(ViewTheme.VIEN));
+        srcCuon.getViewport().setBackground(ViewTheme.TRANG);
+        return srcCuon;
     }
 
-    private JPanel veThang() {
-        JPanel goc = new JPanel(new BorderLayout(0, 8));
-        goc.setOpaque(false);
-        JPanel luoi = new JPanel(new GridLayout(0, 7, 6, 6));
-        luoi.setOpaque(false);
+    private JPanel pnlVeThang() {
+        JPanel pnlGoc = new JPanel(new BorderLayout(0, 8));
+        pnlGoc.setOpaque(false);
+        JPanel pnlLuoi = new JPanel(new GridLayout(0, 7, 6, 6));
+        pnlLuoi.setOpaque(false);
         String[] nhan = {"T2", "T3", "T4", "T5", "T6", "T7", "CN"};
         for (String n : nhan) {
-            JLabel lb = new JLabel(n, SwingConstants.CENTER);
-            lb.setFont(ViewTheme.FONT_DAM);
-            lb.setForeground(ViewTheme.CHU_NHAT);
-            luoi.add(lb);
+            JLabel lbl = new JLabel(n, SwingConstants.CENTER);
+            lbl.setFont(ViewTheme.FONT_DAM);
+            lbl.setForeground(ViewTheme.CHU_NHAT);
+            pnlLuoi.add(lbl);
         }
         LocalDate dau = ngay.withDayOfMonth(1);
         int lech = dau.getDayOfWeek().getValue() - 1;
         for (int i = 0; i < lech; i++) {
-            luoi.add(new JLabel());
+        	pnlLuoi.add(new JLabel());
         }
         int soNgay = ngay.lengthOfMonth();
         for (int i = 1; i <= soNgay; i++) {
@@ -616,21 +617,21 @@ public class LichHenPanel extends JPanel {
                     so++;
                 }
             }
-            JButton o = new JButton("<html><center>" + i + (so > 0 ? "<br><font color='#0e84b8'>" + so + " lịch</font>" : "") + "</center></html>");
+            JButton btnO = new JButton("<html><center>" + i + (so > 0 ? "<br><font color='#0e84b8'>" + so + " lịch</font>" : "") + "</center></html>");
             if (d.equals(ngay)) {
-                ViewTheme.btnNutChinh(o);
+                ViewTheme.nutChinh(btnO);
             } else {
-                ViewTheme.btnNutXam(o);
+                ViewTheme.nutXam(btnO);
             }
-            o.addActionListener(e -> {
+            btnO.addActionListener(e -> {
                 ngay = d;
                 cheDo = "ngay";
                 ve();
             });
-            luoi.add(o);
+            pnlLuoi.add(btnO);
         }
-        goc.add(luoi, BorderLayout.NORTH);
-        return goc;
+        pnlGoc.add(pnlLuoi, BorderLayout.NORTH);
+        return pnlGoc;
     }
 
     private void moForm(CuocHen cu, LocalDateTime luc) {
@@ -640,33 +641,33 @@ public class LichHenPanel extends JPanel {
     private void moForm(CuocHen cu, LocalDateTime luc, String trangThaiMacDinh) {
         HopThoai hopThoai = new HopThoai(cuaSoCha(), cu == null ? "Thêm lịch hẹn" : "Cập nhật lịch hẹn",
                 cu == null ? "Thêm" : "Lưu");
-        JComboBox<String> kh = hopThoai.chon("Khách hàng", false, dsKhachCombo());
-        JTextField ghi = hopThoai.chu("Ghi chú", cu == null ? "" : cu.ghiChu, false);
-        JTextField batDau = hopThoai.chu("Bắt đầu", (cu == null ? luc : cu.batDau).format(F_NGAY_GIO), true);
-        JComboBox<String> duKien = hopThoai.chon("Thời lượng (phút)", true, "15", "30", "45", "60", "90", "120");
+        JComboBox<String> cmbKh = hopThoai.chon("Khách hàng", false, dsKhachCombo());
+        JTextField txtGhi = hopThoai.chu("Ghi chú", cu == null ? "" : cu.ghiChu, false);
+        JTextField txtBatDau = hopThoai.chu("Bắt đầu", (cu == null ? luc : cu.batDau).format(F_NGAY_pnlGio), true);
+        JComboBox<String> cmbDuKien = hopThoai.chon("Thời lượng (phút)", true, "15", "30", "45", "60", "90", "120");
         if (cu != null) {
-            duKien.setSelectedItem(String.valueOf(cu.phut));
+        	cmbDuKien.setSelectedItem(String.valueOf(cu.phut));
         }
-        JComboBox<String> bs = hopThoai.chon("Bác sĩ", true, dsBacSiCombo());
+        JComboBox<String> cmbBs = hopThoai.chon("Bác sĩ", true, dsBacSiCombo());
         if (cu != null) {
-            bs.setSelectedItem(cu.bacSi);
+        	cmbBs.setSelectedItem(cu.bacSi);
         }
-        JComboBox<String> phuTa = hopThoai.chon("Phụ tá", false, "", "Nguyễn Khắc Duy", "Hồ Văn Khánh");
+        JComboBox<String> cmbPhuTa = hopThoai.chon("Phụ tá", false, "", "Nguyễn Khắc Duy", "Hồ Văn Khánh");
         if (cu != null && cu.phuTa != null && !cu.phuTa.isEmpty()) {
-            phuTa.setSelectedItem(cu.phuTa);
+        	cmbPhuTa.setSelectedItem(cu.phuTa);
         }
-        JComboBox<String> tt = hopThoai.chon("Trạng thái", false, "Mới", "Xác nhận", "Đang đợi", "Đang điều trị", "Hoàn tất", "Khách ra về", "Hủy bỏ");
-        tt.setSelectedItem(trangThaiMacDinh);
+        JComboBox<String> cmbTt = hopThoai.chon("Trạng thái", false, "Mới", "Xác nhận", "Đang đợi", "Đang điều trị", "Hoàn tất", "Khách ra về", "Hủy bỏ");
+        cmbTt.setSelectedItem(trangThaiMacDinh);
         hopThoai.hien(() -> {
-            LocalDateTime gio;
+            LocalDateTime pnlGio;
             try {
-                gio = LocalDateTime.parse(batDau.getText().trim(), F_NGAY_GIO);
+                pnlGio = LocalDateTime.parse(txtBatDau.getText().trim(), F_NGAY_pnlGio);
             } catch (DateTimeParseException ex) {
                 JOptionPane.showMessageDialog(this, "Thời gian theo dạng yyyy-MM-dd HH:mm");
                 return;
             }
-            int phut = Integer.parseInt(String.valueOf(duKien.getSelectedItem()));
-            String tenKhach = String.valueOf(kh.getSelectedItem());
+            int phut = Integer.parseInt(String.valueOf(cmbDuKien.getSelectedItem()));
+            String tenKhach = String.valueOf(cmbKh.getSelectedItem());
             String maKH = "0001";
             if (tenKhach.contains(" - ")) {
                 String[] tach = tenKhach.split(" - ", 2);
@@ -685,12 +686,12 @@ public class LichHenPanel extends JPanel {
                 entity.setMaLichHen(cu.maLichHen);
             }
             entity.setMaKH(maKH);
-            entity.setBatDau(gio);
+            entity.setBatDau(pnlGio);
             entity.setThoiLuongPhut(phut);
-            entity.setMaBacSi(maBacSiTheoTen(String.valueOf(bs.getSelectedItem())));
-            entity.setMaPhuTa(maBacSiTheoTen(String.valueOf(phuTa.getSelectedItem())));
-            entity.setGhiChu(ghi.getText().trim());
-            entity.setTrangThai(String.valueOf(tt.getSelectedItem()));
+            entity.setMaBacSi(maBacSiTheoTen(String.valueOf(cmbBs.getSelectedItem())));
+            entity.setMaPhuTa(maBacSiTheoTen(String.valueOf(cmbPhuTa.getSelectedItem())));
+            entity.setGhiChu(txtGhi.getText().trim());
+            entity.setTrangThai(String.valueOf(cmbTt.getSelectedItem()));
             try {
                 if (cu == null) {
                     if (lichHenService.add(entity) == null) {
@@ -700,7 +701,7 @@ public class LichHenPanel extends JPanel {
                 } else {
                     lichHenService.update(entity);
                 }
-                ngay = gio.toLocalDate();
+                ngay = pnlGio.toLocalDate();
                 taiLai();
             } catch (Exception ex) {
                 JOptionPane.showMessageDialog(this, "Lỗi lưu lịch hẹn.\n" + ex.getMessage());

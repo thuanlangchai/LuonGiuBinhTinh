@@ -21,11 +21,16 @@ import service.impl.TaiKhoan_Service;
 public class LoginView extends JFrame {
 
     private final JTextField txtTen = new JTextField(22);
+    
     private final JPasswordField txtMatKhau = new JPasswordField(22);
+    
     private final JButton btnDangNhap = new JButton("Đăng nhập");
+    
     private final JButton btnThoat = new JButton("Thoát");
+    
     private final TaiKhoan_Service taiKhoanService = new TaiKhoan_Service();
 
+    
     public LoginView() {
         setTitle("Đăng nhập - Quản lý nha khoa");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -33,9 +38,11 @@ public class LoginView extends JFrame {
         setMinimumSize(new Dimension(420, 420));
         setLocationRelativeTo(null);
 
+        
         JPanel panelGoc = new JPanel(new BorderLayout());
         panelGoc.setBackground(ViewTheme.NEN_TIM);
 
+        
         JPanel panelDau = new JPanel(new GridLayout(2, 1));
         panelDau.setBackground(ViewTheme.XANH);
         panelDau.setBorder(new EmptyBorder(28, 16, 28, 16));
@@ -48,6 +55,7 @@ public class LoginView extends JFrame {
         panelDau.add(nhanLogo);
         panelDau.add(nhanPhu);
 
+        
         JPanel panelThe = new JPanel(new BorderLayout(0, 16));
         panelThe.setBackground(Color.WHITE);
         panelThe.setBorder(BorderFactory.createCompoundBorder(
@@ -74,27 +82,32 @@ public class LoginView extends JFrame {
         btnDangNhap.addActionListener(e -> dangNhap());
         btnThoat.addActionListener(e -> thoat());
 
+        
         JPanel panelNut = new JPanel(new GridLayout(1, 2, 16, 0));
         panelNut.setOpaque(false);
         panelNut.setBorder(new EmptyBorder(18, 0, 0, 0));
         panelNut.add(btnDangNhap);
         panelNut.add(btnThoat);
 
+        
         panelThe.add(nhanTieuDe, BorderLayout.NORTH);
         panelThe.add(panelForm, BorderLayout.CENTER);
         panelThe.add(panelNut, BorderLayout.SOUTH);
 
+        
         JPanel panelGiua = new JPanel(new BorderLayout());
         panelGiua.setOpaque(false);
         panelGiua.setBorder(new EmptyBorder(28, 36, 36, 36));
         panelGiua.add(panelThe, BorderLayout.CENTER);
 
+        
         panelGoc.add(panelDau, BorderLayout.NORTH);
         panelGoc.add(panelGiua, BorderLayout.CENTER);
         setContentPane(panelGoc);
         getRootPane().setDefaultButton(btnDangNhap);
     }
 
+    
     private void dangNhap() {
         String tenDangNhap = txtTen.getText().trim();
         String matKhau = String.valueOf(txtMatKhau.getPassword());
@@ -131,6 +144,7 @@ public class LoginView extends JFrame {
         }.execute();
     }
 
+    
     private void thoat() {
         dispose();
         System.exit(0);

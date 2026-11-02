@@ -47,22 +47,22 @@ public class BaoCaoPanel extends JPanel {
         pnlThe.setBackground(ViewTheme.TRANG);
         pnlThe.setBorder(new EmptyBorder(12, 14, 12, 14));
         if ("donthuoc".equals(ma)) {
-            pnlThe.add(donThuoc(), BorderLayout.CENTER);
+            pnlThe.add(pnlDonThuoc(), BorderLayout.CENTER);
         } else if ("thuchi".equals(ma) || "thuchihangngay".equals(ma)) {
-            pnlThe.add(thuChi("thuchihangngay".equals(ma) ? "Báo cáo thu chi hàng ngày" : "Báo cáo thu chi"), BorderLayout.CENTER);
+            pnlThe.add(pnlThuChi("thuchihangngay".equals(ma) ? "Báo cáo thu chi hàng ngày" : "Báo cáo thu chi"), BorderLayout.CENTER);
         } else if ("dtdichvu".equals(ma)) {
-            pnlThe.add(doanhThuDichVu(), BorderLayout.CENTER);
+            pnlThe.add(pnlDoanhThuDichVu(), BorderLayout.CENTER);
         } else if ("dtcanhan".equals(ma)) {
-            pnlThe.add(doanhThuCaNhan(), BorderLayout.CENTER);
+            pnlThe.add(pnlDoanhThuCaNhan(), BorderLayout.CENTER);
         } else {
-            pnlThe.add(mauChung(tieuCua(ma), cotCua(ma), dongCua(ma)), BorderLayout.CENTER);
+            pnlThe.add(pnlMauChung(tieuCua(ma), cotCua(ma), dongCua(ma)), BorderLayout.CENTER);
         }
         add(pnlThe, BorderLayout.NORTH);
         revalidate();
         repaint();
     }
 
-    private JPanel donThuoc() {
+    private JPanel pnlDonThuoc() {
         JPanel pnl = new JPanel(new BorderLayout(0, 8));
         pnl.setOpaque(false);
         pnl.add(dau("Báo cáo toa thuốc", true), BorderLayout.NORTH);
@@ -109,7 +109,7 @@ public class BaoCaoPanel extends JPanel {
         return pnl;
     }
 
-    private JPanel thuChi(String tieuDe) {
+    private JPanel pnlThuChi(String tieuDe) {
         JPanel pnl = new JPanel(new BorderLayout(0, 8));
         pnl.setOpaque(false);
         pnl.add(dau(tieuDe, false), BorderLayout.NORTH);
@@ -161,14 +161,14 @@ public class BaoCaoPanel extends JPanel {
         return pnl;
     }
 
-    private JPanel doanhThuDichVu() {
+    private JPanel pnlDoanhThuDichVu() {
         return baoCaoTab("Doanh thu dịch vụ",
                 new String[]{"Tổng quan", "Loại dịch vụ", "Dịch vụ"},
                 new String[]{"#", "Mã phiếu", "Ngày", "Đối tượng", "Điện thoại", "Lý do", "Loại dịch vụ", "Tổng tiền"},
                 new Object[][]{{"", "", "", "", "", "", "Tổng tiền", "0"}});
     }
 
-    private JPanel doanhThuCaNhan() {
+    private JPanel pnlDoanhThuCaNhan() {
         return baoCaoTab("Doanh thu cá nhân",
                 new String[]{"Doanh thu", "Tổng hợp", "Người làm chính", "Phụ tá", "Tư vấn", "Sale", "Telesale", "Người giới thiệu"},
                 new String[]{"#", "Mã chi nhánh", "Mã phiếu", "Ngày", "Đối tượng", "Điện thoại", "Lý do", "Người làm chính", "Phụ tá", "Tư vấn", "Sale", "Người giới thiệu", "Tổng cộng"},
@@ -214,7 +214,7 @@ public class BaoCaoPanel extends JPanel {
         return pnl;
     }
 
-    private JPanel mauChung(String tieuDe, String[] cot, Object[][] dong) {
+    private JPanel pnlMauChung(String tieuDe, String[] cot, Object[][] dong) {
         JPanel pnl = new JPanel(new BorderLayout(0, 8));
         pnl.setOpaque(false);
         pnl.add(dau(tieuDe, false), BorderLayout.NORTH);
