@@ -153,7 +153,6 @@ public class HopThoai extends JDialog {
         return chk;
     }
 
-
     public void themHang(JComponent c) {
         GridBagConstraints fc = new GridBagConstraints();
         fc.gridx = 0;
@@ -188,7 +187,7 @@ public class HopThoai extends JDialog {
             }
         }
         if (khiLuu != null) {
-            khiLuu.run();        
+            khiLuu.run();
         } else {
             dispose();
         }

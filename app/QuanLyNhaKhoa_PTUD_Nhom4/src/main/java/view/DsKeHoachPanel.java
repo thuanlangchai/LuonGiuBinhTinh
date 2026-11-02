@@ -31,11 +31,11 @@ public class DsKeHoachPanel extends JPanel {
         "Mã kế hoạch", "Ngày lập", "Bác sĩ phụ trách", "Lý do điều trị", "Trạng thái", "Thao tác"
     };
 
-    private final DefaultTableModel model = ViewTheme.taoModel(COT, false, true);
-    private final JTable bang = new JTable(model);
+    private final DefaultTableModel model = ViewTheme.taoModel(COT, false, false);
+    private final JTable tblBang = new JTable(model);
     private final JLabel lblThongTinKh = new JLabel("Chưa chọn khách hàng");
     private final JLabel lblDem = new JLabel();
-    private final JComboBox<String> cboKhach = new JComboBox<>();
+    private final JComboBox<String> cmbKhach = new JComboBox<>();
     private final Consumer<String> moChiTiet;
     private String maKhLoc = "";
 
@@ -44,33 +44,33 @@ public class DsKeHoachPanel extends JPanel {
         setOpaque(false);
         setBorder(new EmptyBorder(6, 6, 16, 6));
 
-        JPanel the = new JPanel(new BorderLayout(0, 8));
-        the.setBackground(ViewTheme.TRANG);
-        the.setBorder(new EmptyBorder(12, 14, 12, 14));
+        JPanel pnlThe = new JPanel(new BorderLayout(0, 8));
+        pnlThe.setBackground(ViewTheme.TRANG);
+        pnlThe.setBorder(new EmptyBorder(12, 14, 12, 14));
 
         JLabel lblTieuDe = ViewTheme.tieuDeTrang("Kế hoạch điều trị");
         JButton btnThem = new JButton("+ Kế hoạch điều trị");
         ViewTheme.nutXanh(btnThem);
         btnThem.addActionListener(e -> moThem());
-        JPanel panelDau = new JPanel(new BorderLayout());
-        panelDau.setOpaque(false);
-        panelDau.add(lblTieuDe, BorderLayout.WEST);
-        JPanel panelPhai = new JPanel(new FlowLayout(FlowLayout.RIGHT, 8, 0));
-        panelPhai.setOpaque(false);
-        panelPhai.add(btnThem);
-        panelDau.add(panelPhai, BorderLayout.EAST);
+        JPanel pnlDau = new JPanel(new BorderLayout());
+        pnlDau.setOpaque(false);
+        pnlDau.add(lblTieuDe, BorderLayout.WEST);
+        JPanel pnlPhai = new JPanel(new FlowLayout(FlowLayout.RIGHT, 8, 0));
+        pnlPhai.setOpaque(false);
+        pnlPhai.add(btnThem);
+        pnlDau.add(pnlPhai, BorderLayout.EAST);
 
         lblThongTinKh.setFont(ViewTheme.FONT);
         lblThongTinKh.setForeground(ViewTheme.CHU);
 
-        cboKhach.addItem("Tất cả khách hàng");
+        cmbKhach.addItem("Tất cả khách hàng");
         for (String k : DuLieuMau.dsKhach()) {
-            cboKhach.addItem(k);
+            cmbKhach.addItem(k);
         }
-        ViewTheme.vienHop(cboKhach);
-        cboKhach.addActionListener(e -> {
-            Object sel = cboKhach.getSelectedItem();
-            if (cboKhach.getSelectedIndex() <= 0 || sel == null) {
+        ViewTheme.vienHop(cmbKhach);
+        cmbKhach.addActionListener(e -> {
+            Object sel = cmbKhach.getSelectedItem();
+            if (cmbKhach.getSelectedIndex() <= 0 || sel == null) {
                 maKhLoc = "";
             } else {
                 maKhLoc = maKhach(String.valueOf(sel));
@@ -79,43 +79,43 @@ public class DsKeHoachPanel extends JPanel {
             lamMoi();
         });
 
-        JPanel panelLoc = new JPanel(new BorderLayout(0, 8));
-        panelLoc.setBackground(ViewTheme.NEN_TIM);
-        panelLoc.setBorder(new EmptyBorder(10, 12, 10, 12));
-        panelLoc.add(ViewTheme.chuPhu("Khách hàng"), BorderLayout.NORTH);
-        panelLoc.add(cboKhach, BorderLayout.CENTER);
-        panelLoc.add(lblThongTinKh, BorderLayout.SOUTH);
+        JPanel pnlLoc = new JPanel(new BorderLayout(0, 8));
+        pnlLoc.setBackground(ViewTheme.NEN_TIM);
+        pnlLoc.setBorder(new EmptyBorder(10, 12, 10, 12));
+        pnlLoc.add(ViewTheme.chuPhu("Khách hàng"), BorderLayout.NORTH);
+        pnlLoc.add(cmbKhach, BorderLayout.CENTER);
+        pnlLoc.add(lblThongTinKh, BorderLayout.SOUTH);
 
-        ViewTheme.trangTriBang(bang);
-        ViewTheme.ganThaoTac(bang, this::xuLy);
-        bang.addMouseListener(new MouseAdapter() {
+        ViewTheme.trangTriBang(tblBang);
+        ViewTheme.ganThaoTac(tblBang, this::xuLy);
+        tblBang.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
-                if (e.getClickCount() == 2 && bang.rowAtPoint(e.getPoint()) >= 0
-                        && bang.columnAtPoint(e.getPoint()) != bang.getColumnCount() - 1) {
-                    KeHoachView kh = keHoachTai(bang.convertRowIndexToModel(bang.rowAtPoint(e.getPoint())));
+                if (e.getClickCount() == 2 && tblBang.rowAtPoint(e.getPoint()) >= 0
+                        && tblBang.columnAtPoint(e.getPoint()) != tblBang.getColumnCount() - 1) {
+                    KeHoachView kh = keHoachTai(tblBang.convertRowIndexToModel(tblBang.rowAtPoint(e.getPoint())));
                     if (kh != null && moChiTiet != null) {
                         moChiTiet.accept(kh.maKeHoach);
                     }
                 }
             }
         });
-        JScrollPane scrollBang = new JScrollPane(bang);
-        scrollBang.setPreferredSize(new Dimension(400, 240));
-        scrollBang.setBorder(BorderFactory.createLineBorder(ViewTheme.VIEN));
-        scrollBang.getViewport().setBackground(ViewTheme.TRANG);
+        JScrollPane scrBang = new JScrollPane(tblBang);
+        scrBang.setPreferredSize(new Dimension(400, 240));
+        scrBang.setBorder(BorderFactory.createLineBorder(ViewTheme.VIEN));
+        scrBang.getViewport().setBackground(ViewTheme.TRANG);
         lblDem.setFont(ViewTheme.FONT_NHO);
         lblDem.setForeground(ViewTheme.CHU_NHAT);
 
-        the.add(panelDau, BorderLayout.NORTH);
-        JPanel panelGiua = new JPanel(new BorderLayout(0, 8));
-        panelGiua.setOpaque(false);
-        panelGiua.add(panelLoc, BorderLayout.NORTH);
-        panelGiua.add(scrollBang, BorderLayout.CENTER);
-        panelGiua.add(lblDem, BorderLayout.SOUTH);
-        the.add(panelGiua, BorderLayout.CENTER);
+        pnlThe.add(pnlDau, BorderLayout.NORTH);
+        JPanel pnlGiua = new JPanel(new BorderLayout(0, 8));
+        pnlGiua.setOpaque(false);
+        pnlGiua.add(pnlLoc, BorderLayout.NORTH);
+        pnlGiua.add(scrBang, BorderLayout.CENTER);
+        pnlGiua.add(lblDem, BorderLayout.SOUTH);
+        pnlThe.add(pnlGiua, BorderLayout.CENTER);
         setLayout(new BorderLayout());
-        add(the, BorderLayout.NORTH);
+        add(pnlThe, BorderLayout.NORTH);
 
         KeHoachDuLieu.khiDoi(this::lamMoi);
         lamMoi();
@@ -124,11 +124,11 @@ public class DsKeHoachPanel extends JPanel {
     public void locTheoKhach(String maKH, String ten, String sdt, String email, String diaChi, String lyDo) {
         maKhLoc = maKH == null ? "" : maKH;
         if (maKhLoc.isEmpty()) {
-            cboKhach.setSelectedIndex(0);
+            cmbKhach.setSelectedIndex(0);
         } else {
-            for (int i = 0; i < cboKhach.getItemCount(); i++) {
-                if (cboKhach.getItemAt(i).startsWith(maKhLoc)) {
-                    cboKhach.setSelectedIndex(i);
+            for (int i = 0; i < cmbKhach.getItemCount(); i++) {
+                if (cmbKhach.getItemAt(i).startsWith(maKhLoc)) {
+                    cmbKhach.setSelectedIndex(i);
                     break;
                 }
             }
@@ -236,24 +236,24 @@ public class DsKeHoachPanel extends JPanel {
 
         String maKH = sua ? goc.maKH : maKhLoc;
         String tenKH = sua ? goc.tenKh : tenKhachTuMa(maKH);
-        JTextField khach = h.chu("Khách hàng", maKH + " - " + tenKH, true);
-        khach.setEditable(false);
-        JTextField ngay = h.chu("Ngày lập", sua ? goc.ngayLap : LocalDate.now().format(NGAY), true);
+        JTextField txtKhach = h.chu("Khách hàng", maKH + " - " + tenKH, true);
+        txtKhach.setEditable(false);
+        JTextField txtNgay = h.chu("Ngày lập", sua ? goc.ngayLap : LocalDate.now().format(NGAY), true);
         JComboBox<String> bacSi = h.chon("Bác sĩ phụ trách", true, bacSiNhan());
         if (sua && goc.tenBacSi != null) {
             bacSi.setSelectedItem(goc.tenBacSi);
         }
-        JTextField lyDo = h.chu("Lý do điều trị", sua ? nullSafe(goc.lyDoDieuTri) : "", true);
-        JTextField ghiChu = h.chu("Ghi chú", sua ? nullSafe(goc.ghiChu) : "", false);
+        JTextField txtLyDo = h.chu("Lý do điều trị", sua ? nullSafe(goc.lyDoDieuTri) : "", true);
+        JTextField txtGhiChu = h.chu("Ghi chú", sua ? nullSafe(goc.ghiChu) : "", false);
 
         if (sua && goc.coHoaDon()) {
-            ngay.setEditable(false);
+            txtNgay.setEditable(false);
             bacSi.setEnabled(false);
-            lyDo.setEditable(false);
+            txtLyDo.setEditable(false);
         }
 
         h.hien(() -> {
-            String ngayLap = ngay.getText().trim();
+            String ngayLap = txtNgay.getText().trim();
             if (ngayLap.isEmpty()) {
                 JOptionPane.showMessageDialog(h, "Vui lòng nhập ngày lập.");
                 return;
@@ -265,13 +265,13 @@ public class DsKeHoachPanel extends JPanel {
                     goc.ngayLap = ngayLap;
                     goc.maBacSi = maBs;
                     goc.tenBacSi = tenBs;
-                    goc.lyDoDieuTri = lyDo.getText().trim();
+                    goc.lyDoDieuTri = txtLyDo.getText().trim();
                 }
-                goc.ghiChu = ghiChu.getText().trim();
+                goc.ghiChu = txtGhiChu.getText().trim();
                 KeHoachDuLieu.capNhat(goc);
             } else {
                 KeHoachDuLieu.them(maKH, tenKH, ngayLap, maBs, tenBs,
-                        lyDo.getText().trim(), ghiChu.getText().trim());
+                        txtLyDo.getText().trim(), txtGhiChu.getText().trim());
             }
         });
     }

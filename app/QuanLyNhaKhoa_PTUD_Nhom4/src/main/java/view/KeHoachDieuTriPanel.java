@@ -617,7 +617,10 @@ public class KeHoachDieuTriPanel extends JPanel {
     }
 
     private void setDonGia() {
-        txtDonGia.setText(ViewTheme.tien(giaDichVu(String.valueOf(cmbDichVu.getSelectedItem()))));
+        int soLuong = Integer.parseInt(txtSoLuong.getText());
+        long donGia = giaDichVu(String.valueOf(cboDichVu.getSelectedItem()));
+        long sum = donGia * soLuong;
+        txtDonGia.setText(ViewTheme.tien(sum));
     }
 
     private static String nullSafe(String s) {
