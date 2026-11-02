@@ -1,10 +1,11 @@
 package view;
 
-import view.model.CauHinhTrang;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
+import java.awt.Font;
+import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -15,6 +16,8 @@ import javax.swing.JPopupMenu;
 import javax.swing.JScrollPane;
 import javax.swing.SwingUtilities;
 import javax.swing.WindowConstants;
+import javax.swing.border.EmptyBorder;
+import view.model.CauHinhTrang;
 
 public class QuanLyView extends JFrame implements DieuHuong {
 
@@ -35,7 +38,7 @@ public class QuanLyView extends JFrame implements DieuHuong {
     private final NhapKhoPanel nhapKho = new NhapKhoPanel("Thêm Nhập kho", "Thêm Nhập kho");
     private final NhapKhoPanel xuatKho = new NhapKhoPanel("Thêm Xuất kho", "Thêm Xuất kho");
     private final TrangDanhSach danhSach = new TrangDanhSach();
-    private final ONhap timKhach = new ONhap("Tìm khách hàng", 16);
+    private final ONhap txtTimKhach = new ONhap("Tìm khách hàng", 16);
 
     public QuanLyView(String tenDangNhap) {
         this.tenDangNhap = tenDangNhap == null || tenDangNhap.isEmpty() ? "thuan080" : tenDangNhap;
@@ -64,7 +67,7 @@ public class QuanLyView extends JFrame implements DieuHuong {
         setLocationRelativeTo(null);
         getContentPane().setBackground(ViewTheme.NEN);
         cuon = new JScrollPane(vung);
-        cuon.setBorder(javax.swing.BorderFactory.createEmptyBorder());
+        cuon.setBorder(BorderFactory.createEmptyBorder());
         cuon.getViewport().setBackground(ViewTheme.NEN);
         cuon.getVerticalScrollBar().setUnitIncrement(18);
         JPanel goc = new JPanel(new BorderLayout());
@@ -74,7 +77,7 @@ public class QuanLyView extends JFrame implements DieuHuong {
         JLabel banQuyen = new JLabel("Luon Giu Binh Tinh. All rights reserved. Hotline: 0933.942.776", JLabel.CENTER);
         banQuyen.setForeground(Color.WHITE);
         banQuyen.setFont(ViewTheme.FONT_NHO);
-        banQuyen.setBorder(new javax.swing.border.EmptyBorder(6, 0, 6, 0));
+        banQuyen.setBorder(new EmptyBorder(6, 0, 6, 0));
         goc.add(banQuyen, BorderLayout.SOUTH);
         setContentPane(goc);
         mo("lichhen");
@@ -83,28 +86,28 @@ public class QuanLyView extends JFrame implements DieuHuong {
     private JPanel taoDau() {
         JPanel dau = new JPanel(new BorderLayout(12, 0));
         dau.setBackground(ViewTheme.XANH);
-        dau.setBorder(new javax.swing.border.EmptyBorder(8, 12, 8, 12));
+        dau.setBorder(new EmptyBorder(8, 12, 8, 12));
         JLabel logo = new JLabel("LGBTDENTAL");
         logo.setForeground(Color.WHITE);
-        logo.setFont(new java.awt.Font("Segoe UI", java.awt.Font.BOLD, 18));
-        timKhach.setPreferredSize(new Dimension(200, 32));
+        logo.setFont(new Font("Segoe UI", Font.BOLD, 18));
+        txtTimKhach.setPreferredSize(new Dimension(200, 32));
         JButton nutTim = new JButton("Tìm");
         ViewTheme.nutXam(nutTim);
         nutTim.addActionListener(e -> timVaMo());
-        timKhach.addActionListener(e -> timVaMo());
+        txtTimKhach.addActionListener(e -> timVaMo());
         JPanel trai = new JPanel(new FlowLayout(FlowLayout.LEFT, 8, 0));
         trai.setOpaque(false);
         trai.add(logo);
-        trai.add(timKhach);
+        trai.add(txtTimKhach);
         trai.add(nutTim);
 
-        JPanel nav = new JPanel(new FlowLayout(FlowLayout.RIGHT, 2, 0));
-        nav.setOpaque(false);
-        nav.add(nutMenu("Hệ thống", new String[][]{
+        JPanel panelNav = new JPanel(new FlowLayout(FlowLayout.RIGHT, 2, 0));
+        panelNav.setOpaque(false);
+        panelNav.add(nutMenu("Hệ thống", new String[][]{
             {"Tài khoản", "sys:taikhoan"},
             {"Đăng xuất", "sys:dangxuat"}
         }));
-        nav.add(nutMenu("Danh mục", new String[][]{
+        panelNav.add(nutMenu("Danh mục", new String[][]{
             {"Bảng danh mục", "danhmuc"},
             {"Dịch vụ", "dichvu"},
             {"Nhóm dịch vụ", "nhomdichvu"},
@@ -117,10 +120,10 @@ public class QuanLyView extends JFrame implements DieuHuong {
             {"Sản phẩm", "sanpham"},
             {"Nhà cung cấp", "nhacungcap"}
         }));
-        nav.add(nutMenu("Thống kê", new String[][]{
+        panelNav.add(nutMenu("Thống kê", new String[][]{
             {"Thống kê cá nhân", "bc:dtcanhan"},
             {"Thống kê doanh thu", "bc:congno"},}));
-        nav.add(nutMenu("Tìm kiếm", new String[][]{
+        panelNav.add(nutMenu("Tìm kiếm", new String[][]{
             {"Khách hàng", "khachhang"},
             {"Lịch hẹn", "lichhen"},
             {"Hóa đơn", "hoadon"},
@@ -129,7 +132,7 @@ public class QuanLyView extends JFrame implements DieuHuong {
             {"Dịch vụ", "dichvu"},
             {"Nhân viên", "nhanvien"}
         }));
-        nav.add(nutMenu("Xử lý", new String[][]{
+        panelNav.add(nutMenu("Xử lý", new String[][]{
             {"Kế hoạch điều trị", "kehoach"},
             {"Toa thuốc", "toathuoc"},
             {"Nhập kho", "nhapkho"},
@@ -137,23 +140,23 @@ public class QuanLyView extends JFrame implements DieuHuong {
             {"Hóa đơn", "hoadon"},
             {"Phiếu thu", "phieuthu"},
             {"Phiếu chi", "phieuchi"}}));
-        nav.add(nutMenu("Báo cáo", new String[][]{
+        panelNav.add(nutMenu("Báo cáo", new String[][]{
             {"Báo cáo đơn thuốc", "bc:donthuoc"},
             {"Báo cáo thu chi", "bc:thuchi"}
         }));
         JLabel user = new JLabel(tenDangNhap);
         user.setForeground(Color.WHITE);
         user.setFont(ViewTheme.FONT_DAM);
-        user.setBorder(new javax.swing.border.EmptyBorder(8, 10, 8, 4));
-        nav.add(user);
+        user.setBorder(new EmptyBorder(8, 10, 8, 4));
+        panelNav.add(user);
 
         dau.add(trai, BorderLayout.WEST);
-        dau.add(nav, BorderLayout.CENTER);
+        dau.add(panelNav, BorderLayout.CENTER);
         return dau;
     }
 
     private void timVaMo() {
-        khachHang.tim(timKhach.getText().trim());
+        khachHang.tim(txtTimKhach.getText().trim());
         mo("khachhang");
     }
 

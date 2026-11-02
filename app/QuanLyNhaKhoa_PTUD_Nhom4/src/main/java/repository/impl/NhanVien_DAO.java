@@ -1,7 +1,7 @@
 package repository.impl;
 
 import entity.NhanVien;
-import i_repository.NhanVien_IDAO;
+import repository.NhanVien_IDAO;
 import java.util.List;
 import mapper.NhanVienMapper;
 

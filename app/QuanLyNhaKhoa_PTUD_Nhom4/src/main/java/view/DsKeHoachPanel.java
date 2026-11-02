@@ -4,9 +4,10 @@ import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.Window;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Consumer;
 import javax.swing.BorderFactory;
@@ -32,8 +33,8 @@ public class DsKeHoachPanel extends JPanel {
 
     private final DefaultTableModel model = ViewTheme.taoModel(COT, false, true);
     private final JTable bang = new JTable(model);
-    private final JLabel thongTinKh = new JLabel("Chưa chọn khách hàng");
-    private final JLabel dem = new JLabel();
+    private final JLabel lblThongTinKh = new JLabel("Chưa chọn khách hàng");
+    private final JLabel lblDem = new JLabel();
     private final JComboBox<String> cboKhach = new JComboBox<>();
     private final Consumer<String> moChiTiet;
     private String maKhLoc = "";
@@ -47,20 +48,20 @@ public class DsKeHoachPanel extends JPanel {
         the.setBackground(ViewTheme.TRANG);
         the.setBorder(new EmptyBorder(12, 14, 12, 14));
 
-        JLabel tieu = ViewTheme.tieuDeTrang("Kế hoạch điều trị");
-        JButton them = new JButton("+ Kế hoạch điều trị");
-        ViewTheme.nutXanh(them);
-        them.addActionListener(e -> moThem());
-        JPanel dau = new JPanel(new BorderLayout());
-        dau.setOpaque(false);
-        dau.add(tieu, BorderLayout.WEST);
-        JPanel phai = new JPanel(new FlowLayout(FlowLayout.RIGHT, 8, 0));
-        phai.setOpaque(false);
-        phai.add(them);
-        dau.add(phai, BorderLayout.EAST);
+        JLabel lblTieuDe = ViewTheme.tieuDeTrang("Kế hoạch điều trị");
+        JButton btnThem = new JButton("+ Kế hoạch điều trị");
+        ViewTheme.nutXanh(btnThem);
+        btnThem.addActionListener(e -> moThem());
+        JPanel panelDau = new JPanel(new BorderLayout());
+        panelDau.setOpaque(false);
+        panelDau.add(lblTieuDe, BorderLayout.WEST);
+        JPanel panelPhai = new JPanel(new FlowLayout(FlowLayout.RIGHT, 8, 0));
+        panelPhai.setOpaque(false);
+        panelPhai.add(btnThem);
+        panelDau.add(panelPhai, BorderLayout.EAST);
 
-        thongTinKh.setFont(ViewTheme.FONT);
-        thongTinKh.setForeground(ViewTheme.CHU);
+        lblThongTinKh.setFont(ViewTheme.FONT);
+        lblThongTinKh.setForeground(ViewTheme.CHU);
 
         cboKhach.addItem("Tất cả khách hàng");
         for (String k : DuLieuMau.dsKhach()) {
@@ -78,18 +79,18 @@ public class DsKeHoachPanel extends JPanel {
             lamMoi();
         });
 
-        JPanel loc = new JPanel(new BorderLayout(0, 8));
-        loc.setBackground(ViewTheme.NEN_TIM);
-        loc.setBorder(new EmptyBorder(10, 12, 10, 12));
-        loc.add(ViewTheme.chuPhu("Khách hàng"), BorderLayout.NORTH);
-        loc.add(cboKhach, BorderLayout.CENTER);
-        loc.add(thongTinKh, BorderLayout.SOUTH);
+        JPanel panelLoc = new JPanel(new BorderLayout(0, 8));
+        panelLoc.setBackground(ViewTheme.NEN_TIM);
+        panelLoc.setBorder(new EmptyBorder(10, 12, 10, 12));
+        panelLoc.add(ViewTheme.chuPhu("Khách hàng"), BorderLayout.NORTH);
+        panelLoc.add(cboKhach, BorderLayout.CENTER);
+        panelLoc.add(lblThongTinKh, BorderLayout.SOUTH);
 
         ViewTheme.trangTriBang(bang);
         ViewTheme.ganThaoTac(bang, this::xuLy);
-        bang.addMouseListener(new java.awt.event.MouseAdapter() {
+        bang.addMouseListener(new MouseAdapter() {
             @Override
-            public void mouseClicked(java.awt.event.MouseEvent e) {
+            public void mouseClicked(MouseEvent e) {
                 if (e.getClickCount() == 2 && bang.rowAtPoint(e.getPoint()) >= 0
                         && bang.columnAtPoint(e.getPoint()) != bang.getColumnCount() - 1) {
                     KeHoachView kh = keHoachTai(bang.convertRowIndexToModel(bang.rowAtPoint(e.getPoint())));
@@ -99,20 +100,20 @@ public class DsKeHoachPanel extends JPanel {
                 }
             }
         });
-        JScrollPane cuon = new JScrollPane(bang);
-        cuon.setPreferredSize(new Dimension(400, 240));
-        cuon.setBorder(BorderFactory.createLineBorder(ViewTheme.VIEN));
-        cuon.getViewport().setBackground(ViewTheme.TRANG);
-        dem.setFont(ViewTheme.FONT_NHO);
-        dem.setForeground(ViewTheme.CHU_NHAT);
+        JScrollPane scrollBang = new JScrollPane(bang);
+        scrollBang.setPreferredSize(new Dimension(400, 240));
+        scrollBang.setBorder(BorderFactory.createLineBorder(ViewTheme.VIEN));
+        scrollBang.getViewport().setBackground(ViewTheme.TRANG);
+        lblDem.setFont(ViewTheme.FONT_NHO);
+        lblDem.setForeground(ViewTheme.CHU_NHAT);
 
-        the.add(dau, BorderLayout.NORTH);
-        JPanel giua = new JPanel(new BorderLayout(0, 8));
-        giua.setOpaque(false);
-        giua.add(loc, BorderLayout.NORTH);
-        giua.add(cuon, BorderLayout.CENTER);
-        giua.add(dem, BorderLayout.SOUTH);
-        the.add(giua, BorderLayout.CENTER);
+        the.add(panelDau, BorderLayout.NORTH);
+        JPanel panelGiua = new JPanel(new BorderLayout(0, 8));
+        panelGiua.setOpaque(false);
+        panelGiua.add(panelLoc, BorderLayout.NORTH);
+        panelGiua.add(scrollBang, BorderLayout.CENTER);
+        panelGiua.add(lblDem, BorderLayout.SOUTH);
+        the.add(panelGiua, BorderLayout.CENTER);
         setLayout(new BorderLayout());
         add(the, BorderLayout.NORTH);
 
@@ -133,7 +134,7 @@ public class DsKeHoachPanel extends JPanel {
             }
         }
         if (ten != null && !ten.isEmpty()) {
-            thongTinKh.setText("<html><b>" + ten + "</b> (" + maKhLoc + ") — "
+            lblThongTinKh.setText("<html><b>" + ten + "</b> (" + maKhLoc + ") — "
                     + nullSafe(sdt) + " | " + nullSafe(email) + "<br>"
                     + nullSafe(diaChi) + " | Lý do: " + nullSafe(lyDo) + "</html>");
         } else {
@@ -144,11 +145,11 @@ public class DsKeHoachPanel extends JPanel {
 
     private void capNhatThongTinKh() {
         if (maKhLoc == null || maKhLoc.isEmpty()) {
-            thongTinKh.setText("Đang xem tất cả khách hàng");
+            lblThongTinKh.setText("Đang xem tất cả khách hàng");
             return;
         }
         String ten = tenKhachTuMa(maKhLoc);
-        thongTinKh.setText("<html><b>" + ten + "</b> — Mã KH: " + maKhLoc + "</html>");
+        lblThongTinKh.setText("<html><b>" + ten + "</b> — Mã KH: " + maKhLoc + "</html>");
     }
 
     private void lamMoi() {
@@ -165,7 +166,7 @@ public class DsKeHoachPanel extends JPanel {
                 "Sửa      Xem      Hủy"
             });
         }
-        dem.setText(ViewTheme.demDong(ds.isEmpty() ? 0 : 1, ds.size(), ds.size()));
+        lblDem.setText(ViewTheme.demDong(ds.isEmpty() ? 0 : 1, ds.size(), ds.size()));
     }
 
     private void xuLy(String lenh, int hang) {
