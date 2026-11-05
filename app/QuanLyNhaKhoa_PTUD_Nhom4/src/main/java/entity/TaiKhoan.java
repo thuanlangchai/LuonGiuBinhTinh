@@ -25,7 +25,12 @@ public class TaiKhoan {
         this.kichHoat = kichHoat;
         this.ngayTao = ngayTao;
     }
-
+    
+    public TaiKhoan(String tenDangNhap, String matKhau) {
+    	this.tenDangNhap = tenDangNhap;
+        this.matKhau = matKhau;
+    }
+    
     public String getTenDangNhap() {
         return tenDangNhap;
     }
