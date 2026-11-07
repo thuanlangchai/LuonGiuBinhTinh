@@ -3,7 +3,9 @@ package view;
 import entity.TaiKhoan;
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.Cursor;
 import java.awt.Dimension;
+import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.GridLayout;
 import javax.swing.BorderFactory;
@@ -21,28 +23,21 @@ import service.impl.TaiKhoan_Service;
 public class LoginView extends JFrame {
 
     private final JTextField txtTen = new JTextField(22);
-    
     private final JPasswordField txtMatKhau = new JPasswordField(22);
-    
     private final JButton btnDangNhap = new JButton("Đăng nhập");
-    
     private final JButton btnThoat = new JButton("Thoát");
-    
     private final TaiKhoan_Service taiKhoanService = new TaiKhoan_Service();
 
-    
     public LoginView() {
         setTitle("Đăng nhập - Quản lý nha khoa");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setSize(500, 550);
-        setMinimumSize(new Dimension(420, 420));
+        setSize(500, 580); // Tăng chiều cao một chút để chứa nút quên mật khẩu
+        setMinimumSize(new Dimension(420, 450));
         setLocationRelativeTo(null);
 
-        
         JPanel panelGoc = new JPanel(new BorderLayout());
         panelGoc.setBackground(ViewTheme.NEN_TIM);
 
-        
         JPanel panelDau = new JPanel(new GridLayout(2, 1));
         panelDau.setBackground(ViewTheme.XANH);
         panelDau.setBorder(new EmptyBorder(28, 16, 28, 16));
@@ -55,23 +50,44 @@ public class LoginView extends JFrame {
         panelDau.add(nhanLogo);
         panelDau.add(nhanPhu);
 
-        
         JPanel panelThe = new JPanel(new BorderLayout(0, 16));
         panelThe.setBackground(Color.WHITE);
         panelThe.setBorder(BorderFactory.createCompoundBorder(
                 BorderFactory.createLineBorder(ViewTheme.VIEN),
                 new EmptyBorder(24, 28, 24, 28)));
+        
         JLabel nhanTieuDe = ViewTheme.tieuDeTrang("Đăng nhập");
-        JPanel panelForm = new JPanel(new GridLayout(4, 1, 0, 6));
+        
+        JPanel panelForm = new JPanel(new GridLayout(5, 1, 0, 4)); // Tăng lên 5 dòng để chứa dòng chữ quên mật khẩu
         panelForm.setOpaque(false);
+        
         JLabel nhanTen = ViewTheme.chuPhu("Tên đăng nhập");
         JLabel nhanMatKhau = ViewTheme.chuPhu("Mật khẩu");
         ViewTheme.vienNhap(txtTen);
         ViewTheme.vienNhap(txtMatKhau);
+        
+        // Tạo JLabel dạng đường link "Quên mật khẩu?"
+        JLabel lblQuenMatKhau = new JLabel("Quên mật khẩu?");
+        lblQuenMatKhau.setForeground(new Color(14, 132, 184)); // Màu xanh dương nhạt
+        lblQuenMatKhau.setFont(new Font("Segoe UI", Font.ITALIC, 12));
+        lblQuenMatKhau.setCursor(new Cursor(Cursor.HAND_CURSOR));
+        lblQuenMatKhau.addMouseListener(new java.awt.event.MouseAdapter() {
+            @Override
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                xuLyQuenMatKhau();
+            }
+        });
+        
+        JPanel panelQuenMK = new JPanel(new FlowLayout(FlowLayout.RIGHT, 0, 0));
+        panelQuenMK.setOpaque(false);
+        panelQuenMK.add(lblQuenMatKhau);
+
         panelForm.add(nhanTen);
         panelForm.add(txtTen);
         panelForm.add(nhanMatKhau);
         panelForm.add(txtMatKhau);
+        panelForm.add(panelQuenMK); // Thêm dòng quên mật khẩu vào form
+
         ViewTheme.nutChinh(btnDangNhap);
         ViewTheme.nutMau(btnThoat, new Color(232, 109, 109), Color.WHITE);
         Dimension kichThuocNut = new Dimension(160, 42);
@@ -82,32 +98,27 @@ public class LoginView extends JFrame {
         btnDangNhap.addActionListener(e -> dangNhap());
         btnThoat.addActionListener(e -> thoat());
 
-        
         JPanel panelNut = new JPanel(new GridLayout(1, 2, 16, 0));
         panelNut.setOpaque(false);
-        panelNut.setBorder(new EmptyBorder(18, 0, 0, 0));
+        panelNut.setBorder(new EmptyBorder(14, 0, 0, 0));
         panelNut.add(btnDangNhap);
         panelNut.add(btnThoat);
 
-        
         panelThe.add(nhanTieuDe, BorderLayout.NORTH);
         panelThe.add(panelForm, BorderLayout.CENTER);
         panelThe.add(panelNut, BorderLayout.SOUTH);
 
-        
         JPanel panelGiua = new JPanel(new BorderLayout());
         panelGiua.setOpaque(false);
         panelGiua.setBorder(new EmptyBorder(28, 36, 36, 36));
         panelGiua.add(panelThe, BorderLayout.CENTER);
 
-        
         panelGoc.add(panelDau, BorderLayout.NORTH);
         panelGoc.add(panelGiua, BorderLayout.CENTER);
         setContentPane(panelGoc);
         getRootPane().setDefaultButton(btnDangNhap);
     }
 
-    
     private void dangNhap() {
         String tenDangNhap = txtTen.getText().trim();
         String matKhau = String.valueOf(txtMatKhau.getPassword());
@@ -144,9 +155,86 @@ public class LoginView extends JFrame {
         }.execute();
     }
 
-    
+    // ==========================================
+    // XỬ LÝ CHỨC NĂNG QUÊN MẬT KHẨU
+    // ==========================================
+    private void xuLyQuenMatKhau() {
+        // Yêu cầu người dùng nhập tên đăng nhập
+        String tenDangNhap = JOptionPane.showInputDialog(this, 
+                "Vui lòng nhập Tên đăng nhập (Username) của bạn:", 
+                "Khôi phục mật khẩu", 
+                JOptionPane.QUESTION_MESSAGE);
+
+        if (tenDangNhap == null) {
+            return; // Người dùng bấm Cancel
+        }
+
+        tenDangNhap = tenDangNhap.trim();
+        if (tenDangNhap.isEmpty()) {
+            JOptionPane.showMessageDialog(this, "Tên đăng nhập không được để trống!", "Lỗi", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+
+        // Kiểm tra xem tài khoản có tồn tại trong hệ thống hay không
+        try {
+            // Lưu ý: Bạn cần chắc chắn trong TaiKhoan_Service có hàm tìm tài khoản theo tên. 
+            // Nếu chưa có hàm findByUsername, bạn có thể gọi hàm lấy thông tin hoặc viết thêm hàm trong service.
+            TaiKhoan tk = taiKhoanService.findById(tenDangNhap); // Hoặc hàm tương ứng trong service của bạn
+            
+            if (tk == null) {
+                JOptionPane.showMessageDialog(this, "Không tìm thấy tài khoản với tên đăng nhập này!", "Thất bại", JOptionPane.ERROR_MESSAGE);
+                return;
+            }
+
+            // Nếu tìm thấy tài khoản, hiển thị form cho phép đặt lại mật khẩu mới
+            String matKhauMoi = JOptionPane.showInputDialog(this, 
+                    "Nhập mật khẩu mới cho tài khoản (" + tenDangNhap + "):", 
+                    "Đặt lại mật khẩu", 
+                    JOptionPane.QUESTION_MESSAGE);
+
+            if (matKhauMoi == null) {
+                return;
+            }
+
+            matKhauMoi = matKhauMoi.trim();
+            if (matKhauMoi.length() < 6) {
+                JOptionPane.showMessageDialog(this, "Mật khẩu mới phải có ít nhất 6 ký tự!", "Cảnh báo", JOptionPane.WARNING_MESSAGE);
+                return;
+            }
+
+            // Tiến hành cập nhật mật khẩu mới xuống CSDL thông qua service
+            TaiKhoan newTK = new TaiKhoan(tenDangNhap, matKhauMoi);
+            try {
+            	taiKhoanService.update(newTK);
+            	JOptionPane.showMessageDialog(this, 
+                        "Đổi mật khẩu thành công! Vui lòng đăng nhập lại bằng mật khẩu mới.", 
+                        "Thành công", 
+                        JOptionPane.INFORMATION_MESSAGE);
+			} catch (Exception e) {
+				// TODO: handle exception
+				JOptionPane.showMessageDialog(this, 
+                        "Không thể cập nhật mật khẩu. Vui lòng thử lại sau.", 
+                        "Lỗi", 
+                        JOptionPane.ERROR_MESSAGE);
+				e.printStackTrace();
+			}
+
+            
+
+        } catch (Exception ex) {
+            JOptionPane.showMessageDialog(this, 
+                    "Đã xảy ra lỗi khi kết nối cơ sở dữ liệu:\n" + ex.getMessage(), 
+                    "Lỗi", 
+                    JOptionPane.ERROR_MESSAGE);
+        }
+    }
+
     private void thoat() {
         dispose();
+        usingSystemExit();
+    }
+    
+    private void usingSystemExit() {
         System.exit(0);
     }
 }
