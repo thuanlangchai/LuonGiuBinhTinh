@@ -155,18 +155,16 @@ public class LoginView extends JFrame {
         }.execute();
     }
 
-    // ==========================================
-    // XỬ LÝ CHỨC NĂNG QUÊN MẬT KHẨU
-    // ==========================================
+    
     private void xuLyQuenMatKhau() {
-        // Yêu cầu người dùng nhập tên đăng nhập
+        
         String tenDangNhap = JOptionPane.showInputDialog(this, 
                 "Vui lòng nhập Tên đăng nhập (Username) của bạn:", 
                 "Khôi phục mật khẩu", 
                 JOptionPane.QUESTION_MESSAGE);
 
         if (tenDangNhap == null) {
-            return; // Người dùng bấm Cancel
+            return; 
         }
 
         tenDangNhap = tenDangNhap.trim();
@@ -175,18 +173,17 @@ public class LoginView extends JFrame {
             return;
         }
 
-        // Kiểm tra xem tài khoản có tồn tại trong hệ thống hay không
+        
         try {
-            // Lưu ý: Bạn cần chắc chắn trong TaiKhoan_Service có hàm tìm tài khoản theo tên. 
-            // Nếu chưa có hàm findByUsername, bạn có thể gọi hàm lấy thông tin hoặc viết thêm hàm trong service.
-            TaiKhoan tk = taiKhoanService.findById(tenDangNhap); // Hoặc hàm tương ứng trong service của bạn
+           
+            TaiKhoan tk = taiKhoanService.findById(tenDangNhap); 
             
             if (tk == null) {
                 JOptionPane.showMessageDialog(this, "Không tìm thấy tài khoản với tên đăng nhập này!", "Thất bại", JOptionPane.ERROR_MESSAGE);
                 return;
             }
 
-            // Nếu tìm thấy tài khoản, hiển thị form cho phép đặt lại mật khẩu mới
+            
             String matKhauMoi = JOptionPane.showInputDialog(this, 
                     "Nhập mật khẩu mới cho tài khoản (" + tenDangNhap + "):", 
                     "Đặt lại mật khẩu", 
@@ -202,8 +199,8 @@ public class LoginView extends JFrame {
                 return;
             }
 
-            // Tiến hành cập nhật mật khẩu mới xuống CSDL thông qua service
-            TaiKhoan newTK = new TaiKhoan(tenDangNhap, matKhauMoi);
+            
+            TaiKhoan newTK = new TaiKhoan(tenDangNhap, matKhauMoi,tk.getEmail(),tk.getVaiTro(),tk.getMaNhanVien(),tk.isKichHoat(),tk.getNgayTao());
             try {
             	taiKhoanService.update(newTK);
             	JOptionPane.showMessageDialog(this, 
@@ -211,7 +208,7 @@ public class LoginView extends JFrame {
                         "Thành công", 
                         JOptionPane.INFORMATION_MESSAGE);
 			} catch (Exception e) {
-				// TODO: handle exception
+				
 				JOptionPane.showMessageDialog(this, 
                         "Không thể cập nhật mật khẩu. Vui lòng thử lại sau.", 
                         "Lỗi", 
