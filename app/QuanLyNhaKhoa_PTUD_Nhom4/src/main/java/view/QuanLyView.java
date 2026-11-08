@@ -17,6 +17,9 @@ import javax.swing.JScrollPane;
 import javax.swing.SwingUtilities;
 import javax.swing.WindowConstants;
 import javax.swing.border.EmptyBorder;
+
+import entity.TaiKhoan;
+import service.impl.TaiKhoan_Service;
 import view.model.CauHinhTrang;
 
 public class QuanLyView extends JFrame implements DieuHuong {
@@ -39,6 +42,8 @@ public class QuanLyView extends JFrame implements DieuHuong {
     private final NhapKhoPanel xuatKho = new NhapKhoPanel("Thêm Xuất kho", "Thêm Xuất kho");
     private final TrangDanhSach danhSach = new TrangDanhSach();
     private final ONhap txtTimKhach = new ONhap("Tìm khách hàng", 16);
+    
+    private final TaiKhoan_Service taiKhoanService = new TaiKhoan_Service();
 
     public QuanLyView(String tenDangNhap) {
         this.tenDangNhap = tenDangNhap == null || tenDangNhap.isEmpty() ? "thuan080" : tenDangNhap;
@@ -105,7 +110,8 @@ public class QuanLyView extends JFrame implements DieuHuong {
         pnlNav.setOpaque(false);
         pnlNav.add(btnNutMenu("Hệ thống", new String[][]{
             {"Tài khoản", "sys:taikhoan"},
-            {"Đăng xuất", "sys:dangxuat"}
+            {"Đăng xuất", "sys:dangxuat"},
+            {"Đổi Mật Khẩu", "sys:doiMK"}
         }));
         pnlNav.add(btnNutMenu("Danh mục", new String[][]{
             {"Bảng danh mục", "danhmuc"},
@@ -183,7 +189,58 @@ public class QuanLyView extends JFrame implements DieuHuong {
             dangXuat();
             return;
         }
+        if("sys:doiMK".equals(ma)) {
+        	doiMK(tenDangNhap);
+        }
         mo(ma);
+    }
+    
+    private void doiMK(String tenDangNhap) {
+    	try {
+            
+            TaiKhoan tk = taiKhoanService.findById(tenDangNhap); 
+
+            
+            String matKhauMoi = JOptionPane.showInputDialog(this, 
+                    "Nhập mật khẩu mới cho tài khoản (" + tenDangNhap + "):", 
+                    "Đặt lại mật khẩu", 
+                    JOptionPane.QUESTION_MESSAGE);
+
+            if (matKhauMoi == null) {
+                return;
+            }
+
+            matKhauMoi = matKhauMoi.trim();
+            if (matKhauMoi.length() < 6) {
+                JOptionPane.showMessageDialog(this, "Mật khẩu mới phải có ít nhất 6 ký tự!", "Cảnh báo", JOptionPane.WARNING_MESSAGE);
+                return;
+            }
+
+            
+            TaiKhoan newTK = new TaiKhoan(tenDangNhap, matKhauMoi,tk.getEmail(),tk.getVaiTro(),tk.getMaNhanVien(),tk.isKichHoat(),tk.getNgayTao() );
+            try {
+            	taiKhoanService.update(newTK);
+            	JOptionPane.showMessageDialog(this, 
+                        "Đổi mật khẩu thành công! Vui lòng đăng nhập lại bằng mật khẩu mới.", 
+                        "Thành công", 
+                        JOptionPane.INFORMATION_MESSAGE);
+			} catch (Exception e) {
+				
+				JOptionPane.showMessageDialog(this, 
+                        "Không thể cập nhật mật khẩu. Vui lòng thử lại sau.", 
+                        "Lỗi", 
+                        JOptionPane.ERROR_MESSAGE);
+				e.printStackTrace();
+			}
+
+            
+
+        } catch (Exception ex) {
+            JOptionPane.showMessageDialog(this, 
+                    "Đã xảy ra lỗi khi kết nối cơ sở dữ liệu:\n" + ex.getMessage(), 
+                    "Lỗi", 
+                    JOptionPane.ERROR_MESSAGE);
+        }
     }
 
     @Override

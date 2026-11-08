@@ -119,6 +119,19 @@ public class LichHenPanel extends JPanel {
 		KhachHang kh = khachHangService.findById(lh.getMaKH());
 		NhanVien bs = lh.getMaBacSi() == null ? null : danhMucService.findNhanVienById(lh.getMaBacSi());
 		NhanVien pt = lh.getMaPhuTa() == null ? null : danhMucService.findNhanVienById(lh.getMaPhuTa());
+		
+		String maKeHoach = "";
+	    String ghiChu = lh.getGhiChu() == null ? "" : lh.getGhiChu();
+	    if (ghiChu.contains("[KHDT:")) {
+	        try {
+	            int batDauIndex = ghiChu.indexOf("[KHDT:") + 6;
+	            int ketThucIndex = ghiChu.indexOf("]", batDauIndex);
+	            if (ketThucIndex > batDauIndex) {
+	                maKeHoach = ghiChu.substring(batDauIndex, ketThucIndex);
+	            }
+	        } catch (Exception ignored) {}
+	    }
+		
 		return new CuocHen(lh.getMaLichHen(), lh.getMaKH(), kh != null ? kh.getHoTen() : lh.getMaKH(), lh.getBatDau(),
 				lh.getThoiLuongPhut(), bs != null ? bs.getHoTen() : (lh.getMaBacSi() == null ? "" : lh.getMaBacSi()),
 				pt != null ? pt.getHoTen() : (lh.getMaPhuTa() == null ? "" : lh.getMaPhuTa()),
@@ -313,6 +326,9 @@ public class LichHenPanel extends JPanel {
 			if (!"Tất cả".equals(tt) && !tt.equals(c.trangThai)) {
 				continue;
 			}
+			if ("Tất cả".equals(tt) && "Hủy bỏ".equals(c.trangThai)) {
+	            continue;
+	        }
 			if (!tu.isEmpty() && !c.bacSi.toLowerCase().contains(tu) && !c.khach.toLowerCase().contains(tu)) {
 				continue;
 			}
@@ -424,77 +440,7 @@ public class LichHenPanel extends JPanel {
 		return scrCuon;
 	}
 
-//    private JPanel pnlCotNgay(LocalDate d, List<CuocHen> hien) {
-//        JPanel pnlCot = new JPanel(null) {
-//            @Override
-//            protected void paintComponent(Graphics g) {
-//                super.paintComponent(g);
-//                g.setColor(new Color(236, 239, 241));
-//                for (int i = 0; i <= SO_O; i++) {
-//                    g.drawLine(0, i * CAO_O, getWidth(), i * CAO_O);
-//                }
-//                g.setColor(new Color(226, 232, 236));
-//                int batDau = (12 - pnlGio_DAU) * 2 * CAO_O;
-//                int cao = 2 * CAO_O;
-//                for (int y = batDau; y < batDau + cao; y += 6) {
-//                    g.drawLine(0, y, getWidth(), y + 10);
-//                }
-//            }
-//        };
-//        pnlCot.setBackground(ViewTheme.TRANG);
-//        pnlCot.setPreferredSize(new Dimension(180, SO_O * CAO_O));
-//        pnlCot.addMouseListener(new MouseAdapter() {
-//            @Override
-//            public void mousePressed(MouseEvent e) {
-//                if (e.getComponent() != pnlCot) {
-//                    return;
-//                }
-//                int o = Math.max(0, Math.min(SO_O - 1, e.getY() / CAO_O));
-//                int phut = pnlGio_DAU * 60 + o * 30;
-//                LocalDateTime luc = LocalDateTime.of(d, LocalTime.of(phut / 60, phut % 60));
-//                moForm(null, luc);
-//            }
-//        });
-//        for (CuocHen c : hien) {
-//            if (!c.batDau.toLocalDate().equals(d)) {
-//                continue;
-//            }
-//            int phut = c.batDau.getHour() * 60 + c.batDau.getMinute() - pnlGio_DAU * 60;
-//            if (phut < 0 || phut >= SO_O * 30) {
-//                continue;
-//            }
-//            int y = phut * CAO_O / 30;
-//            int cao = Math.max(CAO_O - 4, c.phut * CAO_O / 30 - 4);
-//            JPanel pnlThe = new JPanel(new BorderLayout());
-//            pnlThe.setBackground(nenTrangThai(c.trangThai));
-//            pnlThe.setBorder(BorderFactory.createLineBorder(vienTrangThai(c.trangThai)));
-//            JLabel lbl = new JLabel("<html><b>" + c.batDau.format(F_pnlGio) + "</b> " + c.maLichHen + "<br>" + c.khach + "</html>");
-//            lbl.setFont(ViewTheme.FONT_NHO);
-//            lbl.setBorder(new EmptyBorder(2, 6, 2, 6));
-//            pnlThe.add(lbl, BorderLayout.CENTER);
-//            pnlThe.setBounds(6, y + 2, 160, cao);
-//            pnlThe.putClientProperty("khoi", Boolean.TRUE);
-//            pnlThe.addMouseListener(new MouseAdapter() {
-//                @Override
-//                public void mousePressed(MouseEvent e) {
-//                    moForm(c, c.batDau);
-//                }
-//            });
-//            pnlCot.add(pnlThe);
-//        }
-//        pnlCot.addComponentListener(new ComponentAdapter() {
-//            @Override
-//            public void componentResized(ComponentEvent e) {
-//                int rong = Math.max(48, pnlCot.getWidth() - 12);
-//                for (Component c : pnlCot.getComponents()) {
-//                    if (c instanceof JPanel && Boolean.TRUE.equals(((JPanel) c).getClientProperty("khoi"))) {
-//                        c.setSize(rong, c.getHeight());
-//                    }
-//                }
-//            }
-//        });
-//        return pnlCot;
-//    }
+
 
 	private JPanel pnlCotNgay(LocalDate d, List<CuocHen> hien) {
 
@@ -578,7 +524,11 @@ public class LichHenPanel extends JPanel {
 			pnlThe.addMouseListener(new MouseAdapter() {
 				@Override
 				public void mousePressed(MouseEvent e) {
-					moForm(c, c.batDau);
+					if (e.getClickCount() == 2) { 
+			            hienThiChiTiet(c);
+			        } else {
+			            moForm(c, c.batDau); 
+			        }
 				}
 			});
 			pnlCot.add(pnlThe);
@@ -603,60 +553,7 @@ public class LichHenPanel extends JPanel {
 		return pnlCot;
 	}
 
-//	private JPanel pnlVeKanban() {
-//		String[] cot = { "Khách hẹn", "Khách đang chờ", "Khách đang điều trị", "Khách kết thúc điều trị",
-//				"Khách ra về" };
-//		Color[] mau = { new Color(176, 184, 191), new Color(240, 180, 60), new Color(80, 170, 90),
-//				new Color(46, 140, 70), new Color(186, 104, 200) };
-//		JPanel pnlLuoi = new JPanel(new GridLayout(1, 5, 8, 8));
-//		pnlLuoi.setOpaque(false);
-//		pnlLuoi.setBorder(new EmptyBorder(8, 0, 0, 0));
-//		List<CuocHen> hien = dangXem();
-//		for (int i = 0; i < cot.length; i++) {
-//			JPanel pnlThe = new JPanel(new BorderLayout(0, 8));
-//			pnlThe.setBackground(ViewTheme.TRANG);
-//			pnlThe.setBorder(BorderFactory.createCompoundBorder(BorderFactory.createMatteBorder(4, 1, 1, 1, mau[i]),
-//					new EmptyBorder(8, 8, 8, 8)));
-//			JLabel lblTen = new JLabel(cot[i], SwingConstants.CENTER);
-//			lblTen.setFont(ViewTheme.FONT_DAM);
-//			JButton btnThem = new JButton("Thêm lịch hẹn");
-//			ViewTheme.nutLink(btnThem);
-//			btnThem.setHorizontalAlignment(SwingConstants.CENTER);
-//			btnThem.setForeground(ViewTheme.XANH_DAM);
-//			final int nhom = i;
-//			btnThem.addActionListener(
-//					e -> moForm(null, LocalDateTime.of(ngay, LocalTime.of(8, 0)), trangThaiCot(nhom)));
-//			JPanel pnlDsThe = new JPanel();
-//			pnlDsThe.setLayout(new BoxLayout(pnlDsThe, BoxLayout.Y_AXIS));
-//			pnlDsThe.setOpaque(false);
-//			for (CuocHen c : hien) {
-//				if (cotKanban(c.trangThai) != i) {
-//					continue;
-//				}
-//				JPanel pnlCard = new JPanel(new BorderLayout());
-//				pnlCard.setBackground(new Color(248, 250, 252));
-//				pnlCard.setBorder(BorderFactory.createCompoundBorder(BorderFactory.createLineBorder(ViewTheme.VIEN),
-//						new EmptyBorder(8, 8, 8, 8)));
-//				pnlCard.setMaximumSize(new Dimension(Integer.MAX_VALUE, 72));
-//				JLabel lbl = new JLabel("<html><b>" + c.khach + "</b><br>" + c.batDau.format(F_pnlGio) + " · "
-//						+ c.maLichHen + "</html>");
-//				pnlCard.add(lbl);
-//				pnlCard.addMouseListener(new MouseAdapter() {
-//					@Override
-//					public void mousePressed(MouseEvent e) {
-//						moForm(c, c.batDau);
-//					}
-//				});
-//				pnlDsThe.add(pnlCard);
-//				pnlDsThe.add(Box.createVerticalStrut(6));
-//			}
-//			pnlThe.add(lblTen, BorderLayout.NORTH);
-//			pnlThe.add(new JScrollPane(pnlDsThe), BorderLayout.CENTER);
-//			pnlThe.add(btnThem, BorderLayout.SOUTH);
-//			pnlLuoi.add(pnlThe);
-//		}
-//		return pnlLuoi;
-//	}
+
 	
 	private JPanel pnlVeKanban() {
 	    String[] cot = { "Khách hẹn", "Khách đang chờ", "Khách đang điều trị", "Khách kết thúc điều trị",
@@ -688,7 +585,32 @@ public class LichHenPanel extends JPanel {
 	            if (cotKanban(c.trangThai) != i) {
 	                continue;
 	            }
+	            if ("Hủy bỏ".equals(c.trangThai)) {
+	                continue;
+	            }
 	            JPanel pnlCard = new JPanel(new BorderLayout());
+	            
+	            JPanel pnlThongTin = new JPanel();
+	            pnlThongTin.setLayout(new BoxLayout(pnlThongTin, BoxLayout.Y_AXIS));
+	            pnlThongTin.setOpaque(false);
+	            
+	            JButton btnXemChiTiet = new JButton("👁");
+	            btnXemChiTiet.setToolTipText("Xem chi tiết lịch hẹn");
+	            ViewTheme.nutLink(btnXemChiTiet); // Dùng style nút link hoặc nút nhỏ gọn
+	            btnXemChiTiet.addActionListener(e -> {
+	                // Ngăn chặn sự kiện lan truyền nếu cần và gọi hàm chuyển trang
+	                hienThiChiTiet(c);
+	            });
+	            pnlCard.add(pnlThongTin, BorderLayout.CENTER);
+	            pnlCard.add(btnXemChiTiet, BorderLayout.EAST); 
+
+	            // Vẫn giữ sự kiện click vào toàn bộ card nếu muốn
+	            pnlCard.addMouseListener(new MouseAdapter() {
+	                @Override
+	                public void mousePressed(MouseEvent e) {
+	                    hienThiChiTiet(c);
+	                }
+	            });
 	            
 	            boolean khanCap = c.ghiChu != null && c.ghiChu.contains("[KHẨN CẤP]");
 	            
@@ -705,10 +627,10 @@ public class LichHenPanel extends JPanel {
 	                        new EmptyBorder(8, 8, 8, 8)));
 	            }
 	            
-	            // Tăng chiều cao tối đa của card lên một chút (75px) để vừa hiển thị tên khách, giờ, mã lịch và tên bác sĩ
+	            
 	            pnlCard.setMaximumSize(new Dimension(Integer.MAX_VALUE, 75));
 	            
-	            // Thêm huy hiệu [KHẨN CẤP] màu đỏ và tên bác sĩ vào HTML
+	            
 	            String badgeKanban = khanCap ? "<span style='color: #dc2626; font-weight: bold;'>[KHẨN CẤP]</span><br>" : "";
 	            String bacSiText = (c.bacSi != null && !c.bacSi.isEmpty()) ? c.bacSi : "Chưa phân công";
 	            
@@ -728,7 +650,11 @@ public class LichHenPanel extends JPanel {
 	            pnlCard.addMouseListener(new MouseAdapter() {
 	                @Override
 	                public void mousePressed(MouseEvent e) {
-	                    moForm(c, c.batDau);
+	                	if (e.getClickCount() == 2) {
+	                        hienThiChiTiet(c);
+	                    } else {
+//	                        moForm(c, c.batDau);
+	                    }
 	                }
 	            });
 	            pnlDsThe.add(pnlCard);
@@ -744,22 +670,25 @@ public class LichHenPanel extends JPanel {
 
 	private JScrollPane scrVeBang() {
 		String[] cot = { "Mã lịch hẹn", "Mã KH", "Khách hàng", "Bắt đầu", "Thời lượng (phút)", "Bác sĩ", "Phụ tá",
-				"Ghi chú", "Trạng thái" };
+				"Ghi chú", "Trạng thái","Thao tác"};
 		DefaultTableModel model = ViewTheme.taoModel(cot, false, false);
 		for (CuocHen c : dangXem()) {
 			model.addRow(new Object[] { c.maLichHen, c.maKH, c.khach, c.batDau.format(F_NGAY_pnlGio), c.phut, c.bacSi,
-					c.phuTa, c.ghiChu, c.trangThai });
+					c.phuTa, c.ghiChu, c.trangThai ,"👁 Xem"});
 		}
 		JTable tblBang = new JTable(model);
 		ViewTheme.trangTriBang(tblBang);
 		tblBang.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
+				int row = tblBang.rowAtPoint(e.getPoint());
+	            int col = tblBang.columnAtPoint(e.getPoint());
 				if (e.getClickCount() == 2 && tblBang.getSelectedRow() >= 0) {
 					int i = tblBang.convertRowIndexToModel(tblBang.getSelectedRow());
 					List<CuocHen> hien = dangXem();
 					if (i >= 0 && i < hien.size()) {
-						moForm(hien.get(i), hien.get(i).batDau);
+//						moForm(hien.get(i), hien.get(i).batDau);
+						hienThiChiTiet(hien.get(i));
 					}
 				}
 			}
@@ -818,184 +747,7 @@ public class LichHenPanel extends JPanel {
 		moForm(cu, luc, cu == null ? "Mới" : cu.trangThai);
 	}
 
-//    private void moForm(CuocHen cu, LocalDateTime luc, String trangThaiMacDinh) {
-//        HopThoai hopThoai = new HopThoai(cuaSoCha(), cu == null ? "Thêm lịch hẹn" : "Cập nhật lịch hẹn",
-//                cu == null ? "Thêm" : "Lưu");
-//        JComboBox<String> cmbKh = hopThoai.chon("Khách hàng", false, dsKhachCombo());
-//        JTextField txtGhi = hopThoai.chu("Ghi chú", cu == null ? "" : cu.ghiChu, false);
-//        JTextField txtBatDau = hopThoai.chu("Bắt đầu", (cu == null ? luc : cu.batDau).format(F_NGAY_pnlGio), true);
-//        JComboBox<String> cmbDuKien = hopThoai.chon("Thời lượng (phút)", true, "15", "30", "45", "60", "90", "120");
-//        if (cu != null) {
-//        	cmbDuKien.setSelectedItem(String.valueOf(cu.phut));
-//        }
-//        JComboBox<String> cmbBs = hopThoai.chon("Bác sĩ", true, dsBacSiCombo());
-//        if (cu != null) {
-//        	cmbBs.setSelectedItem(cu.bacSi);
-//        }
-//        JComboBox<String> cmbPhuTa = hopThoai.chon("Phụ tá", false, "", "Nguyễn Khắc Duy", "Hồ Văn Khánh");
-//        if (cu != null && cu.phuTa != null && !cu.phuTa.isEmpty()) {
-//        	cmbPhuTa.setSelectedItem(cu.phuTa);
-//        }
-//        JComboBox<String> cmbTt = hopThoai.chon("Trạng thái", false, "Mới", "Xác nhận", "Đang đợi", "Đang điều trị", "Hoàn tất", "Khách ra về", "Hủy bỏ");
-//        cmbTt.setSelectedItem(trangThaiMacDinh);
-//        hopThoai.hien(() -> {
-//            LocalDateTime pnlGio;
-//            try {
-//                pnlGio = LocalDateTime.parse(txtBatDau.getText().trim(), F_NGAY_pnlGio);
-//            } catch (DateTimeParseException ex) {
-//                JOptionPane.showMessageDialog(this, "Thời gian theo dạng yyyy-MM-dd HH:mm");
-//                return;
-//            }
-//            int phut = Integer.parseInt(String.valueOf(cmbDuKien.getSelectedItem()));
-//            String tenKhach = String.valueOf(cmbKh.getSelectedItem());
-//            String maKH = "0001";
-//            if (tenKhach.contains(" - ")) {
-//                String[] tach = tenKhach.split(" - ", 2);
-//                maKH = tach[0].trim();
-//                if (tach.length >= 2) {
-//                    tenKhach = tach[1].trim();
-//                }
-//            }
-//            LichHen entity = cu == null ? new LichHen() : lichHenService.findById(cu.maLichHen);
-//            if (entity == null) {
-//                entity = new LichHen();
-//            }
-//            if (cu == null) {
-//                entity.setMaLichHen(maLichMoi());
-//            } else {
-//                entity.setMaLichHen(cu.maLichHen);
-//            }
-//            entity.setMaKH(maKH);
-//            entity.setBatDau(pnlGio);
-//            entity.setThoiLuongPhut(phut);
-//            entity.setMaBacSi(maBacSiTheoTen(String.valueOf(cmbBs.getSelectedItem())));
-//            entity.setMaPhuTa(maBacSiTheoTen(String.valueOf(cmbPhuTa.getSelectedItem())));
-//            entity.setGhiChu(txtGhi.getText().trim());
-//            entity.setTrangThai(String.valueOf(cmbTt.getSelectedItem()));
-//            try {
-//                if (cu == null) {
-//                    if (lichHenService.add(entity) == null) {
-//                        JOptionPane.showMessageDialog(this, "Không thêm được lịch hẹn.");
-//                        return;
-//                    }
-//                } else {
-//                    lichHenService.update(entity);
-//                }
-//                ngay = pnlGio.toLocalDate();
-//                taiLai();
-//            } catch (Exception ex) {
-//                JOptionPane.showMessageDialog(this, "Lỗi lưu lịch hẹn.\n" + ex.getMessage());
-//            }
-//        });
-//    }
 
-//    private void moForm(CuocHen cu, LocalDateTime luc, String trangThaiMacDinh) {
-//        HopThoai hopThoai = new HopThoai(cuaSoCha(), cu == null ? "Thêm lịch hẹn" : "Cập nhật lịch hẹn",
-//                cu == null ? "Thêm" : "Lưu");
-//        JComboBox<String> cmbKh = hopThoai.chon("Khách hàng", false, dsKhachCombo());
-//        JTextField txtGhi = hopThoai.chu("Ghi chú", cu == null ? "" : cu.ghiChu, false);
-//        JTextField txtBatDau = hopThoai.chu("Bắt đầu", (cu == null ? luc : cu.batDau).format(F_NGAY_pnlGio), true);
-//        JComboBox<String> cmbDuKien = hopThoai.chon("Thời lượng (phút)", true, "15", "30", "45", "60", "90", "120");
-//        if (cu != null) {
-//            cmbDuKien.setSelectedItem(String.valueOf(cu.phut));
-//        }
-//        JComboBox<String> cmbBs = hopThoai.chon("Bác sĩ", true, dsBacSiCombo());
-//        if (cu != null) {
-//            cmbBs.setSelectedItem(cu.bacSi);
-//        }
-//        JComboBox<String> cmbPhuTa = hopThoai.chon("Phụ tá", false, "", "Nguyễn Khắc Duy", "Hồ Văn Khánh");
-//        if (cu != null && cu.phuTa != null && !cu.phuTa.isEmpty()) {
-//            cmbPhuTa.setSelectedItem(cu.phuTa);
-//        }
-//        JComboBox<String> cmbTt = hopThoai.chon("Trạng thái", false, "Mới", "Xác nhận", "Đang đợi", "Đang điều trị", "Hoàn tất", "Khách ra về", "Hủy bỏ");
-//        cmbTt.setSelectedItem(trangThaiMacDinh);
-//        
-//        hopThoai.hien(() -> {
-//            LocalDateTime pnlGio;
-//            try {
-//                pnlGio = LocalDateTime.parse(txtBatDau.getText().trim(), F_NGAY_pnlGio);
-//            } catch (DateTimeParseException ex) {
-//                JOptionPane.showMessageDialog(this, "Thời gian theo dạng yyyy-MM-dd HH:mm");
-//                return;
-//            }
-//            int phut = Integer.parseInt(String.valueOf(cmbDuKien.getSelectedItem()));
-//            String tenKhach = String.valueOf(cmbKh.getSelectedItem());
-//            String maKH = "0001";
-//            if (tenKhach.contains(" - ")) {
-//                String[] tach = tenKhach.split(" - ", 2);
-//                maKH = tach[0].trim();
-//                if (tach.length >= 2) {
-//                    tenKhach = tach[1].trim();
-//                }
-//            }
-//            
-//            String maBacSiMoi = maBacSiTheoTen(String.valueOf(cmbBs.getSelectedItem()));
-//            LocalDateTime ketThucMoi = pnlGio.plusMinutes(phut);
-//            try {
-//                for (LichHen lh : lichHenService.findAllLichHen()) {
-//                    
-//                    if (cu != null && cu.maLichHen.equals(lh.getMaLichHen())) {
-//                        continue;
-//                    }
-//                    if ("Hủy bỏ".equals(lh.getTrangThai())) {
-//                        continue;
-//                    }
-//
-//                    LocalDateTime ketThucCu = lh.getBatDau().plusMinutes(lh.getThoiLuongPhut());
-//                    boolean biTrungThoiGian = pnlGio.isBefore(ketThucCu) && lh.getBatDau().isBefore(ketThucMoi);
-//
-//                    if (biTrungThoiGian) {
-//                    	if (maBacSiMoi != null && !maBacSiMoi.isEmpty() && maBacSiMoi.equals(lh.getMaBacSi())) {
-//                            JOptionPane.showMessageDialog(this, 
-//                                "Bác sĩ này đã bận (có lịch hẹn khác) vào khung giờ này!\n(Thời gian: " + lh.getBatDau().format(F_NGAY_pnlGio) + " - Mã lịch: " + lh.getMaLichHen() + ")");
-//                            return; 
-//                        }
-//                    	else if (maKH.equals(lh.getMaKH())) {
-//                            JOptionPane.showMessageDialog(this, 
-//                                "Khách hàng này đã có lịch hẹn khác trùng thời gian!\n(Thời gian: " + lh.getBatDau().format(F_NGAY_pnlGio) + " - Mã lịch: " + lh.getMaLichHen() + ")");
-//                            return;
-//                        }
-//   
-//                    }
-//                }
-//            } catch (Exception ex) {
-//                JOptionPane.showMessageDialog(this, "Lỗi kiểm tra trùng lịch: " + ex.getMessage());
-//                return;
-//            }
-//            
-//
-//            LichHen entity = cu == null ? new LichHen() : lichHenService.findById(cu.maLichHen);
-//            if (entity == null) {
-//                entity = new LichHen();
-//            }
-//            if (cu == null) {
-//                entity.setMaLichHen(maLichMoi());
-//            } else {
-//                entity.setMaLichHen(cu.maLichHen);
-//            }
-//            entity.setMaKH(maKH);
-//            entity.setBatDau(pnlGio);
-//            entity.setThoiLuongPhut(phut);
-//            entity.setMaBacSi(maBacSiMoi);
-//            entity.setMaPhuTa(maBacSiTheoTen(String.valueOf(cmbPhuTa.getSelectedItem())));
-//            entity.setGhiChu(txtGhi.getText().trim());
-//            entity.setTrangThai(String.valueOf(cmbTt.getSelectedItem()));
-//            try {
-//                if (cu == null) {
-//                    if (lichHenService.add(entity) == null) {
-//                        JOptionPane.showMessageDialog(this, "Không thêm được lịch hẹn.");
-//                        return;
-//                    }
-//                } else {
-//                    lichHenService.update(entity);
-//                }
-//                ngay = pnlGio.toLocalDate();
-//                taiLai();
-//            } catch (Exception ex) {
-//                JOptionPane.showMessageDialog(this, "Lỗi lưu lịch hẹn.\n" + ex.getMessage());
-//            }
-//        });
-//    }
 
 	private void moForm(CuocHen cu, LocalDateTime luc, String trangThaiMacDinh) {
 		HopThoai hopThoai = new HopThoai(cuaSoCha(), cu == null ? "Thêm lịch hẹn" : "Cập nhật lịch hẹn",
@@ -1041,14 +793,14 @@ public class LichHenPanel extends JPanel {
 
 			boolean isKhanCap = "Khẩn cấp".equals(cmbLoaiLich.getSelectedItem());
 
-			// Xử lý ghi chú kèm nhãn [KHẨN CẤP]
+			
 			String ghiChuMoi = txtGhi.getText().trim();
 			if (isKhanCap) {
 				if (!ghiChuMoi.contains("[KHẨN CẤP]")) {
 					ghiChuMoi = "[KHẨN CẤP] " + ghiChuMoi;
 				}
 			} else {
-				// Nếu người dùng đổi từ khẩn cấp về bình thường thì lọc bỏ nhãn đi nếu có
+				
 				ghiChuMoi = ghiChuMoi.replace("[KHẨN CẤP]", "").trim();
 			}
 
@@ -1221,6 +973,17 @@ public class LichHenPanel extends JPanel {
 			return new Color(180, 186, 192);
 		}
 		return ViewTheme.XANH;
+	}
+	
+	private void hienThiChiTiet(CuocHen c) {
+		pnlThan.removeAll();
+	    ChiTietLichHenPanel chiTietPanel = new ChiTietLichHenPanel(c, () -> {
+	        // Hành động callback khi bấm nút "Quay lại" từ trang chi tiết
+	        taiLai();
+	    });
+	    pnlThan.add(chiTietPanel, BorderLayout.CENTER);
+	    pnlThan.revalidate();
+	    pnlThan.repaint();
 	}
 
 }

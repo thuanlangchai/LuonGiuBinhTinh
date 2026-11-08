@@ -11,6 +11,7 @@ import java.awt.FlowLayout;
 import java.awt.Graphics;
 import java.awt.Window;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
@@ -34,6 +35,9 @@ import javax.swing.border.EmptyBorder;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 import javax.swing.table.DefaultTableModel;
+
+import entity.LichHen;
+import service.impl.LichHen_Service;
 import view.model.HoaDonView;
 
 public class KeHoachDieuTriPanel extends JPanel {
@@ -115,19 +119,24 @@ public class KeHoachDieuTriPanel extends JPanel {
         JButton btnNutThemDv = new JButton("+ Thêm dịch vụ");
         JButton btnNutHoaDon = new JButton("Lập hóa đơn");
         JButton btnNutThanhToan = new JButton("Thu tiền");
+        JButton btnNutLenLich = new JButton("Lên lịch hẹn");
         ViewTheme.nutXanh(btnNutThemDv);
         ViewTheme.nutCam(btnNutHoaDon);
+        ViewTheme.nutChinh(btnNutLenLich);
         ViewTheme.nutChinh(btnNutThanhToan);
         btnNutThemDv.addActionListener(e -> moThemDichVu());
         btnNutHoaDon.addActionListener(e -> moLapHoaDon());
         btnNutThanhToan.addActionListener(e -> moThanhToan());
+        btnNutLenLich.addActionListener(e -> moLenLichHen());
 
         JPanel pnlnutTrai = new JPanel(new FlowLayout(FlowLayout.LEFT, 8, 0));
         pnlnutTrai.setOpaque(false);
         pnlnutTrai.add(btnNutThemDv);
         pnlnutTrai.add(btnNutHoaDon);
         pnlnutTrai.add(btnNutThanhToan);
-
+        pnlnutTrai.add(btnNutLenLich);
+        
+        
         JPanel pnlThongKe = new JPanel(new FlowLayout(FlowLayout.RIGHT, 18, 0));
         pnlThongKe.setOpaque(false);
         pnlThongKe.add(oSo(lblTongCong, "Tổng cộng", ViewTheme.CHU));
@@ -616,6 +625,68 @@ public class KeHoachDieuTriPanel extends JPanel {
         }
     }
 
+    private void moLenLichHen() {
+        if (keHoachHienTai == null) {
+            JOptionPane.showMessageDialog(this, "Chưa chọn kế hoạch điều trị để lên lịch.");
+            return;
+        }
+        if (keHoachHienTai.daHuy()) {
+            JOptionPane.showMessageDialog(this, "Kế hoạch đã hủy, không thể lên lịch hẹn.");
+            return;
+        }
+
+        Window w = SwingUtilities.getWindowAncestor(this);
+        HopThoai hopThoai = new HopThoai(w, "Lên lịch hẹn cho KH: " + keHoachHienTai.tenKh, "Xác nhận lên lịch");
+
+        String[] dsBs = DuLieuMau.dsBacSi(); 
+        
+        // Thêm ComboBox chọn Dịch vụ lấy từ danh sách dịch vụ của kế hoạch hoặc danh mục chung
+        JComboBox<String> cmbDichVu = hopThoai.chon("Dịch vụ thực hiện", true, tenDichVu());
+        JTextField txtBatDau = hopThoai.chu("Thời gian (yyyy-MM-dd HH:mm)", LocalDate.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd")) + " 09:00", true);
+        JComboBox<String> cmbDuKien = hopThoai.chon("Thời lượng (phút)", true, "30", "45", "60", "90", "120");
+        JComboBox<String> cmbBs = hopThoai.chon("Bác sĩ", true, dsBs.length > 0 ? dsBs : new String[]{keHoachHienTai.tenBacSi});
+        if (keHoachHienTai.tenBacSi != null && !keHoachHienTai.tenBacSi.isEmpty()) {
+            cmbBs.setSelectedItem(keHoachHienTai.tenBacSi);
+        }
+        JTextField txtGhiChu = hopThoai.chu("Ghi chú", "Lên lịch hẹn điều trị", false);
+
+        hopThoai.hien(() -> {
+            try {
+                LocalDateTime thoiGianBatDau = LocalDateTime.parse(txtBatDau.getText().trim(), DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm"));
+                int thoiLuong = Integer.parseInt(String.valueOf(cmbDuKien.getSelectedItem()));
+                String tenBacSiChon = String.valueOf(cmbBs.getSelectedItem());
+                String dichVuChon = String.valueOf(cmbDichVu.getSelectedItem());
+                String maBs = DuLieuMau.maBacSiTheoTen(tenBacSiChon);
+
+                LichHen lhMoi = new LichHen();
+                lhMoi.setMaLichHen("LH" + System.currentTimeMillis() % 10000); 
+                lhMoi.setMaKH(keHoachHienTai.maKH);
+                lhMoi.setBatDau(thoiGianBatDau);
+                lhMoi.setThoiLuongPhut(thoiLuong);
+                lhMoi.setMaBacSi(maBs);
+                
+                // Gộp thông tin Dịch vụ và Mã kế hoạch vào ghi chú (hoặc trường dịch vụ nếu entity có hỗ trợ)
+                // Cú pháp chuẩn chứa [KHDT:MãKếHoạch] để hệ thống tự động nhận diện liên kết hai chiều
+                String ghiChuDayDu = String.format("Dịch vụ: %s - %s [KHDT:%s]", 
+                        dichVuChon, 
+                        txtGhiChu.getText().trim(), 
+                        keHoachHienTai.maKeHoach);
+                
+                lhMoi.setGhiChu(ghiChuDayDu);
+                lhMoi.setTrangThai("Mới");
+
+                LichHen_Service lichHenService = new LichHen_Service();
+                if (lichHenService.add(lhMoi) != null) {
+                    JOptionPane.showMessageDialog(this, "Đã tạo lịch hẹn và liên kết thành công!");
+                } else {
+                    JOptionPane.showMessageDialog(this, "Không thể lưu lịch hẹn.");
+                }
+            } catch (Exception ex) {
+                JOptionPane.showMessageDialog(this, "Lỗi định dạng thời gian (Yêu cầu: yyyy-MM-dd HH:mm).\n" + ex.getMessage());
+            }
+        });
+    }
+    
     private void setDonGia() {
         int soLuong = Integer.parseInt(txtSoLuong.getText());
         long donGia = giaDichVu(String.valueOf(cmbDichVu.getSelectedItem()));
