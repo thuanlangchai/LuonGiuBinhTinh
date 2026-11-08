@@ -58,7 +58,7 @@ public class LichHenPanel extends JPanel {
 	private static final String[] CHE_DO = { "ngay", "2ngay", "tuan", "thang", "kanban", "list" };
 	private static final String[] NHAN_CHE_DO = { "Ngày", "2 ngày", "Tuần", "Tháng", "Kanban", "List" };
 
-	private LocalDate ngay = LocalDate.of(2026, 9, 28);
+	private LocalDate ngay = LocalDate.now();
 	private String cheDo = "tuan";
 	private final List<CuocHen> ds = new ArrayList<CuocHen>();
 	private final JPanel pnlThan = new JPanel(new BorderLayout());
@@ -107,7 +107,8 @@ public class LichHenPanel extends JPanel {
 				ds.add(mapCuocHen(lh));
 			}
 			if (!ds.isEmpty()) {
-				ngay = ds.get(0).batDau.toLocalDate();
+//				ngay = ds.get(0).batDau.toLocalDate();
+				ngay = LocalDate.now();
 			}
 		} catch (Exception ex) {
 			JOptionPane.showMessageDialog(this, "Không tải được lịch hẹn.\n" + ex.getMessage());
@@ -650,10 +651,12 @@ public class LichHenPanel extends JPanel {
 	            pnlCard.addMouseListener(new MouseAdapter() {
 	                @Override
 	                public void mousePressed(MouseEvent e) {
-	                	if (e.getClickCount() == 2) {
-	                        hienThiChiTiet(c);
-	                    } else {
-//	                        moForm(c, c.batDau);
+	                	if (e.getClickCount() == 1) {
+//	                        hienThiChiTiet(c);
+	                        moForm(c, c.batDau);
+	                    } 
+	                	else if (e.getClickCount() == 2) {
+//	                    	hienThiChiTiet(c);
 	                    }
 	                }
 	            });
