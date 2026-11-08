@@ -31,7 +31,7 @@ public class LoginView extends JFrame {
     public LoginView() {
         setTitle("Đăng nhập - Quản lý nha khoa");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setSize(500, 580); // Tăng chiều cao một chút để chứa nút quên mật khẩu
+        setSize(500, 580); 
         setMinimumSize(new Dimension(420, 450));
         setLocationRelativeTo(null);
 
@@ -86,7 +86,7 @@ public class LoginView extends JFrame {
         panelForm.add(txtTen);
         panelForm.add(nhanMatKhau);
         panelForm.add(txtMatKhau);
-        panelForm.add(panelQuenMK); // Thêm dòng quên mật khẩu vào form
+        panelForm.add(panelQuenMK); 
 
         ViewTheme.nutChinh(btnDangNhap);
         ViewTheme.nutMau(btnThoat, new Color(232, 109, 109), Color.WHITE);
