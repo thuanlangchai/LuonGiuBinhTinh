@@ -596,7 +596,7 @@ public class LichHenPanel extends JPanel {
                 pnlThongTin.setLayout(new BoxLayout(pnlThongTin, BoxLayout.Y_AXIS));
                 pnlThongTin.setOpaque(false);
 
-                JButton btnXemChiTiet = new JButton("👁");
+                JButton btnXemChiTiet = new JButton("Xem");
                 btnXemChiTiet.setToolTipText("Xem chi tiết lịch hẹn");
                 ViewTheme.nutLink(btnXemChiTiet);
                 btnXemChiTiet.addActionListener(e -> {
@@ -664,7 +664,7 @@ public class LichHenPanel extends JPanel {
         DefaultTableModel model = ViewTheme.taoModel(cot, false, false);
         for (CuocHen c : dangXem()) {
             model.addRow(new Object[]{c.maLichHen, c.maKH, c.khach, c.batDau.format(F_NGAY_pnlGio), c.phut, c.bacSi,
-                c.phuTa, c.ghiChu, c.trangThai, "👁 Xem"});
+                c.phuTa, c.ghiChu, c.trangThai, "Xem"});
         }
         JTable tblBang = new JTable(model);
         ViewTheme.trangTriBang(tblBang);
