@@ -1,1 +1,18 @@
-package mapper;import entity.NhaCungCap;import java.sql.ResultSet;import java.sql.SQLException;public class NhaCungCapMapper implements RowMapper<NhaCungCap> {    @Override    public NhaCungCap mapper(ResultSet rs) {        try {            String maNhaCungCap = rs.getString("maNhaCungCap");            String tenNhaCungCap = rs.getString("tenNhaCungCap");            String dienThoai = rs.getString("dienThoai");            String diaChi = rs.getString("diaChi");            return new NhaCungCap(maNhaCungCap, tenNhaCungCap, dienThoai, diaChi);        } catch (SQLException e) {            return null;        }    }}
+package mapper;
+
+import entity.NhaCungCap;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+
+public class NhaCungCapMapper implements RowMapper<NhaCungCap> {
+
+    @Override
+    public NhaCungCap mapper(ResultSet rs) throws SQLException {
+        NhaCungCap entity = new NhaCungCap();
+        entity.setMaNhaCungCap(rs.getString("maNhaCungCap"));
+        entity.setTenNhaCungCap(rs.getString("tenNhaCungCap"));
+        entity.setDienThoai(rs.getString("dienThoai"));
+        entity.setDiaChi(rs.getString("diaChi"));
+        return entity;
+    }
+}

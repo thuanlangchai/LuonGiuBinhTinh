@@ -1,1 +1,20 @@
-package mapper;import entity.ChiTietXuatKho;import java.sql.ResultSet;import java.sql.SQLException;public class ChiTietXuatKhoMapper implements RowMapper<ChiTietXuatKho> {    @Override    public ChiTietXuatKho mapper(ResultSet rs) {        try {            String maChiTiet = rs.getString("maChiTiet");            String maPhieuXuat = rs.getString("maPhieuXuat");            String maSanPham = rs.getString("maSanPham");            int soLuong = rs.getInt("soLuong");            long donGia = rs.getLong("donGia");            long thanhTien = rs.getLong("thanhTien");            return new ChiTietXuatKho(maChiTiet, maPhieuXuat, maSanPham, soLuong, donGia, thanhTien);        } catch (SQLException e) {            return null;        }    }}
+package mapper;
+
+import entity.ChiTietXuatKho;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+
+public class ChiTietXuatKhoMapper implements RowMapper<ChiTietXuatKho> {
+
+    @Override
+    public ChiTietXuatKho mapper(ResultSet rs) throws SQLException {
+        ChiTietXuatKho entity = new ChiTietXuatKho();
+        entity.setMaChiTiet(rs.getString("maChiTiet"));
+        entity.setSoLuong(rs.getInt("soLuong"));
+        entity.setDonGia(rs.getLong("donGia"));
+        entity.setThanhTien(rs.getLong("thanhTien"));
+        entity.setPhieuXuatKho(Maps.phieuXuat(rs, "maPhieuXuat"));
+        entity.setSanPham(Maps.sanPham(rs, "maSanPham", "tenSanPham"));
+        return entity;
+    }
+}

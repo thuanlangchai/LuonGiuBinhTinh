@@ -6,15 +6,13 @@ import entity.KeHoachDieuTri;
 import entity.KhachHang;
 import entity.NhanVien;
 import entity.Rang;
+import entity.Refs;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import service.impl.DanhMuc_Service;
 import service.impl.KeHoachDieuTri_Service;
-import service.impl.KhachHang_Service;
 import view.model.HangDT;
 import view.model.KeHoachView;
 
@@ -22,7 +20,6 @@ public final class KeHoachDuLieu {
 
     private static final List<Runnable> LANG_NGHE = new ArrayList<>();
     private static final KeHoachDieuTri_Service keHoachService = new KeHoachDieuTri_Service();
-    private static final KhachHang_Service khachHangService = new KhachHang_Service();
     private static final DanhMuc_Service danhMucService = new DanhMuc_Service();
 
     private KeHoachDuLieu() {
@@ -42,14 +39,14 @@ public final class KeHoachDuLieu {
 
     public static List<KeHoachView> tatCa() {
         List<KeHoachView> ketQua = new ArrayList<>();
-        for (KeHoachDieuTri e : keHoachService.findAllKeHoachDieuTri()) {
+        for (KeHoachDieuTri e : keHoachService.findAllKemChiTiet()) {
             ketQua.add(mapView(e));
         }
         return ketQua;
     }
 
     public static KeHoachView theoMa(String maKeHoach) {
-        KeHoachDieuTri e = keHoachService.findById(maKeHoach);
+        KeHoachDieuTri e = keHoachService.findDetailById(maKeHoach);
         return e == null ? null : mapView(e);
     }
 
@@ -62,31 +59,29 @@ public final class KeHoachDuLieu {
     }
 
     public static String maMoi() {
-        int max = 0;
-        for (KeHoachDieuTri e : keHoachService.findAllKeHoachDieuTri()) {
-            String ma = e.getMaKeHoach();
-            if (ma != null && ma.startsWith("KH")) {
-                try {
-                    max = Math.max(max, Integer.parseInt(ma.substring(2)));
-                } catch (NumberFormatException ignored) {
-                }
-            }
-        }
-        return String.format("KH%02d", max + 1);
+        return String.format("KH%02d", keHoachService.nextSo() + 1);
     }
 
     public static KeHoachView them(String maKH, String tenKh, String ngayLap, String maBacSi,
             String tenBacSi, String lyDo, String ghiChu) {
         KeHoachDieuTri e = new KeHoachDieuTri();
         e.setMaKeHoach(maMoi());
-        e.setMaKH(maKH);
+        KhachHang khach = Refs.khachHang(maKH);
+        if (khach != null) {
+            khach.setHoTen(tenKh);
+        }
+        e.setKhachHang(khach);
         e.setNgayKeHoach(NgayUtil.parseDate(ngayLap) != null ? NgayUtil.parseDate(ngayLap) : LocalDate.now());
-        e.setMaBacSi(maBacSi);
+        NhanVien bacSi = Refs.nhanVien(maBacSi);
+        if (bacSi != null) {
+            bacSi.setHoTen(tenBacSi);
+        }
+        e.setBacSi(bacSi);
         e.setLyDoDieuTri(lyDo);
         e.setGhiChu(ghiChu);
         e.setTrangThai("Mới");
         e.setNgayTao(LocalDateTime.now());
-        e.setNguoiTao(DuLieuMau.NGUOI);
+        e.setNguoiTao(Refs.nhanVien(DuLieuMau.NGUOI));
         if (keHoachService.add(e) == null) {
             return null;
         }
@@ -103,7 +98,7 @@ public final class KeHoachDuLieu {
             return;
         }
         e.setNgayKeHoach(NgayUtil.parseDate(kh.ngayLap) != null ? NgayUtil.parseDate(kh.ngayLap) : e.getNgayKeHoach());
-        e.setMaBacSi(kh.maBacSi);
+        e.setBacSi(Refs.nhanVien(kh.maBacSi));
         e.setLyDoDieuTri(kh.lyDoDieuTri);
         e.setGhiChu(kh.ghiChu);
         e.setTrangThai(kh.trangThai);
@@ -136,15 +131,14 @@ public final class KeHoachDuLieu {
         }
         ChiTietKeHoachDieuTri ct = new ChiTietKeHoachDieuTri();
         ct.setMaChiTiet(maChiTietMoi());
-        ct.setMaKeHoach(maKeHoach);
+        ct.setKeHoachDieuTri(Refs.keHoach(maKeHoach));
         ct.setNgay(NgayUtil.parseDate(hang.ngay) != null ? NgayUtil.parseDate(hang.ngay) : LocalDate.now());
-        ct.setMaRang(maRangTheoTen(hang.rang));
-        ct.setMaDichVu(maDv);
+        ct.setRang(Refs.rang(maRangTheoTen(hang.rang)));
+        ct.setDichVu(Refs.dichVu(maDv));
         ct.setSoLuong(hang.soLuong);
         ct.setDonGia(hang.donGia);
         ct.setThanhTien(hang.soLuong * hang.donGia);
         ct.setTrangThai(hang.trangThai == null ? "Mới" : hang.trangThai);
-        ct.setMaHoaDon(null);
         if (keHoachService.addChiTiet(ct) == null) {
             return false;
         }
@@ -188,13 +182,6 @@ public final class KeHoachDuLieu {
         }
         for (HangDT hang : ds) {
             hang.maHoaDon = maHd;
-            if (hang.maChiTiet != null) {
-                ChiTietKeHoachDieuTri ct = keHoachService.findChiTietById(hang.maChiTiet);
-                if (ct != null) {
-                    ct.setMaHoaDon(maHd);
-                    keHoachService.updateChiTiet(ct);
-                }
-            }
         }
         baoDoi();
     }
@@ -203,63 +190,41 @@ public final class KeHoachDuLieu {
         if (maHd == null) {
             return;
         }
-        for (KeHoachDieuTri kh : keHoachService.findAllKeHoachDieuTri()) {
-            for (ChiTietKeHoachDieuTri ct : keHoachService.findChiTietByMaKeHoach(kh.getMaKeHoach())) {
-                if (maHd.equals(ct.getMaHoaDon())) {
-                    ct.setMaHoaDon(null);
-                    keHoachService.updateChiTiet(ct);
-                }
-            }
-        }
+        keHoachService.boHoaDon(maHd);
         baoDoi();
     }
 
     private static KeHoachView mapView(KeHoachDieuTri e) {
         KeHoachView v = new KeHoachView();
         v.maKeHoach = e.getMaKeHoach();
-        v.maKH = e.getMaKH();
-        KhachHang kh = khachHangService.findById(e.getMaKH());
-        v.tenKh = kh != null ? kh.getHoTen() : e.getMaKH();
+        v.maKH = Refs.maKh(e.getKhachHang());
+        v.tenKh = Refs.tenKh(e.getKhachHang());
         v.ngayLap = NgayUtil.fmt(e.getNgayKeHoach());
-        v.maBacSi = e.getMaBacSi();
-        NhanVien nv = e.getMaBacSi() == null ? null : danhMucService.findNhanVienById(e.getMaBacSi());
-        v.tenBacSi = nv != null ? nv.getHoTen() : (e.getMaBacSi() == null ? "" : e.getMaBacSi());
+        v.maBacSi = Refs.maNv(e.getBacSi());
+        v.tenBacSi = e.getBacSi() == null ? "" : Refs.tenNv(e.getBacSi());
         v.lyDoDieuTri = e.getLyDoDieuTri();
         v.ghiChu = e.getGhiChu();
         v.trangThai = e.getTrangThai();
-        Map<String, String> tenDv = tenDichVu();
-        Map<String, String> tenRang = tenRangMap();
-        for (ChiTietKeHoachDieuTri ct : keHoachService.findChiTietByMaKeHoach(e.getMaKeHoach())) {
+        List<ChiTietKeHoachDieuTri> chiTiet = e.getChiTiet() == null ? List.of() : e.getChiTiet();
+        for (ChiTietKeHoachDieuTri ct : chiTiet) {
             HangDT h = new HangDT(
                     e.getMaKeHoach(),
                     NgayUtil.fmt(ct.getNgay()),
-                    ct.getMaRang() == null ? "" : tenRang.getOrDefault(ct.getMaRang(), ct.getMaRang()),
-                    tenDv.getOrDefault(ct.getMaDichVu(), ct.getMaDichVu()),
+                    Refs.tenRang(ct.getRang()),
+                    Refs.tenDv(ct.getDichVu()),
                     ct.getSoLuong(),
                     ct.getDonGia(),
                     ct.getTrangThai());
             h.maChiTiet = ct.getMaChiTiet();
-            h.maDichVu = ct.getMaDichVu();
-            h.maHoaDon = ct.getMaHoaDon();
+            h.maDichVu = Refs.maDv(ct.getDichVu());
+            h.maHoaDon = Refs.maHd(ct.getHoaDon());
             v.chiTiet.add(h);
         }
         return v;
     }
 
     private static String maChiTietMoi() {
-        int max = 0;
-        for (KeHoachDieuTri kh : keHoachService.findAllKeHoachDieuTri()) {
-            for (ChiTietKeHoachDieuTri ct : keHoachService.findChiTietByMaKeHoach(kh.getMaKeHoach())) {
-                String ma = ct.getMaChiTiet();
-                if (ma != null && ma.startsWith("CTK")) {
-                    try {
-                        max = Math.max(max, Integer.parseInt(ma.substring(3)));
-                    } catch (NumberFormatException ignored) {
-                    }
-                }
-            }
-        }
-        return String.format("CTK%02d", max + 1);
+        return String.format("CTK%02d", keHoachService.nextChiTiet() + 1);
     }
 
     private static String maDichVuTheoTen(String ten) {
@@ -284,21 +249,5 @@ public final class KeHoachDuLieu {
             }
         }
         return null;
-    }
-
-    private static Map<String, String> tenDichVu() {
-        Map<String, String> m = new HashMap<>();
-        for (DichVu dv : danhMucService.findAllDichVu()) {
-            m.put(dv.getMaDichVu(), dv.getTenDichVu());
-        }
-        return m;
-    }
-
-    private static Map<String, String> tenRangMap() {
-        Map<String, String> m = new HashMap<>();
-        for (Rang r : danhMucService.findAllRang()) {
-            m.put(r.getMaRang(), r.getTenRang() != null ? r.getTenRang() : r.getMaRang());
-        }
-        return m;
     }
 }

@@ -1,10 +1,13 @@
 package service.impl;
 
+import database.BusinessException;
+import database.Transactions;
 import entity.ChiTietNhapKho;
 import entity.ChiTietXuatKho;
 import entity.NhaCungCap;
 import entity.PhieuNhapKho;
 import entity.PhieuXuatKho;
+import entity.Refs;
 import entity.SanPham;
 import java.util.List;
 import repository.impl.ChiTietNhapKho_DAO;
@@ -26,7 +29,7 @@ public class Kho_Service implements Kho_IService {
 
     @Override
     public List<PhieuNhapKho> findAllPhieuNhap() {
-        return Lists.orEmpty(nhapDao.findAllPhieuNhapKho());
+        return nhapDao.findAllPhieuNhapKho();
     }
 
     @Override
@@ -51,7 +54,7 @@ public class Kho_Service implements Kho_IService {
 
     @Override
     public List<ChiTietNhapKho> findChiTietNhapByMaPhieu(String maPhieuNhap) {
-        return Lists.orEmpty(ctNhapDao.findByMaPhieuNhap(maPhieuNhap));
+        return ctNhapDao.findByMaPhieuNhap(maPhieuNhap);
     }
 
     @Override
@@ -61,7 +64,7 @@ public class Kho_Service implements Kho_IService {
 
     @Override
     public List<PhieuXuatKho> findAllPhieuXuat() {
-        return Lists.orEmpty(xuatDao.findAllPhieuXuatKho());
+        return xuatDao.findAllPhieuXuatKho();
     }
 
     @Override
@@ -86,7 +89,7 @@ public class Kho_Service implements Kho_IService {
 
     @Override
     public List<ChiTietXuatKho> findChiTietXuatByMaPhieu(String maPhieuXuat) {
-        return Lists.orEmpty(ctXuatDao.findByMaPhieuXuat(maPhieuXuat));
+        return ctXuatDao.findByMaPhieuXuat(maPhieuXuat);
     }
 
     @Override
@@ -96,12 +99,12 @@ public class Kho_Service implements Kho_IService {
 
     @Override
     public List<SanPham> findAllSanPham() {
-        return Lists.orEmpty(sanPhamDao.findAllSanPham());
+        return sanPhamDao.findAllSanPham();
     }
 
     @Override
     public List<NhaCungCap> findAllNhaCungCap() {
-        return Lists.orEmpty(nccDao.findAllNhaCungCap());
+        return nccDao.findAllNhaCungCap();
     }
 
     @Override
@@ -109,22 +112,32 @@ public class Kho_Service implements Kho_IService {
         if (phieu == null) {
             return null;
         }
-        Integer kq = nhapDao.add(phieu);
-        if (kq == null) {
-            return null;
-        }
-        if (chiTiet != null) {
-            for (ChiTietNhapKho ct : chiTiet) {
-                ct.setMaPhieuNhap(phieu.getMaPhieuNhap());
-                ctNhapDao.add(ct);
-                SanPham sp = sanPhamDao.findById(ct.getMaSanPham());
-                if (sp != null) {
-                    sp.setSoLuong(sp.getSoLuong() + ct.getSoLuong());
-                    sanPhamDao.update(sp);
+        int[] ketQua = new int[1];
+        Transactions.run(() -> {
+            long tong = 0;
+            if (chiTiet != null) {
+                for (ChiTietNhapKho dong : chiTiet) {
+                    dong.setThanhTien((long) dong.getSoLuong() * dong.getDonGia());
+                    tong += dong.getThanhTien();
                 }
             }
-        }
-        return kq;
+            phieu.setTongTien(tong);
+            ketQua[0] = nhapDao.add(phieu);
+            if (chiTiet != null) {
+                for (ChiTietNhapKho dong : chiTiet) {
+                    String maSp = Refs.maSp(dong.getSanPham());
+                    if (Refs.blank(maSp)) {
+                        throw new BusinessException("Chi tiết nhập kho thiếu sản phẩm.");
+                    }
+                    dong.setPhieuNhapKho(Refs.phieuNhap(phieu.getMaPhieuNhap()));
+                    ctNhapDao.add(dong);
+                    if (sanPhamDao.congTon(maSp, dong.getSoLuong()) == 0) {
+                        throw new BusinessException("Sản phẩm không tồn tại: " + maSp);
+                    }
+                }
+            }
+        });
+        return ketQua[0];
     }
 
     @Override
@@ -132,29 +145,31 @@ public class Kho_Service implements Kho_IService {
         if (phieu == null) {
             return null;
         }
-        if (chiTiet != null) {
-            for (ChiTietXuatKho ct : chiTiet) {
-                SanPham sp = sanPhamDao.findById(ct.getMaSanPham());
-                if (sp == null || sp.getSoLuong() < ct.getSoLuong()) {
-                    return null;
+        int[] ketQua = new int[1];
+        Transactions.run(() -> {
+            long tong = 0;
+            if (chiTiet != null) {
+                for (ChiTietXuatKho dong : chiTiet) {
+                    String maSp = Refs.maSp(dong.getSanPham());
+                    if (Refs.blank(maSp)) {
+                        throw new BusinessException("Chi tiết xuất kho thiếu sản phẩm.");
+                    }
+                    if (sanPhamDao.truTon(maSp, dong.getSoLuong()) == 0) {
+                        throw new BusinessException("Xuất vượt tồn kho hoặc sản phẩm không tồn tại: " + maSp);
+                    }
+                    dong.setThanhTien((long) dong.getSoLuong() * dong.getDonGia());
+                    tong += dong.getThanhTien();
                 }
             }
-        }
-        Integer kq = xuatDao.add(phieu);
-        if (kq == null) {
-            return null;
-        }
-        if (chiTiet != null) {
-            for (ChiTietXuatKho ct : chiTiet) {
-                ct.setMaPhieuXuat(phieu.getMaPhieuXuat());
-                ctXuatDao.add(ct);
-                SanPham sp = sanPhamDao.findById(ct.getMaSanPham());
-                if (sp != null) {
-                    sp.setSoLuong(sp.getSoLuong() - ct.getSoLuong());
-                    sanPhamDao.update(sp);
+            phieu.setTongTien(tong);
+            ketQua[0] = xuatDao.add(phieu);
+            if (chiTiet != null) {
+                for (ChiTietXuatKho dong : chiTiet) {
+                    dong.setPhieuXuatKho(Refs.phieuXuat(phieu.getMaPhieuXuat()));
+                    ctXuatDao.add(dong);
                 }
             }
-        }
-        return kq;
+        });
+        return ketQua[0];
     }
 }

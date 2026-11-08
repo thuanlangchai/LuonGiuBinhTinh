@@ -660,10 +660,11 @@ public class KeHoachDieuTriPanel extends JPanel {
 
                 LichHen lhMoi = new LichHen();
                 lhMoi.setMaLichHen("LH" + System.currentTimeMillis() % 10000); 
-                lhMoi.setMaKH(keHoachHienTai.maKH);
+                lhMoi.setKhachHang(entity.Refs.khachHang(keHoachHienTai.maKH));
                 lhMoi.setBatDau(thoiGianBatDau);
                 lhMoi.setThoiLuongPhut(thoiLuong);
-                lhMoi.setMaBacSi(maBs);
+                lhMoi.setBacSi(entity.Refs.nhanVien(maBs));
+                lhMoi.setKeHoachDieuTri(entity.Refs.keHoach(keHoachHienTai.maKeHoach));
                 
                 // Gộp thông tin Dịch vụ và Mã kế hoạch vào ghi chú (hoặc trường dịch vụ nếu entity có hỗ trợ)
                 // Cú pháp chuẩn chứa [KHDT:MãKếHoạch] để hệ thống tự động nhận diện liên kết hai chiều

@@ -16,7 +16,7 @@ import view.model.CauHinhTrang;
 
 public final class DuLieuMau {
 
-    public static final String NGUOI = "thuan08022006@gmail.com";
+    public static final String NGUOI = "NV01";
     public static final String[] BAC_SI = {"Lê Trần Quang Thanh", "Hồ Văn Khánh", "Nguyễn Khắc Duy"};
     public static final String[] KHACH = {
         "0001 - Lê Trần Quang Thanh - 03xxxx2808",

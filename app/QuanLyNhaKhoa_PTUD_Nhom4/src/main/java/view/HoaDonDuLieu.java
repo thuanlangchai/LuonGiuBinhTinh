@@ -7,16 +7,15 @@ import entity.KhachHang;
 import entity.NhanVien;
 import entity.PhieuThu;
 import entity.Rang;
+import entity.Refs;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import service.impl.DanhMuc_Service;
 import service.impl.HoaDon_Service;
-import service.impl.KhachHang_Service;
 import service.impl.PhieuThu_Service;
 import view.model.ChiTietHoaDonView;
 import view.model.HoaDonView;
@@ -25,7 +24,6 @@ public final class HoaDonDuLieu {
 
     private static final List<Runnable> LANG_NGHE = new ArrayList<>();
     private static final HoaDon_Service hoaDonService = new HoaDon_Service();
-    private static final KhachHang_Service khachHangService = new KhachHang_Service();
     private static final DanhMuc_Service danhMucService = new DanhMuc_Service();
     private static final PhieuThu_Service phieuThuService = new PhieuThu_Service();
 
@@ -46,14 +44,14 @@ public final class HoaDonDuLieu {
 
     public static List<HoaDonView> tatCa() {
         List<HoaDonView> ketQua = new ArrayList<>();
-        for (HoaDon e : hoaDonService.findAllHoaDon()) {
+        for (HoaDon e : hoaDonService.findAllKemChiTiet()) {
             ketQua.add(mapView(e));
         }
         return ketQua;
     }
 
     public static HoaDonView theoMa(String ma) {
-        HoaDon e = hoaDonService.findById(ma);
+        HoaDon e = hoaDonService.findDetailById(ma);
         return e == null ? null : mapView(e);
     }
 
@@ -77,41 +75,47 @@ public final class HoaDonDuLieu {
 
     public static HoaDonView them(String ngayLap, String maKh, String tenKh, String keHoach, String bacSi,
             long chietKhau, String ghiChu, List<ChiTietHoaDonView> chiTiet) {
+        return them(ngayLap, maKh, tenKh, keHoach, bacSi, chietKhau, ghiChu, chiTiet, List.of());
+    }
+
+    public static HoaDonView them(String ngayLap, String maKh, String tenKh, String keHoach, String bacSi,
+            long chietKhau, String ghiChu, List<ChiTietHoaDonView> chiTiet, List<String> maChiTietKeHoach) {
         HoaDon e = new HoaDon();
         e.setMaHoaDon(maMoi());
         e.setNgayLap(NgayUtil.parseDate(ngayLap) != null ? NgayUtil.parseDate(ngayLap) : LocalDate.now());
-        e.setMaKH(maKh);
-        e.setMaKeHoach(trichMaKeHoach(keHoach));
-        e.setMaBacSi(maBacSiTheoTen(bacSi));
+        KhachHang khach = Refs.khachHang(maKh);
+        if (khach != null) {
+            khach.setHoTen(tenKh);
+        }
+        e.setKhachHang(khach);
+        e.setKeHoachDieuTri(Refs.keHoach(trichMaKeHoach(keHoach)));
+        NhanVien bacSiEntity = Refs.nhanVien(maBacSiTheoTen(bacSi));
+        if (bacSiEntity != null) {
+            bacSiEntity.setHoTen(bacSi);
+        }
+        e.setBacSi(bacSiEntity);
         e.setChietKhau(Math.max(0, chietKhau));
         e.setGhiChu(ghiChu);
         e.setNgayTao(LocalDateTime.now());
-        e.setNguoiTao(DuLieuMau.NGUOI);
-        long tong = 0;
+        e.setNguoiTao(Refs.nhanVien(DuLieuMau.NGUOI));
         List<ChiTietHoaDon> cts = new ArrayList<>();
         int i = 1;
         if (chiTiet != null) {
             for (ChiTietHoaDonView cv : chiTiet) {
                 ChiTietHoaDon ct = new ChiTietHoaDon();
                 ct.setMaChiTiet(e.getMaHoaDon() + "C" + i++);
-                ct.setMaHoaDon(e.getMaHoaDon());
+                ct.setHoaDon(Refs.hoaDon(e.getMaHoaDon()));
                 ct.setNgay(NgayUtil.parseDate(cv.ngay) != null ? NgayUtil.parseDate(cv.ngay) : e.getNgayLap());
-                ct.setMaRang(maRangTheoTen(cv.rang));
-                ct.setMaDichVu(maDichVuTheoTen(cv.dichVu));
+                ct.setRang(Refs.rang(maRangTheoTen(cv.rang)));
+                ct.setDichVu(Refs.dichVu(maDichVuTheoTen(cv.dichVu)));
                 ct.setSoLuong(cv.soLuong);
                 ct.setDonGia(cv.donGia);
-                ct.setThanhTien(cv.thanhTien());
                 ct.setKeHoach(cv.keHoach);
-                tong += ct.getThanhTien();
                 cts.add(ct);
             }
         }
-        e.setTongTien(tong);
-        e.setThanhTien(Math.max(0, tong - e.getChietKhau()));
-        e.setDaThu(0);
-        e.setConNo(e.getThanhTien());
-        e.setTrangThai("Chưa thanh toán");
-        if (hoaDonService.themHoaDonVoiChiTiet(e, cts) == null) {
+        e.setChiTietHoaDon(cts);
+        if (hoaDonService.themHoaDonVoiChiTiet(e, cts, maChiTietKeHoach) == null) {
             return null;
         }
         bao();
@@ -122,39 +126,19 @@ public final class HoaDonDuLieu {
         if (hd == null || soTien <= 0) {
             return;
         }
-        HoaDon e = hoaDonService.findById(hd.ma);
-        if (e == null) {
-            return;
-        }
-        long daThu = e.getDaThu() + soTien;
-        if (daThu > e.getThanhTien()) {
-            daThu = e.getThanhTien();
-        }
-        e.setDaThu(daThu);
-        e.setConNo(Math.max(0, e.getThanhTien() - daThu));
-        if (daThu <= 0) {
-            e.setTrangThai("Chưa thanh toán");
-        } else if (daThu < e.getThanhTien()) {
-            e.setTrangThai("Thanh toán một phần");
-        } else {
-            e.setTrangThai("Đã thanh toán");
-        }
-        hoaDonService.update(e);
-
         PhieuThu pt = new PhieuThu();
         pt.setMaPhieuThu(maPhieuThuMoi());
         pt.setNgayThu(LocalDate.now());
-        pt.setMaKH(e.getMaKH());
-        pt.setMaHoaDon(e.getMaHoaDon());
-        pt.setLyDo("Thu tiền hóa đơn " + e.getMaHoaDon());
+        pt.setKhachHang(Refs.khachHang(hd.maKh));
+        pt.setLyDo("Thu tiền hóa đơn " + hd.ma);
         pt.setSoTien(soTien);
         pt.setHinhThucThanhToan("Tiền mặt");
         pt.setTrangThai("Đã chi trả");
         pt.setNgayTao(LocalDateTime.now());
-        pt.setNguoiTao(DuLieuMau.NGUOI);
-        phieuThuService.add(pt);
-
+        pt.setNguoiTao(Refs.nhanVien(DuLieuMau.NGUOI));
+        HoaDon e = hoaDonService.thuTien(hd.ma, soTien, pt);
         hd.daThu = e.getDaThu();
+        hd.thanhTien = e.getThanhTien();
         hd.capNhatTrangThai();
         bao();
     }
@@ -226,12 +210,11 @@ public final class HoaDonDuLieu {
         HoaDonView v = new HoaDonView();
         v.ma = e.getMaHoaDon();
         v.ngayLap = NgayUtil.fmt(e.getNgayLap());
-        v.maKh = e.getMaKH();
-        KhachHang kh = khachHangService.findById(e.getMaKH());
-        v.tenKh = kh != null ? kh.getHoTen() : e.getMaKH();
-        v.keHoach = e.getMaKeHoach() == null ? "" : "Kế hoạch " + e.getMaKeHoach();
-        NhanVien nv = e.getMaBacSi() == null ? null : danhMucService.findNhanVienById(e.getMaBacSi());
-        v.bacSi = nv != null ? nv.getHoTen() : (e.getMaBacSi() == null ? "" : e.getMaBacSi());
+        v.maKh = Refs.maKh(e.getKhachHang());
+        v.tenKh = Refs.tenKh(e.getKhachHang());
+        String maKeHoach = Refs.maKhdt(e.getKeHoachDieuTri());
+        v.keHoach = maKeHoach == null ? "" : "Kế hoạch " + maKeHoach;
+        v.bacSi = e.getBacSi() == null ? "" : Refs.tenNv(e.getBacSi());
         v.ghiChu = e.getGhiChu();
         v.trangThai = e.getTrangThai();
         v.ngayTao = NgayUtil.fmtFull(e.getNgayTao());
@@ -239,13 +222,12 @@ public final class HoaDonDuLieu {
         v.chietKhau = e.getChietKhau();
         v.thanhTien = e.getThanhTien();
         v.daThu = e.getDaThu();
-        Map<String, String> tenDv = tenDichVu();
-        Map<String, String> tenRang = tenRang();
-        for (ChiTietHoaDon ct : hoaDonService.findChiTietByMaHoaDon(e.getMaHoaDon())) {
+        List<ChiTietHoaDon> chiTiet = e.getChiTietHoaDon() == null ? List.of() : e.getChiTietHoaDon();
+        for (ChiTietHoaDon ct : chiTiet) {
             v.chiTiet.add(new ChiTietHoaDonView(
                     NgayUtil.fmt(ct.getNgay()),
-                    ct.getMaRang() == null ? "" : tenRang.getOrDefault(ct.getMaRang(), ct.getMaRang()),
-                    tenDv.getOrDefault(ct.getMaDichVu(), ct.getMaDichVu()),
+                    Refs.tenRang(ct.getRang()),
+                    Refs.tenDv(ct.getDichVu()),
                     ct.getSoLuong(),
                     ct.getDonGia(),
                     ct.getKeHoach()));
@@ -254,25 +236,11 @@ public final class HoaDonDuLieu {
     }
 
     private static String maMoi() {
-        int max = 0;
-        for (HoaDon e : hoaDonService.findAllHoaDon()) {
-            try {
-                max = Math.max(max, Integer.parseInt(e.getMaHoaDon()));
-            } catch (Exception ignored) {
-            }
-        }
-        return String.format("%04d", max + 1);
+        return String.format("%04d", hoaDonService.nextSo() + 1);
     }
 
     private static String maPhieuThuMoi() {
-        int max = 0;
-        for (PhieuThu p : phieuThuService.findAllPhieuThu()) {
-            try {
-                max = Math.max(max, Integer.parseInt(p.getMaPhieuThu()));
-            } catch (Exception ignored) {
-            }
-        }
-        return String.format("%04d", max + 1);
+        return String.format("%04d", phieuThuService.nextSo() + 1);
     }
 
     private static String trichMaKeHoach(String keHoach) {
@@ -323,21 +291,5 @@ public final class HoaDonDuLieu {
             }
         }
         return null;
-    }
-
-    private static Map<String, String> tenDichVu() {
-        Map<String, String> m = new HashMap<>();
-        for (DichVu dv : danhMucService.findAllDichVu()) {
-            m.put(dv.getMaDichVu(), dv.getTenDichVu());
-        }
-        return m;
-    }
-
-    private static Map<String, String> tenRang() {
-        Map<String, String> m = new HashMap<>();
-        for (Rang r : danhMucService.findAllRang()) {
-            m.put(r.getMaRang(), r.getTenRang());
-        }
-        return m;
     }
 }

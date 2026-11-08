@@ -5,29 +5,14 @@ import java.time.LocalDate;
 public class ChiTietHoaDon {
 
     private String maChiTiet;
-    private String maHoaDon;
+    private HoaDon hoaDon;
     private LocalDate ngay;
-    private String maRang;
-    private String maDichVu;
+    private Rang rang;
+    private DichVu dichVu;
     private int soLuong;
     private long donGia;
     private long thanhTien;
     private String keHoach;
-
-    public ChiTietHoaDon() {
-    }
-
-    public ChiTietHoaDon(String maChiTiet, String maHoaDon, LocalDate ngay, String maRang, String maDichVu, int soLuong, long donGia, long thanhTien, String keHoach) {
-        this.maChiTiet = maChiTiet;
-        this.maHoaDon = maHoaDon;
-        this.ngay = ngay;
-        this.maRang = maRang;
-        this.maDichVu = maDichVu;
-        this.soLuong = soLuong;
-        this.donGia = donGia;
-        this.thanhTien = thanhTien;
-        this.keHoach = keHoach;
-    }
 
     public String getMaChiTiet() {
         return maChiTiet;
@@ -37,12 +22,12 @@ public class ChiTietHoaDon {
         this.maChiTiet = maChiTiet;
     }
 
-    public String getMaHoaDon() {
-        return maHoaDon;
+    public HoaDon getHoaDon() {
+        return hoaDon;
     }
 
-    public void setMaHoaDon(String maHoaDon) {
-        this.maHoaDon = maHoaDon;
+    public void setHoaDon(HoaDon hoaDon) {
+        this.hoaDon = hoaDon;
     }
 
     public LocalDate getNgay() {
@@ -53,20 +38,20 @@ public class ChiTietHoaDon {
         this.ngay = ngay;
     }
 
-    public String getMaRang() {
-        return maRang;
+    public Rang getRang() {
+        return rang;
     }
 
-    public void setMaRang(String maRang) {
-        this.maRang = maRang;
+    public void setRang(Rang rang) {
+        this.rang = rang;
     }
 
-    public String getMaDichVu() {
-        return maDichVu;
+    public DichVu getDichVu() {
+        return dichVu;
     }
 
-    public void setMaDichVu(String maDichVu) {
-        this.maDichVu = maDichVu;
+    public void setDichVu(DichVu dichVu) {
+        this.dichVu = dichVu;
     }
 
     public int getSoLuong() {

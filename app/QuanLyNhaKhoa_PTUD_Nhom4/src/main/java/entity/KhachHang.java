@@ -14,45 +14,16 @@ public class KhachHang {
     private String diaChi;
     private String cccd;
     private String ghiChu;
-    private String maNhom;
-    private String maChiNhanh;
+    private NhomKhachHang nhomKhachHang;
+    private ChiNhanh chiNhanh;
     private String lyDoKham;
     private String tienSuBenh;
     private String diUng;
-    private String maBacSi;
-    private String maTuVan;
+    private NhanVien bacSi;
+    private NhanVien tuVan;
     private int soLanKham;
     private LocalDate lanKhamGanNhat;
     private LocalDateTime ngayTao;
-
-    public KhachHang() {
-    }
-
-    public KhachHang(String maKH, String hoTen, String gioiTinh, LocalDate ngaySinh, String soDienThoai, String email,
-            String diaChi, String cccd, String ghiChu, String maNhom, String maChiNhanh, String lyDoKham,
-            String tienSuBenh, String diUng, String maBacSi, String maTuVan, int soLanKham, LocalDate lanKhamGanNhat,
-            LocalDateTime ngayTao) {
-        super();
-        this.maKH = maKH;
-        this.hoTen = hoTen;
-        this.gioiTinh = gioiTinh;
-        this.ngaySinh = ngaySinh;
-        this.soDienThoai = soDienThoai;
-        this.email = email;
-        this.diaChi = diaChi;
-        this.cccd = cccd;
-        this.ghiChu = ghiChu;
-        this.maNhom = maNhom;
-        this.maChiNhanh = maChiNhanh;
-        this.lyDoKham = lyDoKham;
-        this.tienSuBenh = tienSuBenh;
-        this.diUng = diUng;
-        this.maBacSi = maBacSi;
-        this.maTuVan = maTuVan;
-        this.soLanKham = soLanKham;
-        this.lanKhamGanNhat = lanKhamGanNhat;
-        this.ngayTao = ngayTao;
-    }
 
     public String getMaKH() {
         return maKH;
@@ -126,20 +97,20 @@ public class KhachHang {
         this.ghiChu = ghiChu;
     }
 
-    public String getMaNhom() {
-        return maNhom;
+    public NhomKhachHang getNhomKhachHang() {
+        return nhomKhachHang;
     }
 
-    public void setMaNhom(String maNhom) {
-        this.maNhom = maNhom;
+    public void setNhomKhachHang(NhomKhachHang nhomKhachHang) {
+        this.nhomKhachHang = nhomKhachHang;
     }
 
-    public String getMaChiNhanh() {
-        return maChiNhanh;
+    public ChiNhanh getChiNhanh() {
+        return chiNhanh;
     }
 
-    public void setMaChiNhanh(String maChiNhanh) {
-        this.maChiNhanh = maChiNhanh;
+    public void setChiNhanh(ChiNhanh chiNhanh) {
+        this.chiNhanh = chiNhanh;
     }
 
     public String getLyDoKham() {
@@ -166,20 +137,20 @@ public class KhachHang {
         this.diUng = diUng;
     }
 
-    public String getMaBacSi() {
-        return maBacSi;
+    public NhanVien getBacSi() {
+        return bacSi;
     }
 
-    public void setMaBacSi(String maBacSi) {
-        this.maBacSi = maBacSi;
+    public void setBacSi(NhanVien bacSi) {
+        this.bacSi = bacSi;
     }
 
-    public String getMaTuVan() {
-        return maTuVan;
+    public NhanVien getTuVan() {
+        return tuVan;
     }
 
-    public void setMaTuVan(String maTuVan) {
-        this.maTuVan = maTuVan;
+    public void setTuVan(NhanVien tuVan) {
+        this.tuVan = tuVan;
     }
 
     public int getSoLanKham() {

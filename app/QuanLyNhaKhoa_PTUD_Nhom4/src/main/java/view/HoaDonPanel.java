@@ -221,11 +221,15 @@ public class HoaDonPanel extends JPanel {
             String ten = tenKhach(String.valueOf(cmbKhach.getSelectedItem()));
             List<HangDT> goc = keHoach.hangChuaXuat(ma);
             List<HangDT> chon = new ArrayList<HangDT>();
+            List<String> maChiTiet = new ArrayList<String>();
             List<ChiTietHoaDonView> chiTiet = new ArrayList<ChiTietHoaDonView>();
             for (int i = 0; i < ctModel.getRowCount() && i < goc.size(); i++) {
                 if (Boolean.TRUE.equals(ctModel.getValueAt(i, 0))) {
                     HangDT hang = goc.get(i);
                     chon.add(hang);
+                    if (hang.maChiTiet != null) {
+                        maChiTiet.add(hang.maChiTiet);
+                    }
                     chiTiet.add(new ChiTietHoaDonView(hang.ngay, hang.rang, hang.dichVu,
                             hang.soLuong, hang.donGia, hang.tenKeHoach()));
                 }
@@ -240,7 +244,11 @@ public class HoaDonPanel extends JPanel {
                     String.valueOf(cmbBacSi.getSelectedItem()),
                     parseTien(txtChietKhau.getText()),
                     txtGhiChu.getText().trim(),
-                    chiTiet);
+                    chiTiet, maChiTiet);
+            if (hd == null) {
+                JOptionPane.showMessageDialog(d, "Không lập được hóa đơn.");
+                return;
+            }
             keHoach.danhDauHoaDon(chon, hd.ma);
             d.dispose();
             lamMoi();
@@ -287,7 +295,8 @@ public class HoaDonPanel extends JPanel {
                 return;
             }
             if (tien > hd.conNo()) {
-                tien = hd.conNo();
+                JOptionPane.showMessageDialog(h, "Số tiền thu vượt quá số tiền còn nợ.");
+                return;
             }
             if ("Đã chi trả".equals(cboTrangThai.getSelectedItem())) {
                 HoaDonDuLieu.thuTien(hd, tien);

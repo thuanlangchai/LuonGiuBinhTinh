@@ -122,7 +122,7 @@ public class BaoCaoPanel extends JPanel {
             tongThu += phieuThu.getSoTien();
             rows.add(new Object[]{
                 String.valueOf(stt++), phieuThu.getMaPhieuThu(), NgayUtil.fmt(phieuThu.getNgayThu()),
-                phieuThu.getMaKH(), "", phieuThu.getLyDo(),
+                entity.Refs.maKh(phieuThu.getKhachHang()), "", phieuThu.getLyDo(),
                 ViewTheme.tien(phieuThu.getSoTien()), "0", "0", "0", ViewTheme.tien(phieuThu.getSoTien()),
                 "0", "0", "0", "0", "0"
             });
@@ -131,7 +131,7 @@ public class BaoCaoPanel extends JPanel {
             tongChi += phieuChi.getSoTien();
             rows.add(new Object[]{
                 String.valueOf(stt++), phieuChi.getMaPhieuChi(), NgayUtil.fmt(phieuChi.getNgayChi()),
-                "", phieuChi.getMaNhaCungCap(), phieuChi.getLyDoChi(),
+                "", entity.Refs.maNcc(phieuChi.getNhaCungCap()), phieuChi.getLyDoChi(),
                 "0", "0", "0", "0", "0",
                 ViewTheme.tien(phieuChi.getSoTien()), "0", "0", "0", ViewTheme.tien(phieuChi.getSoTien())
             });
@@ -344,7 +344,7 @@ public class BaoCaoPanel extends JPanel {
             int i = 1;
             for (LichHen lichHen : baoCaoService.danhSachLichHen()) {
                 rows.add(new Object[]{
-                    String.valueOf(i++), lichHen.getMaKH(), "", lichHen.getMaBacSi(),
+                    String.valueOf(i++), entity.Refs.maKh(lichHen.getKhachHang()), "", entity.Refs.maNv(lichHen.getBacSi()),
                     NgayUtil.fmtFull(lichHen.getBatDau()), lichHen.getTrangThai()
                 });
             }
@@ -353,11 +353,12 @@ public class BaoCaoPanel extends JPanel {
         if ("dieutri".equals(maBaoCao)) {
             List<Object[]> rows = new ArrayList<>();
             int i = 1;
-            for (KeHoachDieuTri keHoach : baoCaoService.danhSachKeHoach()) {
-                for (ChiTietKeHoachDieuTri chiTiet : baoCaoService.chiTietTheoKeHoach(keHoach.getMaKeHoach())) {
+            for (KeHoachDieuTri keHoach : baoCaoService.danhSachKeHoachKemChiTiet()) {
+                List<ChiTietKeHoachDieuTri> chiTietKeHoach = keHoach.getChiTiet() == null ? List.of() : keHoach.getChiTiet();
+                for (ChiTietKeHoachDieuTri chiTiet : chiTietKeHoach) {
                     rows.add(new Object[]{
-                        String.valueOf(i++), keHoach.getMaKH(), chiTiet.getMaDichVu(),
-                        NgayUtil.fmt(chiTiet.getNgay()), keHoach.getMaBacSi(), ViewTheme.tien(chiTiet.getThanhTien())
+                        String.valueOf(i++), entity.Refs.maKh(keHoach.getKhachHang()), entity.Refs.maDv(chiTiet.getDichVu()),
+                        NgayUtil.fmt(chiTiet.getNgay()), entity.Refs.maNv(keHoach.getBacSi()), ViewTheme.tien(chiTiet.getThanhTien())
                     });
                 }
             }

@@ -1,1 +1,23 @@
-package mapper;import entity.ChiTietHoaDon;import java.sql.ResultSet;import java.sql.SQLException;import java.time.LocalDate;public class ChiTietHoaDonMapper implements RowMapper<ChiTietHoaDon> {    @Override    public ChiTietHoaDon mapper(ResultSet rs) {        try {            String maChiTiet = rs.getString("maChiTiet");            String maHoaDon = rs.getString("maHoaDon");            LocalDate ngay = Rs.date(rs, "ngay");            String maRang = rs.getString("maRang");            String maDichVu = rs.getString("maDichVu");            int soLuong = rs.getInt("soLuong");            long donGia = rs.getLong("donGia");            long thanhTien = rs.getLong("thanhTien");            String keHoach = rs.getString("keHoach");            return new ChiTietHoaDon(maChiTiet, maHoaDon, ngay, maRang, maDichVu, soLuong, donGia, thanhTien, keHoach);        } catch (SQLException e) {            return null;        }    }}
+package mapper;
+
+import entity.ChiTietHoaDon;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+
+public class ChiTietHoaDonMapper implements RowMapper<ChiTietHoaDon> {
+
+    @Override
+    public ChiTietHoaDon mapper(ResultSet rs) throws SQLException {
+        ChiTietHoaDon entity = new ChiTietHoaDon();
+        entity.setMaChiTiet(rs.getString("maChiTiet"));
+        entity.setNgay(Rs.date(rs, "ngay"));
+        entity.setSoLuong(rs.getInt("soLuong"));
+        entity.setDonGia(rs.getLong("donGia"));
+        entity.setThanhTien(rs.getLong("thanhTien"));
+        entity.setKeHoach(rs.getString("keHoach"));
+        entity.setHoaDon(Maps.hoaDon(rs, "maHoaDon"));
+        entity.setRang(Maps.rang(rs, "maRang", "tenRang"));
+        entity.setDichVu(Maps.dichVu(rs, "maDichVu", "tenDichVu"));
+        return entity;
+    }
+}

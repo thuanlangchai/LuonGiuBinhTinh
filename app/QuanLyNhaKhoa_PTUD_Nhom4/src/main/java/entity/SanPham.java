@@ -4,20 +4,9 @@ public class SanPham {
 
     private String maSanPham;
     private String tenSanPham;
-    private String maLoai;
+    private LoaiSanPham loaiSanPham;
     private int soLuong;
     private long donGia;
-
-    public SanPham() {
-    }
-
-    public SanPham(String maSanPham, String tenSanPham, String maLoai, int soLuong, long donGia) {
-        this.maSanPham = maSanPham;
-        this.tenSanPham = tenSanPham;
-        this.maLoai = maLoai;
-        this.soLuong = soLuong;
-        this.donGia = donGia;
-    }
 
     public String getMaSanPham() {
         return maSanPham;
@@ -35,12 +24,12 @@ public class SanPham {
         this.tenSanPham = tenSanPham;
     }
 
-    public String getMaLoai() {
-        return maLoai;
+    public LoaiSanPham getLoaiSanPham() {
+        return loaiSanPham;
     }
 
-    public void setMaLoai(String maLoai) {
-        this.maLoai = maLoai;
+    public void setLoaiSanPham(LoaiSanPham loaiSanPham) {
+        this.loaiSanPham = loaiSanPham;
     }
 
     public int getSoLuong() {

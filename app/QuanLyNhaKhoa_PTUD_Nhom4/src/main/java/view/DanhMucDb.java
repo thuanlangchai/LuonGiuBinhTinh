@@ -69,7 +69,12 @@ public final class DanhMucDb {
         try {
             switch (maTrang) {
                 case "dichvu" -> {
-                    DichVu dichVu = new DichVu(str(dong, 0), maNhomTheoTen(str(dong, 1)), str(dong, 2), parseTien(str(dong, 3)), str(dong, 4));
+                    DichVu dichVu = new DichVu();
+                    dichVu.setMaDichVu(str(dong, 0));
+                    dichVu.setNhomDichVu(entity.Refs.nhomDichVu(maNhomTheoTen(str(dong, 1))));
+                    dichVu.setTenDichVu(str(dong, 2));
+                    dichVu.setGia(parseTien(str(dong, 3)));
+                    dichVu.setTrangThai(str(dong, 4));
                     if (them) {
                         return SVC.addDichVu(dichVu) != null;
                     }
@@ -85,8 +90,15 @@ public final class DanhMucDb {
                     return true;
                 }
                 case "nhanvien" -> {
-                    NhanVien nhanVien = new NhanVien(str(dong, 0), str(dong, 1), str(dong, 2), str(dong, 3), str(dong, 4),
-                            str(dong, 5), "Có".equalsIgnoreCase(str(dong, 6)) || "true".equalsIgnoreCase(str(dong, 6)), str(dong, 7));
+                    NhanVien nhanVien = new NhanVien();
+                    nhanVien.setMaNhanVien(str(dong, 0));
+                    nhanVien.setChucDanh(str(dong, 1));
+                    nhanVien.setHoTen(str(dong, 2));
+                    nhanVien.setEmail(str(dong, 3));
+                    nhanVien.setSoDienThoai(str(dong, 4));
+                    nhanVien.setVaiTro(str(dong, 5));
+                    nhanVien.setKichHoat("Có".equalsIgnoreCase(str(dong, 6)) || "true".equalsIgnoreCase(str(dong, 6)));
+                    nhanVien.setChiNhanh(entity.Refs.chiNhanh(str(dong, 7)));
                     if (them) {
                         return SVC.addNhanVien(nhanVien) != null;
                     }
@@ -94,7 +106,10 @@ public final class DanhMucDb {
                     return true;
                 }
                 case "rang" -> {
-                    Rang rang = new Rang(str(dong, 0), str(dong, 1), maLoaiRangTheoGiaTri(str(dong, 2)));
+                    Rang rang = new Rang();
+                    rang.setMaRang(str(dong, 0));
+                    rang.setTenRang(str(dong, 1));
+                    rang.setLoaiRang(entity.Refs.loaiRang(maLoaiRangTheoGiaTri(str(dong, 2))));
                     if (them) {
                         return SVC.addRang(rang) != null;
                     }
@@ -118,7 +133,12 @@ public final class DanhMucDb {
                     return true;
                 }
                 case "thuoc" -> {
-                    Thuoc thuoc = new Thuoc(str(dong, 0), str(dong, 1), str(dong, 2), parseTien(str(dong, 3)), dong.length > 4 ? str(dong, 4) : "");
+                    Thuoc thuoc = new Thuoc();
+                    thuoc.setMaThuoc(str(dong, 0));
+                    thuoc.setTenThuoc(str(dong, 1));
+                    thuoc.setDonVi(entity.Refs.donVi(str(dong, 2)));
+                    thuoc.setGia(parseTien(str(dong, 3)));
+                    thuoc.setCachDung(dong.length > 4 ? str(dong, 4) : "");
                     if (them) {
                         return SVC.addThuoc(thuoc) != null;
                     }
@@ -126,8 +146,12 @@ public final class DanhMucDb {
                     return true;
                 }
                 case "sanpham" -> {
-                    SanPham sanPham = new SanPham(str(dong, 0), str(dong, 1), maLoaiSanPhamTheoGiaTri(str(dong, 2)),
-                            parseInt(str(dong, 3)), parseTien(str(dong, 4)));
+                    SanPham sanPham = new SanPham();
+                    sanPham.setMaSanPham(str(dong, 0));
+                    sanPham.setTenSanPham(str(dong, 1));
+                    sanPham.setLoaiSanPham(entity.Refs.loaiSanPham(maLoaiSanPhamTheoGiaTri(str(dong, 2))));
+                    sanPham.setSoLuong(parseInt(str(dong, 3)));
+                    sanPham.setDonGia(parseTien(str(dong, 4)));
                     if (them) {
                         return SVC.addSanPham(sanPham) != null;
                     }
@@ -189,7 +213,8 @@ public final class DanhMucDb {
         switch (ma) {
             case "dichvu" -> {
                 for (DichVu dichVu : SVC.findAllDichVu()) {
-                    danhSach.add(new Object[]{dichVu.getMaDichVu(), tenNhom(dichVu.getMaNhomDichVu()), dichVu.getTenDichVu(),
+                    String tenNhomDv = dichVu.getNhomDichVu() == null ? "" : dichVu.getNhomDichVu().getTenNhomDichVu();
+                    danhSach.add(new Object[]{dichVu.getMaDichVu(), tenNhomDv, dichVu.getTenDichVu(),
                         ViewTheme.tien(dichVu.getGia()), dichVu.getTrangThai()});
                 }
             }
@@ -201,12 +226,13 @@ public final class DanhMucDb {
             case "nhanvien" -> {
                 for (NhanVien nhanVien : SVC.findAllNhanVien()) {
                     danhSach.add(new Object[]{nhanVien.getMaNhanVien(), nhanVien.getChucDanh(), nhanVien.getHoTen(), nhanVien.getEmail(),
-                        nhanVien.getSoDienThoai(), nhanVien.getVaiTro(), nhanVien.isKichHoat() ? "Có" : "Không", nhanVien.getMaChiNhanh()});
+                        nhanVien.getSoDienThoai(), nhanVien.getVaiTro(), nhanVien.isKichHoat() ? "Có" : "Không", entity.Refs.text(entity.Refs.maCn(nhanVien.getChiNhanh()))});
                 }
             }
             case "rang" -> {
                 for (Rang rang : SVC.findAllRang()) {
-                    danhSach.add(new Object[]{rang.getMaRang(), rang.getTenRang(), tenLoaiRang(rang.getMaLoaiRang())});
+                    String tenLoai = rang.getLoaiRang() == null ? "" : rang.getLoaiRang().getTenLoaiRang();
+                    danhSach.add(new Object[]{rang.getMaRang(), rang.getTenRang(), tenLoai});
                 }
             }
             case "loairang" -> {
@@ -224,7 +250,7 @@ public final class DanhMucDb {
                     danhSach.add(new Object[]{thoiGian.getMaLich(), thoiGian.getNgay(),
                         thoiGian.getGioBatDau() == null ? "" : thoiGian.getGioBatDau().toString(),
                         thoiGian.getGioKetThuc() == null ? "" : thoiGian.getGioKetThuc().toString(),
-                        thoiGian.getMaBacSi(), thoiGian.getMaChiNhanh()});
+                        entity.Refs.text(entity.Refs.maNv(thoiGian.getBacSi())), entity.Refs.text(entity.Refs.maCn(thoiGian.getChiNhanh()))});
                 }
             }
             case "loaisanpham" -> {
@@ -234,14 +260,14 @@ public final class DanhMucDb {
             }
             case "thuoc" -> {
                 for (Thuoc thuoc : SVC.findAllThuoc()) {
-                    danhSach.add(new Object[]{thuoc.getMaThuoc(), thuoc.getTenThuoc(), thuoc.getMaDonVi(), ViewTheme.tien(thuoc.getGia()),
+                    danhSach.add(new Object[]{thuoc.getMaThuoc(), thuoc.getTenThuoc(), entity.Refs.text(entity.Refs.maDonVi(thuoc.getDonVi())), ViewTheme.tien(thuoc.getGia()),
                         thuoc.getCachDung() == null ? "" : thuoc.getCachDung()});
                 }
             }
             case "sanpham" -> {
                 for (SanPham sanPham : SVC.findAllSanPham()) {
                     danhSach.add(new Object[]{sanPham.getMaSanPham(), sanPham.getTenSanPham(),
-                        tenLoaiSanPham(sanPham.getMaLoai()),
+                        sanPham.getLoaiSanPham() == null ? "" : sanPham.getLoaiSanPham().getTenLoaiSanPham(),
                         String.valueOf(sanPham.getSoLuong()), ViewTheme.tien(sanPham.getDonGia())});
                 }
             }

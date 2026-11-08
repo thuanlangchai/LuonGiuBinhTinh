@@ -1,49 +1,64 @@
 package repository.impl;
 
 import entity.ChiTietNhapKho;
-import repository.ChiTietNhapKho_IDAO;
+import entity.Refs;
+import java.util.ArrayList;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 import mapper.ChiTietNhapKhoMapper;
-
+import repository.ChiTietNhapKho_IDAO;
 
 public class ChiTietNhapKho_DAO extends AbstractDAO<ChiTietNhapKho> implements ChiTietNhapKho_IDAO {
 
+    private static final String SELECT = """
+            SELECT ct.maChiTiet, ct.soLuong, ct.donGia, ct.thanhTien, ct.maPhieuNhap, sp.maSanPham, sp.tenSanPham
+            FROM ChiTietNhapKho ct
+            JOIN SanPham sp ON sp.maSanPham = ct.maSanPham
+            """;
+
+    private final ChiTietNhapKhoMapper mapper = new ChiTietNhapKhoMapper();
+
     @Override
     public List<ChiTietNhapKho> findAllChiTietNhapKho() {
-        String sql = "SELECT * FROM ChiTietNhapKho";
-        return findAll(sql, new ChiTietNhapKhoMapper());
+        return query(SELECT, mapper);
     }
 
     @Override
     public ChiTietNhapKho findById(String maChiTiet) {
-        String sql = "SELECT * FROM ChiTietNhapKho WHERE maChiTiet = ?";
-        List<ChiTietNhapKho> ds = findAll(sql, new ChiTietNhapKhoMapper(), maChiTiet);
-        if (ds == null || ds.isEmpty()) {
-            return null;
+        return one(SELECT + " WHERE ct.maChiTiet = ?", mapper, maChiTiet);
+    }
+
+    @Override
+    public List<ChiTietNhapKho> findByMaPhieuNhap(String maPhieuNhap) {
+        return query(SELECT + " WHERE ct.maPhieuNhap = ?", mapper, maPhieuNhap);
+    }
+
+    public Map<String, List<ChiTietNhapKho>> findByMaPhieuNhapIn(List<String> ids) {
+        Map<String, List<ChiTietNhapKho>> map = new LinkedHashMap<>();
+        for (ChiTietNhapKho row : queryIn(SELECT + " WHERE ct.maPhieuNhap", ids, mapper)) {
+            String ma = row.getPhieuNhapKho() == null ? null : row.getPhieuNhapKho().getMaPhieuNhap();
+            map.computeIfAbsent(ma, key -> new ArrayList<>()).add(row);
         }
-        return ds.get(0);
+        return map;
     }
 
     @Override
     public Integer add(ChiTietNhapKho entity) {
-        String sql = "INSERT INTO ChiTietNhapKho(maChiTiet,maPhieuNhap,maSanPham,soLuong,donGia,thanhTien) VALUES(?,?,?,?,?,?)";
-        return add(sql, entity.getMaChiTiet(), entity.getMaPhieuNhap(), entity.getMaSanPham(), entity.getSoLuong(), entity.getDonGia(), entity.getThanhTien());
+        String maPhieu = entity.getPhieuNhapKho() == null ? null : entity.getPhieuNhapKho().getMaPhieuNhap();
+        return execute("INSERT INTO ChiTietNhapKho(maChiTiet,maPhieuNhap,maSanPham,soLuong,donGia,thanhTien) VALUES(?,?,?,?,?,?)",
+                entity.getMaChiTiet(), maPhieu, Refs.maSp(entity.getSanPham()), entity.getSoLuong(), entity.getDonGia(), entity.getThanhTien());
     }
 
     @Override
     public void update(ChiTietNhapKho entity) {
-        String sql = "UPDATE ChiTietNhapKho SET maPhieuNhap = ?, maSanPham = ?, soLuong = ?, donGia = ?, thanhTien = ? WHERE maChiTiet = ?";
-        update(sql, entity.getMaPhieuNhap(), entity.getMaSanPham(), entity.getSoLuong(), entity.getDonGia(), entity.getThanhTien(), entity.getMaChiTiet());
+        String maPhieu = entity.getPhieuNhapKho() == null ? null : entity.getPhieuNhapKho().getMaPhieuNhap();
+        execute("UPDATE ChiTietNhapKho SET maPhieuNhap = ?, maSanPham = ?, soLuong = ?, donGia = ?, thanhTien = ? WHERE maChiTiet = ?",
+                maPhieu, Refs.maSp(entity.getSanPham()), entity.getSoLuong(), entity.getDonGia(), entity.getThanhTien(), entity.getMaChiTiet());
     }
 
     @Override
     public void delete(String maChiTiet) {
-        String sql = "DELETE FROM ChiTietNhapKho WHERE maChiTiet = ?";
-        delete(sql, maChiTiet);
-    }
-    @Override
-    public List<ChiTietNhapKho> findByMaPhieuNhap(String maPhieuNhap) {
-        String sql = "SELECT * FROM ChiTietNhapKho WHERE maPhieuNhap = ?";
-        return findAll(sql, new ChiTietNhapKhoMapper(), maPhieuNhap);
+        execute("DELETE FROM ChiTietNhapKho WHERE maChiTiet = ?", maChiTiet);
     }
 }

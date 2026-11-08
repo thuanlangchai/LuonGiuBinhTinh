@@ -5,31 +5,15 @@ import java.time.LocalDate;
 public class ChiTietKeHoachDieuTri {
 
     private String maChiTiet;
-    private String maKeHoach;
+    private KeHoachDieuTri keHoachDieuTri;
     private LocalDate ngay;
-    private String maRang;
-    private String maDichVu;
+    private Rang rang;
+    private DichVu dichVu;
     private int soLuong;
     private long donGia;
     private long thanhTien;
     private String trangThai;
-    private String maHoaDon;
-
-    public ChiTietKeHoachDieuTri() {
-    }
-
-    public ChiTietKeHoachDieuTri(String maChiTiet, String maKeHoach, LocalDate ngay, String maRang, String maDichVu, int soLuong, long donGia, long thanhTien, String trangThai, String maHoaDon) {
-        this.maChiTiet = maChiTiet;
-        this.maKeHoach = maKeHoach;
-        this.ngay = ngay;
-        this.maRang = maRang;
-        this.maDichVu = maDichVu;
-        this.soLuong = soLuong;
-        this.donGia = donGia;
-        this.thanhTien = thanhTien;
-        this.trangThai = trangThai;
-        this.maHoaDon = maHoaDon;
-    }
+    private HoaDon hoaDon;
 
     public String getMaChiTiet() {
         return maChiTiet;
@@ -39,12 +23,12 @@ public class ChiTietKeHoachDieuTri {
         this.maChiTiet = maChiTiet;
     }
 
-    public String getMaKeHoach() {
-        return maKeHoach;
+    public KeHoachDieuTri getKeHoachDieuTri() {
+        return keHoachDieuTri;
     }
 
-    public void setMaKeHoach(String maKeHoach) {
-        this.maKeHoach = maKeHoach;
+    public void setKeHoachDieuTri(KeHoachDieuTri keHoachDieuTri) {
+        this.keHoachDieuTri = keHoachDieuTri;
     }
 
     public LocalDate getNgay() {
@@ -55,20 +39,20 @@ public class ChiTietKeHoachDieuTri {
         this.ngay = ngay;
     }
 
-    public String getMaRang() {
-        return maRang;
+    public Rang getRang() {
+        return rang;
     }
 
-    public void setMaRang(String maRang) {
-        this.maRang = maRang;
+    public void setRang(Rang rang) {
+        this.rang = rang;
     }
 
-    public String getMaDichVu() {
-        return maDichVu;
+    public DichVu getDichVu() {
+        return dichVu;
     }
 
-    public void setMaDichVu(String maDichVu) {
-        this.maDichVu = maDichVu;
+    public void setDichVu(DichVu dichVu) {
+        this.dichVu = dichVu;
     }
 
     public int getSoLuong() {
@@ -103,11 +87,11 @@ public class ChiTietKeHoachDieuTri {
         this.trangThai = trangThai;
     }
 
-    public String getMaHoaDon() {
-        return maHoaDon;
+    public HoaDon getHoaDon() {
+        return hoaDon;
     }
 
-    public void setMaHoaDon(String maHoaDon) {
-        this.maHoaDon = maHoaDon;
+    public void setHoaDon(HoaDon hoaDon) {
+        this.hoaDon = hoaDon;
     }
 }

@@ -4,21 +4,9 @@ public class Thuoc {
 
     private String maThuoc;
     private String tenThuoc;
-    private String maDonVi;
+    private DonVi donVi;
     private long gia;
     private String cachDung;
-
-    public Thuoc() {
-    }
-
-    public Thuoc(String maThuoc, String tenThuoc, String maDonVi, long gia, String cachDung) {
-        super();
-        this.maThuoc = maThuoc;
-        this.tenThuoc = tenThuoc;
-        this.maDonVi = maDonVi;
-        this.gia = gia;
-        this.cachDung = cachDung;
-    }
 
     public String getMaThuoc() {
         return maThuoc;
@@ -36,12 +24,12 @@ public class Thuoc {
         this.tenThuoc = tenThuoc;
     }
 
-    public String getMaDonVi() {
-        return maDonVi;
+    public DonVi getDonVi() {
+        return donVi;
     }
 
-    public void setMaDonVi(String maDonVi) {
-        this.maDonVi = maDonVi;
+    public void setDonVi(DonVi donVi) {
+        this.donVi = donVi;
     }
 
     public long getGia() {
@@ -59,5 +47,4 @@ public class Thuoc {
     public void setCachDung(String cachDung) {
         this.cachDung = cachDung;
     }
-
 }

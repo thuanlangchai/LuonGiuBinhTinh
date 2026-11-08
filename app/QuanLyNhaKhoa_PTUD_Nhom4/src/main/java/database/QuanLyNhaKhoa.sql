@@ -67,7 +67,6 @@ CREATE TABLE TaiKhoan (
     tenDangNhap  NVARCHAR(50)  NOT NULL PRIMARY KEY,
     matKhau      NVARCHAR(100) NOT NULL,
     email        NVARCHAR(120) NULL,
-    vaiTro       NVARCHAR(40)  NOT NULL,
     maNhanVien   NVARCHAR(10)  NULL,
     kichHoat     BIT           NOT NULL DEFAULT 1,
     ngayTao      DATETIME2     NOT NULL DEFAULT SYSDATETIME(),
@@ -125,6 +124,7 @@ CREATE TABLE LichHen (
     maPhuTa         NVARCHAR(10)  NULL,
     ghiChu          NVARCHAR(255) NULL,
     trangThai       NVARCHAR(30)  NOT NULL DEFAULT N'Mới',
+    maKeHoach       NVARCHAR(10)  NULL,
     CONSTRAINT FK_LH_KH FOREIGN KEY (maKH) REFERENCES KhachHang(maKH),
     CONSTRAINT FK_LH_BS FOREIGN KEY (maBacSi) REFERENCES NhanVien(maNhanVien),
     CONSTRAINT FK_LH_PT FOREIGN KEY (maPhuTa) REFERENCES NhanVien(maNhanVien)
@@ -139,10 +139,14 @@ CREATE TABLE KeHoachDieuTri (
     ghiChu        NVARCHAR(255) NULL,
     trangThai     NVARCHAR(30)  NOT NULL DEFAULT N'Mới',
     ngayTao       DATETIME2     NOT NULL DEFAULT SYSDATETIME(),
-    nguoiTao      NVARCHAR(120) NULL,
+    nguoiTao      NVARCHAR(10) NULL,
     CONSTRAINT FK_KHDT_KH FOREIGN KEY (maKH) REFERENCES KhachHang(maKH),
-    CONSTRAINT FK_KHDT_BS FOREIGN KEY (maBacSi) REFERENCES NhanVien(maNhanVien)
+    CONSTRAINT FK_KHDT_BS FOREIGN KEY (maBacSi) REFERENCES NhanVien(maNhanVien),
+    CONSTRAINT FK_KHDT_NT FOREIGN KEY (nguoiTao) REFERENCES NhanVien(maNhanVien)
 );
+
+ALTER TABLE LichHen
+    ADD CONSTRAINT FK_LH_KHDT FOREIGN KEY (maKeHoach) REFERENCES KeHoachDieuTri(maKeHoach);
 
 CREATE TABLE HoaDon (
     maHoaDon     NVARCHAR(10)  NOT NULL PRIMARY KEY,
@@ -158,10 +162,11 @@ CREATE TABLE HoaDon (
     trangThai    NVARCHAR(40)  NOT NULL DEFAULT N'Chưa thanh toán',
     ghiChu       NVARCHAR(255) NULL,
     ngayTao      DATETIME2     NOT NULL DEFAULT SYSDATETIME(),
-    nguoiTao     NVARCHAR(120) NULL,
+    nguoiTao     NVARCHAR(10) NULL,
     CONSTRAINT FK_HD_KH FOREIGN KEY (maKH) REFERENCES KhachHang(maKH),
     CONSTRAINT FK_HD_KHDT FOREIGN KEY (maKeHoach) REFERENCES KeHoachDieuTri(maKeHoach),
-    CONSTRAINT FK_HD_BS FOREIGN KEY (maBacSi) REFERENCES NhanVien(maNhanVien)
+    CONSTRAINT FK_HD_BS FOREIGN KEY (maBacSi) REFERENCES NhanVien(maNhanVien),
+    CONSTRAINT FK_HD_NT FOREIGN KEY (nguoiTao) REFERENCES NhanVien(maNhanVien)
 );
 
 CREATE TABLE ChiTietKeHoachDieuTri (
@@ -177,7 +182,8 @@ CREATE TABLE ChiTietKeHoachDieuTri (
     maHoaDon     NVARCHAR(10)  NULL,
     CONSTRAINT FK_CTKH_KH FOREIGN KEY (maKeHoach) REFERENCES KeHoachDieuTri(maKeHoach),
     CONSTRAINT FK_CTKH_Rang FOREIGN KEY (maRang) REFERENCES Rang(maRang),
-    CONSTRAINT FK_CTKH_DV FOREIGN KEY (maDichVu) REFERENCES DichVu(maDichVu)
+    CONSTRAINT FK_CTKH_DV FOREIGN KEY (maDichVu) REFERENCES DichVu(maDichVu),
+    CONSTRAINT FK_CTKH_HD FOREIGN KEY (maHoaDon) REFERENCES HoaDon(maHoaDon)
 );
 
 CREATE TABLE ChiTietHoaDon (
@@ -306,8 +312,9 @@ CREATE TABLE PhieuXuatKho (
     lyDo           NVARCHAR(255) NOT NULL,
     tongTien       BIGINT        NOT NULL DEFAULT 0,
     ngayTao        DATETIME2     NOT NULL DEFAULT SYSDATETIME(),
-    nguoiTao       NVARCHAR(120) NULL,
-    CONSTRAINT FK_PX_NCC FOREIGN KEY (maNhaCungCap) REFERENCES NhaCungCap(maNhaCungCap)
+    nguoiTao       NVARCHAR(10) NULL,
+    CONSTRAINT FK_PX_NCC FOREIGN KEY (maNhaCungCap) REFERENCES NhaCungCap(maNhaCungCap),
+    CONSTRAINT FK_PX_NT FOREIGN KEY (nguoiTao) REFERENCES NhanVien(maNhanVien)
 );
 
 CREATE TABLE ChiTietXuatKho (
@@ -331,5 +338,25 @@ CREATE TABLE ThoiGianLamViec (
     CONSTRAINT FK_TGLV_BS FOREIGN KEY (maBacSi) REFERENCES NhanVien(maNhanVien),
     CONSTRAINT FK_TGLV_CN FOREIGN KEY (maChiNhanh) REFERENCES ChiNhanh(maChiNhanh)
 );
+GO
+
+SET QUOTED_IDENTIFIER ON;
+GO
+CREATE INDEX IX_LichHen_maKH_batDau ON LichHen(maKH, batDau);
+CREATE INDEX IX_LichHen_maBacSi_batDau ON LichHen(maBacSi, batDau) WHERE maBacSi IS NOT NULL;
+CREATE INDEX IX_LichHen_maPhuTa_batDau ON LichHen(maPhuTa, batDau) WHERE maPhuTa IS NOT NULL;
+CREATE INDEX IX_LichHen_batDau ON LichHen(batDau);
+CREATE INDEX IX_LichHen_maKeHoach ON LichHen(maKeHoach) WHERE maKeHoach IS NOT NULL;
+CREATE INDEX IX_KeHoachDieuTri_maKH ON KeHoachDieuTri(maKH);
+CREATE INDEX IX_CTKH_maKeHoach ON ChiTietKeHoachDieuTri(maKeHoach);
+CREATE INDEX IX_CTKH_maHoaDon ON ChiTietKeHoachDieuTri(maHoaDon) WHERE maHoaDon IS NOT NULL;
+CREATE INDEX IX_HoaDon_maKH ON HoaDon(maKH);
+CREATE INDEX IX_HoaDon_maKeHoach ON HoaDon(maKeHoach) WHERE maKeHoach IS NOT NULL;
+CREATE INDEX IX_CTHD_maHoaDon ON ChiTietHoaDon(maHoaDon);
+CREATE INDEX IX_PhieuThu_maKH ON PhieuThu(maKH);
+CREATE INDEX IX_PhieuThu_maHoaDon ON PhieuThu(maHoaDon) WHERE maHoaDon IS NOT NULL;
+CREATE INDEX IX_CTTT_maToaThuoc ON ChiTietToaThuoc(maToaThuoc);
+CREATE INDEX IX_CTN_maPhieuNhap ON ChiTietNhapKho(maPhieuNhap);
+CREATE INDEX IX_CTX_maPhieuXuat ON ChiTietXuatKho(maPhieuXuat);
 GO
 

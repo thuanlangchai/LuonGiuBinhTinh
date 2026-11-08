@@ -3,23 +3,11 @@ package entity;
 public class ChiTietNhapKho {
 
     private String maChiTiet;
-    private String maPhieuNhap;
-    private String maSanPham;
+    private PhieuNhapKho phieuNhapKho;
+    private SanPham sanPham;
     private int soLuong;
     private long donGia;
     private long thanhTien;
-
-    public ChiTietNhapKho() {
-    }
-
-    public ChiTietNhapKho(String maChiTiet, String maPhieuNhap, String maSanPham, int soLuong, long donGia, long thanhTien) {
-        this.maChiTiet = maChiTiet;
-        this.maPhieuNhap = maPhieuNhap;
-        this.maSanPham = maSanPham;
-        this.soLuong = soLuong;
-        this.donGia = donGia;
-        this.thanhTien = thanhTien;
-    }
 
     public String getMaChiTiet() {
         return maChiTiet;
@@ -29,20 +17,20 @@ public class ChiTietNhapKho {
         this.maChiTiet = maChiTiet;
     }
 
-    public String getMaPhieuNhap() {
-        return maPhieuNhap;
+    public PhieuNhapKho getPhieuNhapKho() {
+        return phieuNhapKho;
     }
 
-    public void setMaPhieuNhap(String maPhieuNhap) {
-        this.maPhieuNhap = maPhieuNhap;
+    public void setPhieuNhapKho(PhieuNhapKho phieuNhapKho) {
+        this.phieuNhapKho = phieuNhapKho;
     }
 
-    public String getMaSanPham() {
-        return maSanPham;
+    public SanPham getSanPham() {
+        return sanPham;
     }
 
-    public void setMaSanPham(String maSanPham) {
-        this.maSanPham = maSanPham;
+    public void setSanPham(SanPham sanPham) {
+        this.sanPham = sanPham;
     }
 
     public int getSoLuong() {

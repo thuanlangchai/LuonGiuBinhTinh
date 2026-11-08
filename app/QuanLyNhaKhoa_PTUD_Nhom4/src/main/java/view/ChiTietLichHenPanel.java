@@ -2,8 +2,6 @@ package view;
 
 import entity.KhachHang;
 import entity.LichHen;
-import entity.NhanVien;
-import repository.impl.NhanVien_DAO;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
@@ -23,16 +21,12 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.border.EmptyBorder;
-import service.impl.DanhMuc_Service;
-import service.impl.KhachHang_Service;
 import service.impl.LichHen_Service;
 import view.model.CuocHen;
 
 public class ChiTietLichHenPanel extends JPanel {
 
     private final LichHen_Service lichHenService = new LichHen_Service();
-    private final KhachHang_Service khachHangService = new KhachHang_Service();
-    private final DanhMuc_Service danhMucService = new DanhMuc_Service();
     
     private final Runnable suKienQuayLai;
     private final CuocHen cuocHen;
@@ -80,8 +74,8 @@ public class ChiTietLichHenPanel extends JPanel {
         gbc.anchor = GridBagConstraints.WEST;
         gbc.fill = GridBagConstraints.HORIZONTAL;
 
-        KhachHang kh = khachHangService.findById(cuocHen.maKH);
         LichHen lh = lichHenService.findById(cuocHen.maLichHen);
+        KhachHang kh = lh == null ? null : lh.getKhachHang();
 
         int dong = 0;
         

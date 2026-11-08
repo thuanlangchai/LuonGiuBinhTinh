@@ -3,13 +3,12 @@ package view;
 import entity.ChiTietToaThuoc;
 import entity.KhachHang;
 import entity.NhanVien;
+import entity.Refs;
 import entity.Thuoc;
 import entity.ToaThuoc;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
-import service.impl.DanhMuc_Service;
-import service.impl.KhachHang_Service;
 import service.impl.ToaThuoc_Service;
 import view.model.ChiTietToaThuocView;
 import view.model.ToaThuocView;
@@ -18,8 +17,6 @@ public final class ToaThuocDuLieu {
 
     private static final List<Runnable> LANG_NGHE = new ArrayList<>();
     private static final ToaThuoc_Service toaThuocService = new ToaThuoc_Service();
-    private static final KhachHang_Service khachHangService = new KhachHang_Service();
-    private static final DanhMuc_Service danhMucService = new DanhMuc_Service();
 
     private ToaThuocDuLieu() {
     }
@@ -38,14 +35,14 @@ public final class ToaThuocDuLieu {
 
     public static List<ToaThuocView> tatCa() {
         List<ToaThuocView> ketQua = new ArrayList<>();
-        for (ToaThuoc e : toaThuocService.findAllToaThuoc()) {
+        for (ToaThuoc e : toaThuocService.findAllKemChiTiet()) {
             ketQua.add(mapView(e));
         }
         return ketQua;
     }
 
     public static ToaThuocView theoMa(String ma) {
-        ToaThuoc e = toaThuocService.findById(ma);
+        ToaThuoc e = toaThuocService.findDetailById(ma);
         return e == null ? null : mapView(e);
     }
 
@@ -66,13 +63,20 @@ public final class ToaThuocDuLieu {
         }
         ToaThuoc e = new ToaThuoc();
         e.setMaToaThuoc(tt.maToaThuoc);
-        e.setMaKH(tt.maKH);
+        KhachHang khach = Refs.khachHang(tt.maKH);
+        if (khach != null) {
+            khach.setHoTen(tt.tenKh);
+        }
+        e.setKhachHang(khach);
         e.setMaChanDoan(tt.maChanDoan);
-        e.setMaBacSi(tt.maBacSi);
+        NhanVien bacSi = Refs.nhanVien(tt.maBacSi);
+        if (bacSi != null) {
+            bacSi.setHoTen(tt.tenBacSi);
+        }
+        e.setBacSi(bacSi);
         e.setHinhThucThanhToan(tt.hinhThucThanhToan);
         e.setNhanTaiPhongKham(tt.nhanTaiPhongKham);
         e.setGhiChu(tt.ghiChu);
-        e.setThanhTien(tt.thanhTien);
         e.setNgayTao(LocalDateTime.now());
 
         List<ChiTietToaThuoc> cts = new ArrayList<>();
@@ -80,8 +84,12 @@ public final class ToaThuocDuLieu {
         for (ChiTietToaThuocView cv : tt.chiTiet) {
             ChiTietToaThuoc ct = new ChiTietToaThuoc();
             ct.setMaChiTiet(tt.maToaThuoc + "C" + i++);
-            ct.setMaToaThuoc(tt.maToaThuoc);
-            ct.setMaThuoc(cv.maThuoc);
+            ct.setToaThuoc(Refs.toaThuoc(tt.maToaThuoc));
+            Thuoc thuoc = Refs.thuoc(cv.maThuoc);
+            if (thuoc != null) {
+                thuoc.setTenThuoc(cv.tenThuoc);
+            }
+            ct.setThuoc(thuoc);
             ct.setSoNgay(cv.soNgay);
             ct.setCachSuDung(cv.cachSuDung);
             ct.setTongSo(cv.tongSo);
@@ -89,11 +97,12 @@ public final class ToaThuocDuLieu {
             ct.setThanhTien(cv.thanhTien);
             cts.add(ct);
         }
+        e.setChiTiet(cts);
         if (toaThuocService.themToaVoiChiTiet(e, cts) == null) {
             return null;
         }
         bao();
-        return theoMa(tt.maToaThuoc);
+        return mapView(e);
     }
 
     public static void xoa(ToaThuocView tt) {
@@ -107,23 +116,21 @@ public final class ToaThuocDuLieu {
     private static ToaThuocView mapView(ToaThuoc e) {
         ToaThuocView v = new ToaThuocView();
         v.maToaThuoc = e.getMaToaThuoc();
-        v.maKH = e.getMaKH();
-        KhachHang kh = khachHangService.findById(e.getMaKH());
-        v.tenKh = kh != null ? kh.getHoTen() : e.getMaKH();
+        v.maKH = Refs.maKh(e.getKhachHang());
+        v.tenKh = Refs.tenKh(e.getKhachHang());
         v.maChanDoan = e.getMaChanDoan();
-        v.maBacSi = e.getMaBacSi();
-        NhanVien nv = e.getMaBacSi() == null ? null : danhMucService.findNhanVienById(e.getMaBacSi());
-        v.tenBacSi = nv != null ? nv.getHoTen() : "";
+        v.maBacSi = Refs.maNv(e.getBacSi());
+        v.tenBacSi = e.getBacSi() == null ? "" : Refs.tenNv(e.getBacSi());
         v.hinhThucThanhToan = e.getHinhThucThanhToan();
         v.nhanTaiPhongKham = e.isNhanTaiPhongKham();
         v.ghiChu = e.getGhiChu();
         v.thanhTien = e.getThanhTien();
         v.ngayTao = NgayUtil.fmtFull(e.getNgayTao());
-        for (ChiTietToaThuoc ct : toaThuocService.findChiTietByMaToaThuoc(e.getMaToaThuoc())) {
-            Thuoc th = danhMucService.findThuocById(ct.getMaThuoc());
+        List<ChiTietToaThuoc> chiTiet = e.getChiTiet() == null ? List.of() : e.getChiTiet();
+        for (ChiTietToaThuoc ct : chiTiet) {
             v.chiTiet.add(new ChiTietToaThuocView(
-                    ct.getMaThuoc(),
-                    th != null ? th.getTenThuoc() : ct.getMaThuoc(),
+                    Refs.maThuoc(ct.getThuoc()),
+                    Refs.tenThuoc(ct.getThuoc()),
                     ct.getSoNgay(),
                     ct.getCachSuDung(),
                     ct.getTongSo(),
@@ -134,16 +141,6 @@ public final class ToaThuocDuLieu {
     }
 
     private static String maMoi() {
-        int max = 0;
-        for (ToaThuoc e : toaThuocService.findAllToaThuoc()) {
-            String ma = e.getMaToaThuoc();
-            if (ma != null && ma.startsWith("TT")) {
-                try {
-                    max = Math.max(max, Integer.parseInt(ma.substring(2)));
-                } catch (NumberFormatException ignored) {
-                }
-            }
-        }
-        return String.format("TT%02d", max + 1);
+        return String.format("TT%02d", toaThuocService.nextSo() + 1);
     }
 }

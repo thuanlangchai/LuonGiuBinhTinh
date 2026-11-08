@@ -8,20 +8,8 @@ public class ThoiGianLamViec {
     private String ngay;
     private LocalTime gioBatDau;
     private LocalTime gioKetThuc;
-    private String maBacSi;
-    private String maChiNhanh;
-
-    public ThoiGianLamViec() {
-    }
-
-    public ThoiGianLamViec(String maLich, String ngay, LocalTime gioBatDau, LocalTime gioKetThuc, String maBacSi, String maChiNhanh) {
-        this.maLich = maLich;
-        this.ngay = ngay;
-        this.gioBatDau = gioBatDau;
-        this.gioKetThuc = gioKetThuc;
-        this.maBacSi = maBacSi;
-        this.maChiNhanh = maChiNhanh;
-    }
+    private NhanVien bacSi;
+    private ChiNhanh chiNhanh;
 
     public String getMaLich() {
         return maLich;
@@ -55,19 +43,19 @@ public class ThoiGianLamViec {
         this.gioKetThuc = gioKetThuc;
     }
 
-    public String getMaBacSi() {
-        return maBacSi;
+    public NhanVien getBacSi() {
+        return bacSi;
     }
 
-    public void setMaBacSi(String maBacSi) {
-        this.maBacSi = maBacSi;
+    public void setBacSi(NhanVien bacSi) {
+        this.bacSi = bacSi;
     }
 
-    public String getMaChiNhanh() {
-        return maChiNhanh;
+    public ChiNhanh getChiNhanh() {
+        return chiNhanh;
     }
 
-    public void setMaChiNhanh(String maChiNhanh) {
-        this.maChiNhanh = maChiNhanh;
+    public void setChiNhanh(ChiNhanh chiNhanh) {
+        this.chiNhanh = chiNhanh;
     }
 }

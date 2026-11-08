@@ -200,7 +200,13 @@ public class LoginView extends JFrame {
             }
 
             
-            TaiKhoan newTK = new TaiKhoan(tenDangNhap, matKhauMoi,tk.getEmail(),tk.getVaiTro(),tk.getMaNhanVien(),tk.isKichHoat(),tk.getNgayTao() );
+            TaiKhoan newTK = new TaiKhoan();
+            newTK.setTenDangNhap(tenDangNhap);
+            newTK.setMatKhau(matKhauMoi);
+            newTK.setEmail(tk.getEmail());
+            newTK.setNhanVien(tk.getNhanVien());
+            newTK.setKichHoat(tk.isKichHoat());
+            newTK.setNgayTao(tk.getNgayTao());
             try {
             	taiKhoanService.update(newTK);
             	JOptionPane.showMessageDialog(this, 

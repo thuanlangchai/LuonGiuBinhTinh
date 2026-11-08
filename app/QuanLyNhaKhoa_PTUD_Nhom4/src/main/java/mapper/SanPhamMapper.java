@@ -1,1 +1,19 @@
-package mapper;import entity.SanPham;import java.sql.ResultSet;import java.sql.SQLException;public class SanPhamMapper implements RowMapper<SanPham> {    @Override    public SanPham mapper(ResultSet rs) {        try {            String maSanPham = rs.getString("maSanPham");            String tenSanPham = rs.getString("tenSanPham");            String maLoai = rs.getString("maLoai");            int soLuong = rs.getInt("soLuong");            long donGia = rs.getLong("donGia");            return new SanPham(maSanPham, tenSanPham, maLoai, soLuong, donGia);        } catch (SQLException e) {            return null;        }    }}
+package mapper;
+
+import entity.SanPham;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+
+public class SanPhamMapper implements RowMapper<SanPham> {
+
+    @Override
+    public SanPham mapper(ResultSet rs) throws SQLException {
+        SanPham entity = new SanPham();
+        entity.setMaSanPham(rs.getString("maSanPham"));
+        entity.setTenSanPham(rs.getString("tenSanPham"));
+        entity.setSoLuong(rs.getInt("soLuong"));
+        entity.setDonGia(rs.getLong("donGia"));
+        entity.setLoaiSanPham(Maps.loaiSanPham(rs, "maLoai", "tenLoaiSanPham"));
+        return entity;
+    }
+}

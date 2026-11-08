@@ -1,1 +1,23 @@
-package mapper;import entity.LichHen;import java.sql.ResultSet;import java.sql.SQLException;import java.time.LocalDateTime;public class LichHenMapper implements RowMapper<LichHen> {    @Override    public LichHen mapper(ResultSet rs) {        try {            String maLichHen = rs.getString("maLichHen");            String maKH = rs.getString("maKH");            LocalDateTime batDau = Rs.dateTime(rs, "batDau");            int thoiLuongPhut = rs.getInt("thoiLuongPhut");            String maBacSi = rs.getString("maBacSi");            String maPhuTa = rs.getString("maPhuTa");            String ghiChu = rs.getString("ghiChu");            String trangThai = rs.getString("trangThai");            return new LichHen(maLichHen, maKH, batDau, thoiLuongPhut, maBacSi, maPhuTa, ghiChu, trangThai);        } catch (SQLException e) {            return null;        }    }}
+package mapper;
+
+import entity.LichHen;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+
+public class LichHenMapper implements RowMapper<LichHen> {
+
+    @Override
+    public LichHen mapper(ResultSet rs) throws SQLException {
+        LichHen entity = new LichHen();
+        entity.setMaLichHen(rs.getString("maLichHen"));
+        entity.setBatDau(Rs.dateTime(rs, "batDau"));
+        entity.setThoiLuongPhut(rs.getInt("thoiLuongPhut"));
+        entity.setGhiChu(rs.getString("ghiChu"));
+        entity.setTrangThai(rs.getString("trangThai"));
+        entity.setKhachHang(Maps.khachHang(rs, "maKH", "tenKhachHang", "sdtKhachHang"));
+        entity.setBacSi(Maps.nhanVien(rs, "maBacSi", "tenBacSi"));
+        entity.setPhuTa(Maps.nhanVien(rs, "maPhuTa", "tenPhuTa"));
+        entity.setKeHoachDieuTri(Maps.keHoach(rs, "maKeHoach", "lyDoKeHoach"));
+        return entity;
+    }
+}

@@ -9,21 +9,7 @@ public class NhanVien {
     private String soDienThoai;
     private String vaiTro;
     private boolean kichHoat;
-    private String maChiNhanh;
-
-    public NhanVien() {
-    }
-
-    public NhanVien(String maNhanVien, String chucDanh, String hoTen, String email, String soDienThoai, String vaiTro, boolean kichHoat, String maChiNhanh) {
-        this.maNhanVien = maNhanVien;
-        this.chucDanh = chucDanh;
-        this.hoTen = hoTen;
-        this.email = email;
-        this.soDienThoai = soDienThoai;
-        this.vaiTro = vaiTro;
-        this.kichHoat = kichHoat;
-        this.maChiNhanh = maChiNhanh;
-    }
+    private ChiNhanh chiNhanh;
 
     public String getMaNhanVien() {
         return maNhanVien;
@@ -81,13 +67,11 @@ public class NhanVien {
         this.kichHoat = kichHoat;
     }
 
-    public String getMaChiNhanh() {
-        return maChiNhanh;
+    public ChiNhanh getChiNhanh() {
+        return chiNhanh;
     }
 
-    public void setMaChiNhanh(String maChiNhanh) {
-        this.maChiNhanh = maChiNhanh;
+    public void setChiNhanh(ChiNhanh chiNhanh) {
+        this.chiNhanh = chiNhanh;
     }
-
-    
 }

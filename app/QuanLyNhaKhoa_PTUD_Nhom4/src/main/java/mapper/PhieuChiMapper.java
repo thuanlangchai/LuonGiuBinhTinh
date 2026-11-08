@@ -1,1 +1,24 @@
-package mapper;import entity.PhieuChi;import java.sql.ResultSet;import java.sql.SQLException;import java.time.LocalDate;import java.time.LocalDateTime;public class PhieuChiMapper implements RowMapper<PhieuChi> {    @Override    public PhieuChi mapper(ResultSet rs) {        try {            String maPhieuChi = rs.getString("maPhieuChi");            String maNhaCungCap = rs.getString("maNhaCungCap");            String loaiChiTieu = rs.getString("loaiChiTieu");            String lyDoChi = rs.getString("lyDoChi");            long soTien = rs.getLong("soTien");            LocalDate ngayChi = Rs.date(rs, "ngayChi");            String hinhThucThanhToan = rs.getString("hinhThucThanhToan");            String trangThai = rs.getString("trangThai");            LocalDateTime ngayTao = Rs.dateTime(rs, "ngayTao");            String nguoiTao = rs.getString("nguoiTao");            return new PhieuChi(maPhieuChi, maNhaCungCap, loaiChiTieu, lyDoChi, soTien, ngayChi, hinhThucThanhToan, trangThai, ngayTao, nguoiTao);        } catch (SQLException e) {            return null;        }    }}
+package mapper;
+
+import entity.PhieuChi;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+
+public class PhieuChiMapper implements RowMapper<PhieuChi> {
+
+    @Override
+    public PhieuChi mapper(ResultSet rs) throws SQLException {
+        PhieuChi entity = new PhieuChi();
+        entity.setMaPhieuChi(rs.getString("maPhieuChi"));
+        entity.setLoaiChiTieu(rs.getString("loaiChiTieu"));
+        entity.setLyDoChi(rs.getString("lyDoChi"));
+        entity.setSoTien(rs.getLong("soTien"));
+        entity.setNgayChi(Rs.date(rs, "ngayChi"));
+        entity.setHinhThucThanhToan(rs.getString("hinhThucThanhToan"));
+        entity.setTrangThai(rs.getString("trangThai"));
+        entity.setNgayTao(Rs.dateTime(rs, "ngayTao"));
+        entity.setNguoiTao(Maps.nhanVien(rs, "nguoiTao", "tenNguoiTao"));
+        entity.setNhaCungCap(Maps.nhaCungCap(rs, "maNhaCungCap", "tenNhaCungCap"));
+        return entity;
+    }
+}

@@ -3,26 +3,21 @@ package mapper;
 import entity.KeHoachDieuTri;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
 
 public class KeHoachDieuTriMapper implements RowMapper<KeHoachDieuTri> {
 
     @Override
-    public KeHoachDieuTri mapper(ResultSet rs) {
-        try {
-            String maKeHoach = rs.getString("maKeHoach");
-            String maKH = rs.getString("maKH");
-            LocalDate ngayKeHoach = Rs.date(rs, "ngayKeHoach");
-            String maBacSi = rs.getString("maBacSi");
-            String lyDoDieuTri = rs.getString("lyDoDieuTri");
-            String ghiChu = rs.getString("ghiChu");
-            String trangThai = rs.getString("trangThai");
-            LocalDateTime ngayTao = Rs.dateTime(rs, "ngayTao");
-            String nguoiTao = rs.getString("nguoiTao");
-            return new KeHoachDieuTri(maKeHoach, maKH, ngayKeHoach, maBacSi, lyDoDieuTri, ghiChu, trangThai, ngayTao, nguoiTao);
-        } catch (SQLException e) {
-            return null;
-        }
+    public KeHoachDieuTri mapper(ResultSet rs) throws SQLException {
+        KeHoachDieuTri entity = new KeHoachDieuTri();
+        entity.setMaKeHoach(rs.getString("maKeHoach"));
+        entity.setNgayKeHoach(Rs.date(rs, "ngayKeHoach"));
+        entity.setLyDoDieuTri(rs.getString("lyDoDieuTri"));
+        entity.setGhiChu(rs.getString("ghiChu"));
+        entity.setTrangThai(rs.getString("trangThai"));
+        entity.setNgayTao(Rs.dateTime(rs, "ngayTao"));
+        entity.setNguoiTao(Maps.nhanVien(rs, "nguoiTao", "tenNguoiTao"));
+        entity.setKhachHang(Maps.khachHang(rs, "maKH", "tenKhachHang", null));
+        entity.setBacSi(Maps.nhanVien(rs, "maBacSi", "tenBacSi"));
+        return entity;
     }
 }

@@ -41,4 +41,8 @@ public class PhieuChi_Service implements PhieuChi_IService {
     public void delete(String maPhieuChi) {
         dao.delete(maPhieuChi);
     }
+
+    public int nextSo() {
+        return dao.nextSo();
+    }
 }

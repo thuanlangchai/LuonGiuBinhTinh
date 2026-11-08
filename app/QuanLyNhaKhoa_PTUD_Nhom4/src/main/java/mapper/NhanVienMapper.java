@@ -1,1 +1,22 @@
-package mapper;import entity.NhanVien;import java.sql.ResultSet;import java.sql.SQLException;public class NhanVienMapper implements RowMapper<NhanVien> {    @Override    public NhanVien mapper(ResultSet rs) {        try {            String maNhanVien = rs.getString("maNhanVien");            String chucDanh = rs.getString("chucDanh");            String hoTen = rs.getString("hoTen");            String email = rs.getString("email");            String soDienThoai = rs.getString("soDienThoai");            String vaiTro = rs.getString("vaiTro");            boolean kichHoat = rs.getBoolean("kichHoat");            String maChiNhanh = rs.getString("maChiNhanh");            return new NhanVien(maNhanVien, chucDanh, hoTen, email, soDienThoai, vaiTro, kichHoat, maChiNhanh);        } catch (SQLException e) {            return null;        }    }}
+package mapper;
+
+import entity.NhanVien;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+
+public class NhanVienMapper implements RowMapper<NhanVien> {
+
+    @Override
+    public NhanVien mapper(ResultSet rs) throws SQLException {
+        NhanVien entity = new NhanVien();
+        entity.setMaNhanVien(rs.getString("maNhanVien"));
+        entity.setChucDanh(rs.getString("chucDanh"));
+        entity.setHoTen(rs.getString("hoTen"));
+        entity.setEmail(rs.getString("email"));
+        entity.setSoDienThoai(rs.getString("soDienThoai"));
+        entity.setVaiTro(rs.getString("vaiTro"));
+        entity.setKichHoat(rs.getBoolean("kichHoat"));
+        entity.setChiNhanh(Maps.chiNhanh(rs, "maChiNhanh", "tenChiNhanh"));
+        return entity;
+    }
+}

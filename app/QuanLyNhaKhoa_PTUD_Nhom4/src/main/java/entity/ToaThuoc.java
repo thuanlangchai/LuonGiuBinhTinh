@@ -1,33 +1,20 @@
 package entity;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 public class ToaThuoc {
 
     private String maToaThuoc;
-    private String maKH;
-    private String chanDoan;
-    private String maBacSi;
+    private KhachHang khachHang;
+    private String maChanDoan;
+    private NhanVien bacSi;
     private String hinhThucThanhToan;
     private boolean nhanTaiPhongKham;
     private String ghiChu;
     private long thanhTien;
     private LocalDateTime ngayTao;
-
-    public ToaThuoc() {
-    }
-
-    public ToaThuoc(String maToaThuoc, String maKH, String chanDoan, String maBacSi, String hinhThucThanhToan, boolean nhanTaiPhongKham, String ghiChu, long thanhTien, LocalDateTime ngayTao) {
-        this.maToaThuoc = maToaThuoc;
-        this.maKH = maKH;
-        this.chanDoan = chanDoan;
-        this.maBacSi = maBacSi;
-        this.hinhThucThanhToan = hinhThucThanhToan;
-        this.nhanTaiPhongKham = nhanTaiPhongKham;
-        this.ghiChu = ghiChu;
-        this.thanhTien = thanhTien;
-        this.ngayTao = ngayTao;
-    }
+    private List<ChiTietToaThuoc> chiTiet;
 
     public String getMaToaThuoc() {
         return maToaThuoc;
@@ -37,28 +24,28 @@ public class ToaThuoc {
         this.maToaThuoc = maToaThuoc;
     }
 
-    public String getMaKH() {
-        return maKH;
+    public KhachHang getKhachHang() {
+        return khachHang;
     }
 
-    public void setMaKH(String maKH) {
-        this.maKH = maKH;
+    public void setKhachHang(KhachHang khachHang) {
+        this.khachHang = khachHang;
     }
 
     public String getMaChanDoan() {
-        return chanDoan;
+        return maChanDoan;
     }
 
-    public void setMaChanDoan(String chanDoan) {
-        this.chanDoan = chanDoan;
+    public void setMaChanDoan(String maChanDoan) {
+        this.maChanDoan = maChanDoan;
     }
 
-    public String getMaBacSi() {
-        return maBacSi;
+    public NhanVien getBacSi() {
+        return bacSi;
     }
 
-    public void setMaBacSi(String maBacSi) {
-        this.maBacSi = maBacSi;
+    public void setBacSi(NhanVien bacSi) {
+        this.bacSi = bacSi;
     }
 
     public String getHinhThucThanhToan() {
@@ -99,5 +86,13 @@ public class ToaThuoc {
 
     public void setNgayTao(LocalDateTime ngayTao) {
         this.ngayTao = ngayTao;
+    }
+
+    public List<ChiTietToaThuoc> getChiTiet() {
+        return chiTiet;
+    }
+
+    public void setChiTiet(List<ChiTietToaThuoc> chiTiet) {
+        this.chiTiet = chiTiet;
     }
 }

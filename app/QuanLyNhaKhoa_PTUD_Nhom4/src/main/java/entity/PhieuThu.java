@@ -5,38 +5,19 @@ import java.time.LocalDateTime;
 
 public class PhieuThu {
 
-    private String maPhieuThu; 
+    private String maPhieuThu;
     private LocalDate ngayThu;
-    private String maKH;
-    private String maHoaDon;
+    private KhachHang khachHang;
+    private HoaDon hoaDon;
     private String lyDo;
     private long soTien;
     private String hinhThucThanhToan;
     private String trangThai;
-    private String maBacSi;
-    private String maPhuTa;
+    private NhanVien bacSi;
+    private NhanVien phuTa;
     private String nguoiGioiThieu;
     private LocalDateTime ngayTao;
-    private String nguoiTao;
-
-    public PhieuThu() {
-    }
-
-    public PhieuThu(String maPhieuThu, LocalDate ngayThu, String maKH, String maHoaDon, String lyDo, long soTien, String hinhThucThanhToan, String trangThai, String maBacSi, String maPhuTa, String nguoiGioiThieu, LocalDateTime ngayTao, String nguoiTao) {
-        this.maPhieuThu = maPhieuThu;
-        this.ngayThu = ngayThu;
-        this.maKH = maKH;
-        this.maHoaDon = maHoaDon;
-        this.lyDo = lyDo;
-        this.soTien = soTien;
-        this.hinhThucThanhToan = hinhThucThanhToan;
-        this.trangThai = trangThai;
-        this.maBacSi = maBacSi;
-        this.maPhuTa = maPhuTa;
-        this.nguoiGioiThieu = nguoiGioiThieu;
-        this.ngayTao = ngayTao;
-        this.nguoiTao = nguoiTao;
-    }
+    private NhanVien nguoiTao;
 
     public String getMaPhieuThu() {
         return maPhieuThu;
@@ -54,20 +35,20 @@ public class PhieuThu {
         this.ngayThu = ngayThu;
     }
 
-    public String getMaKH() {
-        return maKH;
+    public KhachHang getKhachHang() {
+        return khachHang;
     }
 
-    public void setMaKH(String maKH) {
-        this.maKH = maKH;
+    public void setKhachHang(KhachHang khachHang) {
+        this.khachHang = khachHang;
     }
 
-    public String getMaHoaDon() {
-        return maHoaDon;
+    public HoaDon getHoaDon() {
+        return hoaDon;
     }
 
-    public void setMaHoaDon(String maHoaDon) {
-        this.maHoaDon = maHoaDon;
+    public void setHoaDon(HoaDon hoaDon) {
+        this.hoaDon = hoaDon;
     }
 
     public String getLyDo() {
@@ -102,20 +83,20 @@ public class PhieuThu {
         this.trangThai = trangThai;
     }
 
-    public String getMaBacSi() {
-        return maBacSi;
+    public NhanVien getBacSi() {
+        return bacSi;
     }
 
-    public void setMaBacSi(String maBacSi) {
-        this.maBacSi = maBacSi;
+    public void setBacSi(NhanVien bacSi) {
+        this.bacSi = bacSi;
     }
 
-    public String getMaPhuTa() {
-        return maPhuTa;
+    public NhanVien getPhuTa() {
+        return phuTa;
     }
 
-    public void setMaPhuTa(String maPhuTa) {
-        this.maPhuTa = maPhuTa;
+    public void setPhuTa(NhanVien phuTa) {
+        this.phuTa = phuTa;
     }
 
     public String getNguoiGioiThieu() {
@@ -134,11 +115,12 @@ public class PhieuThu {
         this.ngayTao = ngayTao;
     }
 
-    public String getNguoiTao() {
+    public NhanVien getNguoiTao() {
         return nguoiTao;
     }
 
-    public void setNguoiTao(String nguoiTao) {
+    public void setNguoiTao(NhanVien nguoiTao) {
         this.nguoiTao = nguoiTao;
     }
+
 }

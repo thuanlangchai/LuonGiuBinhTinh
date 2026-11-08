@@ -1,1 +1,45 @@
-package repository.impl;import entity.Rang;import repository.Rang_IDAO;import java.util.List;import mapper.RangMapper;public class Rang_DAO extends AbstractDAO<Rang> implements Rang_IDAO {    @Override    public List<Rang> findAllRang() {        String sql = "SELECT * FROM Rang";        return findAll(sql, new RangMapper());    }    @Override    public Rang findById(String maRang) {        String sql = "SELECT * FROM Rang WHERE maRang = ?";        List<Rang> ds = findAll(sql, new RangMapper(), maRang);        if (ds == null || ds.isEmpty()) {            return null;        }        return ds.get(0);    }    @Override    public Integer add(Rang entity) {        String sql = "INSERT INTO Rang(maRang,tenRang,maLoaiRang) VALUES(?,?,?)";        return add(sql, entity.getMaRang(), entity.getTenRang(), entity.getMaLoaiRang());    }    @Override    public void update(Rang entity) {        String sql = "UPDATE Rang SET tenRang = ?, maLoaiRang = ? WHERE maRang = ?";        update(sql, entity.getTenRang(), entity.getMaLoaiRang(), entity.getMaRang());    }    @Override    public void delete(String maRang) {        String sql = "DELETE FROM Rang WHERE maRang = ?";        delete(sql, maRang);    }}
+package repository.impl;
+
+import entity.Rang;
+import entity.Refs;
+import java.util.List;
+import mapper.RangMapper;
+import repository.Rang_IDAO;
+
+public class Rang_DAO extends AbstractDAO<Rang> implements Rang_IDAO {
+
+    private static final String SELECT = """
+            SELECT r.maRang, r.tenRang, lr.maLoaiRang, lr.tenLoaiRang
+            FROM Rang r
+            LEFT JOIN LoaiRang lr ON lr.maLoaiRang = r.maLoaiRang
+            """;
+
+    private final RangMapper mapper = new RangMapper();
+
+    @Override
+    public List<Rang> findAllRang() {
+        return query(SELECT + " ORDER BY r.maRang", mapper);
+    }
+
+    @Override
+    public Rang findById(String maRang) {
+        return one(SELECT + " WHERE r.maRang = ?", mapper, maRang);
+    }
+
+    @Override
+    public Integer add(Rang entity) {
+        return execute("INSERT INTO Rang(maRang,tenRang,maLoaiRang) VALUES(?,?,?)",
+                entity.getMaRang(), entity.getTenRang(), Refs.maLoaiRang(entity.getLoaiRang()));
+    }
+
+    @Override
+    public void update(Rang entity) {
+        execute("UPDATE Rang SET tenRang = ?, maLoaiRang = ? WHERE maRang = ?",
+                entity.getTenRang(), Refs.maLoaiRang(entity.getLoaiRang()), entity.getMaRang());
+    }
+
+    @Override
+    public void delete(String maRang) {
+        execute("DELETE FROM Rang WHERE maRang = ?", maRang);
+    }
+}

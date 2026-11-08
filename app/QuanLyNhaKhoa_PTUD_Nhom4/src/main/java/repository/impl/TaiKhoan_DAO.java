@@ -1,48 +1,53 @@
 package repository.impl;
 
+import entity.Refs;
 import entity.TaiKhoan;
-import repository.TaiKhoan_IDAO;
 import java.util.List;
 import mapper.TaiKhoanMapper;
-
+import repository.TaiKhoan_IDAO;
 
 public class TaiKhoan_DAO extends AbstractDAO<TaiKhoan> implements TaiKhoan_IDAO {
 
+    private static final String SELECT = """
+            SELECT tk.tenDangNhap, tk.matKhau, tk.email, tk.kichHoat, tk.ngayTao,
+                   nv.maNhanVien, nv.hoTen AS tenNhanVien
+            FROM TaiKhoan tk
+            LEFT JOIN NhanVien nv ON nv.maNhanVien = tk.maNhanVien
+            """;
+
+    private final TaiKhoanMapper mapper = new TaiKhoanMapper();
+
     @Override
     public List<TaiKhoan> findAllTaiKhoan() {
-        String sql = "SELECT * FROM TaiKhoan";
-        return findAll(sql, new TaiKhoanMapper());
+        return query(SELECT + " ORDER BY tk.tenDangNhap", mapper);
     }
 
     @Override
     public TaiKhoan findById(String tenDangNhap) {
-        String sql = "SELECT * FROM TaiKhoan WHERE tenDangNhap = ?";
-        List<TaiKhoan> ds = findAll(sql, new TaiKhoanMapper(), tenDangNhap);
-        if (ds == null || ds.isEmpty()) {
-            return null;
-        }
-        return ds.get(0);
+        return one(SELECT + " WHERE tk.tenDangNhap = ?", mapper, tenDangNhap);
+    }
+
+    @Override
+    public TaiKhoan findByTenDangNhap(String tenDangNhap) {
+        return findById(tenDangNhap);
     }
 
     @Override
     public Integer add(TaiKhoan entity) {
-        String sql = "INSERT INTO TaiKhoan(tenDangNhap,matKhau,email,vaiTro,maNhanVien,kichHoat,ngayTao) VALUES(?,?,?,?,?,?,?)";
-        return add(sql, entity.getTenDangNhap(), entity.getMatKhau(), entity.getEmail(), entity.getVaiTro(), entity.getMaNhanVien(), entity.isKichHoat(), entity.getNgayTao());
+        return execute("INSERT INTO TaiKhoan(tenDangNhap,matKhau,email,maNhanVien,kichHoat,ngayTao) VALUES(?,?,?,?,?,?)",
+                entity.getTenDangNhap(), entity.getMatKhau(), entity.getEmail(),
+                Refs.maNv(entity.getNhanVien()), entity.isKichHoat(), entity.getNgayTao());
     }
 
     @Override
     public void update(TaiKhoan entity) {
-        String sql = "UPDATE TaiKhoan SET matKhau = ?, email = ?, vaiTro = ?, maNhanVien = ?, kichHoat = ?, ngayTao = ? WHERE tenDangNhap = ?";
-        update(sql, entity.getMatKhau(), entity.getEmail(), entity.getVaiTro(), entity.getMaNhanVien(), entity.isKichHoat(), entity.getNgayTao(), entity.getTenDangNhap());
+        execute("UPDATE TaiKhoan SET matKhau = ?, email = ?, maNhanVien = ?, kichHoat = ?, ngayTao = ? WHERE tenDangNhap = ?",
+                entity.getMatKhau(), entity.getEmail(), Refs.maNv(entity.getNhanVien()),
+                entity.isKichHoat(), entity.getNgayTao(), entity.getTenDangNhap());
     }
 
     @Override
     public void delete(String tenDangNhap) {
-        String sql = "DELETE FROM TaiKhoan WHERE tenDangNhap = ?";
-        delete(sql, tenDangNhap);
-    }
-    @Override
-    public TaiKhoan findByTenDangNhap(String tenDangNhap) {
-        return findById(tenDangNhap);
+        execute("DELETE FROM TaiKhoan WHERE tenDangNhap = ?", tenDangNhap);
     }
 }

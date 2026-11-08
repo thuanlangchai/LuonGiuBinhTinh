@@ -4,16 +4,7 @@ public class Rang {
 
     private String maRang;
     private String tenRang;
-    private String maLoaiRang;
-
-    public Rang() {
-    }
-
-    public Rang(String maRang, String tenRang, String maLoaiRang) {
-        this.maRang = maRang;
-        this.tenRang = tenRang;
-        this.maLoaiRang = maLoaiRang;
-    }
+    private LoaiRang loaiRang;
 
     public String getMaRang() {
         return maRang;
@@ -31,11 +22,11 @@ public class Rang {
         this.tenRang = tenRang;
     }
 
-    public String getMaLoaiRang() {
-        return maLoaiRang;
+    public LoaiRang getLoaiRang() {
+        return loaiRang;
     }
 
-    public void setMaLoaiRang(String maLoaiRang) {
-        this.maLoaiRang = maLoaiRang;
+    public void setLoaiRang(LoaiRang loaiRang) {
+        this.loaiRang = loaiRang;
     }
 }

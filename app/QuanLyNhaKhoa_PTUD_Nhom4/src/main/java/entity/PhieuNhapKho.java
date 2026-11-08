@@ -2,33 +2,20 @@ package entity;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.List;
 
 public class PhieuNhapKho {
 
     private String maPhieuNhap;
     private LocalDate ngayNhap;
     private String loaiVatTu;
-    private String maNhaCungCap;
+    private NhaCungCap nhaCungCap;
     private String lyDo;
     private long tongTien;
     private String fileExcel;
     private LocalDateTime ngayTao;
-    private String nguoiTao;
-
-    public PhieuNhapKho() {
-    }
-
-    public PhieuNhapKho(String maPhieuNhap, LocalDate ngayNhap, String loaiVatTu, String maNhaCungCap, String lyDo, long tongTien, String fileExcel, LocalDateTime ngayTao, String nguoiTao) {
-        this.maPhieuNhap = maPhieuNhap;
-        this.ngayNhap = ngayNhap;
-        this.loaiVatTu = loaiVatTu;
-        this.maNhaCungCap = maNhaCungCap;
-        this.lyDo = lyDo;
-        this.tongTien = tongTien;
-        this.fileExcel = fileExcel;
-        this.ngayTao = ngayTao;
-        this.nguoiTao = nguoiTao;
-    }
+    private NhanVien nguoiTao;
+    private List<ChiTietNhapKho> chiTiet;
 
     public String getMaPhieuNhap() {
         return maPhieuNhap;
@@ -54,12 +41,12 @@ public class PhieuNhapKho {
         this.loaiVatTu = loaiVatTu;
     }
 
-    public String getMaNhaCungCap() {
-        return maNhaCungCap;
+    public NhaCungCap getNhaCungCap() {
+        return nhaCungCap;
     }
 
-    public void setMaNhaCungCap(String maNhaCungCap) {
-        this.maNhaCungCap = maNhaCungCap;
+    public void setNhaCungCap(NhaCungCap nhaCungCap) {
+        this.nhaCungCap = nhaCungCap;
     }
 
     public String getLyDo() {
@@ -94,11 +81,19 @@ public class PhieuNhapKho {
         this.ngayTao = ngayTao;
     }
 
-    public String getNguoiTao() {
+    public NhanVien getNguoiTao() {
         return nguoiTao;
     }
 
-    public void setNguoiTao(String nguoiTao) {
+    public void setNguoiTao(NhanVien nguoiTao) {
         this.nguoiTao = nguoiTao;
+    }
+
+    public List<ChiTietNhapKho> getChiTiet() {
+        return chiTiet;
+    }
+
+    public void setChiTiet(List<ChiTietNhapKho> chiTiet) {
+        this.chiTiet = chiTiet;
     }
 }

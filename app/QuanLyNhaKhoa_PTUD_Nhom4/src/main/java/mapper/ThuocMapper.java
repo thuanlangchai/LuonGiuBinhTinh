@@ -1,1 +1,19 @@
-package mapper;import entity.Thuoc;import java.sql.ResultSet;import java.sql.SQLException;public class ThuocMapper implements RowMapper<Thuoc> {    @Override    public Thuoc mapper(ResultSet rs) {        try {            String maThuoc = rs.getString("maThuoc");            String tenThuoc = rs.getString("tenThuoc");            String maDonVi = rs.getString("maDonVi");            long gia = rs.getLong("gia");            String cachDung = rs.getString("cachDung");            return new Thuoc(maThuoc, tenThuoc, maDonVi, gia, cachDung);        } catch (SQLException e) {            return null;        }    }}
+package mapper;
+
+import entity.Thuoc;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+
+public class ThuocMapper implements RowMapper<Thuoc> {
+
+    @Override
+    public Thuoc mapper(ResultSet rs) throws SQLException {
+        Thuoc entity = new Thuoc();
+        entity.setMaThuoc(rs.getString("maThuoc"));
+        entity.setTenThuoc(rs.getString("tenThuoc"));
+        entity.setGia(rs.getLong("gia"));
+        entity.setCachDung(rs.getString("cachDung"));
+        entity.setDonVi(Maps.donVi(rs, "maDonVi", "tenDonVi"));
+        return entity;
+    }
+}

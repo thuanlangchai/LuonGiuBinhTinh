@@ -5,6 +5,7 @@ import entity.NhaCungCap;
 import entity.NhanVien;
 import entity.PhieuChi;
 import entity.PhieuThu;
+import entity.Refs;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
@@ -105,18 +106,16 @@ public class PhieuTienPanel extends JPanel {
         model.setRowCount(0);
         if (laPhieuThu) {
             for (PhieuThu phieuThu : thuSvc.findAllPhieuThu()) {
-                KhachHang khachHang = khSvc.findById(phieuThu.getMaKH());
-                NhanVien bacSi = phieuThu.getMaBacSi() == null ? null : dmSvc.findNhanVienById(phieuThu.getMaBacSi());
                 model.addRow(ViewTheme.dongBang(new Object[]{
                     phieuThu.getMaPhieuThu(),
                     NgayUtil.fmt(phieuThu.getNgayThu()),
-                    phieuThu.getMaKH(),
-                    khachHang != null ? khachHang.getHoTen() : "",
+                    entity.Refs.maKh(phieuThu.getKhachHang()),
+                    entity.Refs.tenKh(phieuThu.getKhachHang()),
                     phieuThu.getLyDo(),
                     ViewTheme.tien(phieuThu.getSoTien()),
                     phieuThu.getHinhThucThanhToan(),
                     phieuThu.getTrangThai(),
-                    bacSi != null ? bacSi.getHoTen() : "",
+                    phieuThu.getBacSi() == null ? "" : entity.Refs.tenNv(phieuThu.getBacSi()),
                     "",
                     phieuThu.getNguoiGioiThieu() == null ? "" : phieuThu.getNguoiGioiThieu(),
                     NgayUtil.fmtFull(phieuThu.getNgayTao()),
@@ -125,10 +124,9 @@ public class PhieuTienPanel extends JPanel {
             }
         } else {
             for (PhieuChi phieuChi : chiSvc.findAllPhieuChi()) {
-                NhaCungCap nhaCungCap = phieuChi.getMaNhaCungCap() == null ? null : findNcc(phieuChi.getMaNhaCungCap());
                 model.addRow(ViewTheme.dongBang(new Object[]{
                     phieuChi.getMaPhieuChi(),
-                    nhaCungCap != null ? nhaCungCap.getTenNhaCungCap() : phieuChi.getMaNhaCungCap(),
+                    entity.Refs.tenNcc(phieuChi.getNhaCungCap()),
                     phieuChi.getLoaiChiTieu(),
                     phieuChi.getLyDoChi(),
                     ViewTheme.tien(phieuChi.getSoTien()),
@@ -151,13 +149,13 @@ public class PhieuTienPanel extends JPanel {
         PhieuThu phieuThu = new PhieuThu();
         phieuThu.setMaPhieuThu(maThuMoi());
         phieuThu.setNgayThu(NgayUtil.parseDate(ngayThu) != null ? NgayUtil.parseDate(ngayThu) : LocalDate.now());
-        phieuThu.setMaKH(maKh);
+        phieuThu.setKhachHang(entity.Refs.khachHang(maKh));
         phieuThu.setLyDo(lyDo);
         phieuThu.setSoTien(parseTien(soTien));
         phieuThu.setHinhThucThanhToan(hinhThuc);
         phieuThu.setTrangThai(trangThai);
         phieuThu.setNgayTao(LocalDateTime.now());
-        phieuThu.setNguoiTao(DuLieuMau.NGUOI);
+        phieuThu.setNguoiTao(Refs.nhanVien(DuLieuMau.NGUOI));
         thuSvc.add(phieuThu);
         taiLai();
     }
@@ -219,10 +217,10 @@ public class PhieuTienPanel extends JPanel {
                 if (!sua) {
                     phieuThu.setMaPhieuThu(maThuMoi());
                     phieuThu.setNgayTao(LocalDateTime.now());
-                    phieuThu.setNguoiTao(DuLieuMau.NGUOI);
+                    phieuThu.setNguoiTao(Refs.nhanVien(DuLieuMau.NGUOI));
                 }
                 phieuThu.setNgayThu(LocalDate.now());
-                phieuThu.setMaKH(maKh);
+                phieuThu.setKhachHang(entity.Refs.khachHang(maKh));
                 phieuThu.setLyDo(txtLyDo.getText().trim());
                 phieuThu.setSoTien(parseTien(txtTien.getText()));
                 phieuThu.setHinhThucThanhToan(String.valueOf(cmbHinhThuc.getSelectedItem()));
@@ -249,10 +247,10 @@ public class PhieuTienPanel extends JPanel {
                 if (!sua) {
                     phieuChi.setMaPhieuChi(maChiMoi());
                     phieuChi.setNgayTao(LocalDateTime.now());
-                    phieuChi.setNguoiTao(DuLieuMau.NGUOI);
+                    phieuChi.setNguoiTao(Refs.nhanVien(DuLieuMau.NGUOI));
                 }
                 String tenNhaCungCap = String.valueOf(cmbNhaCungCap.getSelectedItem());
-                phieuChi.setMaNhaCungCap(maNccTheoTen(tenNhaCungCap));
+                phieuChi.setNhaCungCap(entity.Refs.nhaCungCap(maNccTheoTen(tenNhaCungCap)));
                 phieuChi.setLoaiChiTieu(String.valueOf(cmbLoai.getSelectedItem()));
                 phieuChi.setLyDoChi(txtLyDo.getText().trim());
                 phieuChi.setSoTien(parseTien(txtTien.getText()));
@@ -305,28 +303,11 @@ public class PhieuTienPanel extends JPanel {
     }
 
     private String maThuMoi() {
-        int max = 0;
-        for (PhieuThu phieuThu : thuSvc.findAllPhieuThu()) {
-            try {
-                max = Math.max(max, Integer.parseInt(phieuThu.getMaPhieuThu()));
-            } catch (Exception ignored) {
-            }
-        }
-        return String.format("%04d", max + 1);
+        return String.format("%04d", thuSvc.nextSo() + 1);
     }
 
     private String maChiMoi() {
-        int max = 0;
-        for (PhieuChi phieuChi : chiSvc.findAllPhieuChi()) {
-            String ma = phieuChi.getMaPhieuChi();
-            if (ma != null && ma.startsWith("PC")) {
-                try {
-                    max = Math.max(max, Integer.parseInt(ma.substring(2)));
-                } catch (Exception ignored) {
-                }
-            }
-        }
-        return String.format("PC%02d", max + 1);
+        return String.format("PC%02d", chiSvc.nextSo() + 1);
     }
 
     private static long parseTien(String s) {

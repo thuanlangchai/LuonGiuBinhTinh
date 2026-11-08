@@ -1,44 +1,50 @@
 package repository.impl;
 
+import entity.Refs;
 import entity.ThoiGianLamViec;
-import repository.ThoiGianLamViec_IDAO;
 import java.util.List;
 import mapper.ThoiGianLamViecMapper;
-
+import repository.ThoiGianLamViec_IDAO;
 
 public class ThoiGianLamViec_DAO extends AbstractDAO<ThoiGianLamViec> implements ThoiGianLamViec_IDAO {
 
+    private static final String SELECT = """
+            SELECT tg.maLich, tg.ngay, tg.gioBatDau, tg.gioKetThuc,
+                   bs.maNhanVien AS maBacSi, bs.hoTen AS tenBacSi,
+                   cn.maChiNhanh, cn.tenChiNhanh
+            FROM ThoiGianLamViec tg
+            LEFT JOIN NhanVien bs ON bs.maNhanVien = tg.maBacSi
+            LEFT JOIN ChiNhanh cn ON cn.maChiNhanh = tg.maChiNhanh
+            """;
+
+    private final ThoiGianLamViecMapper mapper = new ThoiGianLamViecMapper();
+
     @Override
     public List<ThoiGianLamViec> findAllThoiGianLamViec() {
-        String sql = "SELECT * FROM ThoiGianLamViec";
-        return findAll(sql, new ThoiGianLamViecMapper());
+        return query(SELECT + " ORDER BY tg.maLich", mapper);
     }
 
     @Override
     public ThoiGianLamViec findById(String maLich) {
-        String sql = "SELECT * FROM ThoiGianLamViec WHERE maLich = ?";
-        List<ThoiGianLamViec> ds = findAll(sql, new ThoiGianLamViecMapper(), maLich);
-        if (ds == null || ds.isEmpty()) {
-            return null;
-        }
-        return ds.get(0);
+        return one(SELECT + " WHERE tg.maLich = ?", mapper, maLich);
     }
 
     @Override
     public Integer add(ThoiGianLamViec entity) {
-        String sql = "INSERT INTO ThoiGianLamViec(maLich,ngay,gioBatDau,gioKetThuc,maBacSi,maChiNhanh) VALUES(?,?,?,?,?,?)";
-        return add(sql, entity.getMaLich(), entity.getNgay(), entity.getGioBatDau(), entity.getGioKetThuc(), entity.getMaBacSi(), entity.getMaChiNhanh());
+        return execute("INSERT INTO ThoiGianLamViec(maLich,ngay,gioBatDau,gioKetThuc,maBacSi,maChiNhanh) VALUES(?,?,?,?,?,?)",
+                entity.getMaLich(), entity.getNgay(), entity.getGioBatDau(), entity.getGioKetThuc(),
+                Refs.maNv(entity.getBacSi()), Refs.maCn(entity.getChiNhanh()));
     }
 
     @Override
     public void update(ThoiGianLamViec entity) {
-        String sql = "UPDATE ThoiGianLamViec SET ngay = ?, gioBatDau = ?, gioKetThuc = ?, maBacSi = ?, maChiNhanh = ? WHERE maLich = ?";
-        update(sql, entity.getNgay(), entity.getGioBatDau(), entity.getGioKetThuc(), entity.getMaBacSi(), entity.getMaChiNhanh(), entity.getMaLich());
+        execute("UPDATE ThoiGianLamViec SET ngay = ?, gioBatDau = ?, gioKetThuc = ?, maBacSi = ?, maChiNhanh = ? WHERE maLich = ?",
+                entity.getNgay(), entity.getGioBatDau(), entity.getGioKetThuc(), Refs.maNv(entity.getBacSi()),
+                Refs.maCn(entity.getChiNhanh()), entity.getMaLich());
     }
 
     @Override
     public void delete(String maLich) {
-        String sql = "DELETE FROM ThoiGianLamViec WHERE maLich = ?";
-        delete(sql, maLich);
+        execute("DELETE FROM ThoiGianLamViec WHERE maLich = ?", maLich);
     }
 }

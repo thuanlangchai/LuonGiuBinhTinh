@@ -1,1 +1,24 @@
-package mapper;import entity.ChiTietKeHoachDieuTri;import java.sql.ResultSet;import java.sql.SQLException;import java.time.LocalDate;public class ChiTietKeHoachDieuTriMapper implements RowMapper<ChiTietKeHoachDieuTri> {    @Override    public ChiTietKeHoachDieuTri mapper(ResultSet rs) {        try {            String maChiTiet = rs.getString("maChiTiet");            String maKeHoach = rs.getString("maKeHoach");            LocalDate ngay = Rs.date(rs, "ngay");            String maRang = rs.getString("maRang");            String maDichVu = rs.getString("maDichVu");            int soLuong = rs.getInt("soLuong");            long donGia = rs.getLong("donGia");            long thanhTien = rs.getLong("thanhTien");            String trangThai = rs.getString("trangThai");            String maHoaDon = rs.getString("maHoaDon");            return new ChiTietKeHoachDieuTri(maChiTiet, maKeHoach, ngay, maRang, maDichVu, soLuong, donGia, thanhTien, trangThai, maHoaDon);        } catch (SQLException e) {            return null;        }    }}
+package mapper;
+
+import entity.ChiTietKeHoachDieuTri;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+
+public class ChiTietKeHoachDieuTriMapper implements RowMapper<ChiTietKeHoachDieuTri> {
+
+    @Override
+    public ChiTietKeHoachDieuTri mapper(ResultSet rs) throws SQLException {
+        ChiTietKeHoachDieuTri entity = new ChiTietKeHoachDieuTri();
+        entity.setMaChiTiet(rs.getString("maChiTiet"));
+        entity.setNgay(Rs.date(rs, "ngay"));
+        entity.setSoLuong(rs.getInt("soLuong"));
+        entity.setDonGia(rs.getLong("donGia"));
+        entity.setThanhTien(rs.getLong("thanhTien"));
+        entity.setTrangThai(rs.getString("trangThai"));
+        entity.setKeHoachDieuTri(Maps.keHoach(rs, "maKeHoach", null));
+        entity.setRang(Maps.rang(rs, "maRang", "tenRang"));
+        entity.setDichVu(Maps.dichVu(rs, "maDichVu", "tenDichVu"));
+        entity.setHoaDon(Maps.hoaDon(rs, "maHoaDon"));
+        return entity;
+    }
+}

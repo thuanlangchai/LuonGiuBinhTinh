@@ -1,1 +1,23 @@
-package mapper;import entity.PhieuNhapKho;import java.sql.ResultSet;import java.sql.SQLException;import java.time.LocalDate;import java.time.LocalDateTime;public class PhieuNhapKhoMapper implements RowMapper<PhieuNhapKho> {    @Override    public PhieuNhapKho mapper(ResultSet rs) {        try {            String maPhieuNhap = rs.getString("maPhieuNhap");            LocalDate ngayNhap = Rs.date(rs, "ngayNhap");            String loaiVatTu = rs.getString("loaiVatTu");            String maNhaCungCap = rs.getString("maNhaCungCap");            String lyDo = rs.getString("lyDo");            long tongTien = rs.getLong("tongTien");            String fileExcel = rs.getString("fileExcel");            LocalDateTime ngayTao = Rs.dateTime(rs, "ngayTao");            String nguoiTao = rs.getString("nguoiTao");            return new PhieuNhapKho(maPhieuNhap, ngayNhap, loaiVatTu, maNhaCungCap, lyDo, tongTien, fileExcel, ngayTao, nguoiTao);        } catch (SQLException e) {            return null;        }    }}
+package mapper;
+
+import entity.PhieuNhapKho;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+
+public class PhieuNhapKhoMapper implements RowMapper<PhieuNhapKho> {
+
+    @Override
+    public PhieuNhapKho mapper(ResultSet rs) throws SQLException {
+        PhieuNhapKho entity = new PhieuNhapKho();
+        entity.setMaPhieuNhap(rs.getString("maPhieuNhap"));
+        entity.setNgayNhap(Rs.date(rs, "ngayNhap"));
+        entity.setLoaiVatTu(rs.getString("loaiVatTu"));
+        entity.setLyDo(rs.getString("lyDo"));
+        entity.setTongTien(rs.getLong("tongTien"));
+        entity.setFileExcel(rs.getString("fileExcel"));
+        entity.setNgayTao(Rs.dateTime(rs, "ngayTao"));
+        entity.setNguoiTao(Maps.nhanVien(rs, "nguoiTao", "tenNguoiTao"));
+        entity.setNhaCungCap(Maps.nhaCungCap(rs, "maNhaCungCap", "tenNhaCungCap"));
+        return entity;
+    }
+}

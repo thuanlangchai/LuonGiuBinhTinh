@@ -7,6 +7,7 @@ import entity.LichHen;
 import entity.PhieuChi;
 import entity.PhieuThu;
 import entity.ToaThuoc;
+import java.util.ArrayList;
 import java.util.List;
 import repository.impl.ChiTietKeHoachDieuTri_DAO;
 import repository.impl.HoaDon_DAO;
@@ -29,43 +30,59 @@ public class BaoCao_Service implements BaoCao_IService {
 
     @Override
     public List<ToaThuoc> baoCaoToaThuoc() {
-        return Lists.orEmpty(toaDao.findAllToaThuoc());
+        return toaDao.findAllToaThuoc();
     }
 
     @Override
     public List<PhieuThu> danhSachPhieuThu() {
-        return Lists.orEmpty(thuDao.findAllPhieuThu());
+        return thuDao.findAllPhieuThu();
     }
 
     @Override
     public List<PhieuChi> danhSachPhieuChi() {
-        return Lists.orEmpty(chiDao.findAllPhieuChi());
+        return chiDao.findAllPhieuChi();
     }
 
     @Override
     public List<HoaDon> danhSachHoaDon() {
-        return Lists.orEmpty(hoaDonDao.findAllHoaDon());
+        return hoaDonDao.findAllHoaDon();
     }
 
     @Override
     public List<LichHen> danhSachLichHen() {
-        return Lists.orEmpty(lichHenDao.findAllLichHen());
+        return lichHenDao.findAllLichHen();
     }
 
     @Override
     public List<KeHoachDieuTri> danhSachKeHoach() {
-        return Lists.orEmpty(keHoachDao.findAllKeHoachDieuTri());
+        return keHoachDao.findAllKeHoachDieuTri();
+    }
+
+    public List<KeHoachDieuTri> danhSachKeHoachKemChiTiet() {
+        List<KeHoachDieuTri> danhSach = keHoachDao.findAllKeHoachDieuTri();
+        if (danhSach.isEmpty()) {
+            return danhSach;
+        }
+        List<String> ids = new ArrayList<>();
+        for (KeHoachDieuTri keHoach : danhSach) {
+            ids.add(keHoach.getMaKeHoach());
+        }
+        var chiTiet = chiTietKhDao.findByMaKeHoachIn(ids);
+        for (KeHoachDieuTri keHoach : danhSach) {
+            keHoach.setChiTiet(chiTiet.getOrDefault(keHoach.getMaKeHoach(), List.of()));
+        }
+        return danhSach;
     }
 
     @Override
     public List<ChiTietKeHoachDieuTri> chiTietTheoKeHoach(String maKeHoach) {
-        return Lists.orEmpty(chiTietKhDao.findByMaKeHoach(maKeHoach));
+        return chiTietKhDao.findByMaKeHoach(maKeHoach);
     }
 
     @Override
     public long tongDaThuTheoKhach(String maKH) {
         long tong = 0;
-        for (HoaDon hd : hoaDonDao.findByMaKH(maKH) == null ? List.<HoaDon>of() : hoaDonDao.findByMaKH(maKH)) {
+        for (HoaDon hd : hoaDonDao.findByMaKH(maKH)) {
             tong += hd.getDaThu();
         }
         return tong;
@@ -74,7 +91,7 @@ public class BaoCao_Service implements BaoCao_IService {
     @Override
     public long tongConNoTheoKhach(String maKH) {
         long tong = 0;
-        for (HoaDon hd : hoaDonDao.findByMaKH(maKH) == null ? List.<HoaDon>of() : hoaDonDao.findByMaKH(maKH)) {
+        for (HoaDon hd : hoaDonDao.findByMaKH(maKH)) {
             tong += hd.getConNo();
         }
         return tong;

@@ -1,1 +1,20 @@
-package mapper;import entity.TaiKhoan;import java.sql.ResultSet;import java.sql.SQLException;import java.time.LocalDateTime;public class TaiKhoanMapper implements RowMapper<TaiKhoan> {    @Override    public TaiKhoan mapper(ResultSet rs) {        try {            String tenDangNhap = rs.getString("tenDangNhap");            String matKhau = rs.getString("matKhau");            String email = rs.getString("email");            String vaiTro = rs.getString("vaiTro");            String maNhanVien = rs.getString("maNhanVien");            boolean kichHoat = rs.getBoolean("kichHoat");            LocalDateTime ngayTao = Rs.dateTime(rs, "ngayTao");            return new TaiKhoan(tenDangNhap, matKhau, email, vaiTro, maNhanVien, kichHoat, ngayTao);        } catch (SQLException e) {            return null;        }    }}
+package mapper;
+
+import entity.TaiKhoan;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+
+public class TaiKhoanMapper implements RowMapper<TaiKhoan> {
+
+    @Override
+    public TaiKhoan mapper(ResultSet rs) throws SQLException {
+        TaiKhoan entity = new TaiKhoan();
+        entity.setTenDangNhap(rs.getString("tenDangNhap"));
+        entity.setMatKhau(rs.getString("matKhau"));
+        entity.setEmail(rs.getString("email"));
+        entity.setKichHoat(rs.getBoolean("kichHoat"));
+        entity.setNgayTao(Rs.dateTime(rs, "ngayTao"));
+        entity.setNhanVien(Maps.nhanVien(rs, "maNhanVien", "tenNhanVien"));
+        return entity;
+    }
+}

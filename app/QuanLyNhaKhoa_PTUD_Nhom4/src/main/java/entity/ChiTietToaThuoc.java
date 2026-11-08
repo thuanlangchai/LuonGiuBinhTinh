@@ -3,27 +3,13 @@ package entity;
 public class ChiTietToaThuoc {
 
     private String maChiTiet;
-    private String maToaThuoc;
-    private String maThuoc;
+    private ToaThuoc toaThuoc;
+    private Thuoc thuoc;
     private int soNgay;
     private String cachSuDung;
     private int tongSo;
     private long donGia;
     private long thanhTien;
-
-    public ChiTietToaThuoc() {
-    }
-
-    public ChiTietToaThuoc(String maChiTiet, String maToaThuoc, String maThuoc, int soNgay, String cachSuDung, int tongSo, long donGia, long thanhTien) {
-        this.maChiTiet = maChiTiet;
-        this.maToaThuoc = maToaThuoc;
-        this.maThuoc = maThuoc;
-        this.soNgay = soNgay;
-        this.cachSuDung = cachSuDung;
-        this.tongSo = tongSo;
-        this.donGia = donGia;
-        this.thanhTien = thanhTien;
-    }
 
     public String getMaChiTiet() {
         return maChiTiet;
@@ -33,20 +19,20 @@ public class ChiTietToaThuoc {
         this.maChiTiet = maChiTiet;
     }
 
-    public String getMaToaThuoc() {
-        return maToaThuoc;
+    public ToaThuoc getToaThuoc() {
+        return toaThuoc;
     }
 
-    public void setMaToaThuoc(String maToaThuoc) {
-        this.maToaThuoc = maToaThuoc;
+    public void setToaThuoc(ToaThuoc toaThuoc) {
+        this.toaThuoc = toaThuoc;
     }
 
-    public String getMaThuoc() {
-        return maThuoc;
+    public Thuoc getThuoc() {
+        return thuoc;
     }
 
-    public void setMaThuoc(String maThuoc) {
-        this.maThuoc = maThuoc;
+    public void setThuoc(Thuoc thuoc) {
+        this.thuoc = thuoc;
     }
 
     public int getSoNgay() {

@@ -3,21 +3,10 @@ package entity;
 public class DichVu {
 
     private String maDichVu;
-    private String maNhomDichVu;
+    private NhomDichVu nhomDichVu;
     private String tenDichVu;
     private long gia;
     private String trangThai;
-
-    public DichVu() {
-    }
-
-    public DichVu(String maDichVu, String maNhomDichVu, String tenDichVu, long gia, String trangThai) {
-        this.maDichVu = maDichVu;
-        this.maNhomDichVu = maNhomDichVu;
-        this.tenDichVu = tenDichVu;
-        this.gia = gia;
-        this.trangThai = trangThai;
-    }
 
     public String getMaDichVu() {
         return maDichVu;
@@ -27,12 +16,12 @@ public class DichVu {
         this.maDichVu = maDichVu;
     }
 
-    public String getMaNhomDichVu() {
-        return maNhomDichVu;
+    public NhomDichVu getNhomDichVu() {
+        return nhomDichVu;
     }
 
-    public void setMaNhomDichVu(String maNhomDichVu) {
-        this.maNhomDichVu = maNhomDichVu;
+    public void setNhomDichVu(NhomDichVu nhomDichVu) {
+        this.nhomDichVu = nhomDichVu;
     }
 
     public String getTenDichVu() {
@@ -58,6 +47,4 @@ public class DichVu {
     public void setTrangThai(String trangThai) {
         this.trangThai = trangThai;
     }
-    
-    
 }

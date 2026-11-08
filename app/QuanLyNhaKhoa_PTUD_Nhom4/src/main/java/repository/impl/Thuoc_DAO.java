@@ -1,44 +1,50 @@
 package repository.impl;
 
+import entity.Refs;
 import entity.Thuoc;
-import repository.Thuoc_IDAO;
 import java.util.List;
+import mapper.MaMapper;
 import mapper.ThuocMapper;
-
+import repository.Thuoc_IDAO;
 
 public class Thuoc_DAO extends AbstractDAO<Thuoc> implements Thuoc_IDAO {
 
+    private static final String SELECT = """
+            SELECT t.maThuoc, t.tenThuoc, t.gia, t.cachDung, dv.maDonVi, dv.tenDonVi
+            FROM Thuoc t
+            LEFT JOIN DonVi dv ON dv.maDonVi = t.maDonVi
+            """;
+
+    private final ThuocMapper mapper = new ThuocMapper();
+
     @Override
     public List<Thuoc> findAllThuoc() {
-        String sql = "SELECT * FROM Thuoc";
-        return findAll(sql, new ThuocMapper());
+        return query(SELECT + " ORDER BY t.maThuoc", mapper);
     }
 
     @Override
     public Thuoc findById(String maThuoc) {
-        String sql = "SELECT * FROM Thuoc WHERE maThuoc = ?";
-        List<Thuoc> ds = findAll(sql, new ThuocMapper(), maThuoc);
-        if (ds == null || ds.isEmpty()) {
-            return null;
-        }
-        return ds.get(0);
+        return one(SELECT + " WHERE t.maThuoc = ?", mapper, maThuoc);
+    }
+
+    public List<String> findExisting(List<String> ids) {
+        return queryIn("SELECT maThuoc FROM Thuoc WHERE maThuoc", ids, new MaMapper("maThuoc"));
     }
 
     @Override
     public Integer add(Thuoc entity) {
-        String sql = "INSERT INTO Thuoc(maThuoc,tenThuoc,maDonVi,gia,cachDung) VALUES(?,?,?,?,?)";
-        return add(sql, entity.getMaThuoc(), entity.getTenThuoc(), entity.getMaDonVi(), entity.getGia(), entity.getCachDung());
+        return execute("INSERT INTO Thuoc(maThuoc,tenThuoc,maDonVi,gia,cachDung) VALUES(?,?,?,?,?)",
+                entity.getMaThuoc(), entity.getTenThuoc(), Refs.maDonVi(entity.getDonVi()), entity.getGia(), entity.getCachDung());
     }
 
     @Override
     public void update(Thuoc entity) {
-        String sql = "UPDATE Thuoc SET tenThuoc = ?, maDonVi = ?, gia = ?, cachDung = ? WHERE maThuoc = ?";
-        update(sql, entity.getTenThuoc(), entity.getMaDonVi(), entity.getGia(), entity.getCachDung(), entity.getMaThuoc());
+        execute("UPDATE Thuoc SET tenThuoc = ?, maDonVi = ?, gia = ?, cachDung = ? WHERE maThuoc = ?",
+                entity.getTenThuoc(), Refs.maDonVi(entity.getDonVi()), entity.getGia(), entity.getCachDung(), entity.getMaThuoc());
     }
 
     @Override
     public void delete(String maThuoc) {
-        String sql = "DELETE FROM Thuoc WHERE maThuoc = ?";
-        delete(sql, maThuoc);
+        execute("DELETE FROM Thuoc WHERE maThuoc = ?", maThuoc);
     }
 }

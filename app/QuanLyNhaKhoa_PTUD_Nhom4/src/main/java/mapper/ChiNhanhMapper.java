@@ -1,1 +1,18 @@
-package mapper;import entity.ChiNhanh;import java.sql.ResultSet;import java.sql.SQLException;public class ChiNhanhMapper implements RowMapper<ChiNhanh> {    @Override    public ChiNhanh mapper(ResultSet rs) {        try {            String maChiNhanh = rs.getString("maChiNhanh");            String tenChiNhanh = rs.getString("tenChiNhanh");            String diaChi = rs.getString("diaChi");            String dienThoai = rs.getString("dienThoai");            return new ChiNhanh(maChiNhanh, tenChiNhanh, diaChi, dienThoai);        } catch (SQLException e) {            return null;        }    }}
+package mapper;
+
+import entity.ChiNhanh;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+
+public class ChiNhanhMapper implements RowMapper<ChiNhanh> {
+
+    @Override
+    public ChiNhanh mapper(ResultSet rs) throws SQLException {
+        ChiNhanh entity = new ChiNhanh();
+        entity.setMaChiNhanh(rs.getString("maChiNhanh"));
+        entity.setTenChiNhanh(rs.getString("tenChiNhanh"));
+        entity.setDiaChi(rs.getString("diaChi"));
+        entity.setDienThoai(rs.getString("dienThoai"));
+        return entity;
+    }
+}

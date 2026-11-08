@@ -6,7 +6,7 @@ import java.time.LocalDateTime;
 public class PhieuChi {
 
     private String maPhieuChi;
-    private String maNhaCungCap;
+    private NhaCungCap nhaCungCap;
     private String loaiChiTieu;
     private String lyDoChi;
     private long soTien;
@@ -14,23 +14,7 @@ public class PhieuChi {
     private String hinhThucThanhToan;
     private String trangThai;
     private LocalDateTime ngayTao;
-    private String nguoiTao;
-
-    public PhieuChi() {
-    }
-
-    public PhieuChi(String maPhieuChi, String maNhaCungCap, String loaiChiTieu, String lyDoChi, long soTien, LocalDate ngayChi, String hinhThucThanhToan, String trangThai, LocalDateTime ngayTao, String nguoiTao) {
-        this.maPhieuChi = maPhieuChi;
-        this.maNhaCungCap = maNhaCungCap;
-        this.loaiChiTieu = loaiChiTieu;
-        this.lyDoChi = lyDoChi;
-        this.soTien = soTien;
-        this.ngayChi = ngayChi;
-        this.hinhThucThanhToan = hinhThucThanhToan;
-        this.trangThai = trangThai;
-        this.ngayTao = ngayTao;
-        this.nguoiTao = nguoiTao;
-    }
+    private NhanVien nguoiTao;
 
     public String getMaPhieuChi() {
         return maPhieuChi;
@@ -40,12 +24,12 @@ public class PhieuChi {
         this.maPhieuChi = maPhieuChi;
     }
 
-    public String getMaNhaCungCap() {
-        return maNhaCungCap;
+    public NhaCungCap getNhaCungCap() {
+        return nhaCungCap;
     }
 
-    public void setMaNhaCungCap(String maNhaCungCap) {
-        this.maNhaCungCap = maNhaCungCap;
+    public void setNhaCungCap(NhaCungCap nhaCungCap) {
+        this.nhaCungCap = nhaCungCap;
     }
 
     public String getLoaiChiTieu() {
@@ -104,11 +88,13 @@ public class PhieuChi {
         this.ngayTao = ngayTao;
     }
 
-    public String getNguoiTao() {
+    public NhanVien getNguoiTao() {
         return nguoiTao;
     }
 
-    public void setNguoiTao(String nguoiTao) {
+    public void setNguoiTao(NhanVien nguoiTao) {
         this.nguoiTao = nguoiTao;
     }
+
+
 }

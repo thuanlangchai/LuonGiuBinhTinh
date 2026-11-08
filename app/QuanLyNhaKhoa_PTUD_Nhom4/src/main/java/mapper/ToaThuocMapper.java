@@ -1,1 +1,23 @@
-package mapper;import entity.ToaThuoc;import java.sql.ResultSet;import java.sql.SQLException;import java.time.LocalDateTime;public class ToaThuocMapper implements RowMapper<ToaThuoc> {    @Override    public ToaThuoc mapper(ResultSet rs) {        try {            String maToaThuoc = rs.getString("maToaThuoc");            String maKH = rs.getString("maKH");            String maChanDoan = rs.getString("maChanDoan");            String maBacSi = rs.getString("maBacSi");            String hinhThucThanhToan = rs.getString("hinhThucThanhToan");            boolean nhanTaiPhongKham = rs.getBoolean("nhanTaiPhongKham");            String ghiChu = rs.getString("ghiChu");            long thanhTien = rs.getLong("thanhTien");            LocalDateTime ngayTao = Rs.dateTime(rs, "ngayTao");            return new ToaThuoc(maToaThuoc, maKH, maChanDoan, maBacSi, hinhThucThanhToan, nhanTaiPhongKham, ghiChu, thanhTien, ngayTao);        } catch (SQLException e) {            return null;        }    }}
+package mapper;
+
+import entity.ToaThuoc;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+
+public class ToaThuocMapper implements RowMapper<ToaThuoc> {
+
+    @Override
+    public ToaThuoc mapper(ResultSet rs) throws SQLException {
+        ToaThuoc entity = new ToaThuoc();
+        entity.setMaToaThuoc(rs.getString("maToaThuoc"));
+        entity.setMaChanDoan(rs.getString("maChanDoan"));
+        entity.setHinhThucThanhToan(rs.getString("hinhThucThanhToan"));
+        entity.setNhanTaiPhongKham(rs.getBoolean("nhanTaiPhongKham"));
+        entity.setGhiChu(rs.getString("ghiChu"));
+        entity.setThanhTien(rs.getLong("thanhTien"));
+        entity.setNgayTao(Rs.dateTime(rs, "ngayTao"));
+        entity.setKhachHang(Maps.khachHang(rs, "maKH", "tenKhachHang", null));
+        entity.setBacSi(Maps.nhanVien(rs, "maBacSi", "tenBacSi"));
+        return entity;
+    }
+}

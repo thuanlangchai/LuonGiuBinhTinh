@@ -1,1 +1,17 @@
-package mapper;import entity.NhomDichVu;import java.sql.ResultSet;import java.sql.SQLException;public class NhomDichVuMapper implements RowMapper<NhomDichVu> {    @Override    public NhomDichVu mapper(ResultSet rs) {        try {            String maNhom = rs.getString("maNhom");            String tenNhomDichVu = rs.getString("tenNhomDichVu");            String moTa = rs.getString("moTa");            return new NhomDichVu(maNhom, tenNhomDichVu, moTa);        } catch (SQLException e) {            return null;        }    }}
+package mapper;
+
+import entity.NhomDichVu;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+
+public class NhomDichVuMapper implements RowMapper<NhomDichVu> {
+
+    @Override
+    public NhomDichVu mapper(ResultSet rs) throws SQLException {
+        NhomDichVu entity = new NhomDichVu();
+        entity.setMaNhom(rs.getString("maNhom"));
+        entity.setTenNhomDichVu(rs.getString("tenNhomDichVu"));
+        entity.setMoTa(rs.getString("moTa"));
+        return entity;
+    }
+}

@@ -1,49 +1,68 @@
 package repository.impl;
 
 import entity.ChiTietToaThuoc;
-import repository.ChiTietToaThuoc_IDAO;
+import entity.Refs;
+import java.util.ArrayList;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 import mapper.ChiTietToaThuocMapper;
-
+import repository.ChiTietToaThuoc_IDAO;
 
 public class ChiTietToaThuoc_DAO extends AbstractDAO<ChiTietToaThuoc> implements ChiTietToaThuoc_IDAO {
 
+    private static final String SELECT = """
+            SELECT ct.maChiTiet, ct.soNgay, ct.cachSuDung, ct.tongSo, ct.donGia, ct.thanhTien,
+                   ct.maToaThuoc, th.maThuoc, th.tenThuoc
+            FROM ChiTietToaThuoc ct
+            JOIN Thuoc th ON th.maThuoc = ct.maThuoc
+            """;
+
+    private final ChiTietToaThuocMapper mapper = new ChiTietToaThuocMapper();
+
     @Override
     public List<ChiTietToaThuoc> findAllChiTietToaThuoc() {
-        String sql = "SELECT * FROM ChiTietToaThuoc";
-        return findAll(sql, new ChiTietToaThuocMapper());
+        return query(SELECT, mapper);
     }
 
     @Override
     public ChiTietToaThuoc findById(String maChiTiet) {
-        String sql = "SELECT * FROM ChiTietToaThuoc WHERE maChiTiet = ?";
-        List<ChiTietToaThuoc> ds = findAll(sql, new ChiTietToaThuocMapper(), maChiTiet);
-        if (ds == null || ds.isEmpty()) {
-            return null;
+        return one(SELECT + " WHERE ct.maChiTiet = ?", mapper, maChiTiet);
+    }
+
+    @Override
+    public List<ChiTietToaThuoc> findByMaToaThuoc(String maToaThuoc) {
+        return query(SELECT + " WHERE ct.maToaThuoc = ?", mapper, maToaThuoc);
+    }
+
+    public Map<String, List<ChiTietToaThuoc>> findByMaToaThuocIn(List<String> ids) {
+        Map<String, List<ChiTietToaThuoc>> map = new LinkedHashMap<>();
+        for (ChiTietToaThuoc row : queryIn(SELECT + " WHERE ct.maToaThuoc", ids, mapper)) {
+            map.computeIfAbsent(Refs.maToa(row.getToaThuoc()), key -> new ArrayList<>()).add(row);
         }
-        return ds.get(0);
+        return map;
+    }
+
+    public void deleteByMaToaThuoc(String maToaThuoc) {
+        execute("DELETE FROM ChiTietToaThuoc WHERE maToaThuoc = ?", maToaThuoc);
     }
 
     @Override
     public Integer add(ChiTietToaThuoc entity) {
         String sql = "INSERT INTO ChiTietToaThuoc(maChiTiet,maToaThuoc,maThuoc,soNgay,cachSuDung,tongSo,donGia,thanhTien) VALUES(?,?,?,?,?,?,?,?)";
-        return add(sql, entity.getMaChiTiet(), entity.getMaToaThuoc(), entity.getMaThuoc(), entity.getSoNgay(), entity.getCachSuDung(), entity.getTongSo(), entity.getDonGia(), entity.getThanhTien());
+        return execute(sql, entity.getMaChiTiet(), Refs.maToa(entity.getToaThuoc()), Refs.maThuoc(entity.getThuoc()),
+                entity.getSoNgay(), entity.getCachSuDung(), entity.getTongSo(), entity.getDonGia(), entity.getThanhTien());
     }
 
     @Override
     public void update(ChiTietToaThuoc entity) {
         String sql = "UPDATE ChiTietToaThuoc SET maToaThuoc = ?, maThuoc = ?, soNgay = ?, cachSuDung = ?, tongSo = ?, donGia = ?, thanhTien = ? WHERE maChiTiet = ?";
-        update(sql, entity.getMaToaThuoc(), entity.getMaThuoc(), entity.getSoNgay(), entity.getCachSuDung(), entity.getTongSo(), entity.getDonGia(), entity.getThanhTien(), entity.getMaChiTiet());
+        execute(sql, Refs.maToa(entity.getToaThuoc()), Refs.maThuoc(entity.getThuoc()), entity.getSoNgay(),
+                entity.getCachSuDung(), entity.getTongSo(), entity.getDonGia(), entity.getThanhTien(), entity.getMaChiTiet());
     }
 
     @Override
     public void delete(String maChiTiet) {
-        String sql = "DELETE FROM ChiTietToaThuoc WHERE maChiTiet = ?";
-        delete(sql, maChiTiet);
-    }
-    @Override
-    public List<ChiTietToaThuoc> findByMaToaThuoc(String maToaThuoc) {
-        String sql = "SELECT * FROM ChiTietToaThuoc WHERE maToaThuoc = ?";
-        return findAll(sql, new ChiTietToaThuocMapper(), maToaThuoc);
+        execute("DELETE FROM ChiTietToaThuoc WHERE maChiTiet = ?", maChiTiet);
     }
 }

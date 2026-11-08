@@ -5,30 +5,14 @@ import java.time.LocalDateTime;
 public class LichHen {
 
     private String maLichHen;
-    private String maKH;
+    private KhachHang khachHang;
     private LocalDateTime batDau;
     private int thoiLuongPhut;
-    private String maBacSi;
-    private String maPhuTa;
+    private NhanVien bacSi;
+    private NhanVien phuTa;
+    private KeHoachDieuTri keHoachDieuTri;
     private String ghiChu;
     private String trangThai;
-
-    public LichHen() {
-    }
-
-    public LichHen(String maLichHen, String maKH, LocalDateTime batDau, int thoiLuongPhut, String maBacSi,
-            String maPhuTa, String ghiChu, String trangThai) {
-        super();
-        this.maLichHen = maLichHen;
-        this.maKH = maKH;
-        this.batDau = batDau;
-        this.thoiLuongPhut = thoiLuongPhut;
-        this.maBacSi = maBacSi;
-        this.maPhuTa = maPhuTa;
-        this.ghiChu = ghiChu;
-        this.trangThai = trangThai;
-    }
-
 
     public String getMaLichHen() {
         return maLichHen;
@@ -38,13 +22,12 @@ public class LichHen {
         this.maLichHen = maLichHen;
     }
 
-
-    public String getMaKH() {
-        return maKH;
+    public KhachHang getKhachHang() {
+        return khachHang;
     }
 
-    public void setMaKH(String maKH) {
-        this.maKH = maKH;
+    public void setKhachHang(KhachHang khachHang) {
+        this.khachHang = khachHang;
     }
 
     public LocalDateTime getBatDau() {
@@ -63,20 +46,28 @@ public class LichHen {
         this.thoiLuongPhut = thoiLuongPhut;
     }
 
-    public String getMaBacSi() {
-        return maBacSi;
+    public NhanVien getBacSi() {
+        return bacSi;
     }
 
-    public void setMaBacSi(String maBacSi) {
-        this.maBacSi = maBacSi;
+    public void setBacSi(NhanVien bacSi) {
+        this.bacSi = bacSi;
     }
 
-    public String getMaPhuTa() {
-        return maPhuTa;
+    public NhanVien getPhuTa() {
+        return phuTa;
     }
 
-    public void setMaPhuTa(String maPhuTa) {
-        this.maPhuTa = maPhuTa;
+    public void setPhuTa(NhanVien phuTa) {
+        this.phuTa = phuTa;
+    }
+
+    public KeHoachDieuTri getKeHoachDieuTri() {
+        return keHoachDieuTri;
+    }
+
+    public void setKeHoachDieuTri(KeHoachDieuTri keHoachDieuTri) {
+        this.keHoachDieuTri = keHoachDieuTri;
     }
 
     public String getGhiChu() {

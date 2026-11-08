@@ -239,13 +239,13 @@ public class KhachHangPanel extends JPanel {
             nullToEmpty(kh.getDiaChi()),
             nullToEmpty(kh.getCccd()),
             nullToEmpty(kh.getGhiChu()),
-            nullToEmpty(kh.getMaNhom()),
-            nullToEmpty(kh.getMaChiNhanh()),
+            nullToEmpty(entity.Refs.maNhomKh(kh.getNhomKhachHang())),
+            nullToEmpty(entity.Refs.maCn(kh.getChiNhanh())),
             nullToEmpty(kh.getLyDoKham()),
             nullToEmpty(kh.getTienSuBenh()),
             nullToEmpty(kh.getDiUng()),
-            nullToEmpty(kh.getMaBacSi()),
-            nullToEmpty(kh.getMaTuVan()),
+            nullToEmpty(entity.Refs.maNv(kh.getBacSi())),
+            nullToEmpty(entity.Refs.maNv(kh.getTuVan())),
             String.valueOf(kh.getSoLanKham()),
             NgayUtil.fmt(kh.getLanKhamGanNhat()),
             NgayUtil.fmt(kh.getNgayTao())
@@ -406,14 +406,14 @@ public class KhachHangPanel extends JPanel {
             kh.setDiaChi(txtdiaChi.getText().trim());
             kh.setCccd(txtcccd.getText().trim());
             kh.setGhiChu(txtghi.getText().trim());
-            kh.setMaNhom(String.valueOf(cmbNhom.getSelectedItem()));
+            kh.setNhomKhachHang(entity.Refs.nhomKhach(String.valueOf(cmbNhom.getSelectedItem())));
             String cn = String.valueOf(cmbChiNhanh.getSelectedItem());
-            kh.setMaChiNhanh(cn.startsWith("CN") ? cn.split(" ")[0] : "CN1");
+            kh.setChiNhanh(entity.Refs.chiNhanh(cn.startsWith("CN") ? cn.split(" ")[0] : "CN1"));
             kh.setLyDoKham(txtlyDo.getText().trim());
             kh.setTienSuBenh(txttienSu.getText().trim());
             kh.setDiUng(txtdiUng.getText().trim());
-            kh.setMaBacSi(maTuCombo(cmbBacSi));
-            kh.setMaTuVan(maTuCombo(cmbTuVan));
+            kh.setBacSi(entity.Refs.nhanVien(maTuCombo(cmbBacSi)));
+            kh.setTuVan(entity.Refs.nhanVien(maTuCombo(cmbTuVan)));
             if (!sua) {
                 kh.setSoLanKham(0);
                 kh.setNgayTao(LocalDateTime.now());

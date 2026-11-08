@@ -2,34 +2,20 @@ package entity;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.List;
 
 public class KeHoachDieuTri {
 
     private String maKeHoach;
-    private String maKH;
+    private KhachHang khachHang;
     private LocalDate ngayKeHoach;
-    private String maBacSi;
+    private NhanVien bacSi;
     private String lyDoDieuTri;
     private String ghiChu;
     private String trangThai;
     private LocalDateTime ngayTao;
-    private String nguoiTao;
-
-    public KeHoachDieuTri() {
-    }
-
-    public KeHoachDieuTri(String maKeHoach, String maKH, LocalDate ngayKeHoach, String maBacSi,
-            String lyDoDieuTri, String ghiChu, String trangThai, LocalDateTime ngayTao, String nguoiTao) {
-        this.maKeHoach = maKeHoach;
-        this.maKH = maKH;
-        this.ngayKeHoach = ngayKeHoach;
-        this.maBacSi = maBacSi;
-        this.lyDoDieuTri = lyDoDieuTri;
-        this.ghiChu = ghiChu;
-        this.trangThai = trangThai;
-        this.ngayTao = ngayTao;
-        this.nguoiTao = nguoiTao;
-    }
+    private NhanVien nguoiTao;
+    private List<ChiTietKeHoachDieuTri> chiTiet;
 
     public String getMaKeHoach() {
         return maKeHoach;
@@ -39,12 +25,12 @@ public class KeHoachDieuTri {
         this.maKeHoach = maKeHoach;
     }
 
-    public String getMaKH() {
-        return maKH;
+    public KhachHang getKhachHang() {
+        return khachHang;
     }
 
-    public void setMaKH(String maKH) {
-        this.maKH = maKH;
+    public void setKhachHang(KhachHang khachHang) {
+        this.khachHang = khachHang;
     }
 
     public LocalDate getNgayKeHoach() {
@@ -55,12 +41,12 @@ public class KeHoachDieuTri {
         this.ngayKeHoach = ngayKeHoach;
     }
 
-    public String getMaBacSi() {
-        return maBacSi;
+    public NhanVien getBacSi() {
+        return bacSi;
     }
 
-    public void setMaBacSi(String maBacSi) {
-        this.maBacSi = maBacSi;
+    public void setBacSi(NhanVien bacSi) {
+        this.bacSi = bacSi;
     }
 
     public String getLyDoDieuTri() {
@@ -95,11 +81,19 @@ public class KeHoachDieuTri {
         this.ngayTao = ngayTao;
     }
 
-    public String getNguoiTao() {
+    public NhanVien getNguoiTao() {
         return nguoiTao;
     }
 
-    public void setNguoiTao(String nguoiTao) {
+    public void setNguoiTao(NhanVien nguoiTao) {
         this.nguoiTao = nguoiTao;
+    }
+
+    public List<ChiTietKeHoachDieuTri> getChiTiet() {
+        return chiTiet;
+    }
+
+    public void setChiTiet(List<ChiTietKeHoachDieuTri> chiTiet) {
+        this.chiTiet = chiTiet;
     }
 }

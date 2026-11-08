@@ -1,1 +1,16 @@
-package mapper;import entity.DonVi;import java.sql.ResultSet;import java.sql.SQLException;public class DonViMapper implements RowMapper<DonVi> {    @Override    public DonVi mapper(ResultSet rs) {        try {            String maDonVi = rs.getString("maDonVi");            String tenDonVi = rs.getString("tenDonVi");            return new DonVi(maDonVi, tenDonVi);        } catch (SQLException e) {            return null;        }    }}
+package mapper;
+
+import entity.DonVi;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+
+public class DonViMapper implements RowMapper<DonVi> {
+
+    @Override
+    public DonVi mapper(ResultSet rs) throws SQLException {
+        DonVi entity = new DonVi();
+        entity.setMaDonVi(rs.getString("maDonVi"));
+        entity.setTenDonVi(rs.getString("tenDonVi"));
+        return entity;
+    }
+}

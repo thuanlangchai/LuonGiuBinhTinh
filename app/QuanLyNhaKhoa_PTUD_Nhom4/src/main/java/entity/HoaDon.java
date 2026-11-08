@@ -2,14 +2,15 @@ package entity;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.List;
 
 public class HoaDon {
-	
+
     private String maHoaDon;
     private LocalDate ngayLap;
-    private String maKH;
-    private String maKeHoach;
-    private String maBacSi;
+    private KhachHang khachHang;
+    private KeHoachDieuTri keHoachDieuTri;
+    private NhanVien bacSi;
     private long tongTien;
     private long chietKhau;
     private long thanhTien;
@@ -18,27 +19,8 @@ public class HoaDon {
     private String trangThai;
     private String ghiChu;
     private LocalDateTime ngayTao;
-    private String nguoiTao;
-
-    public HoaDon() {
-    }
-
-    public HoaDon(String maHoaDon, LocalDate ngayLap, String maKH, String maKeHoach, String maBacSi, long tongTien, long chietKhau, long thanhTien, long daThu, long conNo, String trangThai, String ghiChu, LocalDateTime ngayTao, String nguoiTao) {
-        this.maHoaDon = maHoaDon;
-        this.ngayLap = ngayLap;
-        this.maKH = maKH;
-        this.maKeHoach = maKeHoach;
-        this.maBacSi = maBacSi;
-        this.tongTien = tongTien;
-        this.chietKhau = chietKhau;
-        this.thanhTien = thanhTien;
-        this.daThu = daThu;
-        this.conNo = conNo;
-        this.trangThai = trangThai;
-        this.ghiChu = ghiChu;
-        this.ngayTao = ngayTao;
-        this.nguoiTao = nguoiTao;
-    }
+    private NhanVien nguoiTao;
+    private List<ChiTietHoaDon> chiTietHoaDon;
 
     public String getMaHoaDon() {
         return maHoaDon;
@@ -56,28 +38,28 @@ public class HoaDon {
         this.ngayLap = ngayLap;
     }
 
-    public String getMaKH() {
-        return maKH;
+    public KhachHang getKhachHang() {
+        return khachHang;
     }
 
-    public void setMaKH(String maKH) {
-        this.maKH = maKH;
+    public void setKhachHang(KhachHang khachHang) {
+        this.khachHang = khachHang;
     }
 
-    public String getMaKeHoach() {
-        return maKeHoach;
+    public KeHoachDieuTri getKeHoachDieuTri() {
+        return keHoachDieuTri;
     }
 
-    public void setMaKeHoach(String maKeHoach) {
-        this.maKeHoach = maKeHoach;
+    public void setKeHoachDieuTri(KeHoachDieuTri keHoachDieuTri) {
+        this.keHoachDieuTri = keHoachDieuTri;
     }
 
-    public String getMaBacSi() {
-        return maBacSi;
+    public NhanVien getBacSi() {
+        return bacSi;
     }
 
-    public void setMaBacSi(String maBacSi) {
-        this.maBacSi = maBacSi;
+    public void setBacSi(NhanVien bacSi) {
+        this.bacSi = bacSi;
     }
 
     public long getTongTien() {
@@ -144,11 +126,19 @@ public class HoaDon {
         this.ngayTao = ngayTao;
     }
 
-    public String getNguoiTao() {
+    public NhanVien getNguoiTao() {
         return nguoiTao;
     }
 
-    public void setNguoiTao(String nguoiTao) {
+    public void setNguoiTao(NhanVien nguoiTao) {
         this.nguoiTao = nguoiTao;
+    }
+
+    public List<ChiTietHoaDon> getChiTietHoaDon() {
+        return chiTietHoaDon;
+    }
+
+    public void setChiTietHoaDon(List<ChiTietHoaDon> chiTietHoaDon) {
+        this.chiTietHoaDon = chiTietHoaDon;
     }
 }

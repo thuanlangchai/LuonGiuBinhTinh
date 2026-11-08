@@ -1,44 +1,48 @@
 package repository.impl;
 
 import entity.PhieuXuatKho;
-import repository.PhieuXuatKho_IDAO;
+import entity.Refs;
 import java.util.List;
 import mapper.PhieuXuatKhoMapper;
-
+import repository.PhieuXuatKho_IDAO;
 
 public class PhieuXuatKho_DAO extends AbstractDAO<PhieuXuatKho> implements PhieuXuatKho_IDAO {
 
+    private static final String SELECT = """
+            SELECT px.maPhieuXuat, px.ngayXuat, px.loaiVatTu, px.lyDo, px.tongTien, px.ngayTao, px.nguoiTao,
+                   ncc.maNhaCungCap, ncc.tenNhaCungCap
+            FROM PhieuXuatKho px
+            LEFT JOIN NhaCungCap ncc ON ncc.maNhaCungCap = px.maNhaCungCap
+            """;
+
+    private final PhieuXuatKhoMapper mapper = new PhieuXuatKhoMapper();
+
     @Override
     public List<PhieuXuatKho> findAllPhieuXuatKho() {
-        String sql = "SELECT * FROM PhieuXuatKho";
-        return findAll(sql, new PhieuXuatKhoMapper());
+        return query(SELECT + " ORDER BY px.ngayXuat DESC, px.maPhieuXuat", mapper);
     }
 
     @Override
     public PhieuXuatKho findById(String maPhieuXuat) {
-        String sql = "SELECT * FROM PhieuXuatKho WHERE maPhieuXuat = ?";
-        List<PhieuXuatKho> ds = findAll(sql, new PhieuXuatKhoMapper(), maPhieuXuat);
-        if (ds == null || ds.isEmpty()) {
-            return null;
-        }
-        return ds.get(0);
+        return one(SELECT + " WHERE px.maPhieuXuat = ?", mapper, maPhieuXuat);
     }
 
     @Override
     public Integer add(PhieuXuatKho entity) {
-        String sql = "INSERT INTO PhieuXuatKho(maPhieuXuat,ngayXuat,loaiVatTu,maNhaCungCap,lyDo,tongTien,ngayTao,nguoiTao) VALUES(?,?,?,?,?,?,?,?)";
-        return add(sql, entity.getMaPhieuXuat(), entity.getNgayXuat(), entity.getLoaiVatTu(), entity.getMaNhaCungCap(), entity.getLyDo(), entity.getTongTien(), entity.getNgayTao(), entity.getNguoiTao());
+        return execute("INSERT INTO PhieuXuatKho(maPhieuXuat,ngayXuat,loaiVatTu,maNhaCungCap,lyDo,tongTien,ngayTao,nguoiTao) VALUES(?,?,?,?,?,?,?,?)",
+                entity.getMaPhieuXuat(), entity.getNgayXuat(), entity.getLoaiVatTu(), Refs.maNcc(entity.getNhaCungCap()),
+                entity.getLyDo(), entity.getTongTien(), entity.getNgayTao(), entity.getNguoiTao());
     }
 
     @Override
     public void update(PhieuXuatKho entity) {
-        String sql = "UPDATE PhieuXuatKho SET ngayXuat = ?, loaiVatTu = ?, maNhaCungCap = ?, lyDo = ?, tongTien = ?, ngayTao = ?, nguoiTao = ? WHERE maPhieuXuat = ?";
-        update(sql, entity.getNgayXuat(), entity.getLoaiVatTu(), entity.getMaNhaCungCap(), entity.getLyDo(), entity.getTongTien(), entity.getNgayTao(), entity.getNguoiTao(), entity.getMaPhieuXuat());
+        execute("UPDATE PhieuXuatKho SET ngayXuat = ?, loaiVatTu = ?, maNhaCungCap = ?, lyDo = ?, tongTien = ?, ngayTao = ?, nguoiTao = ? WHERE maPhieuXuat = ?",
+                entity.getNgayXuat(), entity.getLoaiVatTu(), Refs.maNcc(entity.getNhaCungCap()), entity.getLyDo(),
+                entity.getTongTien(), entity.getNgayTao(), entity.getNguoiTao(), entity.getMaPhieuXuat());
     }
 
     @Override
     public void delete(String maPhieuXuat) {
-        String sql = "DELETE FROM PhieuXuatKho WHERE maPhieuXuat = ?";
-        delete(sql, maPhieuXuat);
+        execute("DELETE FROM PhieuXuatKho WHERE maPhieuXuat = ?", maPhieuXuat);
     }
 }

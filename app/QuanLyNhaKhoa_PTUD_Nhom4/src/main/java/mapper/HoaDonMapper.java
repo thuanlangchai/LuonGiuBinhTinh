@@ -1,1 +1,28 @@
-package mapper;import entity.HoaDon;import java.sql.ResultSet;import java.sql.SQLException;import java.time.LocalDate;import java.time.LocalDateTime;public class HoaDonMapper implements RowMapper<HoaDon> {    @Override    public HoaDon mapper(ResultSet rs) {        try {            String maHoaDon = rs.getString("maHoaDon");            LocalDate ngayLap = Rs.date(rs, "ngayLap");            String maKH = rs.getString("maKH");            String maKeHoach = rs.getString("maKeHoach");            String maBacSi = rs.getString("maBacSi");            long tongTien = rs.getLong("tongTien");            long chietKhau = rs.getLong("chietKhau");            long thanhTien = rs.getLong("thanhTien");            long daThu = rs.getLong("daThu");            long conNo = rs.getLong("conNo");            String trangThai = rs.getString("trangThai");            String ghiChu = rs.getString("ghiChu");            LocalDateTime ngayTao = Rs.dateTime(rs, "ngayTao");            String nguoiTao = rs.getString("nguoiTao");            return new HoaDon(maHoaDon, ngayLap, maKH, maKeHoach, maBacSi, tongTien, chietKhau, thanhTien, daThu, conNo, trangThai, ghiChu, ngayTao, nguoiTao);        } catch (SQLException e) {            return null;        }    }}
+package mapper;
+
+import entity.HoaDon;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+
+public class HoaDonMapper implements RowMapper<HoaDon> {
+
+    @Override
+    public HoaDon mapper(ResultSet rs) throws SQLException {
+        HoaDon entity = new HoaDon();
+        entity.setMaHoaDon(rs.getString("maHoaDon"));
+        entity.setNgayLap(Rs.date(rs, "ngayLap"));
+        entity.setTongTien(rs.getLong("tongTien"));
+        entity.setChietKhau(rs.getLong("chietKhau"));
+        entity.setThanhTien(rs.getLong("thanhTien"));
+        entity.setDaThu(rs.getLong("daThu"));
+        entity.setConNo(rs.getLong("conNo"));
+        entity.setTrangThai(rs.getString("trangThai"));
+        entity.setGhiChu(rs.getString("ghiChu"));
+        entity.setNgayTao(Rs.dateTime(rs, "ngayTao"));
+        entity.setNguoiTao(Maps.nhanVien(rs, "nguoiTao", "tenNguoiTao"));
+        entity.setKhachHang(Maps.khachHang(rs, "maKH", "tenKhachHang", null));
+        entity.setKeHoachDieuTri(Maps.keHoach(rs, "maKeHoach", "lyDoKeHoach"));
+        entity.setBacSi(Maps.nhanVien(rs, "maBacSi", "tenBacSi"));
+        return entity;
+    }
+}

@@ -7,30 +7,18 @@ public class TaiKhoan {
     private String tenDangNhap;
     private String matKhau;
     private String email;
-    private String vaiTro;
-    private String maNhanVien;
+    private NhanVien nhanVien;
     private boolean kichHoat;
     private LocalDateTime ngayTao;
 
     public TaiKhoan() {
     }
 
-    public TaiKhoan(String tenDangNhap, String matKhau, String email, String vaiTro,
-            String maNhanVien, boolean kichHoat, LocalDateTime ngayTao) {
+    public TaiKhoan(String tenDangNhap, String matKhau) {
         this.tenDangNhap = tenDangNhap;
         this.matKhau = matKhau;
-        this.email = email;
-        this.vaiTro = vaiTro;
-        this.maNhanVien = maNhanVien;
-        this.kichHoat = kichHoat;
-        this.ngayTao = ngayTao;
     }
-    
-    public TaiKhoan(String tenDangNhap, String matKhau) {
-    	this.tenDangNhap = tenDangNhap;
-        this.matKhau = matKhau;
-    }
-    
+
     public String getTenDangNhap() {
         return tenDangNhap;
     }
@@ -55,20 +43,12 @@ public class TaiKhoan {
         this.email = email;
     }
 
-    public String getVaiTro() {
-        return vaiTro;
+    public NhanVien getNhanVien() {
+        return nhanVien;
     }
 
-    public void setVaiTro(String vaiTro) {
-        this.vaiTro = vaiTro;
-    }
-
-    public String getMaNhanVien() {
-        return maNhanVien;
-    }
-
-    public void setMaNhanVien(String maNhanVien) {
-        this.maNhanVien = maNhanVien;
+    public void setNhanVien(NhanVien nhanVien) {
+        this.nhanVien = nhanVien;
     }
 
     public boolean isKichHoat() {

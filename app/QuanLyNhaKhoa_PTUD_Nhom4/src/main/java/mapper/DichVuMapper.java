@@ -1,1 +1,19 @@
-package mapper;import entity.DichVu;import java.sql.ResultSet;import java.sql.SQLException;public class DichVuMapper implements RowMapper<DichVu> {    @Override    public DichVu mapper(ResultSet rs) {        try {            String maDichVu = rs.getString("maDichVu");            String maNhomDichVu = rs.getString("maNhomDichVu");            String tenDichVu = rs.getString("tenDichVu");            long gia = rs.getLong("gia");            String trangThai = rs.getString("trangThai");            return new DichVu(maDichVu, maNhomDichVu, tenDichVu, gia, trangThai);        } catch (SQLException e) {            return null;        }    }}
+package mapper;
+
+import entity.DichVu;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+
+public class DichVuMapper implements RowMapper<DichVu> {
+
+    @Override
+    public DichVu mapper(ResultSet rs) throws SQLException {
+        DichVu entity = new DichVu();
+        entity.setMaDichVu(rs.getString("maDichVu"));
+        entity.setTenDichVu(rs.getString("tenDichVu"));
+        entity.setGia(rs.getLong("gia"));
+        entity.setTrangThai(rs.getString("trangThai"));
+        entity.setNhomDichVu(Maps.nhomDichVu(rs, "maNhom", "tenNhomDichVu"));
+        return entity;
+    }
+}

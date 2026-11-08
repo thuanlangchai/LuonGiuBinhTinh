@@ -2,31 +2,19 @@ package entity;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.List;
 
 public class PhieuXuatKho {
 
     private String maPhieuXuat;
     private LocalDate ngayXuat;
     private String loaiVatTu;
-    private String maNhaCungCap;
+    private NhaCungCap nhaCungCap;
     private String lyDo;
     private long tongTien;
     private LocalDateTime ngayTao;
-    private String nguoiTao;
-
-    public PhieuXuatKho() {
-    }
-
-    public PhieuXuatKho(String maPhieuXuat, LocalDate ngayXuat, String loaiVatTu, String maNhaCungCap, String lyDo, long tongTien, LocalDateTime ngayTao, String nguoiTao) {
-        this.maPhieuXuat = maPhieuXuat;
-        this.ngayXuat = ngayXuat;
-        this.loaiVatTu = loaiVatTu;
-        this.maNhaCungCap = maNhaCungCap;
-        this.lyDo = lyDo;
-        this.tongTien = tongTien;
-        this.ngayTao = ngayTao;
-        this.nguoiTao = nguoiTao;
-    }
+    private NhanVien nguoiTao;
+    private List<ChiTietXuatKho> chiTiet;
 
     public String getMaPhieuXuat() {
         return maPhieuXuat;
@@ -52,12 +40,12 @@ public class PhieuXuatKho {
         this.loaiVatTu = loaiVatTu;
     }
 
-    public String getMaNhaCungCap() {
-        return maNhaCungCap;
+    public NhaCungCap getNhaCungCap() {
+        return nhaCungCap;
     }
 
-    public void setMaNhaCungCap(String maNhaCungCap) {
-        this.maNhaCungCap = maNhaCungCap;
+    public void setNhaCungCap(NhaCungCap nhaCungCap) {
+        this.nhaCungCap = nhaCungCap;
     }
 
     public String getLyDo() {
@@ -84,11 +72,19 @@ public class PhieuXuatKho {
         this.ngayTao = ngayTao;
     }
 
-    public String getNguoiTao() {
+    public NhanVien getNguoiTao() {
         return nguoiTao;
     }
 
-    public void setNguoiTao(String nguoiTao) {
+    public void setNguoiTao(NhanVien nguoiTao) {
         this.nguoiTao = nguoiTao;
+    }
+
+    public List<ChiTietXuatKho> getChiTiet() {
+        return chiTiet;
+    }
+
+    public void setChiTiet(List<ChiTietXuatKho> chiTiet) {
+        this.chiTiet = chiTiet;
     }
 }
