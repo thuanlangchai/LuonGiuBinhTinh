@@ -59,7 +59,7 @@ public class LichHenPanel extends JPanel {
     private static final String[] CHE_DO = {"ngay", "2ngay", "tuan", "thang", "kanban", "list"};
     private static final String[] NHAN_CHE_DO = {"Ngày", "2 ngày", "Tuần", "Tháng", "Kanban", "List"};
 
-    private LocalDate ngay = LocalDate.now();
+    private LocalDate ngay = LocalDate.of(2026, 9, 28);
     private boolean daNeoNgay;
     private String cheDo = "tuan";
     private final List<CuocHen> ds = new ArrayList<CuocHen>();
@@ -108,8 +108,7 @@ public class LichHenPanel extends JPanel {
             if (!daNeoNgay) {
                 LocalDateTime somNhat = lichHenService.batDauSomNhat();
                 if (somNhat != null) {
-//                    ngay = somNhat.toLocalDate();
-                	ngay = LocalDate.now();
+                    ngay = somNhat.toLocalDate();
                 }
                 daNeoNgay = true;
             }
@@ -597,7 +596,7 @@ public class LichHenPanel extends JPanel {
                 pnlThongTin.setLayout(new BoxLayout(pnlThongTin, BoxLayout.Y_AXIS));
                 pnlThongTin.setOpaque(false);
 
-                JButton btnXemChiTiet = new JButton("👁");
+                JButton btnXemChiTiet = new JButton("Xem");
                 btnXemChiTiet.setToolTipText("Xem chi tiết lịch hẹn");
                 ViewTheme.nutLink(btnXemChiTiet);
                 btnXemChiTiet.addActionListener(e -> {
@@ -665,7 +664,7 @@ public class LichHenPanel extends JPanel {
         DefaultTableModel model = ViewTheme.taoModel(cot, false, false);
         for (CuocHen c : dangXem()) {
             model.addRow(new Object[]{c.maLichHen, c.maKH, c.khach, c.batDau.format(F_NGAY_pnlGio), c.phut, c.bacSi,
-                c.phuTa, c.ghiChu, c.trangThai, "👁 Xem"});
+                c.phuTa, c.ghiChu, c.trangThai, "Xem"});
         }
         JTable tblBang = new JTable(model);
         ViewTheme.trangTriBang(tblBang);
