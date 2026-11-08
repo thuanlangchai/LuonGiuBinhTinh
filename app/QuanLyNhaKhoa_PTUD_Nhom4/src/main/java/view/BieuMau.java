@@ -1,5 +1,6 @@
 package view;
 
+import java.awt.Color;
 import java.awt.Component;
 import java.awt.Container;
 import java.awt.Dimension;
@@ -84,6 +85,11 @@ public final class BieuMau {
         HopThoai hopThoai = new HopThoai(cuaSo, sua(cu) ? "Cập nhật sản phẩm" : "Thêm sản phẩm",
                 sua(cu) ? "Lưu" : "Thêm sản phẩm");
         JTextField txtMa = hopThoai.chu("Mã SP", gia(cu, 0), true);
+        txtMa.setText(DanhMucDb.sinhMaTuDong("sanpham"));
+        txtMa.setEditable(false); 
+        txtMa.setFocusable(false);
+        txtMa.setBackground(new Color(240, 240, 240));
+        
         JTextField txtTen = hopThoai.chu("Tên sản phẩm", gia(cu, 1), true);
         JComboBox<String> cmbLoai = hopThoai.chon("Loại", true, DuLieuMau.dsLoaiSanPham());
         chonCombo(cmbLoai, gia(cu, 2));
@@ -102,6 +108,10 @@ public final class BieuMau {
         HopThoai hopThoai = new HopThoai(cuaSo, sua(cu) ? "Cập nhật răng" : "Thêm răng",
                 sua(cu) ? "Lưu" : "Thêm răng");
         JTextField txtMa = hopThoai.chu("Mã răng", gia(cu, 0), true);
+        txtMa.setText(DanhMucDb.sinhMaTuDong("rang"));
+        txtMa.setEditable(false); 
+        txtMa.setFocusable(false);
+        txtMa.setBackground(new Color(240, 240, 240));
         JTextField txtTen = hopThoai.chu("Tên răng", gia(cu, 1), false);
         JComboBox<String> cmbLoai = hopThoai.chon("Loại răng", true, DuLieuMau.dsLoaiRang());
         chonCombo(cmbLoai, gia(cu, 2));
@@ -142,6 +152,11 @@ public final class BieuMau {
         HopThoai hopThoai = new HopThoai(cuaSo, sua(cu) ? "Cập nhật dịch vụ" : "Thêm dịch vụ",
                 sua(cu) ? "Lưu" : "Thêm dịch vụ");
         JTextField txtMa = hopThoai.chu("Mã dịch vụ", gia(cu, 0), true);
+        txtMa.setText(DanhMucDb.sinhMaTuDong("dichvu"));
+        txtMa.setEditable(false); 
+        txtMa.setFocusable(false);
+        txtMa.setBackground(new Color(240, 240, 240));
+        
         JComboBox<String> cmbNhom = hopThoai.chonVoiNut("Nhóm dịch vụ", true, DuLieuMau.dsNhomDv());
         if (!gia(cu, 1).isEmpty()) {
             cmbNhom.setSelectedItem(gia(cu, 1));
@@ -165,6 +180,11 @@ public final class BieuMau {
         HopThoai hopThoai = new HopThoai(cuaSo, sua(cu) ? "Cập nhật nhân viên" : "Thêm nhân viên",
                 sua(cu) ? "Lưu" : "Thêm nhân viên");
         JTextField txtMa = hopThoai.chu("Mã nhân viên", gia(cu, 0), true);
+        txtMa.setText(DanhMucDb.sinhMaTuDong("nhanvien"));
+        txtMa.setEditable(false); 
+        txtMa.setFocusable(false);
+        txtMa.setBackground(new Color(240, 240, 240));
+        
         JTextField txtChucDanh = hopThoai.chuGoiY("Chức danh", "Bs, Ths, Ts ...", false);
         txtChucDanh.setText(gia(cu, 1));
         JTextField txtTen = hopThoai.chu("Họ và tên", gia(cu, 2), true);
@@ -198,6 +218,10 @@ public final class BieuMau {
         HopThoai hopThoai = new HopThoai(cuaSo, sua(cu) ? "Cập nhật loại răng" : "Thêm loại răng",
                 sua(cu) ? "Lưu" : "Thêm loại răng");
         JTextField txtMa = hopThoai.chu("Mã loại răng", gia(cu, 0), true);
+        txtMa.setText(DanhMucDb.sinhMaTuDong("loairang"));
+        txtMa.setEditable(false); 
+        txtMa.setFocusable(false);
+        txtMa.setBackground(new Color(240, 240, 240));
         JTextField txtTen = hopThoai.chu("Tên loại răng", gia(cu, 1), true);
         hopThoai.hien(() -> luu.nhan(new Object[]{txtMa.getText().trim(), txtTen.getText().trim()}));
     }
@@ -323,6 +347,10 @@ public final class BieuMau {
         HopThoai hopThoai = new HopThoai(cuaSo, sua(cu) ? "Cập nhật loại sản phẩm" : "Thêm loại sản phẩm",
                 sua(cu) ? "Lưu" : "Thêm loại sản phẩm");
         JTextField txtMa = hopThoai.chu("Mã loại", gia(cu, 0), true);
+        txtMa.setText(DanhMucDb.sinhMaTuDong("loaisanpham"));
+        txtMa.setEditable(false); 
+        txtMa.setFocusable(false);
+        txtMa.setBackground(new Color(240, 240, 240));
         JTextField txtTen = hopThoai.chu("Tên loại sản phẩm", gia(cu, 1), true);
         hopThoai.hien(() -> luu.nhan(new Object[]{txtMa.getText().trim(), txtTen.getText().trim()}));
     }
@@ -358,5 +386,7 @@ public final class BieuMau {
             String.valueOf(cmbTrangThai.getSelectedItem())
         }));
     }
+    
+    
 
 }
