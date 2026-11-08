@@ -59,7 +59,7 @@ public class LichHenPanel extends JPanel {
     private static final String[] CHE_DO = {"ngay", "2ngay", "tuan", "thang", "kanban", "list"};
     private static final String[] NHAN_CHE_DO = {"Ngày", "2 ngày", "Tuần", "Tháng", "Kanban", "List"};
 
-    private LocalDate ngay = LocalDate.of(2026, 9, 28);
+    private LocalDate ngay = LocalDate.now();
     private boolean daNeoNgay;
     private String cheDo = "tuan";
     private final List<CuocHen> ds = new ArrayList<CuocHen>();
@@ -108,7 +108,8 @@ public class LichHenPanel extends JPanel {
             if (!daNeoNgay) {
                 LocalDateTime somNhat = lichHenService.batDauSomNhat();
                 if (somNhat != null) {
-                    ngay = somNhat.toLocalDate();
+//                    ngay = somNhat.toLocalDate();
+                	ngay = LocalDate.now();
                 }
                 daNeoNgay = true;
             }

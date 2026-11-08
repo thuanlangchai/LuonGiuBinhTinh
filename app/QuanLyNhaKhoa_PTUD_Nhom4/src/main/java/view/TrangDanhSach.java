@@ -379,6 +379,20 @@ public class TrangDanhSach extends JPanel {
 		if (cauHinh == null) {
 			return;
 		}
+		
+		Object[] duLieuForm = cu;
+		
+		if (cu == null) {
+	        String maTuDong = DanhMucDb.sinhMaTuDong(cauHinh.ma);
+	        
+	        int soCot = cauHinh.cot.length;
+	        duLieuForm = new Object[soCot];
+	        duLieuForm[0] = maTuDong;
+	        for (int i = 1; i < soCot; i++) {
+	            duLieuForm[i] = "";
+	        }
+	    }
+		
 		BieuMau.mo(this, cauHinh, cu, dong -> {
 			boolean them = hang < 0;
 			if (!DanhMucDb.luu(cauHinh.ma, dong, them)) {

@@ -207,6 +207,72 @@ public final class DanhMucDb {
             return false;
         }
     }
+    
+    public static String sinhMaTuDong(String maDanhMuc) {
+    	
+    	String tienTo = "";
+    	int doDaiSo = 2;
+    	
+    	if (maDanhMuc == null) {
+            maDanhMuc = "";
+        }
+    	
+    	switch (maDanhMuc.toLowerCase()) {
+        case "dichvu":
+            tienTo = "DV";
+            break;
+        case "nhanvien":
+            tienTo = "NV";
+            break;
+        case "thuoc":
+            tienTo = "TH";
+            break;
+        case "sanpham":
+            tienTo = "SP";
+            break;
+        case "chinhanh":
+            tienTo = "CN";
+            break;
+        case "nhacungcap":
+            tienTo = "NCC";
+            break;
+        case "rang":
+            tienTo = "R";
+            break;
+        case "loairang":
+        	tienTo = "LR";
+        	break;
+        case "loaisanpham":
+        	tienTo = "LSP";
+        default:
+            tienTo = "ID";
+            break;
+    }
+    	
+    	int maxSo = 0;
+    	
+    	try {
+			CauHinhTrang ch = lay(maDanhMuc);
+			if(ch != null && ch.duLieu != null) {
+				for(Object[] dong : ch.duLieu) {
+					if (dong.length > 0 && dong[0] != null) {
+                        String maHienTai = dong[0].toString().trim();
+                        String phanSo = maHienTai.replaceAll("\\D+", ""); 
+                        if (!phanSo.isEmpty()) {
+                            int so = Integer.parseInt(phanSo);
+                            if (so > maxSo) {
+                                maxSo = so;
+                            }
+                        }
+                    }
+				}
+			}
+		} catch (Exception e) {
+			maxSo = 0;
+		}
+    	int maMoiSo = maxSo + 1;
+        return String.format("%s%0" + doDaiSo + "d", tienTo, maMoiSo);
+    }
 
     private static Object[][] napDuLieu(String ma) {
         List<Object[]> danhSach = new ArrayList<>();
