@@ -12,7 +12,7 @@ import repository.ChiTietHoaDon_IDAO;
 public class ChiTietHoaDon_DAO extends AbstractDAO<ChiTietHoaDon> implements ChiTietHoaDon_IDAO {
 
     private static final String SELECT = """
-            SELECT ct.maChiTiet, ct.ngay, ct.soLuong, ct.donGia, ct.thanhTien, ct.keHoach,
+            SELECT ct.maChiTiet, ct.ngay, ct.soLuong, ct.donGia, ct.keHoach,
                    ct.maHoaDon, r.maRang, r.tenRang, dv.maDichVu, dv.tenDichVu
             FROM ChiTietHoaDon ct
             LEFT JOIN Rang r ON r.maRang = ct.maRang
@@ -50,17 +50,17 @@ public class ChiTietHoaDon_DAO extends AbstractDAO<ChiTietHoaDon> implements Chi
 
     @Override
     public Integer add(ChiTietHoaDon entity) {
-        String sql = "INSERT INTO ChiTietHoaDon(maChiTiet,maHoaDon,ngay,maRang,maDichVu,soLuong,donGia,thanhTien,keHoach) VALUES(?,?,?,?,?,?,?,?,?)";
+        String sql = "INSERT INTO ChiTietHoaDon(maChiTiet,maHoaDon,ngay,maRang,maDichVu,soLuong,donGia,keHoach) VALUES(?,?,?,?,?,?,?,?)";
         return execute(sql, entity.getMaChiTiet(), Refs.maHd(entity.getHoaDon()), entity.getNgay(),
                 Refs.maRang(entity.getRang()), Refs.maDv(entity.getDichVu()), entity.getSoLuong(),
-                entity.getDonGia(), entity.getThanhTien(), entity.getKeHoach());
+                entity.getDonGia(), entity.getKeHoach());
     }
 
     @Override
     public void update(ChiTietHoaDon entity) {
-        String sql = "UPDATE ChiTietHoaDon SET maHoaDon = ?, ngay = ?, maRang = ?, maDichVu = ?, soLuong = ?, donGia = ?, thanhTien = ?, keHoach = ? WHERE maChiTiet = ?";
+        String sql = "UPDATE ChiTietHoaDon SET maHoaDon = ?, ngay = ?, maRang = ?, maDichVu = ?, soLuong = ?, donGia = ?, keHoach = ? WHERE maChiTiet = ?";
         execute(sql, Refs.maHd(entity.getHoaDon()), entity.getNgay(), Refs.maRang(entity.getRang()),
-                Refs.maDv(entity.getDichVu()), entity.getSoLuong(), entity.getDonGia(), entity.getThanhTien(),
+                Refs.maDv(entity.getDichVu()), entity.getSoLuong(), entity.getDonGia(),
                 entity.getKeHoach(), entity.getMaChiTiet());
     }
 

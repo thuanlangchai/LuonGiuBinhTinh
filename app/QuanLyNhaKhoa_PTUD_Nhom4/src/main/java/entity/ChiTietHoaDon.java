@@ -11,7 +11,6 @@ public class ChiTietHoaDon {
     private DichVu dichVu;
     private int soLuong;
     private long donGia;
-    private long thanhTien;
     private String keHoach;
 
     public String getMaChiTiet() {
@@ -71,11 +70,7 @@ public class ChiTietHoaDon {
     }
 
     public long getThanhTien() {
-        return thanhTien;
-    }
-
-    public void setThanhTien(long thanhTien) {
-        this.thanhTien = thanhTien;
+        return soLuong * donGia;
     }
 
     public String getKeHoach() {

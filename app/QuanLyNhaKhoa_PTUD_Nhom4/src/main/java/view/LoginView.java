@@ -58,7 +58,7 @@ public class LoginView extends JFrame {
         
         JLabel nhanTieuDe = ViewTheme.tieuDeTrang("Đăng nhập");
         
-        JPanel panelForm = new JPanel(new GridLayout(5, 1, 0, 4)); // Tăng lên 5 dòng để chứa dòng chữ quên mật khẩu
+        JPanel panelForm = new JPanel(new GridLayout(5, 1, 0, 4));
         panelForm.setOpaque(false);
         
         JLabel nhanTen = ViewTheme.chuPhu("Tên đăng nhập");
@@ -66,9 +66,8 @@ public class LoginView extends JFrame {
         ViewTheme.vienNhap(txtTen);
         ViewTheme.vienNhap(txtMatKhau);
         
-        // Tạo JLabel dạng đường link "Quên mật khẩu?"
         JLabel lblQuenMatKhau = new JLabel("Quên mật khẩu?");
-        lblQuenMatKhau.setForeground(new Color(14, 132, 184)); // Màu xanh dương nhạt
+        lblQuenMatKhau.setForeground(new Color(14, 132, 184));
         lblQuenMatKhau.setFont(new Font("Segoe UI", Font.ITALIC, 12));
         lblQuenMatKhau.setCursor(new Cursor(Cursor.HAND_CURSOR));
         lblQuenMatKhau.addMouseListener(new java.awt.event.MouseAdapter() {

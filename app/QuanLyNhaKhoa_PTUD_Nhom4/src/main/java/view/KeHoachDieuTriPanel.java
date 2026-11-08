@@ -640,7 +640,6 @@ public class KeHoachDieuTriPanel extends JPanel {
 
         String[] dsBs = DuLieuMau.dsBacSi(); 
         
-        // Thêm ComboBox chọn Dịch vụ lấy từ danh sách dịch vụ của kế hoạch hoặc danh mục chung
         JComboBox<String> cmbDichVu = hopThoai.chon("Dịch vụ thực hiện", true, tenDichVu());
         JTextField txtBatDau = hopThoai.chu("Thời gian (yyyy-MM-dd HH:mm)", LocalDate.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd")) + " 09:00", true);
         JComboBox<String> cmbDuKien = hopThoai.chon("Thời lượng (phút)", true, "30", "45", "60", "90", "120");
@@ -666,8 +665,6 @@ public class KeHoachDieuTriPanel extends JPanel {
                 lhMoi.setBacSi(entity.Refs.nhanVien(maBs));
                 lhMoi.setKeHoachDieuTri(entity.Refs.keHoach(keHoachHienTai.maKeHoach));
                 
-                // Gộp thông tin Dịch vụ và Mã kế hoạch vào ghi chú (hoặc trường dịch vụ nếu entity có hỗ trợ)
-                // Cú pháp chuẩn chứa [KHDT:MãKếHoạch] để hệ thống tự động nhận diện liên kết hai chiều
                 String ghiChuDayDu = String.format("Dịch vụ: %s - %s [KHDT:%s]", 
                         dichVuChon, 
                         txtGhiChu.getText().trim(), 

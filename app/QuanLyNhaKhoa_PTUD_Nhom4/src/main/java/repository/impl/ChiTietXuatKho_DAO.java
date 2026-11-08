@@ -12,7 +12,7 @@ import repository.ChiTietXuatKho_IDAO;
 public class ChiTietXuatKho_DAO extends AbstractDAO<ChiTietXuatKho> implements ChiTietXuatKho_IDAO {
 
     private static final String SELECT = """
-            SELECT ct.maChiTiet, ct.soLuong, ct.donGia, ct.thanhTien, ct.maPhieuXuat, sp.maSanPham, sp.tenSanPham
+            SELECT ct.maChiTiet, ct.soLuong, ct.donGia, ct.maPhieuXuat, sp.maSanPham, sp.tenSanPham
             FROM ChiTietXuatKho ct
             JOIN SanPham sp ON sp.maSanPham = ct.maSanPham
             """;
@@ -46,15 +46,15 @@ public class ChiTietXuatKho_DAO extends AbstractDAO<ChiTietXuatKho> implements C
     @Override
     public Integer add(ChiTietXuatKho entity) {
         String maPhieu = entity.getPhieuXuatKho() == null ? null : entity.getPhieuXuatKho().getMaPhieuXuat();
-        return execute("INSERT INTO ChiTietXuatKho(maChiTiet,maPhieuXuat,maSanPham,soLuong,donGia,thanhTien) VALUES(?,?,?,?,?,?)",
-                entity.getMaChiTiet(), maPhieu, Refs.maSp(entity.getSanPham()), entity.getSoLuong(), entity.getDonGia(), entity.getThanhTien());
+        return execute("INSERT INTO ChiTietXuatKho(maChiTiet,maPhieuXuat,maSanPham,soLuong,donGia) VALUES(?,?,?,?,?)",
+                entity.getMaChiTiet(), maPhieu, Refs.maSp(entity.getSanPham()), entity.getSoLuong(), entity.getDonGia());
     }
 
     @Override
     public void update(ChiTietXuatKho entity) {
         String maPhieu = entity.getPhieuXuatKho() == null ? null : entity.getPhieuXuatKho().getMaPhieuXuat();
-        execute("UPDATE ChiTietXuatKho SET maPhieuXuat = ?, maSanPham = ?, soLuong = ?, donGia = ?, thanhTien = ? WHERE maChiTiet = ?",
-                maPhieu, Refs.maSp(entity.getSanPham()), entity.getSoLuong(), entity.getDonGia(), entity.getThanhTien(), entity.getMaChiTiet());
+        execute("UPDATE ChiTietXuatKho SET maPhieuXuat = ?, maSanPham = ?, soLuong = ?, donGia = ? WHERE maChiTiet = ?",
+                maPhieu, Refs.maSp(entity.getSanPham()), entity.getSoLuong(), entity.getDonGia(), entity.getMaChiTiet());
     }
 
     @Override

@@ -85,16 +85,16 @@ INSERT INTO LichHen (maLichHen, maKH, batDau, thoiLuongPhut, maBacSi, maPhuTa, g
 INSERT INTO KeHoachDieuTri (maKeHoach, maKH, ngayKeHoach, maBacSi, lyDoDieuTri, ghiChu, trangThai, ngayTao, nguoiTao) VALUES
 (N'KH01', N'0001', '2026-09-27', N'NV03', N'Đau răng', N'Kế hoạch điều trị ngày 27/09/2026', N'Hoàn tất', '2026-09-27T22:11:39', N'thuan08022006@gmail.com');
 
-INSERT INTO HoaDon (maHoaDon, ngayLap, maKH, maKeHoach, maBacSi, tongTien, chietKhau, thanhTien, daThu, conNo, trangThai, ghiChu, ngayTao, nguoiTao) VALUES
-(N'0001', '2026-09-27', N'0001', N'KH01', N'NV03', 900000, 0, 900000, 0, 900000, N'Chưa thanh toán', N'Xuất từ kế hoạch điều trị', '2026-09-27T22:22:19', N'thuan08022006@gmail.com');
+INSERT INTO HoaDon (maHoaDon, ngayLap, maKH, maKeHoach, maBacSi, chietKhau, ghiChu, ngayTao, nguoiTao) VALUES
+(N'0001', '2026-09-27', N'0001', N'KH01', N'NV03', 0, N'Xuất từ kế hoạch điều trị', '2026-09-27T22:22:19', N'thuan08022006@gmail.com');
 
-INSERT INTO ChiTietKeHoachDieuTri (maChiTiet, maKeHoach, ngay, maRang, maDichVu, soLuong, donGia, thanhTien, trangThai, maHoaDon) VALUES
-(N'CTK01', N'KH01', '2026-09-27', NULL, N'DV13', 1, 200000, 200000, N'Hoàn tất', N'0001'),
-(N'CTK02', N'KH01', '2026-09-27', NULL, N'DV14', 1, 700000, 700000, N'Hoàn tất', N'0001');
+INSERT INTO ChiTietKeHoachDieuTri (maChiTiet, maKeHoach, ngay, maRang, maDichVu, soLuong, donGia, trangThai, maHoaDon) VALUES
+(N'CTK01', N'KH01', '2026-09-27', NULL, N'DV13', 1, 200000, N'Hoàn tất', N'0001'),
+(N'CTK02', N'KH01', '2026-09-27', NULL, N'DV14', 1, 700000, N'Hoàn tất', N'0001');
 
-INSERT INTO ChiTietHoaDon (maChiTiet, maHoaDon, ngay, maRang, maDichVu, soLuong, donGia, thanhTien, keHoach) VALUES
-(N'CTH01', N'0001', '2026-09-27', NULL, N'DV13', 1, 200000, 200000, N'Kế hoạch điều trị ngày 27/09/2026'),
-(N'CTH02', N'0001', '2026-09-27', NULL, N'DV14', 1, 700000, 700000, N'Kế hoạch điều trị ngày 27/09/2026');
+INSERT INTO ChiTietHoaDon (maChiTiet, maHoaDon, ngay, maRang, maDichVu, soLuong, donGia, keHoach) VALUES
+(N'CTH01', N'0001', '2026-09-27', NULL, N'DV13', 1, 200000, N'Kế hoạch điều trị ngày 27/09/2026'),
+(N'CTH02', N'0001', '2026-09-27', NULL, N'DV14', 1, 700000, N'Kế hoạch điều trị ngày 27/09/2026');
 
 INSERT INTO PhieuThu (maPhieuThu, ngayThu, maKH, maHoaDon, lyDo, soTien, hinhThucThanhToan, trangThai, maBacSi, maPhuTa, nguoiGioiThieu, ngayTao, nguoiTao) VALUES
 (N'0001', '2026-09-27', N'0001', N'0001', N'bệnh', 72000, N'Tiền mặt', N'Đã chi trả', NULL, NULL, NULL, '2026-09-27T22:22:19', N'thuan08022006@gmail.com'),
@@ -108,28 +108,28 @@ INSERT INTO Thuoc (maThuoc, tenThuoc, maDonVi, gia, cachDung) VALUES
 (N'0002', N'Paracetamol 500mg', N'DV01', 2000, N'Sau ăn'),
 (N'0003', N'Amoxicillin 500mg', N'DV01', 5000, N'Sáng tối');
 
-INSERT INTO ToaThuoc (maToaThuoc, maKH, maChanDoan, maBacSi, hinhThucThanhToan, nhanTaiPhongKham, ghiChu, thanhTien, ngayTao) VALUES
-(N'TT01', N'0001', N'CD01', N'NV03', N'Tiền mặt', 1, NULL, 108000, '2026-09-28T21:34:12');
+INSERT INTO ToaThuoc (maToaThuoc, maKH, maChanDoan, maBacSi, hinhThucThanhToan, nhanTaiPhongKham, ghiChu, ngayTao) VALUES
+(N'TT01', N'0001', N'CD01', N'NV03', N'Tiền mặt', 1, NULL, '2026-09-28T21:34:12');
 
-INSERT INTO ChiTietToaThuoc (maChiTiet, maToaThuoc, maThuoc, soNgay, cachSuDung, tongSo, donGia, thanhTien) VALUES
-(N'CTT01', N'TT01', N'0001', 1, N'Sáng 1 - Trưa 1 - Chiều 1', 3, 36000, 108000);
+INSERT INTO ChiTietToaThuoc (maChiTiet, maToaThuoc, maThuoc, soNgay, cachSuDung, tongSo, donGia) VALUES
+(N'CTT01', N'TT01', N'0001', 1, N'Sáng 1 - Trưa 1 - Chiều 1', 3, 36000);
 
 INSERT INTO SanPham (maSanPham, tenSanPham, maLoai, soLuong, donGia) VALUES
 (N'SP01', N'Găng tay', N'LSP02', 100, 1500),
 (N'SP02', N'Khẩu trang', N'LSP02', 200, 800),
 (N'SP03', N'Mũi khoan', N'LSP03', 10, 250000);
 
-INSERT INTO PhieuNhapKho (maPhieuNhap, ngayNhap, loaiVatTu, maNhaCungCap, lyDo, tongTien, fileExcel, ngayTao, nguoiTao) VALUES
-(N'PN01', '2026-09-28', N'Vật liệu tiêu hao', N'NCC01', N'Nhập vật tư tháng 9', 75000, NULL, '2026-09-28T09:00:00', N'thuan08022006@gmail.com');
+INSERT INTO PhieuNhapKho (maPhieuNhap, ngayNhap, loaiVatTu, maNhaCungCap, lyDo, fileExcel, ngayTao, nguoiTao) VALUES
+(N'PN01', '2026-09-28', N'Vật liệu tiêu hao', N'NCC01', N'Nhập vật tư tháng 9', NULL, '2026-09-28T09:00:00', N'thuan08022006@gmail.com');
 
-INSERT INTO ChiTietNhapKho (maChiTiet, maPhieuNhap, maSanPham, soLuong, donGia, thanhTien) VALUES
-(N'CTN01', N'PN01', N'SP01', 50, 1500, 75000);
+INSERT INTO ChiTietNhapKho (maChiTiet, maPhieuNhap, maSanPham, soLuong, donGia) VALUES
+(N'CTN01', N'PN01', N'SP01', 50, 1500);
 
-INSERT INTO PhieuXuatKho (maPhieuXuat, ngayXuat, loaiVatTu, maNhaCungCap, lyDo, tongTien, ngayTao, nguoiTao) VALUES
-(N'PX01', '2026-09-28', N'Vật liệu tiêu hao', N'NCC01', N'Xuất dùng phòng khám', 15000, '2026-09-28T16:00:00', N'thuan08022006@gmail.com');
+INSERT INTO PhieuXuatKho (maPhieuXuat, ngayXuat, loaiVatTu, maNhaCungCap, lyDo, ngayTao, nguoiTao) VALUES
+(N'PX01', '2026-09-28', N'Vật liệu tiêu hao', N'NCC01', N'Xuất dùng phòng khám', '2026-09-28T16:00:00', N'thuan08022006@gmail.com');
 
-INSERT INTO ChiTietXuatKho (maChiTiet, maPhieuXuat, maSanPham, soLuong, donGia, thanhTien) VALUES
-(N'CTX01', N'PX01', N'SP01', 10, 1500, 15000);
+INSERT INTO ChiTietXuatKho (maChiTiet, maPhieuXuat, maSanPham, soLuong, donGia) VALUES
+(N'CTX01', N'PX01', N'SP01', 10, 1500);
 
 INSERT INTO ThoiGianLamViec (maLich, ngay, gioBatDau, gioKetThuc, maBacSi, maChiNhanh) VALUES
 (N'TL01', N'Mo, Tu, We, Th, Fr', '08:00', '17:00', N'NV03', N'CN1');

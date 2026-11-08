@@ -12,7 +12,7 @@ import repository.ChiTietKeHoachDieuTri_IDAO;
 public class ChiTietKeHoachDieuTri_DAO extends AbstractDAO<ChiTietKeHoachDieuTri> implements ChiTietKeHoachDieuTri_IDAO {
 
     private static final String SELECT = """
-            SELECT ct.maChiTiet, ct.ngay, ct.soLuong, ct.donGia, ct.thanhTien, ct.trangThai,
+            SELECT ct.maChiTiet, ct.ngay, ct.soLuong, ct.donGia, ct.trangThai,
                    ct.maKeHoach, r.maRang, r.tenRang, dv.maDichVu, dv.tenDichVu, ct.maHoaDon
             FROM ChiTietKeHoachDieuTri ct
             LEFT JOIN Rang r ON r.maRang = ct.maRang
@@ -58,17 +58,17 @@ public class ChiTietKeHoachDieuTri_DAO extends AbstractDAO<ChiTietKeHoachDieuTri
 
     @Override
     public Integer add(ChiTietKeHoachDieuTri entity) {
-        String sql = "INSERT INTO ChiTietKeHoachDieuTri(maChiTiet,maKeHoach,ngay,maRang,maDichVu,soLuong,donGia,thanhTien,trangThai,maHoaDon) VALUES(?,?,?,?,?,?,?,?,?,?)";
+        String sql = "INSERT INTO ChiTietKeHoachDieuTri(maChiTiet,maKeHoach,ngay,maRang,maDichVu,soLuong,donGia,trangThai,maHoaDon) VALUES(?,?,?,?,?,?,?,?,?)";
         return execute(sql, entity.getMaChiTiet(), Refs.maKhdt(entity.getKeHoachDieuTri()), entity.getNgay(),
                 Refs.maRang(entity.getRang()), Refs.maDv(entity.getDichVu()), entity.getSoLuong(), entity.getDonGia(),
-                entity.getThanhTien(), entity.getTrangThai(), Refs.maHd(entity.getHoaDon()));
+                entity.getTrangThai(), Refs.maHd(entity.getHoaDon()));
     }
 
     @Override
     public void update(ChiTietKeHoachDieuTri entity) {
-        String sql = "UPDATE ChiTietKeHoachDieuTri SET maKeHoach = ?, ngay = ?, maRang = ?, maDichVu = ?, soLuong = ?, donGia = ?, thanhTien = ?, trangThai = ?, maHoaDon = ? WHERE maChiTiet = ?";
+        String sql = "UPDATE ChiTietKeHoachDieuTri SET maKeHoach = ?, ngay = ?, maRang = ?, maDichVu = ?, soLuong = ?, donGia = ?, trangThai = ?, maHoaDon = ? WHERE maChiTiet = ?";
         execute(sql, Refs.maKhdt(entity.getKeHoachDieuTri()), entity.getNgay(), Refs.maRang(entity.getRang()),
-                Refs.maDv(entity.getDichVu()), entity.getSoLuong(), entity.getDonGia(), entity.getThanhTien(),
+                Refs.maDv(entity.getDichVu()), entity.getSoLuong(), entity.getDonGia(),
                 entity.getTrangThai(), Refs.maHd(entity.getHoaDon()), entity.getMaChiTiet());
     }
 

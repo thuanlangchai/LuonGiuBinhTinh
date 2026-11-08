@@ -9,12 +9,18 @@ import repository.ToaThuoc_IDAO;
 public class ToaThuoc_DAO extends AbstractDAO<ToaThuoc> implements ToaThuoc_IDAO {
 
     private static final String SELECT = """
-            SELECT tt.maToaThuoc, tt.maChanDoan, tt.hinhThucThanhToan, tt.nhanTaiPhongKham, tt.ghiChu, tt.thanhTien, tt.ngayTao,
+            SELECT tt.maToaThuoc, tt.maChanDoan, tt.hinhThucThanhToan, tt.nhanTaiPhongKham, tt.ghiChu, tt.ngayTao,
+                   ISNULL(ct.thanhTien, 0) AS thanhTien,
                    kh.maKH, kh.hoTen AS tenKhachHang,
                    bs.maNhanVien AS maBacSi, bs.hoTen AS tenBacSi
             FROM ToaThuoc tt
             JOIN KhachHang kh ON kh.maKH = tt.maKH
             LEFT JOIN NhanVien bs ON bs.maNhanVien = tt.maBacSi
+            LEFT JOIN (
+                SELECT maToaThuoc, SUM(CAST(tongSo AS BIGINT) * donGia) AS thanhTien
+                FROM ChiTietToaThuoc
+                GROUP BY maToaThuoc
+            ) ct ON ct.maToaThuoc = tt.maToaThuoc
             """;
 
     private final ToaThuocMapper mapper = new ToaThuocMapper();
@@ -46,17 +52,17 @@ public class ToaThuoc_DAO extends AbstractDAO<ToaThuoc> implements ToaThuoc_IDAO
 
     @Override
     public Integer add(ToaThuoc entity) {
-        String sql = "INSERT INTO ToaThuoc(maToaThuoc,maKH,maChanDoan,maBacSi,hinhThucThanhToan,nhanTaiPhongKham,ghiChu,thanhTien,ngayTao) VALUES(?,?,?,?,?,?,?,?,?)";
+        String sql = "INSERT INTO ToaThuoc(maToaThuoc,maKH,maChanDoan,maBacSi,hinhThucThanhToan,nhanTaiPhongKham,ghiChu,ngayTao) VALUES(?,?,?,?,?,?,?,?)";
         return execute(sql, entity.getMaToaThuoc(), Refs.maKh(entity.getKhachHang()), entity.getMaChanDoan(),
                 Refs.maNv(entity.getBacSi()), entity.getHinhThucThanhToan(), entity.isNhanTaiPhongKham(),
-                entity.getGhiChu(), entity.getThanhTien(), entity.getNgayTao());
+                entity.getGhiChu(), entity.getNgayTao());
     }
 
     @Override
     public void update(ToaThuoc entity) {
-        String sql = "UPDATE ToaThuoc SET maKH = ?, maChanDoan = ?, maBacSi = ?, hinhThucThanhToan = ?, nhanTaiPhongKham = ?, ghiChu = ?, thanhTien = ?, ngayTao = ? WHERE maToaThuoc = ?";
+        String sql = "UPDATE ToaThuoc SET maKH = ?, maChanDoan = ?, maBacSi = ?, hinhThucThanhToan = ?, nhanTaiPhongKham = ?, ghiChu = ?, ngayTao = ? WHERE maToaThuoc = ?";
         execute(sql, Refs.maKh(entity.getKhachHang()), entity.getMaChanDoan(), Refs.maNv(entity.getBacSi()),
-                entity.getHinhThucThanhToan(), entity.isNhanTaiPhongKham(), entity.getGhiChu(), entity.getThanhTien(),
+                entity.getHinhThucThanhToan(), entity.isNhanTaiPhongKham(), entity.getGhiChu(),
                 entity.getNgayTao(), entity.getMaToaThuoc());
     }
 

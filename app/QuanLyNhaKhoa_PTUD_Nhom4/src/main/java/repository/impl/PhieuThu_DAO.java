@@ -55,7 +55,7 @@ public class PhieuThu_DAO extends AbstractDAO<PhieuThu> implements PhieuThu_IDAO
         return execute(sql, entity.getMaPhieuThu(), entity.getNgayThu(), Refs.maKh(entity.getKhachHang()),
                 Refs.maHd(entity.getHoaDon()), entity.getLyDo(), entity.getSoTien(), entity.getHinhThucThanhToan(),
                 entity.getTrangThai(), Refs.maNv(entity.getBacSi()), Refs.maNv(entity.getPhuTa()),
-                entity.getNguoiGioiThieu(), entity.getNgayTao(), entity.getNguoiTao());
+                entity.getNguoiGioiThieu(), entity.getNgayTao(), Refs.maNv(entity.getNguoiTao()));
     }
 
     @Override
@@ -64,7 +64,7 @@ public class PhieuThu_DAO extends AbstractDAO<PhieuThu> implements PhieuThu_IDAO
         execute(sql, entity.getNgayThu(), Refs.maKh(entity.getKhachHang()), Refs.maHd(entity.getHoaDon()),
                 entity.getLyDo(), entity.getSoTien(), entity.getHinhThucThanhToan(), entity.getTrangThai(),
                 Refs.maNv(entity.getBacSi()), Refs.maNv(entity.getPhuTa()), entity.getNguoiGioiThieu(),
-                entity.getNgayTao(), entity.getNguoiTao(), entity.getMaPhieuThu());
+                entity.getNgayTao(), Refs.maNv(entity.getNguoiTao()), entity.getMaPhieuThu());
     }
 
     @Override

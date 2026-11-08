@@ -114,14 +114,7 @@ public class Kho_Service implements Kho_IService {
         }
         int[] ketQua = new int[1];
         Transactions.run(() -> {
-            long tong = 0;
-            if (chiTiet != null) {
-                for (ChiTietNhapKho dong : chiTiet) {
-                    dong.setThanhTien((long) dong.getSoLuong() * dong.getDonGia());
-                    tong += dong.getThanhTien();
-                }
-            }
-            phieu.setTongTien(tong);
+            phieu.setChiTiet(chiTiet == null ? List.of() : chiTiet);
             ketQua[0] = nhapDao.add(phieu);
             if (chiTiet != null) {
                 for (ChiTietNhapKho dong : chiTiet) {
@@ -147,7 +140,6 @@ public class Kho_Service implements Kho_IService {
         }
         int[] ketQua = new int[1];
         Transactions.run(() -> {
-            long tong = 0;
             if (chiTiet != null) {
                 for (ChiTietXuatKho dong : chiTiet) {
                     String maSp = Refs.maSp(dong.getSanPham());
@@ -157,11 +149,9 @@ public class Kho_Service implements Kho_IService {
                     if (sanPhamDao.truTon(maSp, dong.getSoLuong()) == 0) {
                         throw new BusinessException("Xuất vượt tồn kho hoặc sản phẩm không tồn tại: " + maSp);
                     }
-                    dong.setThanhTien((long) dong.getSoLuong() * dong.getDonGia());
-                    tong += dong.getThanhTien();
                 }
             }
-            phieu.setTongTien(tong);
+            phieu.setChiTiet(chiTiet == null ? List.of() : chiTiet);
             ketQua[0] = xuatDao.add(phieu);
             if (chiTiet != null) {
                 for (ChiTietXuatKho dong : chiTiet) {

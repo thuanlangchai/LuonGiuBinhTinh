@@ -14,10 +14,13 @@ public class ToaThuocMapper implements RowMapper<ToaThuoc> {
         entity.setHinhThucThanhToan(rs.getString("hinhThucThanhToan"));
         entity.setNhanTaiPhongKham(rs.getBoolean("nhanTaiPhongKham"));
         entity.setGhiChu(rs.getString("ghiChu"));
-        entity.setThanhTien(rs.getLong("thanhTien"));
         entity.setNgayTao(Rs.dateTime(rs, "ngayTao"));
         entity.setKhachHang(Maps.khachHang(rs, "maKH", "tenKhachHang", null));
         entity.setBacSi(Maps.nhanVien(rs, "maBacSi", "tenBacSi"));
+        try {
+            entity.ganThanhTienDoc(rs.getLong("thanhTien"));
+        } catch (SQLException ignored) {
+        }
         return entity;
     }
 }

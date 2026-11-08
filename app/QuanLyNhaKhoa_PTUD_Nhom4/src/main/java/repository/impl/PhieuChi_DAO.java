@@ -45,7 +45,7 @@ public class PhieuChi_DAO extends AbstractDAO<PhieuChi> implements PhieuChi_IDAO
         String sql = "INSERT INTO PhieuChi(maPhieuChi,maNhaCungCap,loaiChiTieu,lyDoChi,soTien,ngayChi,hinhThucThanhToan,trangThai,ngayTao,nguoiTao) VALUES(?,?,?,?,?,?,?,?,?,?)";
         return execute(sql, entity.getMaPhieuChi(), Refs.maNcc(entity.getNhaCungCap()), entity.getLoaiChiTieu(),
                 entity.getLyDoChi(), entity.getSoTien(), entity.getNgayChi(), entity.getHinhThucThanhToan(),
-                entity.getTrangThai(), entity.getNgayTao(), entity.getNguoiTao());
+                entity.getTrangThai(), entity.getNgayTao(), Refs.maNv(entity.getNguoiTao()));
     }
 
     @Override
@@ -53,7 +53,7 @@ public class PhieuChi_DAO extends AbstractDAO<PhieuChi> implements PhieuChi_IDAO
         String sql = "UPDATE PhieuChi SET maNhaCungCap = ?, loaiChiTieu = ?, lyDoChi = ?, soTien = ?, ngayChi = ?, hinhThucThanhToan = ?, trangThai = ?, ngayTao = ?, nguoiTao = ? WHERE maPhieuChi = ?";
         execute(sql, Refs.maNcc(entity.getNhaCungCap()), entity.getLoaiChiTieu(), entity.getLyDoChi(), entity.getSoTien(),
                 entity.getNgayChi(), entity.getHinhThucThanhToan(), entity.getTrangThai(), entity.getNgayTao(),
-                entity.getNguoiTao(), entity.getMaPhieuChi());
+                Refs.maNv(entity.getNguoiTao()), entity.getMaPhieuChi());
     }
 
     @Override

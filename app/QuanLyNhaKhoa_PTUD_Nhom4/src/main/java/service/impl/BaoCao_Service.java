@@ -1,5 +1,6 @@
 package service.impl;
 
+import dto.HoaDonKemThanhToan;
 import entity.ChiTietKeHoachDieuTri;
 import entity.HoaDon;
 import entity.KeHoachDieuTri;
@@ -24,6 +25,7 @@ public class BaoCao_Service implements BaoCao_IService {
     private final PhieuThu_DAO thuDao = new PhieuThu_DAO();
     private final PhieuChi_DAO chiDao = new PhieuChi_DAO();
     private final HoaDon_DAO hoaDonDao = new HoaDon_DAO();
+    private final HoaDon_Service hoaDonService = new HoaDon_Service();
     private final LichHen_DAO lichHenDao = new LichHen_DAO();
     private final KeHoachDieuTri_DAO keHoachDao = new KeHoachDieuTri_DAO();
     private final ChiTietKeHoachDieuTri_DAO chiTietKhDao = new ChiTietKeHoachDieuTri_DAO();
@@ -46,6 +48,10 @@ public class BaoCao_Service implements BaoCao_IService {
     @Override
     public List<HoaDon> danhSachHoaDon() {
         return hoaDonDao.findAllHoaDon();
+    }
+
+    public List<HoaDonKemThanhToan> danhSachHoaDonKemThanhToan() {
+        return hoaDonService.findAllKemThanhToan();
     }
 
     @Override
@@ -82,8 +88,8 @@ public class BaoCao_Service implements BaoCao_IService {
     @Override
     public long tongDaThuTheoKhach(String maKH) {
         long tong = 0;
-        for (HoaDon hd : hoaDonDao.findByMaKH(maKH)) {
-            tong += hd.getDaThu();
+        for (HoaDonKemThanhToan item : hoaDonService.findKemThanhToanByMaKH(maKH)) {
+            tong += item.getThanhToan().getDaThu();
         }
         return tong;
     }
@@ -91,8 +97,8 @@ public class BaoCao_Service implements BaoCao_IService {
     @Override
     public long tongConNoTheoKhach(String maKH) {
         long tong = 0;
-        for (HoaDon hd : hoaDonDao.findByMaKH(maKH)) {
-            tong += hd.getConNo();
+        for (HoaDonKemThanhToan item : hoaDonService.findKemThanhToanByMaKH(maKH)) {
+            tong += item.getThanhToan().getConNo();
         }
         return tong;
     }

@@ -12,9 +12,9 @@ public class ToaThuoc {
     private String hinhThucThanhToan;
     private boolean nhanTaiPhongKham;
     private String ghiChu;
-    private long thanhTien;
     private LocalDateTime ngayTao;
     private List<ChiTietToaThuoc> chiTiet;
+    private Long thanhTienDoc;
 
     public String getMaToaThuoc() {
         return maToaThuoc;
@@ -73,11 +73,18 @@ public class ToaThuoc {
     }
 
     public long getThanhTien() {
-        return thanhTien;
+        if (chiTiet != null) {
+            long tong = 0;
+            for (ChiTietToaThuoc dong : chiTiet) {
+                tong += dong.getThanhTien();
+            }
+            return tong;
+        }
+        return thanhTienDoc == null ? 0 : thanhTienDoc;
     }
 
-    public void setThanhTien(long thanhTien) {
-        this.thanhTien = thanhTien;
+    public void ganThanhTienDoc(Long thanhTienDoc) {
+        this.thanhTienDoc = thanhTienDoc;
     }
 
     public LocalDateTime getNgayTao() {
@@ -94,5 +101,6 @@ public class ToaThuoc {
 
     public void setChiTiet(List<ChiTietToaThuoc> chiTiet) {
         this.chiTiet = chiTiet;
+        this.thanhTienDoc = null;
     }
 }

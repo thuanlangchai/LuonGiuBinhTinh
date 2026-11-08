@@ -13,10 +13,13 @@ public class PhieuXuatKhoMapper implements RowMapper<PhieuXuatKho> {
         entity.setNgayXuat(Rs.date(rs, "ngayXuat"));
         entity.setLoaiVatTu(rs.getString("loaiVatTu"));
         entity.setLyDo(rs.getString("lyDo"));
-        entity.setTongTien(rs.getLong("tongTien"));
         entity.setNgayTao(Rs.dateTime(rs, "ngayTao"));
-        entity.setNguoiTao(Maps.nhanVien(rs, "nguoiTao", "tenNguoiTao"));
         entity.setNhaCungCap(Maps.nhaCungCap(rs, "maNhaCungCap", "tenNhaCungCap"));
+        entity.setNguoiTao(Maps.nhanVien(rs, "nguoiTao", null));
+        try {
+            entity.ganTongTienDoc(rs.getLong("tongTien"));
+        } catch (SQLException ignored) {
+        }
         return entity;
     }
 }

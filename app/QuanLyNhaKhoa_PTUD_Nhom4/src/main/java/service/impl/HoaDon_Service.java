@@ -2,6 +2,9 @@ package service.impl;
 
 import database.BusinessException;
 import database.Transactions;
+import dto.HoaDonDong;
+import dto.HoaDonKemThanhToan;
+import dto.HoaDonThongTinThanhToan;
 import entity.ChiTietHoaDon;
 import entity.HoaDon;
 import entity.PhieuThu;
@@ -38,6 +41,72 @@ public class HoaDon_Service implements HoaDon_IService {
         this.phieuThuDao = phieuThuDao;
     }
 
+    public HoaDonThongTinThanhToan tinhThongTinThanhToan(String maHoaDon, long chietKhau, long tongTien, long daThu) {
+        long ck = Math.max(0, chietKhau);
+        long tong = Math.max(0, tongTien);
+        long thu = Math.max(0, daThu);
+        long thanhTien = Math.max(0, tong - ck);
+        long conNo = Math.max(0, thanhTien - thu);
+        String trangThaiThanhToan;
+        if (thu <= 0) {
+            trangThaiThanhToan = "Chưa thanh toán";
+        } else if (thu < thanhTien) {
+            trangThaiThanhToan = "Thanh toán một phần";
+        } else {
+            trangThaiThanhToan = "Đã thanh toán";
+        }
+        return new HoaDonThongTinThanhToan(maHoaDon, tong, ck, thanhTien, thu, conNo, trangThaiThanhToan);
+    }
+
+    public HoaDonThongTinThanhToan tinhThongTinThanhToan(HoaDon hoaDon, List<ChiTietHoaDon> chiTiet, long daThu) {
+        long tong = 0;
+        if (chiTiet != null) {
+            for (ChiTietHoaDon dong : chiTiet) {
+                tong += dong.getThanhTien();
+            }
+        }
+        long chietKhau = hoaDon == null ? 0 : hoaDon.getChietKhau();
+        String ma = hoaDon == null ? null : hoaDon.getMaHoaDon();
+        return tinhThongTinThanhToan(ma, chietKhau, tong, daThu);
+    }
+
+    private HoaDonKemThanhToan gan(HoaDonDong dong) {
+        HoaDon hoaDon = dong.getHoaDon();
+        HoaDonThongTinThanhToan thanhToan = tinhThongTinThanhToan(
+                hoaDon.getMaHoaDon(), hoaDon.getChietKhau(), dong.getTongTien(), dong.getDaThu());
+        return new HoaDonKemThanhToan(hoaDon, thanhToan);
+    }
+
+    public List<HoaDonKemThanhToan> findAllKemThanhToan() {
+        List<HoaDonKemThanhToan> ketQua = new ArrayList<>();
+        for (HoaDonDong dong : hoaDonDao.findAllDong()) {
+            ketQua.add(gan(dong));
+        }
+        return ketQua;
+    }
+
+    public List<HoaDonKemThanhToan> findKemThanhToanByMaKH(String maKH) {
+        List<HoaDonKemThanhToan> ketQua = new ArrayList<>();
+        for (HoaDonDong dong : hoaDonDao.findDongByMaKH(maKH)) {
+            ketQua.add(gan(dong));
+        }
+        return ketQua;
+    }
+
+    public HoaDonKemThanhToan findKemThanhToanById(String maHoaDon) {
+        HoaDonDong dong = hoaDonDao.findDongById(maHoaDon);
+        return dong == null ? null : gan(dong);
+    }
+
+    public HoaDonKemThanhToan findDetailKemThanhToanById(String maHoaDon) {
+        HoaDonKemThanhToan item = findKemThanhToanById(maHoaDon);
+        if (item == null) {
+            return null;
+        }
+        item.getHoaDon().setChiTietHoaDon(chiTietDao.findByMaHoaDon(maHoaDon));
+        return item;
+    }
+
     @Override
     public List<HoaDon> findAllHoaDon() {
         return hoaDonDao.findAllHoaDon();
@@ -65,9 +134,7 @@ public class HoaDon_Service implements HoaDon_IService {
 
     @Override
     public List<HoaDon> findByMaKH(String maKH) {
-        List<HoaDon> danhSach = hoaDonDao.findByMaKH(maKH);
-        ganChiTiet(danhSach);
-        return danhSach;
+        return hoaDonDao.findByMaKH(maKH);
     }
 
     public int nextSo() {
@@ -127,7 +194,8 @@ public class HoaDon_Service implements HoaDon_IService {
         }
         int[] ketQua = new int[1];
         Transactions.run(() -> {
-            chuanHoaTien(hoaDon, chiTiet);
+            hoaDon.setChietKhau(Math.max(0, hoaDon.getChietKhau()));
+            hoaDon.setChiTietHoaDon(chiTiet == null ? List.of() : chiTiet);
             ketQua[0] = hoaDonDao.add(hoaDon);
             if (chiTiet != null) {
                 for (ChiTietHoaDon dong : chiTiet) {
@@ -146,40 +214,35 @@ public class HoaDon_Service implements HoaDon_IService {
         return ketQua[0];
     }
 
-    public HoaDon thuTien(String maHoaDon, long soTien, PhieuThu phieu) {
+    public HoaDonKemThanhToan thuTien(String maHoaDon, long soTien, PhieuThu phieu) {
         if (soTien <= 0) {
             throw new BusinessException("Số tiền thu phải lớn hơn 0.");
         }
         if (phieu == null) {
             throw new BusinessException("Thiếu phiếu thu.");
         }
-        HoaDon[] ketQua = new HoaDon[1];
+        HoaDonKemThanhToan[] ketQua = new HoaDonKemThanhToan[1];
         Transactions.run(() -> {
-            HoaDon hoaDon = hoaDonDao.lockById(maHoaDon);
-            if (hoaDon == null) {
+            HoaDonDong dong = hoaDonDao.lockDongById(maHoaDon);
+            if (dong == null) {
                 throw new BusinessException("Không tìm thấy hóa đơn.");
             }
-            if (soTien > hoaDon.getConNo()) {
+            HoaDonThongTinThanhToan thanhToan = tinhThongTinThanhToan(
+                    dong.getHoaDon().getMaHoaDon(),
+                    dong.getHoaDon().getChietKhau(),
+                    dong.getTongTien(),
+                    dong.getDaThu());
+            if (soTien > thanhToan.getConNo()) {
                 throw new BusinessException("Số tiền thu vượt quá số tiền còn nợ.");
             }
+            HoaDon hoaDon = dong.getHoaDon();
             if (phieu.getKhachHang() == null) {
                 phieu.setKhachHang(hoaDon.getKhachHang());
             }
             phieu.setHoaDon(Refs.hoaDon(hoaDon.getMaHoaDon()));
             phieu.setSoTien(soTien);
             phieuThuDao.add(phieu);
-            long daThu = hoaDon.getDaThu() + soTien;
-            hoaDon.setDaThu(daThu);
-            hoaDon.setConNo(Math.max(0, hoaDon.getThanhTien() - daThu));
-            if (daThu <= 0) {
-                hoaDon.setTrangThai("Chưa thanh toán");
-            } else if (daThu < hoaDon.getThanhTien()) {
-                hoaDon.setTrangThai("Thanh toán một phần");
-            } else {
-                hoaDon.setTrangThai("Đã thanh toán");
-            }
-            hoaDonDao.update(hoaDon);
-            ketQua[0] = hoaDon;
+            ketQua[0] = gan(hoaDonDao.findDongById(maHoaDon));
         });
         return ketQua[0];
     }
@@ -195,27 +258,6 @@ public class HoaDon_Service implements HoaDon_IService {
         Map<String, List<ChiTietHoaDon>> chiTiet = chiTietDao.findByMaHoaDonIn(ids);
         for (HoaDon hoaDon : danhSach) {
             hoaDon.setChiTietHoaDon(chiTiet.getOrDefault(hoaDon.getMaHoaDon(), List.of()));
-        }
-    }
-
-    private static void chuanHoaTien(HoaDon hoaDon, List<ChiTietHoaDon> chiTiet) {
-        long tong = 0;
-        if (chiTiet != null) {
-            for (ChiTietHoaDon dong : chiTiet) {
-                long thanh = dong.getSoLuong() * dong.getDonGia();
-                dong.setThanhTien(thanh);
-                tong += thanh;
-            }
-        }
-        long chietKhau = Math.max(0, hoaDon.getChietKhau());
-        long thanhTien = Math.max(0, tong - chietKhau);
-        hoaDon.setTongTien(tong);
-        hoaDon.setChietKhau(chietKhau);
-        hoaDon.setThanhTien(thanhTien);
-        hoaDon.setDaThu(0);
-        hoaDon.setConNo(thanhTien);
-        if (hoaDon.getTrangThai() == null || hoaDon.getTrangThai().isBlank()) {
-            hoaDon.setTrangThai("Chưa thanh toán");
         }
     }
 }

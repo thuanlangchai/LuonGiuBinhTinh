@@ -11,11 +11,11 @@ public class PhieuNhapKho {
     private String loaiVatTu;
     private NhaCungCap nhaCungCap;
     private String lyDo;
-    private long tongTien;
     private String fileExcel;
     private LocalDateTime ngayTao;
     private NhanVien nguoiTao;
     private List<ChiTietNhapKho> chiTiet;
+    private Long tongTienDoc;
 
     public String getMaPhieuNhap() {
         return maPhieuNhap;
@@ -58,11 +58,18 @@ public class PhieuNhapKho {
     }
 
     public long getTongTien() {
-        return tongTien;
+        if (chiTiet != null) {
+            long tong = 0;
+            for (ChiTietNhapKho dong : chiTiet) {
+                tong += dong.getThanhTien();
+            }
+            return tong;
+        }
+        return tongTienDoc == null ? 0 : tongTienDoc;
     }
 
-    public void setTongTien(long tongTien) {
-        this.tongTien = tongTien;
+    public void ganTongTienDoc(Long tongTienDoc) {
+        this.tongTienDoc = tongTienDoc;
     }
 
     public String getFileExcel() {
@@ -95,5 +102,6 @@ public class PhieuNhapKho {
 
     public void setChiTiet(List<ChiTietNhapKho> chiTiet) {
         this.chiTiet = chiTiet;
+        this.tongTienDoc = null;
     }
 }

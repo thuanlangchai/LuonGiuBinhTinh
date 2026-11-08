@@ -1,7 +1,6 @@
 package view;
 
 import entity.ChiTietKeHoachDieuTri;
-import entity.HoaDon;
 import entity.KeHoachDieuTri;
 import entity.LichHen;
 import entity.PhieuChi;
@@ -387,8 +386,8 @@ public class BaoCaoPanel extends JPanel {
         }
         if ("tongquan".equals(maBaoCao)) {
             long doanhThu = 0;
-            for (HoaDon hoaDon : baoCaoService.danhSachHoaDon()) {
-                doanhThu += hoaDon.getThanhTien();
+            for (dto.HoaDonKemThanhToan item : baoCaoService.danhSachHoaDonKemThanhToan()) {
+                doanhThu += item.getThanhToan().getThanhTien();
             }
             return new Object[][]{
                 {"1", "Lịch hẹn", String.valueOf(baoCaoService.danhSachLichHen().size()), ""},

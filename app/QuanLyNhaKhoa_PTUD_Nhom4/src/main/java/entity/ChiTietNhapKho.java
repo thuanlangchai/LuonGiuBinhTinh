@@ -7,7 +7,6 @@ public class ChiTietNhapKho {
     private SanPham sanPham;
     private int soLuong;
     private long donGia;
-    private long thanhTien;
 
     public String getMaChiTiet() {
         return maChiTiet;
@@ -50,10 +49,6 @@ public class ChiTietNhapKho {
     }
 
     public long getThanhTien() {
-        return thanhTien;
-    }
-
-    public void setThanhTien(long thanhTien) {
-        this.thanhTien = thanhTien;
+        return soLuong * donGia;
     }
 }

@@ -94,7 +94,6 @@ public final class ToaThuocDuLieu {
             ct.setCachSuDung(cv.cachSuDung);
             ct.setTongSo(cv.tongSo);
             ct.setDonGia(cv.donGia);
-            ct.setThanhTien(cv.thanhTien);
             cts.add(ct);
         }
         e.setChiTiet(cts);

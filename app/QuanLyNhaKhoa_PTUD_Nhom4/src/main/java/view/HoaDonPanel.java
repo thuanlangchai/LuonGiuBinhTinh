@@ -134,11 +134,11 @@ public class HoaDonPanel extends JPanel {
 
     public void lamMoi() {
         model.setRowCount(0);
-        for (HoaDonView hd : HoaDonDuLieu.tatCa()) {
+        List<HoaDonView> danhSach = HoaDonDuLieu.tatCa();
+        for (HoaDonView hd : danhSach) {
             model.addRow(ViewTheme.dongBang(dongHoaDon(hd), true, true));
         }
-        lblDem.setText(ViewTheme.demDong(HoaDonDuLieu.tatCa().isEmpty() ? 0 : 1,
-                HoaDonDuLieu.tatCa().size(), HoaDonDuLieu.tatCa().size()));
+        lblDem.setText(ViewTheme.demDong(danhSach.isEmpty() ? 0 : 1, danhSach.size(), danhSach.size()));
     }
 
     public void moLapHoaDon(String maKh, List<HangDT> goiY) {

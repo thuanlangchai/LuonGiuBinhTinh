@@ -137,7 +137,6 @@ public final class KeHoachDuLieu {
         ct.setDichVu(Refs.dichVu(maDv));
         ct.setSoLuong(hang.soLuong);
         ct.setDonGia(hang.donGia);
-        ct.setThanhTien(hang.soLuong * hang.donGia);
         ct.setTrangThai(hang.trangThai == null ? "Mới" : hang.trangThai);
         if (keHoachService.addChiTiet(ct) == null) {
             return false;

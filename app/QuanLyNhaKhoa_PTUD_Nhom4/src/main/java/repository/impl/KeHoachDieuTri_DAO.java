@@ -51,7 +51,7 @@ public class KeHoachDieuTri_DAO extends AbstractDAO<KeHoachDieuTri> implements K
         String sql = "INSERT INTO KeHoachDieuTri(maKeHoach,maKH,ngayKeHoach,maBacSi,lyDoDieuTri,ghiChu,trangThai,ngayTao,nguoiTao) VALUES(?,?,?,?,?,?,?,?,?)";
         return execute(sql, entity.getMaKeHoach(), Refs.maKh(entity.getKhachHang()), entity.getNgayKeHoach(),
                 Refs.maNv(entity.getBacSi()), entity.getLyDoDieuTri(), entity.getGhiChu(), entity.getTrangThai(),
-                entity.getNgayTao(), entity.getNguoiTao());
+                entity.getNgayTao(), Refs.maNv(entity.getNguoiTao()));
     }
 
     @Override
@@ -59,7 +59,7 @@ public class KeHoachDieuTri_DAO extends AbstractDAO<KeHoachDieuTri> implements K
         String sql = "UPDATE KeHoachDieuTri SET maKH = ?, ngayKeHoach = ?, maBacSi = ?, lyDoDieuTri = ?, ghiChu = ?, trangThai = ?, ngayTao = ?, nguoiTao = ? WHERE maKeHoach = ?";
         execute(sql, Refs.maKh(entity.getKhachHang()), entity.getNgayKeHoach(), Refs.maNv(entity.getBacSi()),
                 entity.getLyDoDieuTri(), entity.getGhiChu(), entity.getTrangThai(), entity.getNgayTao(),
-                entity.getNguoiTao(), entity.getMaKeHoach());
+                Refs.maNv(entity.getNguoiTao()), entity.getMaKeHoach());
     }
 
     @Override

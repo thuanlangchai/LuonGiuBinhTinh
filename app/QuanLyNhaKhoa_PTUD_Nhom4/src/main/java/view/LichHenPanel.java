@@ -598,9 +598,8 @@ public class LichHenPanel extends JPanel {
 
                 JButton btnXemChiTiet = new JButton("👁");
                 btnXemChiTiet.setToolTipText("Xem chi tiết lịch hẹn");
-                ViewTheme.nutLink(btnXemChiTiet); // Dùng style nút link hoặc nút nhỏ gọn
+                ViewTheme.nutLink(btnXemChiTiet);
                 btnXemChiTiet.addActionListener(e -> {
-                    // Ngăn chặn sự kiện lan truyền nếu cần và gọi hàm chuyển trang
                     hienThiChiTiet(c);
                 });
                 pnlCard.add(pnlThongTin, BorderLayout.CENTER);
@@ -678,7 +677,6 @@ public class LichHenPanel extends JPanel {
                     int i = tblBang.convertRowIndexToModel(tblBang.getSelectedRow());
                     List<CuocHen> hien = dangXem();
                     if (i >= 0 && i < hien.size()) {
-//						moForm(hien.get(i), hien.get(i).batDau);
                         hienThiChiTiet(hien.get(i));
                     }
                 }
@@ -752,7 +750,6 @@ public class LichHenPanel extends JPanel {
 
         JComboBox<String> cmbLoaiLich = hopThoai.chon("Loại lịch hẹn", false, "Bình thường", "Khẩn cấp");
 
-        // Tự động chọn "Khẩn cấp" nếu lịch hẹn cũ có chứa nhãn [KHẨN CẤP] trong ghi chú
         if (cu != null && cu.ghiChu != null && cu.ghiChu.contains("[KHẨN CẤP]")) {
             cmbLoaiLich.setSelectedItem("Khẩn cấp");
         }
@@ -767,7 +764,7 @@ public class LichHenPanel extends JPanel {
         }
         JComboBox<String> cmbTt = hopThoai.chon("Trạng thái", false, "Mới", "Xác nhận", "Đang đợi", "Đang điều trị",
                 "Hoàn tất", "Khách ra về", "Hủy bỏ");
-        cmbTt.setSelectedItem(trangThaiMacDinh = trangThaiMacDinh); // Sửa tạm biến nếu cần, hoặc giữ nguyên cmbTt.setSelectedItem(trangThaiMacDinh);
+        cmbTt.setSelectedItem(trangThaiMacDinh);
 
         hopThoai.hien(() -> {
             LocalDateTime pnlGio;
@@ -832,7 +829,6 @@ public class LichHenPanel extends JPanel {
             entity.setBacSi(Refs.nhanVien(maBacSiMoi));
             entity.setPhuTa(Refs.nhanVien(maBacSiTheoTen(String.valueOf(cmbPhuTa.getSelectedItem()))));
 
-            // QUAN TRỌNG: Gán biến ghiChuMoi (đã có hoặc không có chữ [KHẨN CẤP]) vào entity
             entity.setGhiChu(ghiChuMoi);
 
             entity.setTrangThai(String.valueOf(cmbTt.getSelectedItem()));
@@ -931,7 +927,6 @@ public class LichHenPanel extends JPanel {
     private void hienThiChiTiet(CuocHen c) {
         pnlThan.removeAll();
         ChiTietLichHenPanel chiTietPanel = new ChiTietLichHenPanel(c, () -> {
-            // Hành động callback khi bấm nút "Quay lại" từ trang chi tiết
             taiLai();
         });
         pnlThan.add(chiTietPanel, BorderLayout.CENTER);

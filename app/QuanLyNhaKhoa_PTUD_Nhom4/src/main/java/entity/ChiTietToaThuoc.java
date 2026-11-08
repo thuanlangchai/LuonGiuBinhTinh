@@ -9,7 +9,6 @@ public class ChiTietToaThuoc {
     private String cachSuDung;
     private int tongSo;
     private long donGia;
-    private long thanhTien;
 
     public String getMaChiTiet() {
         return maChiTiet;
@@ -68,10 +67,6 @@ public class ChiTietToaThuoc {
     }
 
     public long getThanhTien() {
-        return thanhTien;
-    }
-
-    public void setThanhTien(long thanhTien) {
-        this.thanhTien = thanhTien;
+        return tongSo * donGia;
     }
 }

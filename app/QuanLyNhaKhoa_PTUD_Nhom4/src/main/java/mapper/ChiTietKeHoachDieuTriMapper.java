@@ -13,7 +13,6 @@ public class ChiTietKeHoachDieuTriMapper implements RowMapper<ChiTietKeHoachDieu
         entity.setNgay(Rs.date(rs, "ngay"));
         entity.setSoLuong(rs.getInt("soLuong"));
         entity.setDonGia(rs.getLong("donGia"));
-        entity.setThanhTien(rs.getLong("thanhTien"));
         entity.setTrangThai(rs.getString("trangThai"));
         entity.setKeHoachDieuTri(Maps.keHoach(rs, "maKeHoach", null));
         entity.setRang(Maps.rang(rs, "maRang", "tenRang"));

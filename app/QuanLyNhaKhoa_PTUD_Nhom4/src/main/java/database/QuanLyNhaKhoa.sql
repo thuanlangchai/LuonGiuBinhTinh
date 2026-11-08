@@ -154,12 +154,7 @@ CREATE TABLE HoaDon (
     maKH         NVARCHAR(10)  NOT NULL,
     maKeHoach    NVARCHAR(10)  NULL,
     maBacSi      NVARCHAR(10)  NULL,
-    tongTien     BIGINT        NOT NULL DEFAULT 0,
     chietKhau    BIGINT        NOT NULL DEFAULT 0,
-    thanhTien    BIGINT        NOT NULL DEFAULT 0,
-    daThu        BIGINT        NOT NULL DEFAULT 0,
-    conNo        BIGINT        NOT NULL DEFAULT 0,
-    trangThai    NVARCHAR(40)  NOT NULL DEFAULT N'Chưa thanh toán',
     ghiChu       NVARCHAR(255) NULL,
     ngayTao      DATETIME2     NOT NULL DEFAULT SYSDATETIME(),
     nguoiTao     NVARCHAR(10) NULL,
@@ -177,7 +172,6 @@ CREATE TABLE ChiTietKeHoachDieuTri (
     maDichVu     NVARCHAR(10)  NOT NULL,
     soLuong      INT           NOT NULL DEFAULT 1,
     donGia       BIGINT        NOT NULL,
-    thanhTien    BIGINT        NOT NULL,
     trangThai    NVARCHAR(30)  NOT NULL DEFAULT N'Mới',
     maHoaDon     NVARCHAR(10)  NULL,
     CONSTRAINT FK_CTKH_KH FOREIGN KEY (maKeHoach) REFERENCES KeHoachDieuTri(maKeHoach),
@@ -194,7 +188,6 @@ CREATE TABLE ChiTietHoaDon (
     maDichVu     NVARCHAR(10)  NOT NULL,
     soLuong      INT           NOT NULL DEFAULT 1,
     donGia       BIGINT        NOT NULL,
-    thanhTien    BIGINT        NOT NULL,
     keHoach      NVARCHAR(120) NULL,
     CONSTRAINT FK_CTHD_HD FOREIGN KEY (maHoaDon) REFERENCES HoaDon(maHoaDon),
     CONSTRAINT FK_CTHD_Rang FOREIGN KEY (maRang) REFERENCES Rang(maRang),
@@ -252,7 +245,6 @@ CREATE TABLE ToaThuoc (
     hinhThucThanhToan  NVARCHAR(40)  NULL,
     nhanTaiPhongKham   BIT           NOT NULL DEFAULT 1,
     ghiChu             NVARCHAR(255) NULL,
-    thanhTien          BIGINT        NOT NULL DEFAULT 0,
     ngayTao            DATETIME2     NOT NULL DEFAULT SYSDATETIME(),
     CONSTRAINT FK_TT_KH FOREIGN KEY (maKH) REFERENCES KhachHang(maKH),
     CONSTRAINT FK_TT_BS FOREIGN KEY (maBacSi) REFERENCES NhanVien(maNhanVien)
@@ -266,7 +258,6 @@ CREATE TABLE ChiTietToaThuoc (
     cachSuDung   NVARCHAR(255) NULL,
     tongSo       INT           NOT NULL DEFAULT 1,
     donGia       BIGINT        NOT NULL,
-    thanhTien    BIGINT        NOT NULL,
     CONSTRAINT FK_CTTT_TT FOREIGN KEY (maToaThuoc) REFERENCES ToaThuoc(maToaThuoc),
     CONSTRAINT FK_CTTT_Thuoc FOREIGN KEY (maThuoc) REFERENCES Thuoc(maThuoc)
 );
@@ -286,7 +277,6 @@ CREATE TABLE PhieuNhapKho (
     loaiVatTu      NVARCHAR(80)  NULL,
     maNhaCungCap   NVARCHAR(10)  NULL,
     lyDo           NVARCHAR(255) NOT NULL,
-    tongTien       BIGINT        NOT NULL DEFAULT 0,
     fileExcel      NVARCHAR(255) NULL,
     ngayTao        DATETIME2     NOT NULL DEFAULT SYSDATETIME(),
     nguoiTao       NVARCHAR(120) NULL,
@@ -299,7 +289,6 @@ CREATE TABLE ChiTietNhapKho (
     maSanPham    NVARCHAR(10) NOT NULL,
     soLuong      INT          NOT NULL,
     donGia       BIGINT       NOT NULL,
-    thanhTien    BIGINT       NOT NULL,
     CONSTRAINT FK_CTN_PN FOREIGN KEY (maPhieuNhap) REFERENCES PhieuNhapKho(maPhieuNhap),
     CONSTRAINT FK_CTN_SP FOREIGN KEY (maSanPham) REFERENCES SanPham(maSanPham)
 );
@@ -310,7 +299,6 @@ CREATE TABLE PhieuXuatKho (
     loaiVatTu      NVARCHAR(80)  NULL,
     maNhaCungCap   NVARCHAR(10)  NULL,
     lyDo           NVARCHAR(255) NOT NULL,
-    tongTien       BIGINT        NOT NULL DEFAULT 0,
     ngayTao        DATETIME2     NOT NULL DEFAULT SYSDATETIME(),
     nguoiTao       NVARCHAR(10) NULL,
     CONSTRAINT FK_PX_NCC FOREIGN KEY (maNhaCungCap) REFERENCES NhaCungCap(maNhaCungCap),
@@ -323,7 +311,6 @@ CREATE TABLE ChiTietXuatKho (
     maSanPham    NVARCHAR(10) NOT NULL,
     soLuong      INT          NOT NULL,
     donGia       BIGINT       NOT NULL,
-    thanhTien    BIGINT       NOT NULL,
     CONSTRAINT FK_CTX_PX FOREIGN KEY (maPhieuXuat) REFERENCES PhieuXuatKho(maPhieuXuat),
     CONSTRAINT FK_CTX_SP FOREIGN KEY (maSanPham) REFERENCES SanPham(maSanPham)
 );

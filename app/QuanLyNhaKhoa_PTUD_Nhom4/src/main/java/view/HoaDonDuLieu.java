@@ -1,5 +1,7 @@
 package view;
 
+import dto.HoaDonKemThanhToan;
+import dto.HoaDonThongTinThanhToan;
 import entity.ChiTietHoaDon;
 import entity.DichVu;
 import entity.HoaDon;
@@ -44,21 +46,21 @@ public final class HoaDonDuLieu {
 
     public static List<HoaDonView> tatCa() {
         List<HoaDonView> ketQua = new ArrayList<>();
-        for (HoaDon e : hoaDonService.findAllKemChiTiet()) {
-            ketQua.add(mapView(e));
+        for (HoaDonKemThanhToan item : hoaDonService.findAllKemThanhToan()) {
+            ketQua.add(mapView(item));
         }
         return ketQua;
     }
 
     public static HoaDonView theoMa(String ma) {
-        HoaDon e = hoaDonService.findDetailById(ma);
-        return e == null ? null : mapView(e);
+        HoaDonKemThanhToan item = hoaDonService.findDetailKemThanhToanById(ma);
+        return item == null ? null : mapView(item);
     }
 
     public static List<HoaDonView> theoKhach(String maKh) {
         List<HoaDonView> ketQua = new ArrayList<>();
-        for (HoaDon e : hoaDonService.findByMaKH(maKh)) {
-            ketQua.add(mapView(e));
+        for (HoaDonKemThanhToan item : hoaDonService.findKemThanhToanByMaKH(maKh)) {
+            ketQua.add(mapView(item));
         }
         return ketQua;
     }
@@ -119,7 +121,8 @@ public final class HoaDonDuLieu {
             return null;
         }
         bao();
-        return mapView(e);
+        HoaDonKemThanhToan item = hoaDonService.findDetailKemThanhToanById(e.getMaHoaDon());
+        return item == null ? null : mapView(item);
     }
 
     public static void thuTien(HoaDonView hd, long soTien) {
@@ -136,9 +139,11 @@ public final class HoaDonDuLieu {
         pt.setTrangThai("Đã chi trả");
         pt.setNgayTao(LocalDateTime.now());
         pt.setNguoiTao(Refs.nhanVien(DuLieuMau.NGUOI));
-        HoaDon e = hoaDonService.thuTien(hd.ma, soTien, pt);
-        hd.daThu = e.getDaThu();
-        hd.thanhTien = e.getThanhTien();
+        HoaDonKemThanhToan item = hoaDonService.thuTien(hd.ma, soTien, pt);
+        HoaDonThongTinThanhToan tt = item.getThanhToan();
+        hd.daThu = tt.getDaThu();
+        hd.thanhTien = tt.getThanhTien();
+        hd.tong = tt.getTongTien();
         hd.capNhatTrangThai();
         bao();
     }
@@ -206,7 +211,9 @@ public final class HoaDonDuLieu {
         return NgayUtil.fmt(LocalDate.now());
     }
 
-    private static HoaDonView mapView(HoaDon e) {
+    private static HoaDonView mapView(HoaDonKemThanhToan item) {
+        HoaDon e = item.getHoaDon();
+        HoaDonThongTinThanhToan tt = item.getThanhToan();
         HoaDonView v = new HoaDonView();
         v.ma = e.getMaHoaDon();
         v.ngayLap = NgayUtil.fmt(e.getNgayLap());
@@ -216,12 +223,12 @@ public final class HoaDonDuLieu {
         v.keHoach = maKeHoach == null ? "" : "Kế hoạch " + maKeHoach;
         v.bacSi = e.getBacSi() == null ? "" : Refs.tenNv(e.getBacSi());
         v.ghiChu = e.getGhiChu();
-        v.trangThai = e.getTrangThai();
+        v.trangThai = tt.getTrangThaiThanhToan();
         v.ngayTao = NgayUtil.fmtFull(e.getNgayTao());
-        v.tong = e.getTongTien();
+        v.tong = tt.getTongTien();
         v.chietKhau = e.getChietKhau();
-        v.thanhTien = e.getThanhTien();
-        v.daThu = e.getDaThu();
+        v.thanhTien = tt.getThanhTien();
+        v.daThu = tt.getDaThu();
         List<ChiTietHoaDon> chiTiet = e.getChiTietHoaDon() == null ? List.of() : e.getChiTietHoaDon();
         for (ChiTietHoaDon ct : chiTiet) {
             v.chiTiet.add(new ChiTietHoaDonView(

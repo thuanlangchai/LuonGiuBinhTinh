@@ -79,7 +79,6 @@ public class ChiTietLichHenPanel extends JPanel {
 
         int dong = 0;
         
-        // Nhóm thông tin Khách hàng
         themDongThongTin(pnlNoiDung, gbc, dong++, "Mã lịch hẹn:", cuocHen.maLichHen);
         themDongThongTin(pnlNoiDung, gbc, dong++, "Khách hàng:", cuocHen.khach + (kh != null && kh.getSoDienThoai() != null ? " (SĐT: " + kh.getSoDienThoai() + ")" : ""));
         themDongThongTin(pnlNoiDung, gbc, dong++, "Thời gian bắt đầu:", cuocHen.batDau.format(DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm")));
@@ -89,7 +88,6 @@ public class ChiTietLichHenPanel extends JPanel {
         themDongThongTin(pnlNoiDung, gbc, dong++, "Trạng thái:", cuocHen.trangThai);
         themDongThongTin(pnlNoiDung, gbc, dong++, "Ghi chú:", cuocHen.ghiChu.isEmpty() ? "Không có ghi chú" : cuocHen.ghiChu);
 
-        // Panel chứa các nút tác vụ nhanh
         JPanel pnlTacVu = new JPanel(new FlowLayout(FlowLayout.LEFT, 10, 0));
         pnlTacVu.setOpaque(false);
         
@@ -99,7 +97,6 @@ public class ChiTietLichHenPanel extends JPanel {
             JButton btnXemKeHoach = new JButton("👁 Xem Kế Hoạch Điều Trị (" + maKeHoachLienKet + ")");
             ViewTheme.nutXanh(btnXemKeHoach);
             btnXemKeHoach.addActionListener(e -> {
-                // Thực hiện chuyển đổi màn hình sang trang KeHoachDieuTriPanel tương ứng
                 Container parent = this.getParent();
                 if (parent != null) {
                     parent.removeAll();

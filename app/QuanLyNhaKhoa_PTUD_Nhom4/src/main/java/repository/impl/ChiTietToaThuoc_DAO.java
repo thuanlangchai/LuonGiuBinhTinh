@@ -12,7 +12,7 @@ import repository.ChiTietToaThuoc_IDAO;
 public class ChiTietToaThuoc_DAO extends AbstractDAO<ChiTietToaThuoc> implements ChiTietToaThuoc_IDAO {
 
     private static final String SELECT = """
-            SELECT ct.maChiTiet, ct.soNgay, ct.cachSuDung, ct.tongSo, ct.donGia, ct.thanhTien,
+            SELECT ct.maChiTiet, ct.soNgay, ct.cachSuDung, ct.tongSo, ct.donGia,
                    ct.maToaThuoc, th.maThuoc, th.tenThuoc
             FROM ChiTietToaThuoc ct
             JOIN Thuoc th ON th.maThuoc = ct.maThuoc
@@ -49,16 +49,16 @@ public class ChiTietToaThuoc_DAO extends AbstractDAO<ChiTietToaThuoc> implements
 
     @Override
     public Integer add(ChiTietToaThuoc entity) {
-        String sql = "INSERT INTO ChiTietToaThuoc(maChiTiet,maToaThuoc,maThuoc,soNgay,cachSuDung,tongSo,donGia,thanhTien) VALUES(?,?,?,?,?,?,?,?)";
+        String sql = "INSERT INTO ChiTietToaThuoc(maChiTiet,maToaThuoc,maThuoc,soNgay,cachSuDung,tongSo,donGia) VALUES(?,?,?,?,?,?,?)";
         return execute(sql, entity.getMaChiTiet(), Refs.maToa(entity.getToaThuoc()), Refs.maThuoc(entity.getThuoc()),
-                entity.getSoNgay(), entity.getCachSuDung(), entity.getTongSo(), entity.getDonGia(), entity.getThanhTien());
+                entity.getSoNgay(), entity.getCachSuDung(), entity.getTongSo(), entity.getDonGia());
     }
 
     @Override
     public void update(ChiTietToaThuoc entity) {
-        String sql = "UPDATE ChiTietToaThuoc SET maToaThuoc = ?, maThuoc = ?, soNgay = ?, cachSuDung = ?, tongSo = ?, donGia = ?, thanhTien = ? WHERE maChiTiet = ?";
+        String sql = "UPDATE ChiTietToaThuoc SET maToaThuoc = ?, maThuoc = ?, soNgay = ?, cachSuDung = ?, tongSo = ?, donGia = ? WHERE maChiTiet = ?";
         execute(sql, Refs.maToa(entity.getToaThuoc()), Refs.maThuoc(entity.getThuoc()), entity.getSoNgay(),
-                entity.getCachSuDung(), entity.getTongSo(), entity.getDonGia(), entity.getThanhTien(), entity.getMaChiTiet());
+                entity.getCachSuDung(), entity.getTongSo(), entity.getDonGia(), entity.getMaChiTiet());
     }
 
     @Override

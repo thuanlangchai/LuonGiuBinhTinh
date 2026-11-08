@@ -12,7 +12,6 @@ public class ChiTietXuatKhoMapper implements RowMapper<ChiTietXuatKho> {
         entity.setMaChiTiet(rs.getString("maChiTiet"));
         entity.setSoLuong(rs.getInt("soLuong"));
         entity.setDonGia(rs.getLong("donGia"));
-        entity.setThanhTien(rs.getLong("thanhTien"));
         entity.setPhieuXuatKho(Maps.phieuXuat(rs, "maPhieuXuat"));
         entity.setSanPham(Maps.sanPham(rs, "maSanPham", "tenSanPham"));
         return entity;

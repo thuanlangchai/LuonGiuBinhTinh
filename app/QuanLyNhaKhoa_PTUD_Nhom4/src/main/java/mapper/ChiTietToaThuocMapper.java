@@ -14,7 +14,6 @@ public class ChiTietToaThuocMapper implements RowMapper<ChiTietToaThuoc> {
         entity.setCachSuDung(rs.getString("cachSuDung"));
         entity.setTongSo(rs.getInt("tongSo"));
         entity.setDonGia(rs.getLong("donGia"));
-        entity.setThanhTien(rs.getLong("thanhTien"));
         entity.setToaThuoc(Maps.toaThuoc(rs, "maToaThuoc"));
         entity.setThuoc(Maps.thuoc(rs, "maThuoc", "tenThuoc"));
         return entity;

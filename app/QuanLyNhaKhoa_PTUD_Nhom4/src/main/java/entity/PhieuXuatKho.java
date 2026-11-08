@@ -11,10 +11,10 @@ public class PhieuXuatKho {
     private String loaiVatTu;
     private NhaCungCap nhaCungCap;
     private String lyDo;
-    private long tongTien;
     private LocalDateTime ngayTao;
     private NhanVien nguoiTao;
     private List<ChiTietXuatKho> chiTiet;
+    private Long tongTienDoc;
 
     public String getMaPhieuXuat() {
         return maPhieuXuat;
@@ -57,11 +57,18 @@ public class PhieuXuatKho {
     }
 
     public long getTongTien() {
-        return tongTien;
+        if (chiTiet != null) {
+            long tong = 0;
+            for (ChiTietXuatKho dong : chiTiet) {
+                tong += dong.getThanhTien();
+            }
+            return tong;
+        }
+        return tongTienDoc == null ? 0 : tongTienDoc;
     }
 
-    public void setTongTien(long tongTien) {
-        this.tongTien = tongTien;
+    public void ganTongTienDoc(Long tongTienDoc) {
+        this.tongTienDoc = tongTienDoc;
     }
 
     public LocalDateTime getNgayTao() {
@@ -86,5 +93,6 @@ public class PhieuXuatKho {
 
     public void setChiTiet(List<ChiTietXuatKho> chiTiet) {
         this.chiTiet = chiTiet;
+        this.tongTienDoc = null;
     }
 }

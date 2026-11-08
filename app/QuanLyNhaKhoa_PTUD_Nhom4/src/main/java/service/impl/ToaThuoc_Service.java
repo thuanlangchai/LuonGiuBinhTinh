@@ -117,14 +117,7 @@ public class ToaThuoc_Service implements ToaThuoc_IService {
         int[] ketQua = new int[1];
         Transactions.run(() -> {
             kiemTraThuoc(chiTiet);
-            long tong = 0;
-            if (chiTiet != null) {
-                for (ChiTietToaThuoc dong : chiTiet) {
-                    dong.setThanhTien(dong.getTongSo() * dong.getDonGia());
-                    tong += dong.getThanhTien();
-                }
-            }
-            toa.setThanhTien(tong);
+            toa.setChiTiet(chiTiet == null ? List.of() : chiTiet);
             ketQua[0] = toaDao.add(toa);
             if (chiTiet != null) {
                 for (ChiTietToaThuoc dong : chiTiet) {

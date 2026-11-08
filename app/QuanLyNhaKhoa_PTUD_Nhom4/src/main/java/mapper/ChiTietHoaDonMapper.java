@@ -13,7 +13,6 @@ public class ChiTietHoaDonMapper implements RowMapper<ChiTietHoaDon> {
         entity.setNgay(Rs.date(rs, "ngay"));
         entity.setSoLuong(rs.getInt("soLuong"));
         entity.setDonGia(rs.getLong("donGia"));
-        entity.setThanhTien(rs.getLong("thanhTien"));
         entity.setKeHoach(rs.getString("keHoach"));
         entity.setHoaDon(Maps.hoaDon(rs, "maHoaDon"));
         entity.setRang(Maps.rang(rs, "maRang", "tenRang"));
