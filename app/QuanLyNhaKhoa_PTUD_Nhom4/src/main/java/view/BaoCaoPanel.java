@@ -1,7 +1,9 @@
 package view;
 
 import entity.ChiTietKeHoachDieuTri;
+import entity.HoaDon;
 import entity.KeHoachDieuTri;
+import entity.KhachHang;
 import entity.LichHen;
 import entity.PhieuChi;
 import entity.PhieuThu;
@@ -10,6 +12,9 @@ import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.GridLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import javax.swing.BorderFactory;
@@ -22,14 +27,25 @@ import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.border.EmptyBorder;
 import javax.swing.table.DefaultTableModel;
+
+import com.itextpdf.kernel.pdf.PdfDocument;
+import com.itextpdf.kernel.pdf.PdfWriter;
+import com.itextpdf.layout.Document;
+import com.itextpdf.layout.element.Cell;
+import com.itextpdf.layout.element.Paragraph;
+import com.itextpdf.layout.element.Table;
+import com.itextpdf.layout.properties.TextAlignment;
+import com.itextpdf.layout.properties.UnitValue;
+
 import service.impl.BaoCao_Service;
 import service.impl.KhachHang_Service;
 import view.model.ChiTietToaThuocView;
 import view.model.ToaThuocView;
 
-public class BaoCaoPanel extends JPanel {
+public class BaoCaoPanel extends JPanel implements ActionListener{
 
     private String ma = "tongquan";
+    private JTable tblThuChiHienTai;
 
     public BaoCaoPanel() {
         setOpaque(false);
@@ -108,6 +124,58 @@ public class BaoCaoPanel extends JPanel {
         return pnl;
     }
 
+//    private JPanel pnlThuChi(String tieuDe) {
+//        JPanel pnl = new JPanel(new BorderLayout(0, 8));
+//        pnl.setOpaque(false);
+//        pnl.add(dau(tieuDe, false), BorderLayout.NORTH);
+//        BaoCao_Service baoCaoService = new BaoCao_Service();
+//        long tongThu = 0;
+//        long tongChi = 0;
+//        List<Object[]> rows = new ArrayList<>();
+//        int stt = 1;
+//        for (PhieuThu phieuThu : baoCaoService.danhSachPhieuThu()) {
+//            tongThu += phieuThu.getSoTien();
+//            rows.add(new Object[]{
+//                String.valueOf(stt++), phieuThu.getMaPhieuThu(), NgayUtil.fmt(phieuThu.getNgayThu()),
+//                entity.Refs.maKh(phieuThu.getKhachHang()), "", phieuThu.getLyDo(),
+//                ViewTheme.tien(phieuThu.getSoTien()), "0", "0", "0", ViewTheme.tien(phieuThu.getSoTien()),
+//                "0", "0", "0", "0", "0"
+//            });
+//        }
+//        for (PhieuChi phieuChi : baoCaoService.danhSachPhieuChi()) {
+//            tongChi += phieuChi.getSoTien();
+//            rows.add(new Object[]{
+//                String.valueOf(stt++), phieuChi.getMaPhieuChi(), NgayUtil.fmt(phieuChi.getNgayChi()),
+//                "", entity.Refs.maNcc(phieuChi.getNhaCungCap()), phieuChi.getLyDoChi(),
+//                "0", "0", "0", "0", "0",
+//                ViewTheme.tien(phieuChi.getSoTien()), "0", "0", "0", ViewTheme.tien(phieuChi.getSoTien())
+//            });
+//        }
+//        rows.add(new Object[]{"", "", "", "", "", "Tổng tiền",
+//            ViewTheme.tien(tongThu), "0", "0", "0", ViewTheme.tien(tongThu),
+//            ViewTheme.tien(tongChi), "0", "0", "0", ViewTheme.tien(tongChi)});
+//        JPanel pnlSo = new JPanel(new GridLayout(1, 3, 8, 0));
+//        pnlSo.setOpaque(false);
+//        pnlSo.add(oSo("Tổng thu", ViewTheme.tien(tongThu)));
+//        pnlSo.add(oSo("Tổng chi", ViewTheme.tien(tongChi)));
+//        pnlSo.add(oSo("Tổng (Thu - chi)", ViewTheme.tien(tongThu - tongChi)));
+//        JPanel pnlTren = new JPanel(new BorderLayout(12, 0));
+//        pnlTren.setOpaque(false);
+//        pnlTren.add(oNgay(), BorderLayout.WEST);
+//        pnlTren.add(pnlSo, BorderLayout.CENTER);
+//        String[] cot = {"#", "Mã phiếu", "Ngày", "Khách hàng", "Nhà cung cấp", "Lý do",
+//            "Thu - Tiền mặt", "Thu - Thẻ", "Thu - Chuyển khoản", "Thu - Trả góp", "Thu - Tổng",
+//            "Chi - Tiền mặt", "Chi - Thẻ", "Chi - Chuyển khoản", "Chi - Trả góp", "Chi - Tổng"};
+//        Object[][] dong = rows.toArray(new Object[0][]);
+//        JPanel pnlThan = new JPanel(new BorderLayout(0, 8));
+//        pnlThan.setOpaque(false);
+//        pnlThan.add(pnlTren, BorderLayout.NORTH);
+//        pnlThan.add(bang(cot, dong), BorderLayout.CENTER);
+//        pnlThan.add(thanhXuatThuChi(tieuDe), BorderLayout.SOUTH);
+//        pnl.add(pnlThan, BorderLayout.CENTER);
+//        return pnl;
+//    }
+
     private JPanel pnlThuChi(String tieuDe) {
         JPanel pnl = new JPanel(new BorderLayout(0, 8));
         pnl.setOpaque(false);
@@ -151,15 +219,19 @@ public class BaoCaoPanel extends JPanel {
             "Thu - Tiền mặt", "Thu - Thẻ", "Thu - Chuyển khoản", "Thu - Trả góp", "Thu - Tổng",
             "Chi - Tiền mặt", "Chi - Thẻ", "Chi - Chuyển khoản", "Chi - Trả góp", "Chi - Tổng"};
         Object[][] dong = rows.toArray(new Object[0][]);
+        JScrollPane scrBang = bang(cot, dong);
+        if (scrBang.getViewport().getView() instanceof JTable) {
+            tblThuChiHienTai = (JTable) scrBang.getViewport().getView();
+        }
         JPanel pnlThan = new JPanel(new BorderLayout(0, 8));
         pnlThan.setOpaque(false);
         pnlThan.add(pnlTren, BorderLayout.NORTH);
-        pnlThan.add(bang(cot, dong), BorderLayout.CENTER);
-        pnlThan.add(nutIn(true), BorderLayout.SOUTH);
+        pnlThan.add(scrBang, BorderLayout.CENTER);
+        pnlThan.add(thanhXuatPhieuDonLe(tieuDe), BorderLayout.SOUTH);
         pnl.add(pnlThan, BorderLayout.CENTER);
         return pnl;
     }
-
+    
     private JPanel pnlDoanhThuDichVu() {
         return baoCaoTab("Doanh thu dịch vụ",
                 new String[]{"Tổng quan", "Loại dịch vụ", "Dịch vụ"},
@@ -286,8 +358,34 @@ public class BaoCaoPanel extends JPanel {
         if (excel) {
             JButton btnXuat = new JButton("Xuất excel...");
             ViewTheme.nutXanh(btnXuat);
-            btnXuat.addActionListener(e -> JOptionPane.showMessageDialog(this, "Đã chuẩn bị file Excel cho " + tieuCua(ma) + "."));
+            btnXuat.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    
+                    HoaDon hd = new HoaDon();
+                    
+                    KhachHang kh = new KhachHang();
+                    kh.setMaKH("KH-1");
+                    
+                    hd.setMaHoaDon("HD-1");
+                    hd.setNgayLap(LocalDate.now());
+                    hd.setKhachHang(kh);
+                    
+                    String filePath = "hoadon_" + hd.getMaHoaDon() + ".pdf";
+
+                    
+                    boolean success = generatehdPdf(hd, filePath);
+
+                    if (success) {
+                        JOptionPane.showMessageDialog(pnl, "Tạo hóa đơn thành công tại: " + filePath);
+                    } else {
+                        JOptionPane.showMessageDialog(pnl, "Có lỗi xảy ra khi tạo hóa đơn!", "Lỗi", JOptionPane.ERROR_MESSAGE);
+                    }
+                }
+            });
             pnl.add(btnXuat);
+            
+         
         }
         return pnl;
     }
@@ -397,4 +495,391 @@ public class BaoCaoPanel extends JPanel {
         }
         return new Object[][]{{"", "", "Tổng", "0"}};
     }
+    
+    private JPanel thanhXuatThuChi(String tieuDeBaoCao) {
+        JPanel pnl = new JPanel(new FlowLayout(FlowLayout.RIGHT, 8, 0));
+        pnl.setOpaque(false);
+
+        JButton btnIn = new JButton("In");
+        ViewTheme.nutXanh(btnIn);
+        btnIn.addActionListener(e ->
+                JOptionPane.showMessageDialog(this, "Đã chuẩn bị bản in " + tieuDeBaoCao + "."));
+
+        JButton btnXuatPdf = new JButton("Xuất hóa đơn PDF...");
+        ViewTheme.nutXanh(btnXuatPdf);
+        btnXuatPdf.addActionListener(e -> xuatHoaDonThuChiPdf(tieuDeBaoCao));
+
+        pnl.add(btnIn);
+        pnl.add(btnXuatPdf);
+        return pnl;
+    }
+    
+    private void xuatHoaDonThuChiPdf(String tieuDeBaoCao) {
+        javax.swing.JFileChooser chooser = new javax.swing.JFileChooser();
+        String fileMacDinh = ("thuchihangngay".equals(ma) ? "phieu_thuchi_ngay_" : "phieu_thuchi_")
+                + LocalDate.now() + ".pdf";
+        chooser.setSelectedFile(new java.io.File(fileMacDinh));
+
+        int chon = chooser.showSaveDialog(this);
+        if (chon != javax.swing.JFileChooser.APPROVE_OPTION) {
+            return;
+        }
+
+        String dest = chooser.getSelectedFile().getAbsolutePath();
+        if (!dest.toLowerCase().endsWith(".pdf")) {
+            dest += ".pdf";
+        }
+
+        boolean thanhCong = generateThuChiPdf(tieuDeBaoCao, dest);
+        if (thanhCong) {
+            JOptionPane.showMessageDialog(this, "Xuất hóa đơn / phiếu thu chi thành công tại:\n" + dest);
+        } else {
+            JOptionPane.showMessageDialog(this, "Có lỗi xảy ra khi xuất file PDF!", "Lỗi", JOptionPane.ERROR_MESSAGE);
+        }
+    }
+    
+    public static boolean generateThuChiPdf(String tieuDeBaoCao, String dest) {
+        try {
+            PdfWriter writer = new PdfWriter(dest);
+            PdfDocument pdf = new PdfDocument(writer);
+            Document document = new Document(pdf);
+
+            try {
+                String fontPath = "C:/Windows/Fonts/arial.ttf";
+                com.itextpdf.kernel.font.PdfFont font = com.itextpdf.kernel.font.PdfFontFactory.createFont(
+                        fontPath, com.itextpdf.io.font.PdfEncodings.IDENTITY_H);
+                document.setFont(font);
+            } catch (Exception ignored) {
+                // Fallback về font mặc định nếu không tìm thấy file font
+            }
+
+            String tenTieuDe = (tieuDeBaoCao != null && !tieuDeBaoCao.isBlank())
+                    ? tieuDeBaoCao.toUpperCase()
+                    : "BAO CAO THU CHI";
+
+            document.add(new Paragraph(tenTieuDe)
+                    .setFontSize(18)
+                    .setTextAlignment(TextAlignment.CENTER));
+
+            document.add(new Paragraph("PHONG KHAM NHA KHOA\n"
+                    + "Ngay lap: " + NgayUtil.fmt(LocalDate.now()) + "\n"
+                    + "--------------------------------------------------------------------------------")
+                    .setFontSize(10));
+
+            Table table = new Table(new float[]{1, 1.5f, 2, 2, 2, 3.5f, 2.5f});
+            table.setWidth(UnitValue.createPercentValue(100));
+
+            table.addHeaderCell(new Cell().add(new Paragraph("STT")));
+            table.addHeaderCell(new Cell().add(new Paragraph("Loai")));
+            table.addHeaderCell(new Cell().add(new Paragraph("Ma phieu")));
+            table.addHeaderCell(new Cell().add(new Paragraph("Ngay")));
+            table.addHeaderCell(new Cell().add(new Paragraph("Doi tuong")));
+            table.addHeaderCell(new Cell().add(new Paragraph("Ly do")));
+            table.addHeaderCell(new Cell().add(new Paragraph("So tien")));
+
+            BaoCao_Service baoCaoService = new BaoCao_Service();
+            long tongThu = 0;
+            long tongChi = 0;
+            int stt = 1;
+
+            for (PhieuThu pt : baoCaoService.danhSachPhieuThu()) {
+                long soTien = pt.getSoTien();
+                tongThu += soTien;
+                table.addCell(String.valueOf(stt++));
+                table.addCell("THU");
+                table.addCell(pt.getMaPhieuThu() != null ? pt.getMaPhieuThu() : "");
+                table.addCell(NgayUtil.fmt(pt.getNgayThu()));
+                table.addCell(entity.Refs.maKh(pt.getKhachHang()));
+                table.addCell(pt.getLyDo() != null ? pt.getLyDo() : "");
+                table.addCell(ViewTheme.tien(soTien));
+            }
+
+            for (PhieuChi pc : baoCaoService.danhSachPhieuChi()) {
+                long soTien = pc.getSoTien();
+                tongChi += soTien;
+                table.addCell(String.valueOf(stt++));
+                table.addCell("CHI");
+                table.addCell(pc.getMaPhieuChi() != null ? pc.getMaPhieuChi() : "");
+                table.addCell(NgayUtil.fmt(pc.getNgayChi()));
+                table.addCell(entity.Refs.maNcc(pc.getNhaCungCap()));
+                table.addCell(pc.getLyDoChi() != null ? pc.getLyDoChi() : "");
+                table.addCell("-" + ViewTheme.tien(soTien));
+            }
+
+            if (stt == 1) {
+                table.addCell("-");
+                table.addCell("-");
+                table.addCell("-");
+                table.addCell(NgayUtil.fmt(LocalDate.now()));
+                table.addCell("-");
+                table.addCell("Khong co du lieu thu chi");
+                table.addCell(ViewTheme.tien(0));
+            }
+
+            document.add(table);
+
+            long chenhLech = tongThu - tongChi;
+            document.add(new Paragraph("\nTong thu: " + ViewTheme.tien(tongThu)
+                    + "\nTong chi: " + ViewTheme.tien(tongChi)
+                    + "\nTong (Thu - chi): " + ViewTheme.tien(chenhLech))
+                    .setFontSize(12)
+                    .setTextAlignment(TextAlignment.RIGHT));
+
+            document.close();
+            return true;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+    
+    public static boolean generatehdPdf(HoaDon hd, String dest) {
+        try {
+            PdfWriter writer = new PdfWriter(dest);
+            PdfDocument pdf = new PdfDocument(writer);
+            Document document = new Document(pdf);
+
+            String maHoaDon = (hd != null && hd.getMaHoaDon() != null) ? hd.getMaHoaDon() : "HD-MOI";
+            String ngayLapStr = (hd != null && hd.getNgayLap() != null)
+                    ? NgayUtil.fmt(hd.getNgayLap())
+                    : NgayUtil.fmt(LocalDate.now());
+            String maKhachHang = (hd != null) ? entity.Refs.maKh(hd.getKhachHang()) : "";
+
+            
+            try {
+                String fontPath = "C:/Windows/Fonts/arial.ttf";
+                com.itextpdf.kernel.font.PdfFont font = com.itextpdf.kernel.font.PdfFontFactory.createFont(
+                        fontPath, com.itextpdf.io.font.PdfEncodings.IDENTITY_H);
+                document.setFont(font);
+            } catch (Exception ignored) {
+                
+            }
+
+            document.add(new Paragraph("HOA DON DIEU TRI & DICH VU NHA KHOA")
+                    .setFontSize(18)
+                    .setTextAlignment(TextAlignment.CENTER));
+
+            document.add(new Paragraph("PHONG KHAM LUON GIU BINH TINH\n"
+                    + "Dia chi: TP. Ho Chi Minh\n"
+                    + "--------------------------------------------------------------------------------")
+                    .setFontSize(10));
+
+            document.add(new Paragraph("\nMa hoa don: " + maHoaDon
+                    + "\nNgay lap: " + ngayLapStr
+                    + "\nMa khach hang: " + maKhachHang + "\n")
+                    .setFontSize(11));
+
+            Table table = new Table(new float[]{1, 4, 2, 2, 2});
+            table.setWidth(UnitValue.createPercentValue(100));
+
+            table.addHeaderCell(new Cell().add(new Paragraph("STT")));
+            table.addHeaderCell(new Cell().add(new Paragraph("Dich vu / Noi dung")));
+            table.addHeaderCell(new Cell().add(new Paragraph("Ngay")));
+            table.addHeaderCell(new Cell().add(new Paragraph("Bac si")));
+            table.addHeaderCell(new Cell().add(new Paragraph("Thanh tien")));
+
+            BaoCao_Service baoCaoService = new BaoCao_Service();
+            long tongTien = 0;
+            int stt = 1;
+
+            for (KeHoachDieuTri keHoach : baoCaoService.danhSachKeHoachKemChiTiet()) {
+                List<ChiTietKeHoachDieuTri> chiTietList =
+                        keHoach.getChiTiet() == null ? List.of() : keHoach.getChiTiet();
+                for (ChiTietKeHoachDieuTri ct : chiTietList) {
+                    long thanhTien = ct.getThanhTien();
+                    tongTien += thanhTien;
+                    table.addCell(String.valueOf(stt++));
+                    table.addCell(entity.Refs.maDv(ct.getDichVu()));
+                    table.addCell(NgayUtil.fmt(ct.getNgay()));
+                    table.addCell(entity.Refs.maNv(keHoach.getBacSi()));
+                    table.addCell(ViewTheme.tien(thanhTien));
+                }
+            }
+
+            if (stt == 1) {
+                table.addCell("-");
+                table.addCell("Chua co chi tiet dieu tri");
+                table.addCell(ngayLapStr);
+                table.addCell("-");
+                table.addCell(ViewTheme.tien(0));
+            }
+
+            document.add(table);
+
+            document.add(new Paragraph("\nTong thanh toan: " + ViewTheme.tien(tongTien) + " VND")
+                    .setFontSize(12)
+                    .setTextAlignment(TextAlignment.RIGHT));
+
+            document.add(new Paragraph("\nCam on quy khach da tin tuong phong kham!")
+                    .setTextAlignment(TextAlignment.CENTER));
+
+            document.close();
+            return true;
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+    
+    
+    
+    
+    private JPanel thanhXuatPhieuDonLe(String tieuDeBaoCao) {
+        JPanel pnl = new JPanel(new FlowLayout(FlowLayout.RIGHT, 8, 0));
+        pnl.setOpaque(false);
+
+        JButton btnIn = new JButton("In");
+        ViewTheme.nutXanh(btnIn);
+        btnIn.addActionListener(e ->
+                JOptionPane.showMessageDialog(this, "Đã chuẩn bị bản in " + tieuDeBaoCao + "."));
+
+        JButton btnXuatPhieu = new JButton("Xuất phiếu đang chọn...");
+        ViewTheme.nutXanh(btnXuatPhieu);
+        btnXuatPhieu.addActionListener(e -> xuatPhieuDangChonPdf());
+
+        pnl.add(btnIn);
+        pnl.add(btnXuatPhieu);
+        return pnl;
+    }
+
+    private void xuatPhieuDangChonPdf() {
+        if (tblThuChiHienTai == null) {
+            JOptionPane.showMessageDialog(this, "Không tìm thấy bảng dữ liệu thu chi.", "Thông báo", JOptionPane.WARNING_MESSAGE);
+            return;
+        }
+
+        int row = tblThuChiHienTai.getSelectedRow();
+        if (row < 0) {
+            JOptionPane.showMessageDialog(this, "Vui lòng chọn một dòng phiếu thu hoặc phiếu chi trên bảng trước.", "Chưa chọn phiếu", JOptionPane.WARNING_MESSAGE);
+            return;
+        }
+
+        String maPhieu = layGiaTriChuoi(tblThuChiHienTai.getValueAt(row, 1));
+        String lyDo = layGiaTriChuoi(tblThuChiHienTai.getValueAt(row, 5));
+        if (maPhieu.isEmpty() || "Tổng tiền".equalsIgnoreCase(lyDo)) {
+            JOptionPane.showMessageDialog(this, "Dòng đang chọn không phải phiếu hợp lệ (đang chọn dòng tổng hoặc dòng trống).", "Không hợp lệ", JOptionPane.WARNING_MESSAGE);
+            return;
+        }
+
+        String ngay = layGiaTriChuoi(tblThuChiHienTai.getValueAt(row, 2));
+        String khachHang = layGiaTriChuoi(tblThuChiHienTai.getValueAt(row, 3));
+        String nhaCungCap = layGiaTriChuoi(tblThuChiHienTai.getValueAt(row, 4));
+        String thuTong = layGiaTriChuoi(tblThuChiHienTai.getValueAt(row, 10));
+        String chiTong = layGiaTriChuoi(tblThuChiHienTai.getValueAt(row, 15));
+
+        boolean laPhieuChi = !nhaCungCap.isEmpty() || laSoKhacKhong(chiTong);
+        String loaiPhieu = laPhieuChi ? "PHIẾU CHI" : "PHIẾU THU";
+        String doiTuong = laPhieuChi ? nhaCungCap : khachHang;
+        String soTienHienThi = laPhieuChi ? chiTong : thuTong;
+
+        javax.swing.JFileChooser chooser = new javax.swing.JFileChooser();
+        chooser.setSelectedFile(new java.io.File("phieu_" + maPhieu + ".pdf"));
+
+        int chon = chooser.showSaveDialog(this);
+        if (chon != javax.swing.JFileChooser.APPROVE_OPTION) {
+            return;
+        }
+
+        String dest = chooser.getSelectedFile().getAbsolutePath();
+        if (!dest.toLowerCase().endsWith(".pdf")) {
+            dest += ".pdf";
+        }
+
+        boolean thanhCong = generatePhieuDonLePdf(loaiPhieu, maPhieu, ngay, doiTuong, lyDo, soTienHienThi, dest);
+        if (thanhCong) {
+            JOptionPane.showMessageDialog(this, "Đã xuất " + loaiPhieu.toLowerCase() + " thành công tại:\n" + dest);
+        } else {
+            JOptionPane.showMessageDialog(this, "Có lỗi xảy ra khi xuất file PDF!", "Lỗi", JOptionPane.ERROR_MESSAGE);
+        }
+    }
+
+    private String layGiaTriChuoi(Object val) {
+        return val == null ? "" : val.toString().trim();
+    }
+
+    private boolean laSoKhacKhong(String soTienStr) {
+        if (soTienStr == null || soTienStr.isBlank()) {
+            return false;
+        }
+        String digitsOnly = soTienStr.replaceAll("[^0-9-]", "");
+        if (digitsOnly.isEmpty() || "-".equals(digitsOnly)) {
+            return false;
+        }
+        try {
+            return Long.parseLong(digitsOnly) != 0L;
+        } catch (NumberFormatException e) {
+            return !digitsOnly.equals("0");
+        }
+    }
+
+    public static boolean generatePhieuDonLePdf(
+            String loaiPhieu,
+            String maPhieu,
+            String ngay,
+            String doiTuong,
+            String lyDo,
+            String soTien,
+            String dest) {
+        try {
+            PdfWriter writer = new PdfWriter(dest);
+            PdfDocument pdf = new PdfDocument(writer);
+            Document document = new Document(pdf);
+
+            try {
+                String fontPath = "C:/Windows/Fonts/arial.ttf";
+                com.itextpdf.kernel.font.PdfFont font = com.itextpdf.kernel.font.PdfFontFactory.createFont(
+                        fontPath, com.itextpdf.io.font.PdfEncodings.IDENTITY_H);
+                document.setFont(font);
+            } catch (Exception ignored) {
+            }
+
+            document.add(new Paragraph(loaiPhieu)
+                    .setFontSize(20)
+                    .setTextAlignment(TextAlignment.CENTER));
+
+            document.add(new Paragraph("PHONG KHAM NHA KHOA\n"
+                    + "Ma phieu: " + maPhieu + "    |    Ngay: " + ngay + "\n"
+                    + "--------------------------------------------------------------------------------")
+                    .setFontSize(10));
+
+            String nhanDoiTuong = "PHIẾU CHI".equals(loaiPhieu) ? "Nha cung cap" : "Khach hang";
+
+            Table table = new Table(new float[]{4, 8});
+            table.setWidth(UnitValue.createPercentValue(100));
+
+            table.addCell(new Cell().add(new Paragraph("Ma phieu")));
+            table.addCell(new Cell().add(new Paragraph(maPhieu)));
+
+            table.addCell(new Cell().add(new Paragraph("Ngay lap")));
+            table.addCell(new Cell().add(new Paragraph(ngay)));
+
+            table.addCell(new Cell().add(new Paragraph(nhanDoiTuong)));
+            table.addCell(new Cell().add(new Paragraph(doiTuong.isEmpty() ? "-" : doiTuong)));
+
+            table.addCell(new Cell().add(new Paragraph("Ly do")));
+            table.addCell(new Cell().add(new Paragraph(lyDo.isEmpty() ? "-" : lyDo)));
+
+            table.addCell(new Cell().add(new Paragraph("So tien")));
+            table.addCell(new Cell().add(new Paragraph(soTien.isEmpty() ? "0" : soTien)));
+
+            document.add(table);
+
+            document.add(new Paragraph("\nNguoi lap phieu                                                Thu quy / Ke toan")
+                    .setFontSize(10)
+                    .setTextAlignment(TextAlignment.CENTER));
+
+            document.close();
+            return true;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+    
+	@Override
+	public void actionPerformed(ActionEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
 }
